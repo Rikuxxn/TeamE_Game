@@ -300,7 +300,8 @@ void UpdateTitle(void)
 			pVtx[3].col = color;
 		}
 
-		if (g_aTitle[nCntTitle].bEnterTitle == true && g_fade == FADE_NONE && (KeyboardTrigger(DIK_RETURN) == true || JoyPadTrigger(JOYKEY_A) == true))
+		if (g_aTitle[nCntTitle].bEnterTitle == true && g_fade == FADE_NONE && 
+			(KeyboardTrigger(DIK_RETURN) == true || JoyPadTrigger(JOYKEY_A) == true || GetMouseButtonTrigger(0) == true))
 		{
 			alpha = 0.0f;
 
@@ -319,7 +320,7 @@ void UpdateTitle(void)
 
 			//モード設定(ゲーム画面に移動)
 			SetFade(MODE_GAME);
-
+			//ShowCursor(FALSE);
 		}
 
 		TitleFlash(TITLE_SECOND);//プレスエンターの点滅
@@ -328,12 +329,13 @@ void UpdateTitle(void)
 		pVtx += 4;
 	}
 
+#ifdef _DEBUG
 	if (KeyboardTrigger(DIK_F1) == true && g_fade == FADE_NONE)
 	{
 		//エディット画面に移行
 		SetFade(MODE_EDIT);
 	}
-
+#endif
 	// アンロック
 	g_pVtxBuffTitle->Unlock();
 }

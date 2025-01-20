@@ -9,24 +9,34 @@
 
 #include "main.h"
 
-#define MAX_BLOCK (20)	// ブロックの使う数
-//#define MAX_TEXTUREBLOCK (128)
+#define MAX_BLOCK (100)	// ブロックの使う数
+#define MAX_BLOCKTEXTURE (256)//ブロックの最大テクスチャ
 
 // ブロックの種類
 typedef enum
 {
-	BLOCKTYPE_NORMAL = 0,
-	BLOCKTYPE_DOOR,
+	BLOCKTYPE_WALL = 0,
+	BLOCKTYPE_WALL_TATE,
+	BLOCKTYPE_UFOCATCHER1,
+	BLOCKTYPE_UFOCATCHER2,
+	BLOCKTYPE_BALLPOOL,
+	BLOCKTYPE_ARCADE1,
+	BLOCKTYPE_ARCADE2,
+	BLOCKTYPE_SWEETLAND,
+	BLOCKTYPE_GASYAPON1,
+
 	BLOCKTYPE_MAX
 }BLOCKTYPE;
 
 //ブロックの情報
 typedef struct
 {
-	LPDIRECT3DTEXTURE9 apTexture[BLOCKTYPE_MAX];	//	テクスチャへのポインタ
+	LPDIRECT3DTEXTURE9 apTexture[MAX_BLOCKTEXTURE];	//	テクスチャへのポインタ
 	LPD3DXMESH pMesh;
 	LPD3DXBUFFER pBuffMat;				//	マテリアルへのポインタ
 	DWORD dwNumMat;						//	マテリアル数
+	D3DXVECTOR3 vtxMin;
+	D3DXVECTOR3 vtxMax;
 }Blockinfo;
 
 // ブロック構造体
@@ -35,8 +45,6 @@ typedef struct
 	D3DXVECTOR3 pos;					//	位置(オフセット)
 	D3DXVECTOR3 move;					//移動量
 	D3DXVECTOR3 rot;					//	向き
-	D3DXVECTOR3 vtxMin;
-	D3DXVECTOR3 vtxMax;
 	D3DXVECTOR3 size;
 	int nType;
 	bool bUse;
@@ -48,8 +56,16 @@ typedef struct
 
 static const char* BLOCK[BLOCKTYPE_MAX] =
 {
-	"data/MODEL/wall.x",				//	壁
-	"data/MODEL/door.x",				//	ドア
+	"data/MODEL/wall.x",				//	縦壁
+	"data/MODEL/wall_tate.x",			//	横壁
+	"data/MODEL/Crane_game000.x",		// クレーンゲーム1
+	"data/MODEL/UFO.x",					// クレーンゲーム2
+	"data/MODEL/Ball_pool.x",			// ボールプール
+	"data/MODEL/arcade.x",				// アーケード1
+	"data/MODEL/Fightng_game000.x",		// アーケード2
+	"data/MODEL/SweetLand.x",			// スイートランド
+	"data/MODEL/gasyapon00.x",			// ガシャポン
+
 };
 
 //プロトタイプ宣言
@@ -58,7 +74,7 @@ void UninitBlock(void);
 void UpdateBlock(void);
 void DrawBlock(void);
 void SetBlock(D3DXVECTOR3 pos, int nType);
-void CollisionBlock(void);//当たり判定
+void CollisionBlock(D3DXVECTOR3 *pPos, D3DXVECTOR3* pPosOld,D3DXVECTOR3* pMove, D3DXVECTOR3* pSize);//当たり判定
 Block* GetBlock(void);
 bool GetExit(void);
 

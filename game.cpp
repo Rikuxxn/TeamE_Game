@@ -45,6 +45,10 @@ int nCounter;
 //==============================================
 void InitGame(void)
 {
+	SetCursorPos(SCREEN_WIDTH / 1.5, SCREEN_HEIGHT / 1.5);
+
+	// カーソルを非表示にする
+	SetCursorVisibility(false);
 
 	//メッシュフィールドの初期化処理
 	InitMeshfield();
@@ -91,7 +95,7 @@ void InitGame(void)
 
 
 	//ブロック
-	SetBlock(D3DXVECTOR3(-220.0f, 0.0f, 325.0f), BLOCKTYPE_NORMAL);		//	壁
+	//SetBlock(D3DXVECTOR3(-220.0f, 0.0f, 325.0f), BLOCKTYPE_NORMAL);		//	壁
 	//SetBlock(D3DXVECTOR3(-220.0f, 0.0f, 85.0f), BLOCKTYPE_NORMAL);		//	ドア
 
 
@@ -156,8 +160,11 @@ void InitGame(void)
 	g_bPause = false;//ポーズ解除
 	nCounter = 0;
 
-	////エディット読み込み
-	//LoadBlockData();
+	//エディット読み込み
+	LoadBlockData();
+
+	//エディット読み込み
+	LoadWallData();
 
 }
 //============================================
@@ -168,6 +175,10 @@ void UninitGame(void)
 
 	//StopSound(SOUND_LABEL_GAMEBGM);
 	//StopSound();
+
+	// カーソルを表示する
+	SetCursorVisibility(true);
+
 
 	//メッシュフィールドの終了処理
 	UninitMeshfield();
@@ -237,6 +248,10 @@ void UpdateGame(void)
 
 		//PlaySound(SOUND_LABEL_PAUSE);
 
+		if (g_bPause == false)
+		{
+		}
+
 	}
 
 	if (g_bPause == true)
@@ -245,9 +260,15 @@ void UpdateGame(void)
 		//ポーズの更新処理
 		UpdatePause();
 
+		// カーソルを表示する
+		SetCursorVisibility(true);
+
 	}
 	else
 	{
+
+		// カーソルを非表示する
+		SetCursorVisibility(false);
 
 		//プレイヤーの更新処理
 		UpdatePlayer();

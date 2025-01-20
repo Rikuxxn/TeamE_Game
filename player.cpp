@@ -38,7 +38,7 @@ void InitPlayer(void)
 	pDevice = GetDevice();
 
 	//初期化
-	g_player.pos = D3DXVECTOR3(-200.0f, 0.0f, 850.0f);			//位置を初期化する
+	g_player.pos = D3DXVECTOR3(0.0f, 0.0f, -840.0f);			//位置を初期化する
 	g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//前の位置を初期化する
 	g_player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//移動量を初期化する
 	g_player.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//向きを初期化する
@@ -200,7 +200,6 @@ void UpdatePlayer(void)
 	if (bEnd == true)
 	{
 		g_player.motion.motionType = MOTIONTYPE_NEUTRAL2;
-
 	}
 
 	if (bExit == false && g_player.bDisp == true && bEnd == false)
@@ -233,45 +232,48 @@ void UpdatePlayer(void)
 		//	}
 		//}
 
-		//一人称の時
-		if (GetJoyStick() == true)
-		{
-			// 左スティックの入力を取得
-			float stickX = pStick->Gamepad.sThumbLX;
-			float stickY = pStick->Gamepad.sThumbLY;
 
-			// デッドゾーン処理
-			const float DEADZONE = 10922.0f;
-			if (fabsf(stickX) < DEADZONE) stickX = 0.0f;
-			if (fabsf(stickY) < DEADZONE) stickY = 0.0f;
 
-			// 正規化
-			float magnitude = sqrtf(stickX * stickX + stickY * stickY);
-			if (magnitude > 0.0f)
-			{
-				stickX /= magnitude;
-				stickY /= magnitude;
-			}
+		////一人称 ゲームパッドの移動処理
+		//if (GetJoyStick() == true)
+		//{
+		//	// 左スティックの入力を取得
+		//	float stickX = pStick->Gamepad.sThumbLX;
+		//	float stickY = pStick->Gamepad.sThumbLY;
 
-			// カメラの回転を取得
-			float cameraYaw = pCamera->rot.y;
+		//	// デッドゾーン処理
+		//	const float DEADZONE = 10922.0f;
 
-			// 移動ベクトル計算
-			float moveX = -(stickX * cosf(cameraYaw) + stickY * sinf(cameraYaw));
-			float moveZ = stickX * sinf(-cameraYaw) + stickY * cosf(cameraYaw);
+		//	if (fabsf(stickX) < DEADZONE) stickX = 0.0f;
+		//	if (fabsf(stickY) < DEADZONE) stickY = 0.0f;
 
-			// 移動方向反転
-			moveZ = -moveZ;
+		//	// 正規化
+		//	float magnitude = sqrtf(stickX * stickX + stickY * stickY);
+		//	if (magnitude > 0.0f)
+		//	{
+		//		stickX /= magnitude;
+		//		stickY /= magnitude;
+		//	}
 
-			// プレイヤーの移動更新
-			g_player.move.x += moveX * PLAYER_SPEED;
-			g_player.move.z += moveZ * PLAYER_SPEED;
+		//	// カメラの回転を取得
+		//	float cameraYaw = pCamera->rot.y;
 
-			// プレイヤーの向きを更新
-			g_player.rotDestPlayer.y = atan2f(-moveX, -moveZ);
+		//	// 移動ベクトル計算
+		//	float moveX = -(stickX * cosf(cameraYaw) + stickY * sinf(cameraYaw));
+		//	float moveZ = stickX * sinf(-cameraYaw) + stickY * cosf(cameraYaw);
 
-			g_player.motion.motionType = MOTIONTYPE_MOVE;
-		}
+		//	// 移動方向反転
+		//	moveZ = -moveZ;
+
+		//	// プレイヤーの移動更新
+		//	g_player.move.x += moveX * PLAYER_SPEED;
+		//	g_player.move.z += moveZ * PLAYER_SPEED;
+
+		//	// プレイヤーの向きを更新
+		//	g_player.rotDestPlayer.y = atan2f(-moveX, -moveZ);
+
+		//	g_player.motion.motionType = MOTIONTYPE_MOVE;
+		//}
 
 		if (GetKeyboardPress(DIK_A) == true /*|| GetJoypadPress(JOYKEY_LEFT) == true*/)
 		{//Aキーが押された
@@ -403,12 +405,15 @@ void UpdatePlayer(void)
 
 		//位置を更新
 		g_player.pos.x += g_player.move.x;
-		g_player.pos.z += g_player.move.z;
+		CollisionBlock(&g_player.pos, &g_player.posOld, &g_player.move, &g_player.size);
+
 		g_player.pos.y += g_player.move.y;
+		CollisionBlock(&g_player.pos, &g_player.posOld, &g_player.move, &g_player.size);
+
+		g_player.pos.z += g_player.move.z;
+		CollisionBlock(&g_player.pos, &g_player.posOld, &g_player.move, &g_player.size);
 
 		//CollisionModel();
-
-		CollisionBlock();
 
 	}
 
@@ -531,6 +536,12 @@ void DrawPlayer(void)
 	for (int nCntModel = 0; nCntModel < g_player.motion.nNumModel; nCntModel++)
 	{
 
+
+		//パーツを描画しない
+		continue;
+
+
+
 		D3DXMATRIX mtxRotModel, mtxTransModel;//計算用マトリックス
 
 		D3DXMATRIX mtxParent;//親のマトリックス
@@ -564,11 +575,11 @@ void DrawPlayer(void)
 		//パーツのワールドマトリックスの設定
 		pDevice->SetTransform(D3DTS_WORLD, &g_player.motion.aModel[nCntModel].mtxWorld);
 
-		//マテリアルデータへのポインタを取得
-		pMat = (D3DXMATERIAL*)g_player.motion.aModel[nCntModel].pBuffMat->GetBufferPointer();
-
 		for (int nCntMat = 0; nCntMat < (int)g_player.motion.aModel[nCntModel].dwNumMat; nCntMat++)
 		{
+
+			//マテリアルデータへのポインタを取得
+			pMat = (D3DXMATERIAL*)g_player.motion.aModel[nCntModel].pBuffMat->GetBufferPointer();
 
 			//マテリアルの設定
 			pDevice->SetMaterial(&pMat[nCntMat].MatD3D);

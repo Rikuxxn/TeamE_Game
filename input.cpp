@@ -24,8 +24,9 @@ BYTE g_aOldState[NUM_KEY_MAX];//
 //XINPUT_STATE g_joyKeyStateTrigger;//ジョイパッドのプレス情報
 bool g_joyKeyFlag[JOYKEY_MAX];
 
-LPDIRECTINPUT8 g_pMouse = NULL;//DirectInputオブジェクトへのポインタ
+//LPDIRECTINPUT8 g_pMouse = NULL;//DirectInputオブジェクトへのポインタ
 LPDIRECTINPUTDEVICE8 g_pDevMouse = NULL;//入力デバイスへのポインタ
+DIMOUSESTATE g_mouseState;
 
 //=============================
 //キーボードの初期化処理
@@ -226,7 +227,6 @@ bool JoyPadRelease(JOYKEY Key)
 	return (g_joyKeyStateRelease.Gamepad.wButtons & (0x01 << Key)) ? true : false;
 
 }
-
 //====================================================
 //L2,R2の処理
 //====================================================
@@ -356,39 +356,44 @@ HRESULT InitMouse(HINSTANCE hInstance, HWND hWnd)
 	LPDIRECTINPUT8 pDI;
 
 	// DirectInput オブジェクトの作成
-	if (FAILED(DirectInput8Create(hInstance, DIRECTINPUT_VERSION, 
+	if (FAILED(DirectInput8Create(hInstance, DIRECTINPUT_VERSION,
 		IID_IDirectInput8, (VOID**)&pDI, NULL)))
 	{
-		return E_FAIL; // エラーを返す
+		MessageBox(NULL, "DirectInput8Create に失敗しました", "エラー", MB_OK | MB_ICONERROR);
+		return E_FAIL;
 	}
 
-	//入力デバイス(マウス)の生成
-	if (FAILED(g_pMouse->CreateDevice(GUID_SysMouse, &g_pDevMouse, NULL)))
+	// 入力デバイス(マウス)の生成
+	if (FAILED(pDI->CreateDevice(GUID_SysMouse, &g_pDevMouse, NULL)))
 	{
-		return E_FAIL; // エラーを返す
+		MessageBox(NULL, "マウスデバイスの作成に失敗しました", "エラー", MB_OK | MB_ICONERROR);
+		pDI->Release();
+		return E_FAIL;
 	}
 
 	// マウスのデータフォーマットを設定
 	if (FAILED(g_pDevMouse->SetDataFormat(&c_dfDIMouse)))
 	{
-		return E_FAIL; // エラーを返す
+		MessageBox(NULL, "マウスのデータフォーマット設定に失敗しました", "エラー", MB_OK | MB_ICONERROR);
+		pDI->Release();
+		return E_FAIL;
 	}
 
-	// マウスの動作モードを設定
-	if (FAILED(g_pDevMouse->SetCooperativeLevel(hWnd, 
-		DISCL_FOREGROUND | DISCL_NONEXCLUSIVE)))
+	// ウィンドウが非アクティブでもマウスを使用可能にする
+	if (FAILED(g_pDevMouse->SetCooperativeLevel(hWnd,
+		DISCL_BACKGROUND | DISCL_NONEXCLUSIVE)))
 	{
-		return S_OK; // エラーを返す
+		MessageBox(NULL, "SetCooperativeLevel に失敗しました", "エラー", MB_OK | MB_ICONERROR);
+		return E_FAIL;
 	}
 
-	//// マウスの入力デバイスをアクティブ化
-	//if (FAILED(g_pDevMouse->Acquire()))
-	//{
-	//	return E_FAIL; // エラーを返す
-	//}
-
-	// DirectInput オブジェクトを解放（不要なので解放）
-	//pDI->Release();
+	// マウスの入力デバイスをアクティブ化
+	if (FAILED(g_pDevMouse->Acquire()))
+	{
+		MessageBox(NULL, "マウスデバイスのアクティブ化に失敗しました", "エラー", MB_OK | MB_ICONERROR);
+		pDI->Release();
+		return E_FAIL;
+	}
 
 	return S_OK; // 初期化成功
 }
@@ -405,11 +410,28 @@ void UninitMouse(void)
 		g_pDevMouse = NULL;
 	}
 
-	//DirectInputオブジェクトの破棄
-	if (g_pMouse != NULL)
+	////DirectInputオブジェクトの破棄
+	//if (g_pMouse != NULL)
+	//{
+	//	g_pMouse->Release();
+	//	g_pMouse = NULL;
+	//}
+}
+//=====================================================
+//マウス操作の更新処理
+//=====================================================
+void UpdateMouse(void)
+{
+	if (g_pDevMouse)
 	{
-		g_pMouse->Release();
-		g_pMouse = NULL;
+		HRESULT hr = g_pDevMouse->GetDeviceState(sizeof(DIMOUSESTATE), &g_mouseState);
+		if (FAILED(hr))
+		{
+			if (hr == DIERR_INPUTLOST || hr == DIERR_NOTACQUIRED)
+			{
+				g_pDevMouse->Acquire();
+			}
+		}
 	}
 }
 //=====================================================
@@ -417,40 +439,114 @@ void UninitMouse(void)
 //=====================================================
 bool GetMouseState(DIMOUSESTATE* mouseState)
 {
-	//LPDIRECTINPUTDEVICE8 pMouse = GetMouseDevice(); // マウスデバイス取得
-
-	//if (pMouse == NULL)
-	//{
-	//	return false;
-	//}
-
-	//HRESULT hr = pMouse->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)mouseState);
-
-	//if (FAILED(hr))
-	//{
-	//	// 入力デバイスがリセットされている場合、再取得を試みる
-	//	if (hr == DIERR_INPUTLOST || hr == DIERR_NOTACQUIRED)
-	//	{
-	//		pMouse->Acquire();
-	//	}
-	//	return false;
-	//}
-
-	//return true;
-
-	IDirectInputDevice8* pMouse = GetMouseDevice(); // マウスデバイスを取得する関数
-	if (pMouse)
+	// マウスデバイスを取得
+	LPDIRECTINPUTDEVICE8 pMouse = GetMouseDevice();
+	if (pMouse == NULL)
 	{
-		HRESULT hr = pMouse->GetDeviceState(sizeof(DIMOUSESTATE), mouseState);
-		if (FAILED(hr))
+		return false;
+	}
+
+	// マウスの状態を取得
+	HRESULT hr = pMouse->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)mouseState);
+
+	if (FAILED(hr))
+	{
+		// 入力デバイスがリセットされている場合、再取得を試みる
+		if (hr == DIERR_INPUTLOST || hr == DIERR_NOTACQUIRED)
 		{
-			// 再取得を試みる
 			pMouse->Acquire();
+
+			// 再取得を試みる
+			hr = pMouse->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)mouseState);
+			if (FAILED(hr))
+			{
+				return false;
+			}
+		}
+		else
+		{
+			// その他のエラーの場合
+			return false;
 		}
 	}
 
-	return true;
+	return true; // 正常に取得できた場合
+}
+//=====================================================
+//マウスのプレス情報
+//=====================================================
+bool GetMouseButtonPress(int button)
+{
+	return (g_mouseState.rgbButtons[button] & 0x80) != 0;
+}
+//=====================================================
+//マウスのトリガー情報
+//=====================================================
+bool GetMouseButtonTrigger(int button)
+{
+	static DIMOUSESTATE oldState = {};
 
+	bool trigger = (g_mouseState.rgbButtons[button] & 0x80) &&
+		!(oldState.rgbButtons[button] & 0x80);
+
+	oldState = g_mouseState;  // Update previous state
+	return trigger;
+}
+//=====================================================
+//マウスのリリース情報
+//=====================================================
+bool GetMouseButtonRelease(int button)
+{
+	static DIMOUSESTATE oldState = {};
+
+	bool release = !(g_mouseState.rgbButtons[button] & 0x80) &&
+		(oldState.rgbButtons[button] & 0x80);
+
+	oldState = g_mouseState;  // Update previous state
+	return release;
+}
+//=====================================================
+// マウスホイールのスクロール量を取得する関数
+//=====================================================
+int GetMouseWheel(void)
+{
+	const int ScrollUnit = 120; // 通常のスクロール単位
+
+	int wheelValue = g_mouseState.lZ;
+
+	// スクロール単位に基づいて正規化
+	if (wheelValue != 0)
+	{
+		wheelValue /= ScrollUnit; // 正規化されたスクロール量を返す
+	}
+
+	return wheelValue; // 正（上スクロール）、負（下スクロール）、0（スクロールなし）
+}
+//=====================================================
+// マウスカーソル表示処理
+//=====================================================
+void SetCursorVisibility(bool visible)
+{
+	static int cursorCount = 0;
+
+	if (visible)
+	{
+		// カーソルを表示
+		while (cursorCount < 0)
+		{
+			ShowCursor(TRUE);
+			cursorCount++;
+		}
+	}
+	else
+	{
+		// カーソルを非表示
+		while (cursorCount >= 0)
+		{
+			ShowCursor(FALSE);
+			cursorCount--;
+		}
+	}
 }
 //=====================================================
 //マウス情報の取得
@@ -459,5 +555,3 @@ LPDIRECTINPUTDEVICE8 GetMouseDevice(void)
 {
 	return g_pDevMouse;
 }
-
-

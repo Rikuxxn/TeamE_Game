@@ -30,13 +30,13 @@ void InitCamera(void)
 	g_camera.fDistance = sqrtf(((g_camera.posV.x - g_camera.posR.x) * (g_camera.posV.x - g_camera.posR.x)) + ((g_camera.posV.y - g_camera.posR.y) * (g_camera.posV.y - g_camera.posR.y)) + ((g_camera.posV.z - g_camera.posR.z) * (g_camera.posV.z - g_camera.posR.z)));
 	bFirstPerson = false;
 
-	//ビューポート構成の保存
-	g_camera.viewport.X = 0.0f;				//X開始位置
-	g_camera.viewport.Y = 0.0f;				//Y開始位置
-	g_camera.viewport.Width = 1280.0f;		//幅
-	g_camera.viewport.Height = 720.0f;		//高さ
-	g_camera.viewport.MinZ = 0.0f;
-	g_camera.viewport.MaxZ = 1.0f;
+	//// ビューポート構成の保存
+	//g_camera.viewport.X = 0.0f;				//X開始位置
+	//g_camera.viewport.Y = 0.0f;				//Y開始位置
+	//g_camera.viewport.Width = 1280.0f;		//幅
+	//g_camera.viewport.Height = 720.0f;		//高さ
+	//g_camera.viewport.MinZ = 0.0f;
+	//g_camera.viewport.MaxZ = 1.0f;
 
 }
 //=============================
@@ -60,32 +60,91 @@ void UpdateCamera(void)
 
 	XINPUT_STATE* pStick;
 	pStick = GetJoyStickAngle();
-	DIMOUSESTATE mouseState;
+	//DIMOUSESTATE mouseState;
 
-	if (g_cameramode == CAMERAMODE_FIRSTPERSON)
+	if (pMode == MODE_GAME)
 	{
-		if (pStick != NULL) 
+		//if (pStick != NULL) 
+		//{
+		//	// 右スティックの値を取得
+		//	float stickX = pStick->Gamepad.sThumbRX;
+		//	float stickY = pStick->Gamepad.sThumbRY;
+
+		//	// デッドゾーン処理
+		//	const float DEADZONE = 10922.0f;
+		//	if (fabsf(stickX) < DEADZONE)
+		//	{
+		//		stickX = 0.0f;
+		//	}
+		//	if (fabsf(stickY) < DEADZONE)
+		//	{
+		//		stickY = 0.0f;
+		//	}
+
+		//	// 正規化
+		//	stickX /= 32768.0f;
+		//	stickY /= 32768.0f;
+
+		//	// カメラ回転の更新
+		//	RotateCameraWithGamepad(stickX, stickY);
+		//}
+
+		// マウスの状態を取得
+		DIMOUSESTATE mouseState;
+
+		if (GetMouseState(&mouseState))
 		{
-			// 右スティックの値を取得
-			float stickX = pStick->Gamepad.sThumbRX;
-			float stickY = pStick->Gamepad.sThumbRY;
+			// 前フレームのカーソル位置を記録する静的変数
+			static POINT prevCursorPos = { SCREEN_WIDTH / 1.5, SCREEN_HEIGHT / 1.5 };
 
-			// デッドゾーン処理
-			const float DEADZONE = 10922.0f;
-			if (fabsf(stickX) < DEADZONE) stickX = 0.0f;
-			if (fabsf(stickY) < DEADZONE) stickY = 0.0f;
+			// 現在のカーソル位置を取得
+			POINT cursorPos;
+			GetCursorPos(&cursorPos);
 
-			// 正規化
-			stickX /= 32768.0f;
-			stickY /= 32768.0f;
+			// 移動量を計算
+			float deltaX = (float)(cursorPos.x - prevCursorPos.x);
+			float deltaY = (float)(cursorPos.y - prevCursorPos.y);
 
-			// カメラ回転の更新
-			RotateCameraWithGamepad(stickX, stickY);
+			// マウス感度を適用
+			const float mouseSensitivity = 0.0009f;
+			deltaX *= mouseSensitivity;
+			deltaY *= mouseSensitivity;
+
+			// カメラ回転を更新
+			g_camera.rot.y += deltaX; // 水平回転
+			g_camera.rot.x += deltaY; // 垂直回転
+
+			// 垂直回転の制限
+			if (g_camera.rot.x > 0.72f)
+			{
+				g_camera.rot.x = 0.72f;
+			}
+			else if (g_camera.rot.x < -0.72f)
+			{
+				g_camera.rot.x = -0.72f;
+			}
+
+			// 水平回転を正規化
+			if (g_camera.rot.y > D3DX_PI)
+			{
+				g_camera.rot.y -= D3DX_PI * 2.0f;
+			}
+			if (g_camera.rot.y < -D3DX_PI)
+			{
+				g_camera.rot.y += D3DX_PI * 2.0f;
+			}
+
+			// カーソルを画面中央に戻す
+			SetCursorPos(SCREEN_WIDTH / 1.5, SCREEN_HEIGHT / 1.5);
+
+			// 現在のカーソル位置を次回の計算用に保存
+			prevCursorPos.x = SCREEN_WIDTH / 1.5;
+			prevCursorPos.y = SCREEN_HEIGHT / 1.5;
 		}
 
 		// カメラの位置をプレイヤーの位置に設定
 		g_camera.posV = pPlayer->pos;
-		g_camera.posV.y += 90.0f; // 頭部の高さ
+		g_camera.posV.y += 70.0f; // 頭部の高さ
 
 		// カメラの回転に基づいて注視点を計算
 		float lookDistance = 10.0f; // 注視点までの距離
@@ -93,66 +152,9 @@ void UpdateCamera(void)
 		g_camera.posR.y = g_camera.posV.y - sinf(g_camera.rot.x) * lookDistance;
 		g_camera.posR.z = g_camera.posV.z - cosf(g_camera.rot.y) * lookDistance * cosf(g_camera.rot.x);
 
-		//// マウスの入力を取得
-		//GetMouseState(&mouseState);
 
-		//// マウス感度を調整
-		//const float mouseSensitivity = 0.005f; // 感度調整値
-		//float deltaX = mouseState.lX * mouseSensitivity; // 横方向の移動量
-		//float deltaY = mouseState.lY * mouseSensitivity; // 縦方向の移動量
-
-		//// カメラ回転の更新
-		//g_camera.rot.y += deltaX; // Y軸（水平回転）
-		//g_camera.rot.x -= deltaY; // X軸（垂直回転）
-
-		//// 垂直方向の回転制限 (-90度 ～ 90度)
-		//if (g_camera.rot.x > D3DX_PI / 2)
-		//{
-		//	g_camera.rot.x = D3DX_PI / 2;
-		//}
-		//if (g_camera.rot.x < -D3DX_PI / 2)
-		//{
-		//	g_camera.rot.x = -D3DX_PI / 2;
-		//}
-
-		//// 水平方向の回転を正規化 (-π ～ π)
-		//if (g_camera.rot.y > D3DX_PI)
-		//{
-		//	g_camera.rot.y -= D3DX_PI * 2.0f;
-		//}
-		//else if (g_camera.rot.y < -D3DX_PI)
-		//{
-		//	g_camera.rot.y += D3DX_PI * 2.0f;
-		//}
-
-		//// カメラの位置をプレイヤーの位置に設定
-		//g_camera.posV = pPlayer->pos;
-		//g_camera.posV.y += 100.0f; // 頭部の高さ
-
-		//// カメラの回転に基づいて注視点を計算
-		//float lookDistance = 10.0f; // 注視点までの距離
-		//g_camera.posR.x = g_camera.posV.x - sinf(g_camera.rot.y) * lookDistance * cosf(g_camera.rot.x);
-		//g_camera.posR.y = g_camera.posV.y - sinf(g_camera.rot.x) * lookDistance;
-		//g_camera.posR.z = g_camera.posV.z - cosf(g_camera.rot.y) * lookDistance * cosf(g_camera.rot.x);
-
-		return; // 一人称モードの処理終了
 	}
 
-	if (KeyboardTrigger(DIK_F4) == true || JoyPadTrigger(JOYKEY_BACK) == true)
-	{
-		bFirstPerson = true;
-
-		if (g_cameramode == CAMERAMODE_FIRSTPERSON)
-		{
-			g_cameramode = CAMERAMODE_NORMAL; // 一人称から通常モードに戻す
-		}
-
-		else
-		{
-			g_cameramode = CAMERAMODE_FIRSTPERSON; // 一人称モードに切り替え
-
-		}
-	}
 
 	//if (g_cameramode == CAMERAMODE_NORMAL)
 	//{
@@ -510,20 +512,20 @@ void SetCamera(void)
 		D3DXToRadian(45.0f),                  // 視野角
 		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, // アスペクト比
 		1.0f,                                // 近クリップ面
-		1100.0f);                            // 遠クリップ面
+		1200.0f);                            // 遠クリップ面
 
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &g_camera.mtxProjection);
 
 }
 //=============================
-//カメラの回転処理
+//ゲームパッドのカメラ回転処理
 //=============================
 void RotateCameraWithGamepad(float stickX, float stickY)
 {
 	const float rotationSpeed = 0.07f; // 回転速度
 
-	  // 水平方向の回転（Y軸）
+	 // 水平方向の回転（Y軸）
 	g_camera.rot.y += stickX * rotationSpeed;
 
 	// 垂直方向の回転（X軸）

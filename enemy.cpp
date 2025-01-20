@@ -195,307 +195,308 @@ void UninitEnemy(void)
 //=============================
 void UpdateEnemy(void)
 {
-
-	bool isPlayerInSightNow = isPlayerInSight(); // 現在の視界判定
-
-	// 視界外から視界内に変化した瞬間
-	if (isPlayerInSightNow && !isPlayerInSightPrev)
+	if (g_aEnemy.bUse == true)
 	{
-		// プレイヤーが視界に入った瞬間
-		//PlaySound(SOUND_LABEL_WARNING); // SEを再生
-		SetFoundFade(MODE_FOUND);
-	}
+		bool isPlayerInSightNow = isPlayerInSight(); // 現在の視界判定
 
-	// フラグを更新して次のフレームに備える
-	isPlayerInSightPrev = isPlayerInSightNow;
-
-	Player* pPlayer = GetPlayer();
-
-
-	//移動量を更新(減衰させる)
-	g_aEnemy.move.x += (0.0f - g_aEnemy.move.x) * 0.3f;
-	g_aEnemy.move.z += (0.0f - g_aEnemy.move.z) * 0.3f;
-	g_aEnemy.move.y += (0.0f - g_aEnemy.move.y) * 0.1f;
-
-	//前回の位置を更新
-	g_aEnemy.posOld = g_aEnemy.pos;
-
-	//位置を更新
-	g_aEnemy.pos.x += g_aEnemy.move.x;
-	g_aEnemy.pos.z += g_aEnemy.move.z;
-	g_aEnemy.pos.y += g_aEnemy.move.y;
-
-
-	//CollisionModel();
-
-	CollisionBlock();
-
-
-	D3DXVECTOR3 PlayerRadius(15.0f, 15.0f, 15.0f);
-
-	float fDistance =
-		(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +
-		(g_aEnemy.pos.y - pPlayer->pos.y) * (g_aEnemy.pos.y - pPlayer->pos.y) +
-		(g_aEnemy.pos.z - pPlayer->pos.z) * (g_aEnemy.pos.z - pPlayer->pos.z);
-
-	float fRadius =
-		(g_aEnemy.RadiusEnemy.x + PlayerRadius.x) * (g_aEnemy.RadiusEnemy.x + PlayerRadius.x) +
-		(g_aEnemy.RadiusEnemy.y + PlayerRadius.y) * (g_aEnemy.RadiusEnemy.y + PlayerRadius.y) +
-		(g_aEnemy.RadiusEnemy.z + PlayerRadius.z) * (g_aEnemy.RadiusEnemy.z + PlayerRadius.z);
-
-
-	if (fDistance <= fRadius)
-	{
-		pPlayer->pos = pPlayer->posOld;
-		g_aEnemy.pos = g_aEnemy.posOld;
-		g_aEnemy.motion.motionType = MOTIONTYPE_NEUTRAL2;
-		g_bEnd = true;
-	}
-
-	D3DXVECTOR3 posPlayerRadius(1.0f, 1.0f, 1.0f);
-
-	float fDistancePlayer =
-		(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +
-		(g_aEnemy.pos.y - pPlayer->pos.y) * (g_aEnemy.pos.y - pPlayer->pos.y) +
-		(g_aEnemy.pos.z - pPlayer->pos.z) * (g_aEnemy.pos.z - pPlayer->pos.z);
-
-	float fRadiusPlayer =
-		(g_aEnemy.posRadiusEnemy.x + posPlayerRadius.x) * (g_aEnemy.posRadiusEnemy.x + posPlayerRadius.x) +
-		(g_aEnemy.posRadiusEnemy.y + posPlayerRadius.y) * (g_aEnemy.posRadiusEnemy.y + posPlayerRadius.y) +
-		(g_aEnemy.posRadiusEnemy.z + posPlayerRadius.z) * (g_aEnemy.posRadiusEnemy.z + posPlayerRadius.z);
-
-
-	//範囲内に入った
-	if (fDistancePlayer <= fRadiusPlayer)
-	{
-		g_aEnemy.state = ENEMYSTATE_CHASING;
-	}
-
-	if (isPlayerInSight())
-	{
-		Inside = true;
-	}
-	else
-	{
-		Inside = false;
-	}
-
-
-	if (g_aEnemy.pos.y <= 0)
-	{
-		g_aEnemy.pos.y = 0.0f;
-	}
-
-
-	//SetPositionShadow(g_nIdxShadowEnemy, D3DXVECTOR3(g_aEnemy.pos.x, 0.0f, g_aEnemy.pos.z));
-
-
-	//敵の足音
-	if (g_aEnemy.motion.motionType == MOTIONTYPE_NEUTRAL && g_aEnemy.motion.nKey == 1 && g_aEnemy.motion.nCounterMotion == 9)
-	{
-		//PlaySound(SOUND_LABEL_STEP1);
-	}
-	else if (g_aEnemy.motion.motionType == MOTIONTYPE_NEUTRAL && g_aEnemy.motion.nKey == 3 && g_aEnemy.motion.nCounterMotion == 5)
-	{
-		//PlaySound(SOUND_LABEL_STEP2);
-	}
-
-	if (g_aEnemy.motion.motionType == MOTIONTYPE_MOVE && g_aEnemy.motion.nKey == 1 && g_aEnemy.motion.nCounterMotion == 8)
-	{
-		//PlaySound(SOUND_LABEL_STEP1);
-	}
-	else if (g_aEnemy.motion.motionType == MOTIONTYPE_MOVE && g_aEnemy.motion.nKey == 3 && g_aEnemy.motion.nCounterMotion == 5)
-	{
-		//PlaySound(SOUND_LABEL_STEP2);
-	}
-
-	//全モデルの更新
-	for (int nCntModel = 0; nCntModel < g_aEnemy.motion.nNumModel; nCntModel++)
-	{
-
-		int nNextKey = (g_aEnemy.motion.nKey + 1) % g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].nNumKey;
-
-		// 境界チェック
-		if (g_aEnemy.motion.nKey >= g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].nNumKey || 
-			nNextKey >= g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].nNumKey)
+		// 視界外から視界内に変化した瞬間
+		if (isPlayerInSightNow && !isPlayerInSightPrev)
 		{
-			g_aEnemy.motion.nKey = 0;
+			// プレイヤーが視界に入った瞬間
+			//PlaySound(SOUND_LABEL_WARNING); // SEを再生
+			SetFoundFade(MODE_FOUND);
 		}
 
-		D3DXVECTOR3 Mpos, Mrot;
-		D3DXVECTOR3 MAnswer, MAnswer2;//計算結果用
+		// フラグを更新して次のフレームに備える
+		isPlayerInSightPrev = isPlayerInSightNow;
 
-		//キー情報から位置・向きを算出
-		Mpos.x = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[nNextKey].aKey[nCntModel].fPosX - g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fPosX;
-		Mpos.y = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[nNextKey].aKey[nCntModel].fPosY - g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fPosY;
-		Mpos.z = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[nNextKey].aKey[nCntModel].fPosZ - g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fPosZ;
-
-		Mrot.x = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[nNextKey].aKey[nCntModel].fRotX - g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fRotX;
-		Mrot.y = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[nNextKey].aKey[nCntModel].fRotY - g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fRotY;
-		Mrot.z = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[nNextKey].aKey[nCntModel].fRotZ - g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fRotZ;
-
-		//補間係数を計算
-		float t = (float)g_aEnemy.motion.nCounterMotion / g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].nFrame;
-
-		//求める値
-		MAnswer.x = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fPosX + Mpos.x * t;
-		MAnswer.y = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fPosY + Mpos.y * t;
-		MAnswer.z = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fPosZ + Mpos.z * t;
-
-		MAnswer2.x = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fRotX + Mrot.x * t;
-		MAnswer2.y = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fRotY + Mrot.y * t;
-		MAnswer2.z = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fRotZ + Mrot.z * t;
+		Player* pPlayer = GetPlayer();
 
 
-		//全パーツの位置・向きを設定
-		g_aEnemy.motion.aModel[nCntModel].pos = g_aEnemy.motion.aModel[nCntModel].Offpos + MAnswer;
+		//移動量を更新(減衰させる)
+		g_aEnemy.move.x += (0.0f - g_aEnemy.move.x) * 0.3f;
+		g_aEnemy.move.z += (0.0f - g_aEnemy.move.z) * 0.3f;
+		g_aEnemy.move.y += (0.0f - g_aEnemy.move.y) * 0.1f;
 
-		g_aEnemy.motion.aModel[nCntModel].rot = g_aEnemy.motion.aModel[nCntModel].Offrot + MAnswer2;
+		//前回の位置を更新
+		g_aEnemy.posOld = g_aEnemy.pos;
 
-	}
+		//位置を更新
+		g_aEnemy.pos.x += g_aEnemy.move.x;
+		g_aEnemy.pos.z += g_aEnemy.move.z;
+		g_aEnemy.pos.y += g_aEnemy.move.y;
 
-	g_aEnemy.motion.nCounterMotion++;//再生フレーム数に達したら現在のキーを1つ進める
 
-	if (g_aEnemy.motion.nCounterMotion >= g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].nFrame)
-	{
-		g_aEnemy.motion.nCounterMotion = 0;
+		//CollisionModel();
 
-		g_aEnemy.motion.nKey++;
-	}
+		CollisionBlock(&g_aEnemy.pos,&g_aEnemy.posOld,&g_aEnemy.move,&g_aEnemy.size);
 
-	float moveSpeed = 0.0f;
-	static int lostSightTimer = 0;			// 視界外タイマー
-	float distanceToTarget = 0.0f;
-	float angleToTarget = 0.0f;
-	float fAngle = 0.0f;
 
-	D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
-	static int patrolTimer = 0;				// 捜索タイマー
+		D3DXVECTOR3 PlayerRadius(12.0f, 12.0f, 12.0f);
 
-	switch (g_aEnemy.state)
-	{
-	case ENEMYSTATE_PATROLLING:
+		float fDistance =
+			(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +
+			(g_aEnemy.pos.y - pPlayer->pos.y) * (g_aEnemy.pos.y - pPlayer->pos.y) +
+			(g_aEnemy.pos.z - pPlayer->pos.z) * (g_aEnemy.pos.z - pPlayer->pos.z);
 
-		g_aEnemy.motion.motionType = MOTIONTYPE_NEUTRAL;
+		float fRadius =
+			(g_aEnemy.RadiusEnemy.x + PlayerRadius.x) * (g_aEnemy.RadiusEnemy.x + PlayerRadius.x) +
+			(g_aEnemy.RadiusEnemy.y + PlayerRadius.y) * (g_aEnemy.RadiusEnemy.y + PlayerRadius.y) +
+			(g_aEnemy.RadiusEnemy.z + PlayerRadius.z) * (g_aEnemy.RadiusEnemy.z + PlayerRadius.z);
 
-		// 現在の巡回ポイントに向かう
-		target = patrolPoints[currentPatrolPoint];
 
-		distanceToTarget = sqrt
-		(
-			(target.x - g_aEnemy.pos.x) * (target.x - g_aEnemy.pos.x) +
-			(target.y - g_aEnemy.pos.y) * (target.y - g_aEnemy.pos.y) +
-			(target.z - g_aEnemy.pos.z) * (target.z - g_aEnemy.pos.z)
-		);
-
-		if (currentPatrolPoint < 0 || currentPatrolPoint >= sizeof(patrolPoints) / sizeof(patrolPoints[0])) 
+		if (fDistance <= fRadius)
 		{
-			currentPatrolPoint = 0; // 範囲外アクセスを防ぐ
+			pPlayer->pos = pPlayer->posOld;
+			g_aEnemy.pos = g_aEnemy.posOld;
+			g_aEnemy.motion.motionType = MOTIONTYPE_NEUTRAL2;
+			g_bEnd = true;
 		}
 
-		// 近づく
-		 moveSpeed = 0.4f; // 巡回速度
+		D3DXVECTOR3 posPlayerRadius(1.0f, 1.0f, 1.0f);
 
-		if (distanceToTarget > 5.0f) 
-		{ // 到達判定
-			angleToTarget = atan2f(target.x - g_aEnemy.pos.x, target.z - g_aEnemy.pos.z);
-			g_aEnemy.move.x += sinf(angleToTarget) * moveSpeed;
-			g_aEnemy.move.z += cosf(angleToTarget) * moveSpeed;
+		float fDistancePlayer =
+			(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +
+			(g_aEnemy.pos.y - pPlayer->pos.y) * (g_aEnemy.pos.y - pPlayer->pos.y) +
+			(g_aEnemy.pos.z - pPlayer->pos.z) * (g_aEnemy.pos.z - pPlayer->pos.z);
 
-			g_aEnemy.direction.y = angleToTarget + D3DX_PI;
-		}
-		else 
-		{
-			// 一定確率で逆回りに切り替える
-			if (rand() % 100 < 30) // 30%の確率で方向を切り替える
-			{
-				isReversePatrol = !isReversePatrol;
-			}
+		float fRadiusPlayer =
+			(g_aEnemy.posRadiusEnemy.x + posPlayerRadius.x) * (g_aEnemy.posRadiusEnemy.x + posPlayerRadius.x) +
+			(g_aEnemy.posRadiusEnemy.y + posPlayerRadius.y) * (g_aEnemy.posRadiusEnemy.y + posPlayerRadius.y) +
+			(g_aEnemy.posRadiusEnemy.z + posPlayerRadius.z) * (g_aEnemy.posRadiusEnemy.z + posPlayerRadius.z);
 
-			// 巡回ポイントの更新
-			if (isReversePatrol)
-			{
-				currentPatrolPoint = (currentPatrolPoint - 1 + (sizeof(patrolPoints) / sizeof(patrolPoints[0]))) % (sizeof(patrolPoints) / sizeof(patrolPoints[0]));
-			}
-			else
-			{
-				currentPatrolPoint = (currentPatrolPoint + 1) % (sizeof(patrolPoints) / sizeof(patrolPoints[0]));
-			}
-		}
 
-		// プレイヤーを視界内で検出したら追跡に切り替える
-		if (isPlayerInSight()) 
+		//範囲内に入った
+		if (fDistancePlayer <= fRadiusPlayer)
 		{
 			g_aEnemy.state = ENEMYSTATE_CHASING;
 		}
-
-		break;
-
-	case ENEMYSTATE_CHASING:
-
-		fAngle = atan2f(pPlayer->pos.x - g_aEnemy.pos.x, pPlayer->pos.z - g_aEnemy.pos.z);
-
-		g_aEnemy.move.x += sinf(fAngle) * 1.15f;
-		g_aEnemy.move.z += cosf(fAngle) * 1.15f;
-
-		g_aEnemy.direction.y = fAngle + D3DX_PI;
-
-		g_aEnemy.motion.motionType = MOTIONTYPE_MOVE;
-
-
-		// プレイヤーが視界外に出たら捜索状態に切り替える
-		if (!isPlayerInSight()) 
-		{
-			g_aEnemy.state = ENEMYSTATE_SEARCHING; // 捜索状態へ
-		}
-
-		if (!isPlayerInSight()) 
-		{
-			lostSightTimer++;
-
-			if (lostSightTimer > 180) 
-			{ // 180フレーム経過
-				currentPatrolPoint = GetNearestPatrolPoint(g_aEnemy.pos);
-
-				g_aEnemy.state = ENEMYSTATE_PATROLLING;
-
-				lostSightTimer = 0; // タイマーをリセット
-			}
-		}
-		else 
-		{
-			lostSightTimer = 0; // 視界内に戻ったらタイマーをリセット
-		}
-
-		break;
-
-	case ENEMYSTATE_SEARCHING:
-
-		g_aEnemy.motion.motionType = MOTIONTYPE_ACTION;
 
 		if (isPlayerInSight())
 		{
-			g_aEnemy.state = ENEMYSTATE_CHASING;
+			Inside = true;
 		}
-
-		// 一定時間経過後巡回に戻る
-		patrolTimer++;
-
-		if (patrolTimer > 180)
+		else
 		{
-			currentPatrolPoint = GetNearestPatrolPoint(g_aEnemy.pos);
-
-			g_aEnemy.state = ENEMYSTATE_PATROLLING;
-			patrolTimer = 0;
+			Inside = false;
 		}
 
-		break;
 
-	case ENEMYSTATE_IDLE:
+		if (g_aEnemy.pos.y <= 0)
+		{
+			g_aEnemy.pos.y = 0.0f;
+		}
 
-		break;
+
+		//SetPositionShadow(g_nIdxShadowEnemy, D3DXVECTOR3(g_aEnemy.pos.x, 0.0f, g_aEnemy.pos.z));
+
+
+		//敵の足音
+		if (g_aEnemy.motion.motionType == MOTIONTYPE_NEUTRAL && g_aEnemy.motion.nKey == 1 && g_aEnemy.motion.nCounterMotion == 9)
+		{
+			//PlaySound(SOUND_LABEL_STEP1);
+		}
+		else if (g_aEnemy.motion.motionType == MOTIONTYPE_NEUTRAL && g_aEnemy.motion.nKey == 3 && g_aEnemy.motion.nCounterMotion == 5)
+		{
+			//PlaySound(SOUND_LABEL_STEP2);
+		}
+
+		if (g_aEnemy.motion.motionType == MOTIONTYPE_MOVE && g_aEnemy.motion.nKey == 1 && g_aEnemy.motion.nCounterMotion == 8)
+		{
+			//PlaySound(SOUND_LABEL_STEP1);
+		}
+		else if (g_aEnemy.motion.motionType == MOTIONTYPE_MOVE && g_aEnemy.motion.nKey == 3 && g_aEnemy.motion.nCounterMotion == 5)
+		{
+			//PlaySound(SOUND_LABEL_STEP2);
+		}
+
+		//全モデルの更新
+		for (int nCntModel = 0; nCntModel < g_aEnemy.motion.nNumModel; nCntModel++)
+		{
+
+			int nNextKey = (g_aEnemy.motion.nKey + 1) % g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].nNumKey;
+
+			// 境界チェック
+			if (g_aEnemy.motion.nKey >= g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].nNumKey ||
+				nNextKey >= g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].nNumKey)
+			{
+				g_aEnemy.motion.nKey = 0;
+			}
+
+			D3DXVECTOR3 Mpos, Mrot;
+			D3DXVECTOR3 MAnswer, MAnswer2;//計算結果用
+
+			//キー情報から位置・向きを算出
+			Mpos.x = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[nNextKey].aKey[nCntModel].fPosX - g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fPosX;
+			Mpos.y = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[nNextKey].aKey[nCntModel].fPosY - g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fPosY;
+			Mpos.z = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[nNextKey].aKey[nCntModel].fPosZ - g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fPosZ;
+
+			Mrot.x = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[nNextKey].aKey[nCntModel].fRotX - g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fRotX;
+			Mrot.y = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[nNextKey].aKey[nCntModel].fRotY - g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fRotY;
+			Mrot.z = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[nNextKey].aKey[nCntModel].fRotZ - g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fRotZ;
+
+			//補間係数を計算
+			float t = (float)g_aEnemy.motion.nCounterMotion / g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].nFrame;
+
+			//求める値
+			MAnswer.x = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fPosX + Mpos.x * t;
+			MAnswer.y = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fPosY + Mpos.y * t;
+			MAnswer.z = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fPosZ + Mpos.z * t;
+
+			MAnswer2.x = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fRotX + Mrot.x * t;
+			MAnswer2.y = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fRotY + Mrot.y * t;
+			MAnswer2.z = g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].aKey[nCntModel].fRotZ + Mrot.z * t;
+
+
+			//全パーツの位置・向きを設定
+			g_aEnemy.motion.aModel[nCntModel].pos = g_aEnemy.motion.aModel[nCntModel].Offpos + MAnswer;
+
+			g_aEnemy.motion.aModel[nCntModel].rot = g_aEnemy.motion.aModel[nCntModel].Offrot + MAnswer2;
+
+		}
+
+		g_aEnemy.motion.nCounterMotion++;//再生フレーム数に達したら現在のキーを1つ進める
+
+		if (g_aEnemy.motion.nCounterMotion >= g_aEnemy.motion.aMotionInfo[g_aEnemy.motion.motionType].aKeyInfo[g_aEnemy.motion.nKey].nFrame)
+		{
+			g_aEnemy.motion.nCounterMotion = 0;
+
+			g_aEnemy.motion.nKey++;
+		}
+
+		float moveSpeed = 0.0f;
+		static int lostSightTimer = 0;			// 視界外タイマー
+		float distanceToTarget = 0.0f;
+		float angleToTarget = 0.0f;
+		float fAngle = 0.0f;
+
+		D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
+		static int patrolTimer = 0;				// 捜索タイマー
+
+		switch (g_aEnemy.state)
+		{
+		case ENEMYSTATE_PATROLLING:
+
+			g_aEnemy.motion.motionType = MOTIONTYPE_NEUTRAL;
+
+			// 現在の巡回ポイントに向かう
+			target = patrolPoints[currentPatrolPoint];
+
+			distanceToTarget = sqrt
+			(
+				(target.x - g_aEnemy.pos.x) * (target.x - g_aEnemy.pos.x) +
+				(target.y - g_aEnemy.pos.y) * (target.y - g_aEnemy.pos.y) +
+				(target.z - g_aEnemy.pos.z) * (target.z - g_aEnemy.pos.z)
+			);
+
+			if (currentPatrolPoint < 0 || currentPatrolPoint >= sizeof(patrolPoints) / sizeof(patrolPoints[0]))
+			{
+				currentPatrolPoint = 0; // 範囲外アクセスを防ぐ
+			}
+
+			// 近づく
+			moveSpeed = 0.4f; // 巡回速度
+
+			if (distanceToTarget > 5.0f)
+			{ // 到達判定
+				angleToTarget = atan2f(target.x - g_aEnemy.pos.x, target.z - g_aEnemy.pos.z);
+				g_aEnemy.move.x += sinf(angleToTarget) * moveSpeed;
+				g_aEnemy.move.z += cosf(angleToTarget) * moveSpeed;
+
+				g_aEnemy.direction.y = angleToTarget + D3DX_PI;
+			}
+			else
+			{
+				// 一定確率で逆回りに切り替える
+				if (rand() % 100 < 30) // 30%の確率で方向を切り替える
+				{
+					isReversePatrol = !isReversePatrol;
+				}
+
+				// 巡回ポイントの更新
+				if (isReversePatrol)
+				{
+					currentPatrolPoint = (currentPatrolPoint - 1 + (sizeof(patrolPoints) / sizeof(patrolPoints[0]))) % (sizeof(patrolPoints) / sizeof(patrolPoints[0]));
+				}
+				else
+				{
+					currentPatrolPoint = (currentPatrolPoint + 1) % (sizeof(patrolPoints) / sizeof(patrolPoints[0]));
+				}
+			}
+
+			// プレイヤーを視界内で検出したら追跡に切り替える
+			if (isPlayerInSight())
+			{
+				g_aEnemy.state = ENEMYSTATE_CHASING;
+			}
+
+			break;
+
+		case ENEMYSTATE_CHASING:
+
+			fAngle = atan2f(pPlayer->pos.x - g_aEnemy.pos.x, pPlayer->pos.z - g_aEnemy.pos.z);
+
+			g_aEnemy.move.x += sinf(fAngle) * 1.15f;
+			g_aEnemy.move.z += cosf(fAngle) * 1.15f;
+
+			g_aEnemy.direction.y = fAngle + D3DX_PI;
+
+			g_aEnemy.motion.motionType = MOTIONTYPE_MOVE;
+
+
+			// プレイヤーが視界外に出たら捜索状態に切り替える
+			if (!isPlayerInSight())
+			{
+				g_aEnemy.state = ENEMYSTATE_SEARCHING; // 捜索状態へ
+			}
+
+			if (!isPlayerInSight())
+			{
+				lostSightTimer++;
+
+				if (lostSightTimer > 180)
+				{ // 180フレーム経過
+					currentPatrolPoint = GetNearestPatrolPoint(g_aEnemy.pos);
+
+					g_aEnemy.state = ENEMYSTATE_PATROLLING;
+
+					lostSightTimer = 0; // タイマーをリセット
+				}
+			}
+			else
+			{
+				lostSightTimer = 0; // 視界内に戻ったらタイマーをリセット
+			}
+
+			break;
+
+		case ENEMYSTATE_SEARCHING:
+
+			g_aEnemy.motion.motionType = MOTIONTYPE_ACTION;
+
+			if (isPlayerInSight())
+			{
+				g_aEnemy.state = ENEMYSTATE_CHASING;
+			}
+
+			// 一定時間経過後巡回に戻る
+			patrolTimer++;
+
+			if (patrolTimer > 180)
+			{
+				currentPatrolPoint = GetNearestPatrolPoint(g_aEnemy.pos);
+
+				g_aEnemy.state = ENEMYSTATE_PATROLLING;
+				patrolTimer = 0;
+			}
+
+			break;
+
+		case ENEMYSTATE_IDLE:
+
+			break;
+		}
 	}
-
 }
 //=============================
 //敵の描画処理

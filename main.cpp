@@ -24,6 +24,8 @@
 //プロトタイプ宣言
 void DrawFPS(void);
 void DrawOption(void);
+void DrawEditInfo(void);
+void DrawTitleInfo(void);
 
 //グローバル変数
 LPDIRECT3D9 g_pD3D = NULL;//DirectX3Dオブジェクトへのポインタ
@@ -326,14 +328,20 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 
 
-	//キーボードの初期化処理
+	// キーボードの初期化処理
 	if (FAILED(InitKeyboard(hInstance, hWnd)))
 	{
 		return E_FAIL;
 	}
 
-	//ジョイパッドの初期化処理
+	// ジョイパッドの初期化処理
 	if (FAILED(InitJoypad()))
+	{
+		return E_FAIL;
+	}
+
+	// マウスの初期化処理
+	if (FAILED(InitMouse(hInstance, hWnd)))
 	{
 		return E_FAIL;
 	}
@@ -370,6 +378,10 @@ void Uninit(void)
 
 	//キーボードの終了処理
 	UninitKeyboard();
+
+
+	//マウスの終了処理
+	UninitMouse();
 
 
 	//フェードの終了処理
@@ -413,6 +425,10 @@ void Update(void)
 
 	//キーボードの更新処理
 	UpdateKeyboard();
+
+
+	//マウスの更新処理
+	UpdateMouse();
 
 
 	switch (g_mode)
@@ -480,6 +496,11 @@ void Draw(void)
 		{
 		case MODE_TITLE://タイトル画面
 			DrawTitle();
+
+#ifdef _DEBUG
+			//タイトル情報の表示
+			DrawTitleInfo();
+#endif
 			break;
 
 		//case MODE_TUTORIAL://チュートリアル画面
@@ -492,6 +513,12 @@ void Draw(void)
 
 		case MODE_GAME://ゲーム画面
 			DrawGame();
+
+#ifdef _DEBUG
+			//操作方法の表示
+			DrawOption();
+#endif
+
 			break;
 
 		case MODE_RESULT://リザルト画面
@@ -502,11 +529,16 @@ void Draw(void)
 		//case MODE_RANKING://ランキング画面
 		//	DrawRanking();
 		//	break;
-
+#ifdef _DEBUG
 		case MODE_EDIT://エディット画面
 			DrawEdit();
 
+			//エディター情報の表示
+			DrawEditInfo();
+
 			break;
+#endif
+
 		}
 
 		//フェードの描画処理
@@ -517,10 +549,6 @@ void Draw(void)
 
 		//FPSの表示
 		DrawFPS();
-
-
-		//操作方法の表示
-		DrawOption();
 
 #endif
 		//描画終了
@@ -575,6 +603,80 @@ void DrawOption(void)
 	//テキストの描画
 	g_pFont->DrawTextA(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 	g_pFont->DrawTextA(NULL, &aStr2[0], -1, &rect2, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+
+}
+//=============================================
+//エディター情報表示処理
+//=============================================
+void DrawEditInfo(void)
+{
+	Camera* pCamera = GetCamera();
+
+	RECT rect = { 5, 20, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect2 = { 5, 40, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect3 = { 5, 60, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect4 = { 5, 100, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect5 = { 5, 120, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect6 = { 5, 140, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect7 = { 5, 160, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect8 = { 5, 180, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect9 = { 5, 220, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect10 = { 5, 240, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect11 = { 5, 260, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect12 = { 5, 280, SCREEN_WIDTH, SCREEN_HEIGHT };
+
+	char aStr[128];
+	char aStr2[128];
+	char aStr3[128];
+	char aStr4[128];
+	char aStr5[128];
+	char aStr6[128];
+	char aStr7[128];
+	char aStr8[128];
+	char aStr9[128];
+	char aStr10[128];
+	char aStr11[128];
+	char aStr12[128];
+
+	wsprintf(&aStr[0], "タイトル画面 [F1]\n");
+	wsprintf(&aStr2[0], "ブロック配置情報の保存 [F7]\n");
+	wsprintf(&aStr3[0], "前回のブロック配置情報の読み込み [F6]\n");
+	wsprintf(&aStr4[0], "ブロックの平行移動 : [↑/↓/←/→]\n");
+	wsprintf(&aStr5[0], "ブロックの垂直移動 : [U/J]\n");
+	wsprintf(&aStr6[0], "ブロックの種類変更 : [マウスホイール]\n");
+	wsprintf(&aStr7[0], "ブロックの設置 : [ENTER]\n");
+	wsprintf(&aStr8[0], "ブロックの破棄 : [DELETE]\n");
+	wsprintf(&aStr9[0], "===============================\n");
+	wsprintf(&aStr10[0], "  カメラ操作方法\n");
+	wsprintf(&aStr11[0], "===============================\n");
+	wsprintf(&aStr12[0], "  カメラ移動 : [W/A/S/D]\n");
+
+	g_pFont->DrawTextA(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(0, 0, 255, 255));
+	g_pFont->DrawTextA(NULL, &aStr2[0], -1, &rect2, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
+	g_pFont->DrawTextA(NULL, &aStr3[0], -1, &rect3, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
+	g_pFont->DrawTextA(NULL, &aStr4[0], -1, &rect4, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
+	g_pFont->DrawTextA(NULL, &aStr5[0], -1, &rect5, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
+	g_pFont->DrawTextA(NULL, &aStr6[0], -1, &rect6, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
+	g_pFont->DrawTextA(NULL, &aStr7[0], -1, &rect7, DT_LEFT, D3DCOLOR_RGBA(0, 255, 0, 255));
+	g_pFont->DrawTextA(NULL, &aStr8[0], -1, &rect8, DT_LEFT, D3DCOLOR_RGBA(255, 0, 0, 255));
+	g_pFont->DrawTextA(NULL, &aStr9[0], -1, &rect9, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
+	g_pFont->DrawTextA(NULL, &aStr10[0], -1, &rect10, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
+	g_pFont->DrawTextA(NULL, &aStr11[0], -1, &rect11, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
+	g_pFont->DrawTextA(NULL, &aStr12[0], -1, &rect12, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
+
+}
+//=============================================
+//タイトル情報表示処理
+//=============================================
+void DrawTitleInfo(void)
+{
+	RECT rect = { 5, 20, SCREEN_WIDTH, SCREEN_HEIGHT };
+
+	char aStr[128];
+
+	wsprintf(&aStr[0], "エディターモード [F1]\n");
+
+	g_pFont->DrawTextA(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(0, 255, 0, 255));
 
 }
 //=============================================

@@ -40,7 +40,7 @@ void InitMeshcylinder(void)
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\block.png",
+		"data\\TEXTURE\\playerface.png",
 		&g_pTextureMeshcylinder);
 
 	//インデックスバッファの生成

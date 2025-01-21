@@ -32,6 +32,7 @@
 #include "edit.h"
 #include "meshceiling.h"
 //#include "sound.h"
+#include "guage.h"
 
 //グローバル変数
 GAMESTATE g_gameState = GAMESTATE_NONE;//ゲームの状態
@@ -97,6 +98,8 @@ void InitGame(void)
 	////ビルボードの初期化処理
 	//InitBillboard();
 
+	//ゲージの初期化
+	InitGuage();
 
 	//ブロック
 	//SetBlock(D3DXVECTOR3(-220.0f, 0.0f, 325.0f), BLOCKTYPE_NORMAL);		//	壁
@@ -239,6 +242,8 @@ void UninitGame(void)
 	////パーティクルの終了処理
 	//UninitParticle();
 
+	//ゲージの終了処理
+	UninitGuage();
 }
 //=========================================
 //ゲーム画面の更新処理
@@ -338,6 +343,9 @@ void UpdateGame(void)
 		//{
 		//	offWireFrame();
 		//}
+
+		//ゲージの更新処理
+		UpdateGuage();
 	}
 
 	bool bEnd = GetEnd();
@@ -453,6 +461,12 @@ void DrawGame(void)
 
 	////タイムの描画処理
 	//DrawTime();
+
+	//if (GetKeyboardPress(DIK_LSHIFT) == true)
+	//{
+		//ゲージの描画処理
+		DrawGuage();
+	//}
 
 	if (g_bPause == true)
 	{//ポーズ中

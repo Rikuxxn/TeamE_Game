@@ -43,10 +43,11 @@ typedef struct
 	D3DXVECTOR3 rotDestPlayer;				//向き
 	PLAYERSTATE state;						//プレイヤーの状態
 	D3DXMATRIX mtxWorld;					//ワールドマトリックス
-	int nLife;								//体力
-	bool bJump;								//ジャンプしてるかどうか
+	int nDush;								//ダッシュゲージ
 	bool bUse;								//使われているかどうか
 	bool bDisp;								//表示するかしないか
+	bool bDush;								//ダッシュしてるか
+	bool bEmpty;							//スタミナ切れかどうか
 	Motion motion;
 }Player;
 

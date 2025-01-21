@@ -1,1 +1,3 @@
-﻿  TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\Debug\TeamE.exe
+﻿  player.cpp
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\player.cpp(456,33): warning C4305: '-=': 'double' から 'float' へ切り詰めます。
+  TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\Debug\TeamE.exe

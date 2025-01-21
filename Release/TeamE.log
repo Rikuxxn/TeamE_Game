@@ -1,7 +1,31 @@
-﻿  title.cpp
+﻿  block.cpp
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\block.cpp(529,17): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\block.cpp(541,51): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+  camera.cpp
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\camera.cpp(97,48): warning C4838: 'double' から 'LONG' への変換には縮小変換が必要です
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\camera.cpp(97,48): warning C4244: '初期化中': 'double' から 'LONG' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\camera.cpp(97,69): warning C4838: 'double' から 'LONG' への変換には縮小変換が必要です
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\camera.cpp(97,69): warning C4244: '初期化中': 'double' から 'LONG' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\camera.cpp(137,51): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\camera.cpp(137,30): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\camera.cpp(140,35): warning C4244: '=': 'double' から 'LONG' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\camera.cpp(141,36): warning C4244: '=': 'double' から 'LONG' への変換です。データが失われる可能性があります。
+  enemy.cpp
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\enemy.cpp(386,4): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\enemy.cpp(676,18): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  game.cpp
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\game.cpp(48,49): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\game.cpp(48,28): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+  main.cpp
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\main.cpp(641,7): warning C4101: 'aStr13': ローカル変数は 1 度も使われていません。
+  model.cpp
+  motion.cpp
+  player.cpp
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\player.cpp(429,33): warning C4305: '-=': 'double' から 'float' へ切り詰めます。
+  result.cpp
   コード生成しています。
-  2 of 142 functions ( 1.4%) were compiled, the rest were copied from previous compilation.
+  1 of 162 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    12 functions had inline decision re-evaluated but remain unchanged
+    6 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE.exe

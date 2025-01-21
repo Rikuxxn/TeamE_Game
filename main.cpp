@@ -624,6 +624,7 @@ void DrawEditInfo(void)
 	RECT rect10 = { 5, 240, SCREEN_WIDTH, SCREEN_HEIGHT };
 	RECT rect11 = { 5, 260, SCREEN_WIDTH, SCREEN_HEIGHT };
 	RECT rect12 = { 5, 280, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect13 = { 5, 300, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 	char aStr[128];
 	char aStr2[128];
@@ -637,6 +638,7 @@ void DrawEditInfo(void)
 	char aStr10[128];
 	char aStr11[128];
 	char aStr12[128];
+	char aStr13[128];
 
 	wsprintf(&aStr[0], "タイトル画面 [F1]\n");
 	wsprintf(&aStr2[0], "ブロック配置情報の保存 [F7]\n");
@@ -652,17 +654,17 @@ void DrawEditInfo(void)
 	wsprintf(&aStr12[0], "  カメラ移動 : [W/A/S/D]\n");
 
 	g_pFont->DrawTextA(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(0, 0, 255, 255));
-	g_pFont->DrawTextA(NULL, &aStr2[0], -1, &rect2, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
-	g_pFont->DrawTextA(NULL, &aStr3[0], -1, &rect3, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
-	g_pFont->DrawTextA(NULL, &aStr4[0], -1, &rect4, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
-	g_pFont->DrawTextA(NULL, &aStr5[0], -1, &rect5, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
-	g_pFont->DrawTextA(NULL, &aStr6[0], -1, &rect6, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
+	g_pFont->DrawTextA(NULL, &aStr2[0], -1, &rect2, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+	g_pFont->DrawTextA(NULL, &aStr3[0], -1, &rect3, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+	g_pFont->DrawTextA(NULL, &aStr4[0], -1, &rect4, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+	g_pFont->DrawTextA(NULL, &aStr5[0], -1, &rect5, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+	g_pFont->DrawTextA(NULL, &aStr6[0], -1, &rect6, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 	g_pFont->DrawTextA(NULL, &aStr7[0], -1, &rect7, DT_LEFT, D3DCOLOR_RGBA(0, 255, 0, 255));
 	g_pFont->DrawTextA(NULL, &aStr8[0], -1, &rect8, DT_LEFT, D3DCOLOR_RGBA(255, 0, 0, 255));
-	g_pFont->DrawTextA(NULL, &aStr9[0], -1, &rect9, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
-	g_pFont->DrawTextA(NULL, &aStr10[0], -1, &rect10, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
-	g_pFont->DrawTextA(NULL, &aStr11[0], -1, &rect11, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
-	g_pFont->DrawTextA(NULL, &aStr12[0], -1, &rect12, DT_LEFT, D3DCOLOR_RGBA(0, 0, 0, 255));
+	g_pFont->DrawTextA(NULL, &aStr9[0], -1, &rect9, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+	g_pFont->DrawTextA(NULL, &aStr10[0], -1, &rect10, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+	g_pFont->DrawTextA(NULL, &aStr11[0], -1, &rect11, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+	g_pFont->DrawTextA(NULL, &aStr12[0], -1, &rect12, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 
 }
 //=============================================

@@ -60,7 +60,6 @@ void UpdateCamera(void)
 
 	XINPUT_STATE* pStick;
 	pStick = GetJoyStickAngle();
-	//DIMOUSESTATE mouseState;
 
 	if (pMode == MODE_GAME)
 	{
@@ -151,7 +150,6 @@ void UpdateCamera(void)
 		g_camera.posR.x = g_camera.posV.x - sinf(g_camera.rot.y) * lookDistance * cosf(g_camera.rot.x);
 		g_camera.posR.y = g_camera.posV.y - sinf(g_camera.rot.x) * lookDistance;
 		g_camera.posR.z = g_camera.posV.z - cosf(g_camera.rot.y) * lookDistance * cosf(g_camera.rot.x);
-
 
 	}
 

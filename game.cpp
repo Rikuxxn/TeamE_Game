@@ -19,7 +19,6 @@
 //#include "effect.h"
 #include "camera.h"
 #include "warning.h"
-//#include "wall.h"
 //#include "billboard.h"
 #include "light.h"
 //#include "meshwall.h"
@@ -31,6 +30,7 @@
 #include "meshcylinder.h"
 #include "block.h"
 #include "edit.h"
+#include "meshceiling.h"
 //#include "sound.h"
 
 //グローバル変数
@@ -52,6 +52,10 @@ void InitGame(void)
 
 	//メッシュフィールドの初期化処理
 	InitMeshfield();
+
+
+	//メッシュシーリングの初期化処理
+	InitMeshCeiling();
 
 
 	//メッシュシリンダーの初期化処理
@@ -184,6 +188,10 @@ void UninitGame(void)
 	UninitMeshfield();
 
 
+	//メッシュシーリングの終了処理
+	UninitMeshCeiling();
+
+
 	//メッシュシリンダーの終了処理
 	UninitMeshcylinder();
 
@@ -248,10 +256,6 @@ void UpdateGame(void)
 
 		//PlaySound(SOUND_LABEL_PAUSE);
 
-		if (g_bPause == false)
-		{
-		}
-
 	}
 
 	if (g_bPause == true)
@@ -270,6 +274,7 @@ void UpdateGame(void)
 		// カーソルを非表示する
 		SetCursorVisibility(false);
 
+
 		//プレイヤーの更新処理
 		UpdatePlayer();
 
@@ -280,6 +285,10 @@ void UpdateGame(void)
 
 		//メッシュフィールドの更新処理
 		UpdateMeshfield();
+
+
+		//メッシュシーリングの更新処理
+		UpdateMeshCeiling();
 
 
 		//メッシュシリンダーの更新処理
@@ -408,6 +417,10 @@ void DrawGame(void)
 
 	//メッシュフィールドの描画処理
 	DrawMeshfield();
+
+
+	//メッシュシーリングの描画処理
+	DrawMeshCeiling();
 
 
 	//メッシュシリンダーの描画処理

@@ -1,14 +1,32 @@
 ﻿  block.cpp
+  camera.cpp
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\camera.cpp(98,48): warning C4838: 'double' から 'LONG' への変換には縮小変換が必要です
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\camera.cpp(98,48): warning C4244: '初期化中': 'double' から 'LONG' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\camera.cpp(98,69): warning C4838: 'double' から 'LONG' への変換には縮小変換が必要です
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\camera.cpp(98,69): warning C4244: '初期化中': 'double' から 'LONG' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\camera.cpp(138,51): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\camera.cpp(138,30): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\camera.cpp(141,35): warning C4244: '=': 'double' から 'LONG' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\camera.cpp(142,36): warning C4244: '=': 'double' から 'LONG' への変換です。データが失われる可能性があります。
   edit.cpp
   enemy.cpp
-C:\Users\student\Desktop\TeamE_Game\TeamE_Game\enemy.cpp(386,4): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\TeamE_Game\TeamE_Game\enemy.cpp(676,18): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\enemy.cpp(386,4): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\enemy.cpp(676,18): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  fade.cpp
   game.cpp
-C:\Users\student\Desktop\TeamE_Game\TeamE_Game\game.cpp(48,49): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\TeamE_Game\TeamE_Game\game.cpp(48,28): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\game.cpp(48,49): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\game.cpp(48,28): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+  input.cpp
+  light.cpp
   main.cpp
+  meshcylinder.cpp
+  meshfield.cpp
+  model.cpp
+  motion.cpp
+  pause.cpp
   player.cpp
-C:\Users\student\Desktop\TeamE_Game\TeamE_Game\player.cpp(386,33): warning C4305: '-=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\player.cpp(386,33): warning C4305: '-=': 'double' から 'float' へ切り詰めます。
   result.cpp
+  title.cpp
   コードを生成中...
-  TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\Debug\TeamE.exe
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\meshfield.cpp : fatal error C1090: PDB API の呼び出しに失敗しました。エラー コード '3': C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\Debug\vc142.pdb

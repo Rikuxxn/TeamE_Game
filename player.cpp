@@ -281,13 +281,28 @@ void UpdatePlayer(void)
 			if (GetKeyboardPress(DIK_W) == true /*|| GetJoypadPress(JOYKEY_UP) == true*/)
 			{//Wキーが押された
 
-				//移動量を更新(増加させる)
-				g_player.move.x += sinf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_SPEED;
-				g_player.move.z += cosf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_SPEED;
+				if (GetKeyboardPress(DIK_LSHIFT) == false)
+				{
+					//歩く時の移動量を更新(増加させる)
+					g_player.move.x += sinf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_SPEED;
+					g_player.move.z += cosf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_SPEED;
 
-				g_player.rotDestPlayer.y = pCamera->rot.y + D3DX_PI * 0.75f;
+					g_player.rotDestPlayer.y = pCamera->rot.y + D3DX_PI * 0.75f;
 
-				g_player.motion.motionType = MOTIONTYPE_MOVE;
+					g_player.motion.motionType = MOTIONTYPE_MOVE;
+
+				}
+				// ダッシュ時
+				else if (GetKeyboardPress(DIK_LSHIFT) == true)
+				{
+					//ダッシュ時の移動量を更新(増加させる)
+					g_player.move.x += sinf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
+					g_player.move.z += cosf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
+
+					g_player.rotDestPlayer.y = pCamera->rot.y + D3DX_PI * 0.75f;
+
+					g_player.motion.motionType = MOTIONTYPE_MOVE;
+				}
 
 			}
 			else if (GetKeyboardPress(DIK_S) == true /*|| GetJoypadPress(JOYKEY_DOWN) == true*/)
@@ -322,13 +337,27 @@ void UpdatePlayer(void)
 			if (GetKeyboardPress(DIK_W) == true /*|| GetJoypadPress(JOYKEY_UP) == true*/)
 			{//Wキーが押された
 
-				//移動量を更新(増加させる)
-				g_player.move.x += sinf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_SPEED;
-				g_player.move.z += cosf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_SPEED;
+				if (GetKeyboardPress(DIK_LSHIFT) == false)
+				{
+					//歩く時の移動量を更新(増加させる)
+					g_player.move.x += sinf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_SPEED;
+					g_player.move.z += cosf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_SPEED;
 
-				g_player.rotDestPlayer.y = pCamera->rot.y + (-D3DX_PI * 0.75f);
+					g_player.rotDestPlayer.y = pCamera->rot.y + (-D3DX_PI * 0.75f);
 
-				g_player.motion.motionType = MOTIONTYPE_MOVE;
+					g_player.motion.motionType = MOTIONTYPE_MOVE;
+				}
+				// ダッシュ時
+				else if (GetKeyboardPress(DIK_LSHIFT) == true)
+				{
+					//ダッシュの移動量を更新(増加させる)
+					g_player.move.x += sinf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
+					g_player.move.z += cosf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
+
+					g_player.rotDestPlayer.y = pCamera->rot.y + (-D3DX_PI * 0.75f);
+
+					g_player.motion.motionType = MOTIONTYPE_MOVE;
+				}
 
 			}
 			else if (GetKeyboardPress(DIK_S) == true /*|| GetJoypadPress(JOYKEY_DOWN) == true*/)
@@ -359,15 +388,29 @@ void UpdatePlayer(void)
 		}
 		else if (GetKeyboardPress(DIK_W) == true /*|| GetJoypadPress(JOYKEY_UP) == true*/)
 		{//Wキーが押された
+			
+			if (GetKeyboardPress(DIK_LSHIFT) == false)
+			{
+				//歩く時の移動量を更新(増加させる)
+				g_player.move.x += sinf(pCamera->rot.y) * PLAYER_SPEED;
+				g_player.move.z += cosf(pCamera->rot.y) * PLAYER_SPEED;
 
-			//移動量を更新(増加させる)
-			g_player.move.x += sinf(pCamera->rot.y) * PLAYER_SPEED;
-			g_player.move.z += cosf(pCamera->rot.y) * PLAYER_SPEED;
+				g_player.rotDestPlayer.y = pCamera->rot.y + D3DX_PI;
 
-			g_player.rotDestPlayer.y = pCamera->rot.y + D3DX_PI;
+				g_player.motion.motionType = MOTIONTYPE_MOVE;
+			}
+			// ダッシュ時
+			else if (GetKeyboardPress(DIK_LSHIFT) == true)
+			{
+				//ダッシュの移動量を更新(増加させる)
+				g_player.move.x += sinf(pCamera->rot.y) * PLAYER_DUSHSPEED;
+				g_player.move.z += cosf(pCamera->rot.y) * PLAYER_DUSHSPEED;
 
-			g_player.motion.motionType = MOTIONTYPE_MOVE;
+				g_player.rotDestPlayer.y = pCamera->rot.y + D3DX_PI;
 
+				g_player.motion.motionType = MOTIONTYPE_MOVE;
+
+			}
 		}
 		else if (GetKeyboardPress(DIK_S) == true /*|| GetJoypadPress(JOYKEY_DOWN) == true*/)
 		{//Sキーが押された
@@ -539,7 +582,6 @@ void DrawPlayer(void)
 
 		//パーツを描画しない
 		continue;
-
 
 
 		D3DXMATRIX mtxRotModel, mtxTransModel;//計算用マトリックス

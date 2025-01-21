@@ -13,6 +13,7 @@
 #include "camera.h"
 #include <stdio.h>
 #include "edit.h"
+#include "meshcylinder.h"
 
 //グローバル変数
 Editinfo g_Editinfo[MAX_BLOCK];
@@ -30,6 +31,9 @@ void InitEdit(void)
 
     // メッシュフィールドの初期化処理
     InitMeshfield();
+
+    // メッシュシリンダーの初期化処理
+    InitMeshcylinder();
 
     // ライトの初期化処理
     InitLight();
@@ -104,6 +108,9 @@ void UninitEdit(void)
     //メッシュフィールドの終了処理
     UninitMeshfield();
 
+    //メッシュシリンダーの終了処理
+    UninitMeshcylinder();
+
     for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
     {
         for (int nCntMat = 0; nCntMat < (int)blockTex[nCnt].dwNumMat; nCntMat++)
@@ -143,6 +150,9 @@ void UpdateEdit(void)
     // メッシュフィールドの更新処理
     UpdateMeshfield();
 
+    // メッシュシリンダーの更新処理
+    UpdateMeshcylinder();
+
     // カメラの更新処理
     UpdateCamera();
 
@@ -178,22 +188,36 @@ void UpdateEdit(void)
     }
 
 
+    //ブロックを回転する
+    if (KeyboardTrigger(DIK_Y) == true)
+    {
+        g_Editinfo[g_nCntEdit].rot.y += D3DX_PI / 2;
+    }
+    else if (KeyboardTrigger(DIK_H) == true)
+    {
+        g_Editinfo[g_nCntEdit].rot.y -= D3DX_PI / 2;
+    }
+
     // ブロックを設置
     if (KeyboardTrigger(DIK_RETURN) == true)
     {
         g_Editinfo[g_nCntEdit + 1].pos = g_Editinfo[g_nCntEdit].pos;
+        //g_Editinfo[g_nCntEdit + 1].rot = g_Editinfo[g_nCntEdit].rot;
         g_Editinfo[g_nCntEdit + 1].bUse = true; // 使用中に設定
         g_Editinfo[g_nCntEdit + 1].blockTex[0] = blockTex[0];
         
         g_nCntEdit++; // 次のインデックスへ
+        g_Editinfo[g_nCntEdit].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f); // 回転をリセット
     }
     else if (GetMouseButtonTrigger(0))
     {
         g_Editinfo[g_nCntEdit + 1].pos = g_Editinfo[g_nCntEdit].pos;
+        //g_Editinfo[g_nCntEdit + 1].rot = g_Editinfo[g_nCntEdit].rot;
         g_Editinfo[g_nCntEdit + 1].bUse = true; // 使用中に設定
         g_Editinfo[g_nCntEdit + 1].blockTex[0] = blockTex[0];
 
         g_nCntEdit++; // 次のインデックスへ
+        g_Editinfo[g_nCntEdit].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f); // 回転をリセット
     }
 
     int MouseWheel = GetMouseWheel();
@@ -204,14 +228,48 @@ void UpdateEdit(void)
         g_Editinfo[g_nCntEdit].nType++;
 
         g_Editinfo[g_nCntEdit].blockTex[g_Editinfo[g_nCntEdit].nType] = blockTex[g_Editinfo[g_nCntEdit].nType];
-
     }
     else if (MouseWheel < 0 && g_Editinfo[g_nCntEdit].nType > 0)//下にスクロール
     {
         g_Editinfo[g_nCntEdit].nType--;
 
         g_Editinfo[g_nCntEdit].blockTex[g_Editinfo[g_nCntEdit].nType] = blockTex[g_Editinfo[g_nCntEdit].nType];
+    }
+    if (KeyboardTrigger(DIK_O) == true && g_Editinfo[g_nCntEdit].nType < BLOCKTYPE_MAX - 1)
+    {
+        g_Editinfo[g_nCntEdit].nType++;
 
+        g_Editinfo[g_nCntEdit].blockTex[g_Editinfo[g_nCntEdit].nType] = blockTex[g_Editinfo[g_nCntEdit].nType];
+    }
+    else if (KeyboardTrigger(DIK_L) == true && g_Editinfo[g_nCntEdit].nType > 0)
+    {
+        g_Editinfo[g_nCntEdit].nType--;
+
+        g_Editinfo[g_nCntEdit].blockTex[g_Editinfo[g_nCntEdit].nType] = blockTex[g_Editinfo[g_nCntEdit].nType];
+    }
+
+
+    // 正規化処理
+    if (g_Editinfo[g_nCntEdit].rot.y > D3DX_PI) {
+        g_Editinfo[g_nCntEdit].rot.y -= D3DX_PI * 2.0f;
+    }
+    if (g_Editinfo[g_nCntEdit].rot.y < -D3DX_PI) {
+        g_Editinfo[g_nCntEdit].rot.y += D3DX_PI * 2.0f;
+    }
+
+    // 必要に応じて他の軸も正規化
+    if (g_Editinfo[g_nCntEdit].rot.x > D3DX_PI) {
+        g_Editinfo[g_nCntEdit].rot.x -= D3DX_PI * 2.0f;
+    }
+    if (g_Editinfo[g_nCntEdit].rot.x < -D3DX_PI) {
+        g_Editinfo[g_nCntEdit].rot.x += D3DX_PI * 2.0f;
+    }
+
+    if (g_Editinfo[g_nCntEdit].rot.z > D3DX_PI) {
+        g_Editinfo[g_nCntEdit].rot.z -= D3DX_PI * 2.0f;
+    }
+    if (g_Editinfo[g_nCntEdit].rot.z < -D3DX_PI) {
+        g_Editinfo[g_nCntEdit].rot.z += D3DX_PI * 2.0f;
     }
 
 
@@ -261,6 +319,9 @@ void DrawEdit(void)
 
     //メッシュフィールドの描画
     DrawMeshfield();
+
+    //メッシュシリンダーの描画
+    DrawMeshcylinder();
 
     // カメラの設定
     SetCamera();
@@ -363,6 +424,7 @@ void SaveBlockData(void)
 
                 fprintf(pFile, "SETBLOCK\n");
                 fprintf(pFile, "POS %.1f %.1f %.1f\n", g_Editinfo[nCnt1].pos.x, g_Editinfo[nCnt1].pos.y, g_Editinfo[nCnt1].pos.z);
+                fprintf(pFile, "ROT %.2f %.2f %.2f\n", g_Editinfo[nCnt1].rot.x, g_Editinfo[nCnt1].rot.y, g_Editinfo[nCnt1].rot.z);
                 fprintf(pFile, "BLOCKTYPE %d\n", g_Editinfo[nCnt1].nType);
                 fprintf(pFile, "END_BLOCKSET\n");
                 fprintf(pFile, "================\n");
@@ -405,6 +467,7 @@ void SaveWallData(void)
 
                 fprintf(pFile, "SETBLOCK\n");
                 fprintf(pFile, "POS %.1f %.1f %.1f\n", g_Editinfo[nCnt1].pos.x, g_Editinfo[nCnt1].pos.y, g_Editinfo[nCnt1].pos.z);
+                fprintf(pFile, "ROT %.2f %.2f %.2f\n", g_Editinfo[nCnt1].rot.x, g_Editinfo[nCnt1].rot.y, g_Editinfo[nCnt1].rot.z);
                 fprintf(pFile, "BLOCKTYPE %d\n", g_Editinfo[nCnt1].nType);
                 fprintf(pFile, "END_BLOCKSET\n");
                 fprintf(pFile, "================\n");
@@ -447,6 +510,7 @@ void LoadBlockData(void)
     FILE* pFile = fopen(BLOCKPATH_1, "r");
 
     D3DXVECTOR3 pos;
+    D3DXVECTOR3 rot;
     int nType;
 
     switch (g_nCntEdit)
@@ -484,11 +548,15 @@ void LoadBlockData(void)
 
                     if (strcmp(aStr, "POS") == 0)
                     {
-
                         fscanf(pFile, "%f", &pos.x);
                         fscanf(pFile, "%f", &pos.y);
                         fscanf(pFile, "%f", &pos.z);
-
+                    }
+                    else if (strcmp(aStr, "ROT") == 0)
+                    {
+                        fscanf(pFile, "%f", &rot.x);
+                        fscanf(pFile, "%f", &rot.y);
+                        fscanf(pFile, "%f", &rot.z);
                     }
                     else if (strcmp(aStr, "BLOCKTYPE") == 0)
                     {
@@ -497,7 +565,7 @@ void LoadBlockData(void)
                     else if (strcmp(aStr, "END_BLOCKSET") == 0)
                     {
 
-                        SetBlock(pos, nType);
+                        SetBlock(pos, rot,nType);
                         break;
 
                     }
@@ -525,6 +593,7 @@ void LoadBlockData(void)
     // 現在選択中のブロックを設定 (編集用ブロック)
     g_Editinfo[g_nCntEdit].bUse = true; // 新しいブロックを使用状態にする
     g_Editinfo[g_nCntEdit].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f); // 初期位置に配置
+    g_Editinfo[g_nCntEdit].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f); // 初期位置に配置
     g_Editinfo[g_nCntEdit].nType = BLOCKTYPE_WALL; // デフォルトのブロックタイプ
     g_Editinfo[g_nCntEdit].blockTex[0] = blockTex[BLOCKTYPE_WALL];
 
@@ -553,6 +622,7 @@ void LoadWallData(void)
     FILE* pFile = fopen(WALLPATH_1, "r");
 
     D3DXVECTOR3 pos;
+    D3DXVECTOR3 rot;
     int nType;
 
     switch (g_nCntEdit)
@@ -590,11 +660,15 @@ void LoadWallData(void)
 
                     if (strcmp(aStr, "POS") == 0)
                     {
-
                         fscanf(pFile, "%f", &pos.x);
                         fscanf(pFile, "%f", &pos.y);
                         fscanf(pFile, "%f", &pos.z);
-
+                    }
+                    else if (strcmp(aStr, "ROT") == 0)
+                    {
+                        fscanf(pFile, "%f", &rot.x);
+                        fscanf(pFile, "%f", &rot.y);
+                        fscanf(pFile, "%f", &rot.z);
                     }
                     else if (strcmp(aStr, "BLOCKTYPE") == 0)
                     {
@@ -603,7 +677,7 @@ void LoadWallData(void)
                     else if (strcmp(aStr, "END_BLOCKSET") == 0)
                     {
 
-                        SetBlock(pos, nType);
+                        SetBlock(pos, rot,nType);
                         break;
 
                     }
@@ -631,6 +705,7 @@ void LoadWallData(void)
     // 現在選択中のブロックを設定 (編集用ブロック)
     g_Editinfo[g_nCntEdit].bUse = true; // 新しいブロックを使用状態にする
     g_Editinfo[g_nCntEdit].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f); // 初期位置に配置
+    g_Editinfo[g_nCntEdit].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f); // 初期位置に配置
     g_Editinfo[g_nCntEdit].nType = BLOCKTYPE_WALL; // デフォルトのブロックタイプ
     g_Editinfo[g_nCntEdit].blockTex[0] = blockTex[BLOCKTYPE_WALL];
 

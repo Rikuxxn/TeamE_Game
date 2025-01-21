@@ -183,13 +183,42 @@ void UpdateBlock(void)
 
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
+		if (g_aBlock[nCntBlock].bUse == true)
+		{
+			// 回転角度の正規化
+			if (g_aBlock[nCntBlock].rot.y > D3DX_PI)
+			{
+				g_aBlock[nCntBlock].rot.y -= D3DX_PI * 2.0f;
+			}
+			if (g_aBlock[nCntBlock].rot.y < -D3DX_PI)
+			{
+				g_aBlock[nCntBlock].rot.y += D3DX_PI * 2.0f;
+			}
 
-		////位置を更新
-		//g_aBlock[nCntBlock].pos.x += g_aBlock[nCntBlock].move.x;
-		//g_aBlock[nCntBlock].pos.y += g_aBlock[nCntBlock].move.y;
-		//g_aBlock[nCntBlock].pos.z += g_aBlock[nCntBlock].move.z;
+			if (g_aBlock[nCntBlock].rot.x > D3DX_PI)
+			{
+				g_aBlock[nCntBlock].rot.x -= D3DX_PI * 2.0f;
+			}
+			if (g_aBlock[nCntBlock].rot.x < -D3DX_PI)
+			{
+				g_aBlock[nCntBlock].rot.x += D3DX_PI * 2.0f;
+			}
+
+			if (g_aBlock[nCntBlock].rot.z > D3DX_PI)
+			{
+				g_aBlock[nCntBlock].rot.z -= D3DX_PI * 2.0f;
+			}
+			if (g_aBlock[nCntBlock].rot.z < -D3DX_PI)
+			{
+				g_aBlock[nCntBlock].rot.z += D3DX_PI * 2.0f;
+			}
+
+			////位置を更新
+			//g_aBlock[nCntBlock].pos.x += g_aBlock[nCntBlock].move.x;
+			//g_aBlock[nCntBlock].pos.y += g_aBlock[nCntBlock].move.y;
+			//g_aBlock[nCntBlock].pos.z += g_aBlock[nCntBlock].move.z;
+		}
 	}
-
 }
 //=============================
 //ブロックの描画処理
@@ -257,20 +286,24 @@ void DrawBlock(void)
 //=============================
 //ブロックの設定処理
 //=============================
-void SetBlock(D3DXVECTOR3 pos, int nType)
+void SetBlock(D3DXVECTOR3 pos, D3DXVECTOR3 rot,int nType)
 {
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
 		if (g_aBlock[nCntBlock].bUse == false)
 		{
+			// 現在の g_info[nType] をコピー
 			g_aBlock[nCntBlock] = g_info[nType];
 
+			// 明示的に回転情報をリセットして設定
+			g_aBlock[nCntBlock].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
 			g_aBlock[nCntBlock].pos = pos;
+			g_aBlock[nCntBlock].rot = rot;
 			g_aBlock[nCntBlock].nType = nType;
 			g_aBlock[nCntBlock].bUse = true;
 
 			break;
-
 		}
 	}
 }
@@ -282,295 +315,231 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 
 	//bool bTask = false;//触れているかどうか
 
-	//for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
-	//{
-	//	Player* pPlayer = GetPlayer();
-	//	Enemy* pEnemy = GetEnemy();
-
-	//	if (g_aBlock[nCntBlock].bUse == true)
-	//	{
-
-	//		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_WALL)
-	//		{
-
-	//			if (pPosOld->y < g_aBlock[nCntBlock].pos.y + g_aBlock[nCntBlock].size.y &&
-	//				pPosOld->y + pSize->y > g_aBlock[nCntBlock].pos.y)
-	//			{
-
-	//				//左右(X方向)の当たり判定
-	//				if (pPos->z - pSize->z / 2 < g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2 &&
-	//					pPos->z + pSize->z / 2 > g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2)
-	//				{
-	//					//左から右に当たった
-	//					if (pPosOld->x + pSize->x / 2 < g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2 &&
-	//						pPos->x + pSize->x / 2 > g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2)
-	//					{
-	//						pPos->x = g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2 - pSize->x / 2 - 0.1f;
-	//					}
-	//					//右から左に当たった
-	//					else if (pPosOld->x - pSize->x / 2 > g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2 &&
-	//						pPos->x - pSize->x / 2 < g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2)
-	//					{
-	//						pPos->x = (g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2) + pSize->x / 2 + 0.1f;
-	//					}
-
-	//				}
-
-	//				//前後(Z方向)の当たり判定
-	//				if (pPos->x - pSize->x / 2 < g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2 &&
-	//					pPos->x + pSize->x / 2 > g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2)
-	//				{
-
-	//					//手前から当たった
-	//					if (pPosOld->z + pSize->z / 2 < g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2 &&
-	//						pPos->z + pSize->z / 2 > g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2)
-	//					{
-	//						pPos->z = (g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2) - pSize->z / 2 - 0.1f;
-	//					}
-	//					//奥から当たった
-	//					else if (pPosOld->z - pSize->z / 2 > g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2 &&
-	//						pPos->z - pSize->z / 2 < g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2)
-	//					{
-	//						pPos->z = (g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2) + pSize->z / 2 + 0.1f;
-	//					}
-
-	//				}
-
-	//				//縦(Y方向)の当たり判定
-	//				if (pPosOld->x - pSize->x / 2 < g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2 &&
-	//					pPos->x + pSize->x / 2 > g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2)
-	//				{
-
-	//					if (pPosOld->z - pSize->z / 2 < g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2 &&
-	//						pPos->z + pSize->z / 2 > g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2)
-	//					{
-
-	//						//上から下に当たった
-	//						if (pPosOld->y < g_aBlock[nCntBlock].pos.y + g_aBlock[nCntBlock].size.y &&
-	//							pPos->y > g_aBlock[nCntBlock].pos.y - g_aBlock[nCntBlock].size.y)
-	//						{
-	//							pPos->y = (g_aBlock[nCntBlock].pos.y + g_aBlock[nCntBlock].size.y / 2) + pSize->y / 2 - 0.9f;
-	//							pMove->y = 0.0f;
-	//						}
-	//						//下から上に当たった
-	//						if (pPosOld->y - pSize->y / 2 < g_aBlock[nCntBlock].pos.y / 2 &&
-	//							pPos->y - pSize->y / 2 > g_aBlock[nCntBlock].pos.y / 2)
-	//						{
-	//							pPos->y = (g_aBlock[nCntBlock].pos.y - pSize->y);
-	//							pMove->y = 0.0f;
-	//						}
-
-	//					}
-	//				}
-	//			}
-
-	//		}
-
-	//		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_UFOCATCHER1)
-	//		{
-
-	//			if (pPosOld->y < g_aBlock[nCntBlock].pos.y + g_aBlock[nCntBlock].size.y &&
-	//				pPosOld->y + pSize->y > g_aBlock[nCntBlock].pos.y)
-	//			{
-
-	//				//左右(X方向)の当たり判定
-	//				if (pPos->z - pSize->z / 2 < g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2 &&
-	//					pPos->z + pSize->z / 2 > g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2)
-	//				{
-	//					//左から右に当たった
-	//					if (pPosOld->x + pSize->x / 2 < g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2 &&
-	//						pPos->x + pSize->x / 2 > g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2)
-	//					{
-	//						pPos->x = g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2 - pSize->x / 2 - 0.1f;
-	//					}
-	//					//右から左に当たった
-	//					else if (pPosOld->x - pSize->x / 2 > g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2 &&
-	//						pPos->x - pSize->x / 2 < g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2)
-	//					{
-	//						pPos->x = (g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2) + pSize->x / 2 + 0.1f;
-	//					}
-
-	//				}
-
-	//				//前後(Z方向)の当たり判定
-	//				if (pPos->x - pSize->x / 2 < g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2 &&
-	//					pPos->x + pSize->x / 2 > g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2)
-	//				{
-
-	//					//手前から当たった
-	//					if (pPosOld->z + pSize->z / 2 < g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2 &&
-	//						pPos->z + pSize->z / 2 > g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2)
-	//					{
-	//						pPos->z = (g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2) - pSize->z / 2 - 0.1f;
-	//					}
-	//					//奥から当たった
-	//					else if (pPosOld->z - pSize->z / 2 > g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2 &&
-	//						pPos->z - pSize->z / 2 < g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2)
-	//					{
-	//						pPos->z = (g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2) + pSize->z / 2 + 0.1f;
-	//					}
-
-	//				}
-
-	//				//縦(Y方向)の当たり判定
-	//				if (pPosOld->x - pSize->x / 2 < g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2 &&
-	//					pPos->x + pSize->x / 2 > g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2)
-	//				{
-
-	//					if (pPosOld->z - pSize->z / 2 < g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2 &&
-	//						pPos->z + pSize->z / 2 > g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2)
-	//					{
-
-	//						//上から下に当たった
-	//						if (pPosOld->y < g_aBlock[nCntBlock].pos.y + g_aBlock[nCntBlock].size.y &&
-	//							pPos->y > g_aBlock[nCntBlock].pos.y - g_aBlock[nCntBlock].size.y)
-	//						{
-	//							pPos->y = (g_aBlock[nCntBlock].pos.y + g_aBlock[nCntBlock].size.y / 2) + pSize->y / 2 - 0.9f;
-	//							pMove->y = 0.0f;
-	//						}
-	//						//下から上に当たった
-	//						if (pPosOld->y - pSize->y / 2 < g_aBlock[nCntBlock].pos.y / 2 &&
-	//							pPos->y - pSize->y / 2 > g_aBlock[nCntBlock].pos.y / 2)
-	//						{
-	//							pPos->y = (g_aBlock[nCntBlock].pos.y - pSize->y);
-	//							pMove->y = 0.0f;
-	//						}
-
-	//					}
-	//				}
-	//			}
-
-	//		}
-
-
-	//		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_UFOCATCHER2)
-	//		{
-
-	//			if (pPosOld->y < g_aBlock[nCntBlock].pos.y + g_aBlock[nCntBlock].size.y &&
-	//				pPosOld->y + pSize->y > g_aBlock[nCntBlock].pos.y)
-	//			{
-
-	//				//左右(X方向)の当たり判定
-	//				if (pPos->z - pSize->z / 2 < g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2 &&
-	//					pPos->z + pSize->z / 2 > g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2)
-	//				{
-	//					//左から右に当たった
-	//					if (pPosOld->x + pSize->x / 2 < g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2 &&
-	//						pPos->x + pSize->x / 2 > g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2)
-	//					{
-	//						pPos->x = g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2 - pSize->x / 2 - 0.1f;
-	//					}
-	//					//右から左に当たった
-	//					else if (pPosOld->x - pSize->x / 2 > g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2 &&
-	//						pPos->x - pSize->x / 2 < g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2)
-	//					{
-	//						pPos->x = (g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2) + pSize->x / 2 + 0.1f;
-	//					}
-
-	//				}
-
-	//				//前後(Z方向)の当たり判定
-	//				if (pPos->x - pSize->x / 2 < g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2 &&
-	//					pPos->x + pSize->x / 2 > g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2)
-	//				{
-
-	//					//手前から当たった
-	//					if (pPosOld->z + pSize->z / 2 < g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2 &&
-	//						pPos->z + pSize->z / 2 > g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2)
-	//					{
-	//						pPos->z = (g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2) - pSize->z / 2 - 0.1f;
-	//					}
-	//					//奥から当たった
-	//					else if (pPosOld->z - pSize->z / 2 > g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2 &&
-	//						pPos->z - pSize->z / 2 < g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2)
-	//					{
-	//						pPos->z = (g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2) + pSize->z / 2 + 0.1f;
-	//					}
-
-	//				}
-
-	//				//縦(Y方向)の当たり判定
-	//				if (pPosOld->x - pSize->x / 2 < g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2 &&
-	//					pPos->x + pSize->x / 2 > g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2)
-	//				{
-
-	//					if (pPosOld->z - pSize->z / 2 < g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2 &&
-	//						pPos->z + pSize->z / 2 > g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2)
-	//					{
-
-	//						//上から下に当たった
-	//						if (pPosOld->y < g_aBlock[nCntBlock].pos.y + g_aBlock[nCntBlock].size.y &&
-	//							pPos->y > g_aBlock[nCntBlock].pos.y - g_aBlock[nCntBlock].size.y)
-	//						{
-	//							pPos->y = (g_aBlock[nCntBlock].pos.y + g_aBlock[nCntBlock].size.y / 2) + pSize->y / 2 - 0.9f;
-	//							pMove->y = 0.0f;
-	//						}
-	//						//下から上に当たった
-	//						if (pPosOld->y - pSize->y / 2 < g_aBlock[nCntBlock].pos.y / 2 &&
-	//							pPos->y - pSize->y / 2 > g_aBlock[nCntBlock].pos.y / 2)
-	//						{
-	//							pPos->y = (g_aBlock[nCntBlock].pos.y - pSize->y);
-	//							pMove->y = 0.0f;
-	//						}
-
-	//					}
-	//				}
-	//			}
-
-	//		}
-
-	//	}
-
-	//}
-	//return bTask;
-
-
-
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
-		if (g_aBlock[nCntBlock].bUse == true && g_aBlock[nCntBlock].nType == BLOCKTYPE_WALL)
+		if (g_aBlock[nCntBlock].bUse)
 		{
-			// 各軸ごとに分離して当たり判定を行う
-			// Y軸の判定
-			if (pPosOld->y < g_aBlock[nCntBlock].pos.y + g_aBlock[nCntBlock].size.y &&
-				pPosOld->y + pSize->y > g_aBlock[nCntBlock].pos.y)
+			// ブロック OBB の情報を取得
+			D3DXMATRIX blockWorld = g_aBlock[nCntBlock].mtxWorld;
+			D3DXVECTOR3 blockSize = g_aBlock[nCntBlock].size;
+
+			// プレイヤー OBB の情報を取得
+			D3DXMATRIX playerWorld;
+			D3DXMatrixTranslation(&playerWorld, pPos->x, pPos->y, pPos->z);
+
+			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_UFOCATCHER1)
 			{
-				// X軸の判定
-				if (pPos->z - pSize->z / 2 < g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2 &&
-					pPos->z + pSize->z / 2 > g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2)
+				// OBB 衝突判定
+				if (CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 				{
-					if (pPosOld->x + pSize->x / 2 < g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2 &&
-						pPos->x + pSize->x / 2 > g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2)
+					// Z軸の衝突補正
+					pPos->z = pPosOld->z;
+					playerWorld._43 = pPos->z;
+					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
-						pPos->x = g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2 - pSize->x / 2 - 0.1f;
+						// 衝突解消できたら、Z軸方向の移動量を滑らかに減衰
+						pMove->z *= 0.5f;  // Z軸移動を減速して滑りを再現
+						continue;
 					}
-					else if (pPosOld->x - pSize->x / 2 > g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2 &&
-						pPos->x - pSize->x / 2 < g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2)
+
+					// X軸の衝突補正
+					pPos->x = pPosOld->x;
+					playerWorld._41 = pPos->x;
+					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
-						pPos->x = g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2 + pSize->x / 2 + 0.1f;
+						// 衝突解消できたら、X軸方向の移動量を滑らかに減衰
+						pMove->x *= 0.5f;  // X軸移動を減速して滑りを再現
+						continue;
 					}
+
+					// Y軸の衝突補正
+					pPos->y = pPosOld->y;
+					playerWorld._42 = pPos->y;
+					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
+					{
+						// 衝突解消できたら、Y軸方向の移動量を滑らかに減衰
+						pMove->y *= 0.5f;  // Y軸移動を減速して滑りを再現
+						continue;
+					}
+
+					// 最後に全軸を停止 (衝突解消できなかった場合)
+					pMove->x = 0.0f;
+					pMove->y = 0.0f;
+					pMove->z = 0.0f;
 				}
-	
-				// Z軸の判定
-				if (pPos->x - pSize->x / 2 < g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].size.x / 2 &&
-					pPos->x + pSize->x / 2 > g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].size.x / 2)
+			}
+
+			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
+			{
+				// OBB 衝突判定
+				if (CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 				{
-					if (pPosOld->z + pSize->z / 2 < g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2 &&
-						pPos->z + pSize->z / 2 > g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2)
+					// Z軸の衝突補正
+					pPos->z = pPosOld->z;
+					playerWorld._43 = pPos->z;
+					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
-						pPos->z = g_aBlock[nCntBlock].pos.z - g_aBlock[nCntBlock].size.z / 2 - pSize->z / 2 - 0.1f;
+						// 衝突解消できたら、Z軸方向の移動量を滑らかに減衰
+						pMove->z *= 0.5f;  // Z軸移動を減速して滑りを再現
+						continue;
 					}
-					else if (pPosOld->z - pSize->z / 2 > g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2 &&
-						pPos->z - pSize->z / 2 < g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2)
+
+					// X軸の衝突補正
+					pPos->x = pPosOld->x;
+					playerWorld._41 = pPos->x;
+					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
-						pPos->z = g_aBlock[nCntBlock].pos.z + g_aBlock[nCntBlock].size.z / 2 + pSize->z / 2 + 0.1f;
+						// 衝突解消できたら、X軸方向の移動量を滑らかに減衰
+						pMove->x *= 0.5f;  // X軸移動を減速して滑りを再現
+						continue;
 					}
+
+					// Y軸の衝突補正
+					pPos->y = pPosOld->y;
+					playerWorld._42 = pPos->y;
+					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
+					{
+						// 衝突解消できたら、Y軸方向の移動量を滑らかに減衰
+						pMove->y *= 0.5f;  // Y軸移動を減速して滑りを再現
+						continue;
+					}
+
+					// 最後に全軸を停止 (衝突解消できなかった場合)
+					pMove->x = 0.0f;
+					pMove->y = 0.0f;
+					pMove->z = 0.0f;
+				}
+			}
+			else
+			{
+				// OBB 衝突判定
+				if (CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
+				{
+					// Z軸の衝突補正
+					pPos->z = pPosOld->z;
+					playerWorld._43 = pPos->z;
+					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
+					{
+						// 衝突解消できたら、Z軸方向の移動量を滑らかに減衰
+						pMove->z *= 0.5f;  // Z軸移動を減速して滑りを再現
+						continue;
+					}
+
+					// X軸の衝突補正
+					pPos->x = pPosOld->x;
+					playerWorld._41 = pPos->x;
+					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
+					{
+						// 衝突解消できたら、X軸方向の移動量を滑らかに減衰
+						pMove->x *= 0.5f;  // X軸移動を減速して滑りを再現
+						continue;
+					}
+
+					// Y軸の衝突補正
+					pPos->y = pPosOld->y;
+					playerWorld._42 = pPos->y;
+					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
+					{
+						// 衝突解消できたら、Y軸方向の移動量を滑らかに減衰
+						pMove->y *= 0.5f;  // Y軸移動を減速して滑りを再現
+						continue;
+					}
+
+					// 最後に全軸を停止 (衝突解消できなかった場合)
+					pMove->x = 0.0f;
+					pMove->y = 0.0f;
+					pMove->z = 0.0f;
+				}
+
+			}
+
+		}
+	}
+}
+//==============================================
+//ブロックの当たり判定(OBBを使用して回転を考慮)
+//==============================================
+bool CheckOBBCollision(const D3DXMATRIX& world1, const D3DXVECTOR3& size1,
+	const D3DXMATRIX& world2, const D3DXVECTOR3& size2)
+{
+	//ワールドマトリックス！！
+	// 各 OBB の中心座標を計算
+	D3DXVECTOR3 center1(world1._41, world1._42, world1._43);
+	D3DXVECTOR3 center2(world2._41, world2._42, world2._43);
+
+	// 各 OBB の軸を取得
+	D3DXVECTOR3 axes1[3] = 
+	{
+		{world1._11, world1._12, world1._13}, // X軸
+		{world1._21, world1._22, world1._23}, // Y軸
+		{world1._31, world1._32, world1._33}  // Z軸
+	};
+
+	D3DXVECTOR3 axes2[3] = 
+	{
+		{world2._11, world2._12, world2._13}, // X軸
+		{world2._21, world2._22, world2._23}, // Y軸
+		{world2._31, world2._32, world2._33}  // Z軸
+	};
+
+	// 分離軸定理 (Separating Axis Theorem) を用いて判定
+	for (int nCnt = 0; nCnt < 3; ++nCnt)
+	{
+		if (!OverlapOnAxis(center1, axes1, size1, center2, axes2, size2, axes1[nCnt]))
+		{
+			return false; // 分離軸が見つかったら衝突していない
+		}
+		if (!OverlapOnAxis(center1, axes1, size1, center2, axes2, size2, axes2[nCnt]))
+		{
+			return false; // 分離軸が見つかったら衝突していない
+		}
+	}
+
+	// クロス軸のチェック
+	for (int Cross = 0; Cross < 3; ++Cross)
+	{
+		for (int Cross2 = 0; Cross2 < 3; ++Cross2)
+		{
+			D3DXVECTOR3 crossAxis;
+			D3DXVec3Cross(&crossAxis, &axes1[Cross], &axes2[Cross2]);
+			if (D3DXVec3Length(&crossAxis) > 0.001f) 
+			{ // ゼロベクトルのチェック
+				if (!OverlapOnAxis(center1, axes1, size1, center2, axes2, size2, crossAxis)) 
+				{
+					return false; // 分離軸が見つかったら衝突していない
 				}
 			}
 		}
 	}
 
+	return true; // 分離軸がないため衝突している
+}
+//=================================
+//OBB投影範囲計算処理
+//=================================
+bool OverlapOnAxis(const D3DXVECTOR3& center1, const D3DXVECTOR3 axes1[3], const D3DXVECTOR3& size1,
+	const D3DXVECTOR3& center2, const D3DXVECTOR3 axes2[3], const D3DXVECTOR3& size2, const D3DXVECTOR3& axis)
+{
+	// 各 OBB を指定された軸に投影したの時の半径を計算
+	float radius1 = GetProjectionRadius(size1, axes1, axis);
+	float radius2 = GetProjectionRadius(size2, axes2, axis);
 
+	// OBB の中心の距離を指定された軸に投影
+	D3DXVECTOR3 centerDiff = center2 - center1;
+	float distance = fabs(D3DXVec3Dot(&centerDiff, &axis));
+
+	// 投影の重なりを判定
+	return distance <= (radius1 + radius2);
+}
+//=================================
+//OBBに必要な範囲計算処理
+//=================================
+float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], const D3DXVECTOR3& axis)
+{
+	// 各軸を指定された軸に投影し、その絶対値を足し合わせる
+	return fabs(D3DXVec3Dot(&axes[0], &axis)) * size.x / 2 +
+		fabs(D3DXVec3Dot(&axes[1], &axis)) * size.y / 2 +
+		fabs(D3DXVec3Dot(&axes[2], &axis)) * size.z / 2;
 }
 //============================================
 //ブロックの取得

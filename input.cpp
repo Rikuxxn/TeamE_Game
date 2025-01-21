@@ -435,7 +435,7 @@ void UpdateMouse(void)
 	}
 }
 //=====================================================
-//マウス操作の判定処理
+//マウスの状態
 //=====================================================
 bool GetMouseState(DIMOUSESTATE* mouseState)
 {
@@ -446,7 +446,7 @@ bool GetMouseState(DIMOUSESTATE* mouseState)
 		return false;
 	}
 
-	// マウスの状態を取得
+	// マウスの状態を取得(長いから代入した)
 	HRESULT hr = pMouse->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)mouseState);
 
 	if (FAILED(hr))
@@ -465,7 +465,7 @@ bool GetMouseState(DIMOUSESTATE* mouseState)
 		}
 		else
 		{
-			// その他のエラーの場合
+			//エラーの場合
 			return false;
 		}
 	}

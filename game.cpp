@@ -410,6 +410,7 @@ void UpdateGame(void)
 //===========================================
 void DrawGame(void)
 {
+	Player* pPlayer = GetPlayer();	//プレイヤー取得
 
 	//プレイヤーの描画処理
 	DrawPlayer();
@@ -462,11 +463,11 @@ void DrawGame(void)
 	////タイムの描画処理
 	//DrawTime();
 
-	//if (GetKeyboardPress(DIK_LSHIFT) == true)
-	//{
+	if (pPlayer->bDrawDush == true)
+	{
 		//ゲージの描画処理
 		DrawGuage();
-	//}
+	}
 
 	if (g_bPause == true)
 	{//ポーズ中

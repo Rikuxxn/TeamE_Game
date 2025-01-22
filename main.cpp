@@ -590,20 +590,21 @@ void DrawOption(void)
 
 	RECT rect = { 5, 20, SCREEN_WIDTH, SCREEN_HEIGHT };
 	RECT rect2 = { 5, 40, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect3 = { 5, 60, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 	char aStr[128];
 	char aStr2[128];
-
+	char aStr3[128];
 
 	//文字列に代入
 	sprintf(&aStr[0], "プレイヤーの位置 (%f, %f, %f)\n",pPlayer->pos.x, pPlayer->pos.y, pPlayer->pos.z);
 	sprintf(&aStr2[0], "カメラの向き (%f, %f, %f)\n", pCamera->rot.x, pCamera->rot.y, pCamera->rot.z);
-
+	sprintf(&aStr3[0], "g_player.bDrawDush (%d)\n", pPlayer->nDrawDush);
 
 	//テキストの描画
 	g_pFont->DrawTextA(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 	g_pFont->DrawTextA(NULL, &aStr2[0], -1, &rect2, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
-
+	g_pFont->DrawTextA(NULL, &aStr3[0], -1, &rect3, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 }
 //=============================================
 //エディター情報表示処理

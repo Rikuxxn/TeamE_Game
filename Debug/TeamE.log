@@ -1,3 +1,2 @@
-﻿  player.cpp
-C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\player.cpp(456,33): warning C4305: '-=': 'double' から 'float' へ切り詰めます。
+﻿  guage.cpp
   TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\Debug\TeamE.exe

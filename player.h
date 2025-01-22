@@ -44,11 +44,13 @@ typedef struct
 	PLAYERSTATE state;						//プレイヤーの状態
 	D3DXMATRIX mtxWorld;					//ワールドマトリックス
 	int nDush;								//ダッシュゲージ
+	int nDrawDush;							//ダッシュゲージ描画用
 	bool bUse;								//使われているかどうか
 	bool bDisp;								//表示するかしないか
 	bool bDush;								//ダッシュしてるか
 	bool bEmpty;							//スタミナ切れかどうか
-	Motion motion;
+	bool bDrawDush;							//ダッシュゲージ描画用
+	Motion motion;							//モーション情報
 }Player;
 
 //プロトタイプ宣言

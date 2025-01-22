@@ -29,7 +29,7 @@ Enemy g_aEnemy;						//敵情報
 bool g_bEnd;						//捕まった判定
 bool Inside;						//視界に入ったか
 bool isPlayerInSightPrev = false;
-bool isReversePatrol = false; // 巡回の方向（false: 順回り, true: 逆回り）
+bool isReversePatrol = false;		// 巡回の方向（false: 順回り, true: 逆回り）
 
 int currentPatrolPoint = 0;			// 現在の巡回ポイント
 int g_nIdxShadowEnemy;

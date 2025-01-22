@@ -1,3 +1,4 @@
-﻿  player.cpp
-C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\player.cpp(456,33): warning C4305: '-=': 'double' から 'float' へ切り詰めます。
-  TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\Debug\TeamE.exe
+﻿  block.cpp
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\block.cpp(529,17): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\block.cpp(541,51): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+  TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\Debug\TeamE.exe

@@ -22,7 +22,9 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPauseBG = NULL;			//頂点バッファへのポインタ
 PAUSE_MENU g_pauseMenu;										//ポーズメニュー
 
 // ポーズ項目の拡大率を管理する配列
-float pauseScales[MAX_PAUSE] = { PAUSE_MIN_SCALE, PAUSE_MIN_SCALE, PAUSE_MIN_SCALE};
+float pauseScales[MAX_PAUSE] = { PAUSE_MIN_SCALE, PAUSE_MIN_SCALE, PAUSE_MIN_SCALE };
+
+//HWND g_hWnd;
 
 //===============================================================
 //ポーズの初期化処理
@@ -195,6 +197,11 @@ void UpdatePause(void)
 	FADE g_fade = GetFade(); // 現在の状態
 
 	VERTEX_2D* pVtx;
+
+	// 現在のカーソル位置を取得
+	POINT cursorPos;
+	GetCursorPos(&cursorPos);
+
 
 	if (KeyboardTrigger(DIK_UP) || JoyPadTrigger(JOYKEY_UP)) 
 	{

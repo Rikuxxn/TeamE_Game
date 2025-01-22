@@ -44,6 +44,8 @@ typedef enum
 	BLOCKTYPE_SLOT_CHAIR,
 	BLOCKTYPE_PURIKURA,
 	BLOCKTYPE_AIRHOCKEY,
+	BLOCKTYPE_SHOOTING,
+	BLOCKTYPE_VENDING,
 
 	BLOCKTYPE_MAX
 }BLOCKTYPE;
@@ -105,6 +107,8 @@ static const char* BLOCK[BLOCKTYPE_MAX] =
 	"data/MODEL/Chair.x",						// スロットのいす
 	"data/MODEL/Purikura.x",					// プリクラ
 	"data/MODEL/Airhockey.x",					// エアホッケー
+	"data/MODEL/Shootinggame.x",				// シューティングゲーム
+	"data/MODEL/Vending.x",						// 自販機
 
 };
 

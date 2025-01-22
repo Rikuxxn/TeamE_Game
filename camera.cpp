@@ -172,45 +172,6 @@ void UpdateCamera(void)
 		}
 
 
-		//視点の旋回(Y軸)
-		//if (GetKeyboardPress(DIK_Z))
-		//{
-
-		//	g_camera.rot.y -= 0.02f;
-
-		//	//角度の正規化
-		//	if (g_camera.rot.y > D3DX_PI)
-		//	{
-		//		g_camera.rot.y -= D3DX_PI * 2.0f;
-		//	}
-		//	else if (g_camera.rot.y < -D3DX_PI)
-		//	{
-		//		g_camera.rot.y += D3DX_PI * 2.0f;
-		//	}
-
-		//	g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
-		//	g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
-
-		//}
-		//else if (GetKeyboardPress(DIK_C))
-		//{
-
-		//	g_camera.rot.y += 0.02f;
-
-		//	//角度の正規化
-		//	if (g_camera.rot.y < -D3DX_PI)
-		//	{
-		//		g_camera.rot.y += D3DX_PI * 2.0f;
-		//	}
-		//	else if (g_camera.rot.y > D3DX_PI)
-		//	{
-		//		g_camera.rot.y -= D3DX_PI * 2.0f;
-		//	}
-
-		//	g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
-		//	g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
-
-		//}
 
 
 		////注視点の旋回(X軸)
@@ -301,8 +262,48 @@ void UpdateCamera(void)
 	//}
 	// 
 	
-	if (/*g_cameramode == CAMERAMODE_NORMAL*/pMode == MODE_EDIT)
+	if (pMode == MODE_EDIT)
 	{
+		//視点の旋回(Y軸)
+		if (GetKeyboardPress(DIK_Q))
+		{
+
+			g_camera.rot.y -= 0.02f;
+
+			//角度の正規化
+			if (g_camera.rot.y > D3DX_PI)
+			{
+				g_camera.rot.y -= D3DX_PI * 2.0f;
+			}
+			else if (g_camera.rot.y < -D3DX_PI)
+			{
+				g_camera.rot.y += D3DX_PI * 2.0f;
+			}
+
+			g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
+			g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
+
+		}
+		else if (GetKeyboardPress(DIK_E))
+		{
+
+			g_camera.rot.y += 0.02f;
+
+			//角度の正規化
+			if (g_camera.rot.y < -D3DX_PI)
+			{
+				g_camera.rot.y += D3DX_PI * 2.0f;
+			}
+			else if (g_camera.rot.y > D3DX_PI)
+			{
+				g_camera.rot.y -= D3DX_PI * 2.0f;
+			}
+
+			g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
+			g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
+
+		}
+
 		////注視点の旋回(Y軸)
 		//if (GetKeyboardPress(DIK_Q))
 		//{
@@ -510,7 +511,7 @@ void SetCamera(void)
 		D3DXToRadian(45.0f),                  // 視野角
 		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, // アスペクト比
 		1.0f,                                // 近クリップ面
-		1200.0f);                            // 遠クリップ面
+		1100.0f);                            // 遠クリップ面
 
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &g_camera.mtxProjection);

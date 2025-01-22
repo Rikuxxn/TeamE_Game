@@ -12,9 +12,10 @@
 #include "motion.h"
 
 //マクロ定義
-#define PLAYER_SPEED (0.85f)				//プレイヤーの歩くスピード
-#define PLAYER_DUSHSPEED (2.0f)				//プレイヤーのダッシュスピード
-#define PLAYER_STAMINA (300)				//プレイヤーのスタミナ
+#define PLAYER_SPEED (0.70f)				//プレイヤーの歩くスピード
+#define PLAYER_BACKSPEED (0.45f)				//プレイヤーの後ろ歩きスピード
+#define PLAYER_DUSHSPEED (1.6f)				//プレイヤーのダッシュスピード
+#define PLAYER_STAMINA (240)				//プレイヤーのスタミナ
 
 #define MAX_JUMP (40)						//ジャンプ力
 #define MAX_GRAVITY (0.8)					//重力

@@ -10,7 +10,7 @@
 #define NUM_LIFE (5)	 //ライフの種類
 
 //グローバル
-LPDIRECT3DTEXTURE9 g_pTextureGuage = {};				  //テクスチャへのポインタ
+//LPDIRECT3DTEXTURE9 g_pTextureGuage = {};				  //テクスチャへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffGuage = NULL;		  //頂点バッファへのポインタ
 float g_fWidthGuage;
 float g_fHeightGuage;
@@ -19,8 +19,8 @@ bool g_bLow;
 void InitGuage(void)
 {
 	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-	g_fWidthGuage = 200.0f;
-	g_fHeightGuage = 500.0f;
+	g_fWidthGuage = 400.0f;
+	g_fHeightGuage = 650.0f;
 	g_bLow = false;
 
 	//デバイスの取得
@@ -40,9 +40,9 @@ void InitGuage(void)
 
 	//頂点座標の設定
 	pVtx[0].pos = D3DXVECTOR3(g_fWidthGuage, g_fHeightGuage, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(g_fWidthGuage/* + 180.0f*/, g_fHeightGuage, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(g_fWidthGuage, g_fHeightGuage/* + 200.0f*/, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(g_fWidthGuage/* + 180.0f*/, g_fHeightGuage/* + 200.0f*/, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(g_fWidthGuage, g_fHeightGuage, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(g_fWidthGuage, g_fHeightGuage, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(g_fWidthGuage, g_fHeightGuage, 0.0f);
 
 	//rhwの設定
 	pVtx[0].rhw = 1.0f;
@@ -56,23 +56,18 @@ void InitGuage(void)
 	pVtx[2].col = D3DCOLOR_RGBA(0, 255, 0, 255);
 	pVtx[3].col = D3DCOLOR_RGBA(0, 255, 0, 255);
 
-	//テクスチャ座標の設定
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);//(u,v)
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);//(u,v)
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);//(u,v)
-
 	//頂点バッファをアンロックする
 	g_pVtxBuffGuage->Unlock();
 }
 void UninitGuage(void)
 {
-	//テクスチャの破棄
-	if (g_pTextureGuage != NULL)
-	{
-		g_pTextureGuage->Release();
-		g_pTextureGuage = NULL;
-	}
+	////テクスチャの破棄
+	//if (g_pTextureGuage != NULL)
+	//{
+	//	g_pTextureGuage->Release();
+	//	g_pTextureGuage = NULL;
+	//}
+
 	//頂点バッファの破棄
 	if (g_pVtxBuffGuage != NULL)
 	{
@@ -97,18 +92,26 @@ void UpdateGuage(void)
 
 	//頂点座標の設定
 	pVtx[0].pos = D3DXVECTOR3(g_fWidthGuage, g_fHeightGuage, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(g_fWidthGuage + (nLife * 2)/* + 220.0f*/, g_fHeightGuage, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(g_fWidthGuage, g_fHeightGuage + 20.0f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(g_fWidthGuage + (nLife * 2)/* + 220.0f*/, g_fHeightGuage + 20.0f, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(g_fWidthGuage + (nLife * 1.5f), g_fHeightGuage, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(g_fWidthGuage, g_fHeightGuage + 13.0f, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(g_fWidthGuage + (nLife * 1.5f), g_fHeightGuage + 13.0f, 0.0f);
 
-	//if (pPlayer->nDush >= 160)
-	//{
-	//	//頂点カラーの設定
-	//	pVtx[0].col = D3DCOLOR_RGBA(0, 255, 0, 200);
-	//	pVtx[1].col = D3DCOLOR_RGBA(0, 255, 0, 200);
-	//	pVtx[2].col = D3DCOLOR_RGBA(0, 255, 0, 200);
-	//	pVtx[3].col = D3DCOLOR_RGBA(0, 255, 0, 200);
-	//}
+	if (pPlayer->nDush <= 90)
+	{
+		//頂点カラーの設定
+		pVtx[0].col = D3DCOLOR_RGBA(255, 0, 0, 255);
+		pVtx[1].col = D3DCOLOR_RGBA(255, 0, 0, 255);
+		pVtx[2].col = D3DCOLOR_RGBA(255, 0, 0, 255);
+		pVtx[3].col = D3DCOLOR_RGBA(255, 0, 0, 255);
+	}
+	else if (pPlayer->nDush >= 90 && pPlayer->bEmpty == false)
+	{
+		//頂点カラーの設定
+		pVtx[0].col = D3DCOLOR_RGBA(0, 255, 0, 255);
+		pVtx[1].col = D3DCOLOR_RGBA(0, 255, 0, 255);
+		pVtx[2].col = D3DCOLOR_RGBA(0, 255, 0, 255);
+		pVtx[3].col = D3DCOLOR_RGBA(0, 255, 0, 255);
+	}
 
 	//頂点バッファをアンロックする
 	g_pVtxBuffGuage->Unlock();
@@ -130,8 +133,8 @@ void DrawGuage(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffGuage->Lock(0, 0, (void**)&pVtx, 0);
 
-	//テクスチャの設定
-	pDevice->SetTexture(0, g_pTextureGuage);
+	////テクスチャの設定
+	//pDevice->SetTexture(0, g_pTextureGuage);
 
 	//ポリゴンの描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,//プリミティブの種類

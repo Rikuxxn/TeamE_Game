@@ -43,16 +43,16 @@ void InitPlayer(void)
 	g_player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//移動量を初期化する
 	g_player.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//向きを初期化する
 	g_player.rotDestPlayer = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//向きを初期化する
-	g_player.nDush = PLAYER_STAMINA;
-	g_player.state = PLAYERSTATE_NORMAL;
-	g_player.bDush = false;
-	g_player.bDisp = true;
-	g_player.bEmpty = false;
-	g_player.motion.bLoopMotion = true;
-	g_player.motion.nCounterMotion = 0;
-	g_player.motion.aMotionInfo[MOTIONTYPE_MOVE].startKey = 1;
-	//g_player.pos = D3DXVECTOR3(150.0f, 0.0f, 270.0f);//デバッグ用
-
+	g_player.nDush = PLAYER_STAMINA;							//ダッシュ時の速度
+	g_player.nDrawDush = 0;										//ダッシュゲージ描画用
+	g_player.state = PLAYERSTATE_NORMAL;						//プレイヤーの状態
+	g_player.bDush = false;										//ダッシュしているか
+	g_player.bDisp = true;										//プレイヤーの描画
+	g_player.bEmpty = false;									//ダッシュできるか
+	g_player.bDrawDush = false;									//ダッシュゲージ描画用
+	g_player.motion.bLoopMotion = true;							//モーションをループさせるか
+	g_player.motion.nCounterMotion = 0;							//モーション用のカウンター
+	g_player.motion.aMotionInfo[MOTIONTYPE_MOVE].startKey = 1;	//モーションの最初のキー
 	LoadPlayerTEXT();
 
 
@@ -286,6 +286,8 @@ void UpdatePlayer(void)
 				{// ダッシュ時
 					g_player.nDush--;
 					g_player.bDush = true;
+					g_player.nDrawDush = 0;
+					g_player.bDrawDush = true;
 					//ダッシュ時の移動量を更新(増加させる)
 					g_player.move.x += sinf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
 					g_player.move.z += cosf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
@@ -343,6 +345,8 @@ void UpdatePlayer(void)
 				{
 					g_player.nDush--;
 					g_player.bDush = true;
+					g_player.nDrawDush = 0;
+					g_player.bDrawDush = true;
 					//ダッシュの移動量を更新(増加させる)
 					g_player.move.x += sinf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
 					g_player.move.z += cosf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
@@ -396,6 +400,8 @@ void UpdatePlayer(void)
 			{
 				g_player.nDush--;
 				g_player.bDush = true;
+				g_player.nDrawDush = 0;
+				g_player.bDrawDush = true;
 				//ダッシュの移動量を更新(増加させる)
 				g_player.move.x += sinf(pCamera->rot.y) * PLAYER_DUSHSPEED;
 				g_player.move.z += cosf(pCamera->rot.y) * PLAYER_DUSHSPEED;
@@ -448,8 +454,26 @@ void UpdatePlayer(void)
 			}
 			else if (g_player.nDush >= PLAYER_STAMINA)
 			{
+				g_player.nDush = PLAYER_STAMINA;
 				g_player.bEmpty = false;
 			}
+		}
+
+		if (g_player.nDush >= PLAYER_STAMINA &&
+			GetKeyboardPress(DIK_LSHIFT) == false)
+		{
+			g_player.nDrawDush++;
+		}
+		//else if (g_player.nDush <= PLAYER_STAMINA &&
+		//	GetKeyboardPress(DIK_LSHIFT) == false)
+		//{
+		//	g_player.nDrawDush = 0;
+		//}
+
+		if (g_player.nDrawDush >= 60)
+		{
+			g_player.nDrawDush = 0;
+			g_player.bDrawDush = false;
 		}
 
 		//重力加算

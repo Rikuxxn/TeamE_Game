@@ -74,9 +74,9 @@ void InitGuage(void)
 
 	//í∏ì_ç¿ïWÇÃê›íË
 	pVtx2[0].pos = D3DXVECTOR3(g_fWidthGuage, g_fHeightGuage, 0.0f);
-	pVtx2[1].pos = D3DXVECTOR3(g_fWidthGuage + 450.0f, g_fHeightGuage, 0.0f);
+	pVtx2[1].pos = D3DXVECTOR3(g_fWidthGuage + (PLAYER_STAMINA * 1.5f), g_fHeightGuage, 0.0f);
 	pVtx2[2].pos = D3DXVECTOR3(g_fWidthGuage, g_fHeightGuage + 13.0f, 0.0f);
-	pVtx2[3].pos = D3DXVECTOR3(g_fWidthGuage + 450.0f, g_fHeightGuage + 13.0f, 0.0f);
+	pVtx2[3].pos = D3DXVECTOR3(g_fWidthGuage + (PLAYER_STAMINA * 1.5f), g_fHeightGuage + 13.0f, 0.0f);
 
 	//rhwÇÃê›íË
 	pVtx2[0].rhw = 1.0f;

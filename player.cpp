@@ -454,7 +454,7 @@ void UpdatePlayer(void)
 			}
 			else if (g_player.nDush >= PLAYER_STAMINA)
 			{
-				g_player.nDush = PLAYER_STAMINA;
+				g_player.nDush += 0;
 				g_player.bEmpty = false;
 			}
 		}
@@ -464,11 +464,6 @@ void UpdatePlayer(void)
 		{
 			g_player.nDrawDush++;
 		}
-		//else if (g_player.nDush <= PLAYER_STAMINA &&
-		//	GetKeyboardPress(DIK_LSHIFT) == false)
-		//{
-		//	g_player.nDrawDush = 0;
-		//}
 
 		if (g_player.nDrawDush >= 60)
 		{

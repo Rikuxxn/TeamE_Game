@@ -646,13 +646,14 @@ void DrawEditInfo(void)
 	wsprintf(&aStr3[0], "前回のブロック配置情報の読み込み [F6]\n");
 	wsprintf(&aStr4[0], "ブロックの平行移動 : [↑/↓/←/→]\n");
 	wsprintf(&aStr5[0], "ブロックの垂直移動 : [U/J]\n");
-	wsprintf(&aStr6[0], "ブロックの種類変更 : [マウスホイール]\n");
-	wsprintf(&aStr7[0], "ブロックの設置 : [ENTER]\n");
+	wsprintf(&aStr6[0], "ブロックの種類変更 : [マウスホイール][O/L]\n");
+	wsprintf(&aStr7[0], "ブロックの設置 : [ENTER][左クリック]\n");
 	wsprintf(&aStr8[0], "ブロックの破棄 : [DELETE]\n");
 	wsprintf(&aStr9[0], "===============================\n");
 	wsprintf(&aStr10[0], "  カメラ操作方法\n");
 	wsprintf(&aStr11[0], "===============================\n");
-	wsprintf(&aStr12[0], "  カメラ移動 : [W/A/S/D]\n");
+	wsprintf(&aStr12[0], "  カメラ平行移動 : [W/A/S/D]\n");
+	wsprintf(&aStr13[0], "  カメラ垂直移動 : [Z/C]\n");
 
 	g_pFont->DrawTextA(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(0, 0, 255, 255));
 	g_pFont->DrawTextA(NULL, &aStr2[0], -1, &rect2, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
@@ -666,6 +667,7 @@ void DrawEditInfo(void)
 	g_pFont->DrawTextA(NULL, &aStr10[0], -1, &rect10, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 	g_pFont->DrawTextA(NULL, &aStr11[0], -1, &rect11, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 	g_pFont->DrawTextA(NULL, &aStr12[0], -1, &rect12, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+	g_pFont->DrawTextA(NULL, &aStr13[0], -1, &rect13, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 
 }
 //=============================================

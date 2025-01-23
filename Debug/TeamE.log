@@ -1,9 +1,2 @@
-<<<<<<< HEAD
-﻿  block.cpp
-C:\Users\student\Desktop\TeamE_Game\TeamE_Game\block.cpp(529,17): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\TeamE_Game\TeamE_Game\block.cpp(541,51): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+﻿  pause.cpp
   TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\Debug\TeamE.exe
-=======
-﻿  guage.cpp
-  TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\Debug\TeamE.exe
->>>>>>> 7bee6922c6ee2ef94213e1ec1f6d188cb511fc8b

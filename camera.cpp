@@ -94,7 +94,7 @@ void UpdateCamera(void)
 		if (GetMouseState(&mouseState))
 		{
 			// 前フレームのカーソル位置を記録する静的変数
-			static POINT prevCursorPos = { SCREEN_WIDTH / 1.5, SCREEN_HEIGHT / 1.5 };
+			static POINT prevCursorPos = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
 
 			// 現在のカーソル位置を取得
 			POINT cursorPos;
@@ -134,11 +134,11 @@ void UpdateCamera(void)
 			}
 
 			// カーソルを画面中央に戻す
-			SetCursorPos(SCREEN_WIDTH / 1.5, SCREEN_HEIGHT / 1.5);
+			SetCursorPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
 			// 現在のカーソル位置を次回の計算用に保存
-			prevCursorPos.x = SCREEN_WIDTH / 1.5;
-			prevCursorPos.y = SCREEN_HEIGHT / 1.5;
+			prevCursorPos.x = SCREEN_WIDTH / 2;
+			prevCursorPos.y = SCREEN_HEIGHT / 2;
 		}
 
 		// カメラの位置をプレイヤーの位置に設定
@@ -262,150 +262,91 @@ void UpdateCamera(void)
 	//}
 	// 
 	
+	// エディターモードでのカメラ操作
 	if (pMode == MODE_EDIT)
 	{
-		//視点の旋回(Y軸)
-		if (GetKeyboardPress(DIK_Q))
+		// マウスの状態を取得
+		DIMOUSESTATE mouseState;
+
+		if (GetMouseState(&mouseState))
 		{
+			// 現在のカーソル位置を取得
+			POINT cursorPos;
+			GetCursorPos(&cursorPos);
 
-			g_camera.rot.y -= 0.02f;
+			// 移動量を計算
+			static POINT prevCursorPos = { SCREEN_WIDTH / 1.5, SCREEN_HEIGHT / 1.5 };
+			float deltaX = (float)(cursorPos.x - prevCursorPos.x);
+			float deltaY = (float)(cursorPos.y - prevCursorPos.y);
 
-			//角度の正規化
-			if (g_camera.rot.y > D3DX_PI)
+			// マウス感度
+			const float mouseSensitivity = 0.002f;
+			deltaX *= mouseSensitivity;
+			deltaY *= mouseSensitivity;
+
+			// カメラの回転を更新
+			g_camera.rot.y += deltaX; // 水平回転
+			g_camera.rot.x += deltaY; // 垂直回転
+
+			// 垂直回転の制限 (-π/2 ～ π/2)
+			if (g_camera.rot.x > D3DX_PI / 2)
 			{
-				g_camera.rot.y -= D3DX_PI * 2.0f;
+				g_camera.rot.x = D3DX_PI / 2;
 			}
-			else if (g_camera.rot.y < -D3DX_PI)
+			else if (g_camera.rot.x < -D3DX_PI / 2)
 			{
-				g_camera.rot.y += D3DX_PI * 2.0f;
-			}
-
-			g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
-			g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
-
-		}
-		else if (GetKeyboardPress(DIK_E))
-		{
-
-			g_camera.rot.y += 0.02f;
-
-			//角度の正規化
-			if (g_camera.rot.y < -D3DX_PI)
-			{
-				g_camera.rot.y += D3DX_PI * 2.0f;
-			}
-			else if (g_camera.rot.y > D3DX_PI)
-			{
-				g_camera.rot.y -= D3DX_PI * 2.0f;
+				g_camera.rot.x = -D3DX_PI / 2;
 			}
 
-			g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
-			g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
-
+			// カーソルを画面中央に戻す
+			SetCursorPos(SCREEN_WIDTH / 1.5, SCREEN_HEIGHT / 1.5);
 		}
 
-		////注視点の旋回(Y軸)
-		//if (GetKeyboardPress(DIK_Q))
-		//{
+		// WASDキーによるカメラの移動
+		const float cameraSpeed = 5.0f; // 移動速度
+		D3DXVECTOR3 forward, right;
 
-		//	g_camera.rot.y -= 0.02f;
+		// カメラの前方向を計算
+		forward.x = -sinf(g_camera.rot.y);
+		forward.z = -cosf(g_camera.rot.y);
+		forward.y = 0.0f;
 
-		//	//角度の正規化
-		//	if (g_camera.rot.y > D3DX_PI)
-		//	{
-		//		g_camera.rot.y -= D3DX_PI * 2.0f;
-		//	}
+		D3DXVec3Normalize(&forward, &forward);
 
-		//	g_camera.posR.x = g_camera.posV.x + sinf(g_camera.rot.y) * g_camera.fDistance;
-		//	g_camera.posR.z = g_camera.posV.z + cosf(g_camera.rot.y) * g_camera.fDistance;
+		// カメラの右方向を計算
+		right.x = forward.z;
+		right.z = -forward.x;
+		right.y = 0.0f;
 
-		//}
-		//else if (GetKeyboardPress(DIK_E))
-		//{
-
-		//	g_camera.rot.y += 0.02f;
-
-		//	//角度の正規化
-		//	if (g_camera.rot.y < -D3DX_PI)
-		//	{
-		//		g_camera.rot.y += D3DX_PI * 2.0f;
-		//	}
-
-		//	g_camera.posR.x = g_camera.posV.x + sinf(g_camera.rot.y) * g_camera.fDistance;
-		//	g_camera.posR.z = g_camera.posV.z + cosf(g_camera.rot.y) * g_camera.fDistance;
-
-		//}
-
-		//カメラ移動
 		if (GetKeyboardPress(DIK_W))
 		{
-
-			g_camera.posV.x += sinf(g_camera.rot.y) * 5.0f;
-			g_camera.posV.z += cosf(g_camera.rot.y) * 5.0f;
-
-
-			g_camera.posR.x = g_camera.posV.x + sinf(g_camera.rot.y) * g_camera.fDistance;
-			g_camera.posR.z = g_camera.posV.z + cosf(g_camera.rot.y) * g_camera.fDistance;
-
+			g_camera.posV += forward * cameraSpeed;
 		}
-		else if (GetKeyboardPress(DIK_S))
+		if (GetKeyboardPress(DIK_S))
 		{
-
-			g_camera.posV.x -= sinf(g_camera.rot.y) * 5.0f;
-			g_camera.posV.z -= cosf(g_camera.rot.y) * 5.0f;
-
-
-			g_camera.posR.x = g_camera.posV.x + sinf(g_camera.rot.y) * g_camera.fDistance;
-			g_camera.posR.z = g_camera.posV.z + cosf(g_camera.rot.y) * g_camera.fDistance;
-
+			g_camera.posV -= forward * cameraSpeed;
 		}
-		else if (GetKeyboardPress(DIK_A))
+		if (GetKeyboardPress(DIK_A))
 		{
-
-			g_camera.posV.z += sinf(g_camera.rot.y) * 5.0f;
-			g_camera.posV.x -= cosf(g_camera.rot.y) * 5.0f;
-
-
-			g_camera.posR.x = g_camera.posV.x + sinf(g_camera.rot.y) * g_camera.fDistance;
-			g_camera.posR.z = g_camera.posV.z + cosf(g_camera.rot.y) * g_camera.fDistance;
-
+			g_camera.posV -= right * cameraSpeed;
 		}
-		else if (GetKeyboardPress(DIK_D))
+		if (GetKeyboardPress(DIK_D))
 		{
-
-			g_camera.posV.z -= sinf(g_camera.rot.y) * 5.0f;
-			g_camera.posV.x += cosf(g_camera.rot.y) * 5.0f;
-
-
-			g_camera.posR.x = g_camera.posV.x + sinf(g_camera.rot.y) * g_camera.fDistance;
-			g_camera.posR.z = g_camera.posV.z + cosf(g_camera.rot.y) * g_camera.fDistance;
-
+			g_camera.posV += right * cameraSpeed;
 		}
-		else if (GetKeyboardPress(DIK_Z))
+		if (GetKeyboardPress(DIK_Z))
 		{
-			if (g_camera.posV.y >= 500.0f)
-			{
-				g_camera.posV.y = g_camera.posV.y;
-			}
-			else
-			{
-				g_camera.posV.y += cosf(g_camera.rot.y) * 5.0f;
-			}
-
+			g_camera.posV.y += cameraSpeed; // 上昇
 		}
-		else if (GetKeyboardPress(DIK_C))
+		if (GetKeyboardPress(DIK_C))
 		{
-			if (g_camera.posV.y <= 10.0f)
-			{
-				g_camera.posV.y = g_camera.posV.y;
-			}
-			else
-			{
-				g_camera.posV.y -= cosf(g_camera.rot.y) * 5.0f;
-			}
-
+			g_camera.posV.y -= cameraSpeed; // 下降
 		}
 
+		// 注視点の更新
+		g_camera.posR.x = g_camera.posV.x - sinf(g_camera.rot.y);
+		g_camera.posR.y = g_camera.posV.y - sinf(g_camera.rot.x);
+		g_camera.posR.z = g_camera.posV.z - cosf(g_camera.rot.y);
 	}
 
 	//if (KeyboardTrigger(DIK_F2) == true)

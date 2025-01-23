@@ -24,7 +24,8 @@ PAUSE_MENU g_pauseMenu;										//ポーズメニュー
 // ポーズ項目の拡大率を管理する配列
 float pauseScales[MAX_PAUSE] = { PAUSE_MIN_SCALE, PAUSE_MIN_SCALE, PAUSE_MIN_SCALE };
 
-//HWND g_hWnd;
+// 項目ごとの透明度を保持する配列
+float pauseAlphas[MAX_PAUSE] = { 0.3f, 0.3f, 0.3f }; // 初期は全て半透明（範囲外状態）
 
 //===============================================================
 //ポーズの初期化処理
@@ -198,47 +199,89 @@ void UpdatePause(void)
 
 	VERTEX_2D* pVtx;
 
-	// 現在のカーソル位置を取得
+	// マウスカーソルの位置を取得
 	POINT cursorPos;
 	GetCursorPos(&cursorPos);
 
+	// ウィンドウハンドルを取得
+	HWND hwnd = GetActiveWindow();
 
-	if (KeyboardTrigger(DIK_UP) || JoyPadTrigger(JOYKEY_UP)) 
-	{
-		//PlaySound(SOUND_LABEL_PAUSE2);
-		g_pauseMenu = static_cast<PAUSE_MENU>((g_pauseMenu - 1 + MAX_PAUSE) % MAX_PAUSE);
-	}
-	else if (KeyboardTrigger(DIK_DOWN) || JoyPadTrigger(JOYKEY_DOWN)) 
-	{
-		//PlaySound(SOUND_LABEL_PAUSE2);
-		g_pauseMenu = static_cast<PAUSE_MENU>((g_pauseMenu + 1) % MAX_PAUSE);
-	}
+	// スクリーン座標をクライアント座標に変換
+	ScreenToClient(hwnd, &cursorPos);
 
-	// 拡大率の更新
-	for (int p = 0; p < MAX_PAUSE; p++)
+	// クライアントサイズを取得
+	RECT clientRect;
+	GetClientRect(hwnd, &clientRect);
+
+	// ウィンドウスケールを計算
+	float screenWidth = 1280.0f; // ゲームの解像度
+	float screenHeight = 720.0f;
+	float scaleX = screenWidth / (clientRect.right - clientRect.left);
+	float scaleY = screenHeight / (clientRect.bottom - clientRect.top);
+
+	// マウス座標をスケール
+	float mouseX = cursorPos.x * scaleX;
+	float mouseY = cursorPos.y * scaleY;
+
+	// マウスカーソルが当たっている項目を探す
+	int selectedByMouse = -1; // -1は未選択
+
+	for (int nCnt = 0; nCnt < MAX_PAUSE; nCnt++) 
 	{
-		if (p == g_pauseMenu)
+		float scale = pauseScales[nCnt];
+		float centerX = 650.0f; // 中心X座標
+		float centerY = 200.0f + nCnt * 150.0f; // 中心Y座標
+
+		// 領域の計算
+		float left = centerX - 150.0f * scale;
+		float right = centerX + 150.0f * scale;
+		float top = centerY - 50.0f * scale;
+		float bottom = centerY + 50.0f * scale;
+
+		// 範囲内判定
+		if (mouseX >= left && mouseX <= right &&
+			mouseY >= top && mouseY <= bottom) 
 		{
-			// 選択中の項目を拡大（スムーズに MAX_SCALE に近づく）
-			if (pauseScales[p] < PAUSE_MAX_SCALE)
+			selectedByMouse = nCnt; // 項目のインデックスを記録
+			g_pauseMenu = static_cast<PAUSE_MENU>(nCnt); // 選択状態を更新
+		}
+	}
+
+	// 項目の透明度を更新
+	for (int nCnt = 0; nCnt < MAX_PAUSE; nCnt++) 
+	{
+		if (selectedByMouse == -1) 
+		{
+			// 範囲外ならすべて半透明
+			pauseAlphas[nCnt] -= 0.1f; // 徐々に薄く
+			if (pauseAlphas[nCnt] < 0.3f) pauseAlphas[nCnt] = 0.3f;
+		}
+		else if (nCnt == g_pauseMenu) 
+		{
+			// 選択中の項目は濃く
+			pauseAlphas[nCnt] += 0.1f; // 徐々に濃く
+			if (pauseAlphas[nCnt] > 1.0f)
 			{
-				pauseScales[p] += PAUSE_SCALE_SPEED;
+				pauseAlphas[nCnt] = 1.0f;
 			}
 		}
-		else
+		else 
 		{
-			// 非選択項目を縮小（スムーズに MIN_SCALE に近づく）
-			if (pauseScales[p] > PAUSE_MIN_SCALE)
+			// 非選択の項目は薄く
+			pauseAlphas[nCnt] -= 0.1f; // 徐々に薄く
+
+			if (pauseAlphas[nCnt] < 0.5f)
 			{
-				pauseScales[p] -= PAUSE_SCALE_SPEED;
+				pauseAlphas[nCnt] = 0.5f;
 			}
 		}
 	}
 
-	//頂点バッファのロック
+	// 頂点バッファのロック
 	g_pVtxBuffPause->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (int nCntPause = 0; nCntPause < MAX_PAUSE; nCntPause++)
+	// 項目の描画設定
+	for (int nCntPause = 0; nCntPause < MAX_PAUSE; nCntPause++) 
 	{
 		float scale = pauseScales[nCntPause];
 		float centerX = 650.0f;
@@ -250,54 +293,43 @@ void UpdatePause(void)
 		pVtx[2].pos = D3DXVECTOR3(centerX - 150.0f * scale, centerY + 50.0f * scale, 0.0f);
 		pVtx[3].pos = D3DXVECTOR3(centerX + 150.0f * scale, centerY + 50.0f * scale, 0.0f);
 
-		// カラー設定（選択中なら白、不選択なら薄い白）
-		D3DXCOLOR color;
+		// カラー設定
+		D3DXCOLOR color = D3DXCOLOR(1.0f, 1.0f, 1.0f, pauseAlphas[nCntPause]);
 
-		if (nCntPause == g_pauseMenu)
-		{
-			color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		}
-		else
-		{
-			color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.6f);
-		}
-
-		for (int nCntPause2 = 0; nCntPause2 < 4; nCntPause2++)
+		// 頂点カラーを設定
+		for (int nCntPause2 = 0; nCntPause2 < 4; nCntPause2++) 
 		{
 			pVtx[nCntPause2].col = color;
 		}
 
+		// 頂点ポインタを次の項目に進める
 		pVtx += 4;
 	}
 
-	//頂点バッファのアンロック
+	// 頂点バッファのアンロック
 	g_pVtxBuffPause->Unlock();
 
-
-	if (g_fade == FADE_NONE && (KeyboardTrigger(DIK_RETURN) == true || JoyPadTrigger(JOYKEY_A) == true))
-	{//決定(ENTER)キーが押された
-		//メニューに合わせてモードの切り替え
-
-		//PlaySound(SOUND_LABEL_PAUSE);
-
-		switch (g_pauseMenu)
+	// 範囲内クリックの場合のみ処理を実行
+	if (g_fade == FADE_NONE && GetMouseButtonTrigger(0)) 
+	{
+		if (selectedByMouse != -1) 
 		{
-		case PAUSE_MENU_CONTINUE:
-			SetEnablePause(false);
-
-			break;
-		case PAUSE_MENU_RETRY:
-			SetFade(MODE_GAME);
-
-			break;
-		case PAUSE_MENU_QUIT:
-			SetFade(MODE_TITLE);
-
-			break;
+			// 範囲内の項目がクリックされた場合
+			switch (g_pauseMenu) 
+			{
+			case PAUSE_MENU_CONTINUE:
+				SetEnablePause(false);
+				break;
+			case PAUSE_MENU_RETRY:
+				SetFade(MODE_GAME);
+				break;
+			case PAUSE_MENU_QUIT:
+				SetFade(MODE_TITLE);
+				break;
+			}
 		}
-
+		// 範囲外をクリックした場合は何もしない
 	}
-
 }
 //===============================================================
 //ポーズの描画処理

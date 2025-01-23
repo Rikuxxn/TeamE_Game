@@ -8,6 +8,7 @@
 #include "camera.h"
 #include "input.h"
 #include "player.h"
+#include "fade.h"
 
 //グローバル変数
 Camera g_camera;//カメラ情報
@@ -26,7 +27,7 @@ void InitCamera(void)
 	g_camera.posV = D3DXVECTOR3(0.0f, 280.0f, -20.0f);
 	g_camera.posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_camera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);//固定でいい
-	g_camera.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	g_camera.rot = D3DXVECTOR3(0.0f, 1.57f, 0.0f);
 	g_camera.fDistance = sqrtf(((g_camera.posV.x - g_camera.posR.x) * (g_camera.posV.x - g_camera.posR.x)) + ((g_camera.posV.y - g_camera.posR.y) * (g_camera.posV.y - g_camera.posR.y)) + ((g_camera.posV.z - g_camera.posR.z) * (g_camera.posV.z - g_camera.posR.z)));
 	bFirstPerson = false;
 
@@ -53,6 +54,7 @@ void UninitCamera(void)
 void UpdateCamera(void)
 {
 	MODE pMode = GetMode();
+	FADE g_fade = GetFade(); // 現在の状態
 
 	Player* pPlayer = GetPlayer();
 
@@ -91,7 +93,7 @@ void UpdateCamera(void)
 		// マウスの状態を取得
 		DIMOUSESTATE mouseState;
 
-		if (GetMouseState(&mouseState))
+		if (g_fade == FADE_NONE && GetMouseState(&mouseState))
 		{
 			// 前フレームのカーソル位置を記録する静的変数
 			static POINT prevCursorPos = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
@@ -153,6 +155,19 @@ void UpdateCamera(void)
 
 	}
 
+	if (pMode == MODE_TITLE)
+	{
+
+		// カメラの位置をプレイヤーの位置に設定
+		g_camera.posV = pPlayer->pos;
+		g_camera.posV.y += 70.0f; // 頭部の高さ
+
+		// カメラの回転に基づいて注視点を計算
+		float lookDistance = 10.0f; // 注視点までの距離
+		g_camera.posR.x = g_camera.posV.x - sinf(g_camera.rot.y) * lookDistance * cosf(g_camera.rot.x);
+		g_camera.posR.y = g_camera.posV.y - sinf(g_camera.rot.x) * lookDistance;
+		g_camera.posR.z = g_camera.posV.z - cosf(g_camera.rot.y) * lookDistance * cosf(g_camera.rot.x);
+	}
 
 	//if (g_cameramode == CAMERAMODE_NORMAL)
 	//{

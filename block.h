@@ -9,7 +9,7 @@
 
 #include "main.h"
 
-#define MAX_BLOCK (256)	// ブロックの使う数
+#define MAX_BLOCK (200)	// ブロックの使う数
 #define MAX_BLOCKTEXTURE (512)//ブロックの最大テクスチャ
 
 // ブロックの種類
@@ -34,12 +34,12 @@ typedef enum
 	BLOCKTYPE_PARKENTRANCE_R,
 	BLOCKTYPE_PARKENTRANCE_L,
 	BLOCKTYPE_PARKWALL,
-
 	BLOCKTYPE_SLIDE_PILLAR,
 	BLOCKTYPE_SLIDE,
 	BLOCKTYPE_SLIDE_LADDER,
 	BLOCKTYPE_SLIDE_TOP,
 	BLOCKTYPE_SLIDE_STAIRS,
+
 	BLOCKTYPE_BENCH,
 	BLOCKTYPE_ROCKET,
 	BLOCKTYPE_SLOT,
@@ -49,6 +49,7 @@ typedef enum
 	BLOCKTYPE_SHOOTING,
 	BLOCKTYPE_VENDING,
 	BLOCKTYPE_UFOCATCHER_MINI,
+	BLOCKTYPE_TITLEBOARD,
 
 	BLOCKTYPE_MAX
 }BLOCKTYPE;
@@ -58,8 +59,8 @@ typedef struct
 {
 	LPDIRECT3DTEXTURE9 apTexture[MAX_BLOCKTEXTURE];	//	テクスチャへのポインタ
 	LPD3DXMESH pMesh;
-	LPD3DXBUFFER pBuffMat;				//	マテリアルへのポインタ
-	DWORD dwNumMat;						//	マテリアル数
+	LPD3DXBUFFER pBuffMat;				// マテリアルへのポインタ
+	DWORD dwNumMat;						// マテリアル数
 	D3DXVECTOR3 vtxMin;
 	D3DXVECTOR3 vtxMax;
 }Blockinfo;
@@ -67,15 +68,17 @@ typedef struct
 // ブロック構造体
 typedef struct
 {
-	D3DXVECTOR3 pos;					//	位置(オフセット)
-	D3DXVECTOR3 move;					//移動量
-	D3DXVECTOR3 rot;					//	向き
+	D3DXVECTOR3 pos;					// 位置(オフセット)
+	D3DXVECTOR3 move;					// 移動量
+	D3DXVECTOR3 rot;					// 向き
 	D3DXVECTOR3 size;
 	int nType;
 	bool bUse;
-	D3DXMATRIX mtxWorld;				//	ワールドマトリックス
+	D3DXMATRIX mtxWorld;				// ワールドマトリックス
 	bool bScoreAdded;					// スコア加算済みかどうか
 	bool bSoundPlayed;					// 音を再生済みかどうか
+	float sightRange;
+	float sightAngle;
 	Blockinfo blockinfo[BLOCKTYPE_MAX];
 }Block;
 
@@ -113,6 +116,7 @@ static const char* BLOCK[BLOCKTYPE_MAX] =
 	"data/MODEL/Shootinggame.x",				// シューティングゲーム
 	"data/MODEL/Vending.x",						// 自販機
 	"data/MODEL/UFO_mini.x",					// UFOキャッチャーミニ
+	"data/MODEL/title_board.x",					// タイトルロゴ表示用ボード
 
 };
 
@@ -131,6 +135,7 @@ bool OverlapOnAxis(const D3DXVECTOR3& center1, const D3DXVECTOR3 axes1[3], const
 	const D3DXVECTOR3& center2, const D3DXVECTOR3 axes2[3], const D3DXVECTOR3& size2, const D3DXVECTOR3& axis);
 float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], const D3DXVECTOR3& axis);
 
+bool InSightBlock(void);
 Block* GetBlock(void);
 bool GetExit(void);
 

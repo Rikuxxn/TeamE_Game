@@ -46,10 +46,14 @@ int nCounter;
 //==============================================
 void InitGame(void)
 {
-	SetCursorPos(SCREEN_WIDTH / 1.5, SCREEN_HEIGHT / 1.5);
+
+	// カーソルを画面中央に戻す
+	SetCursorPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+
 
 	// カーソルを非表示にする
 	SetCursorVisibility(false);
+
 
 	//メッシュフィールドの初期化処理
 	InitMeshfield();

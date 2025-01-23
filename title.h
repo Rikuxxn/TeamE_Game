@@ -9,32 +9,33 @@
 
 #include "main.h"
 
-//タイトルの種類の構造体
+//マクロ定義
+#define MAX_TITLE (2)//選択項目数
+
+#define TITLE_MIN_SCALE (1.0f)
+#define TITLE_MAX_SCALE (1.2f)
+#define TITLE_SCALE_SPEED (0.02f)
+#define TITLE_ALPHA_SPEED (0.05f)
+
 typedef enum
 {
-	TITLE_FIRST=0,	//一つ目のタイトル
-	TITLE_SECOND,	//二つ目のタイトル
-	TITLE_TWO,		//ナンバー
+	TITLE_MENU_START = 0,           //ゲームスタート
+	TITLE_MENU_QUIT,				//ウィンドウを閉じる
+	TITLE_MENU_MAX
+}TITLE_MENU;
 
-	TITLE_MAX
-}TITLE;
 
-//タイトルの状態
-typedef enum
+static const char* TITLE_TEXTURE[MAX_TITLE] =
 {
-	TITLE_NONE=0,	//通常状態
-	TITLE_FLASH,	//点滅状態
-	STATE_MAX
-}TITLESTATE;
+	"data\\TEXTURE\\start.png",
+	"data\\TEXTURE\\end.png",
+};
 
 //プロトタイプ宣言
 void InitTitle(void);
 void UninitTitle(void);
 void UpdateTitle(void);
 void DrawTitle(void);
-
-void SetTitle(int nType,D3DXVECTOR3 pos);//タイトルの設定
-void TitleFlash(int nType);//タイトルの点滅
 
 #endif
 

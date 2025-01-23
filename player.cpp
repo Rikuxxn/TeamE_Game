@@ -32,13 +32,15 @@ bool g_bFinishMotion;		//モーションセットが終わったか
 void InitPlayer(void)
 {
 
+	MODE pMode = GetMode();
+
 	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
 
 	//デバイスの取得
 	pDevice = GetDevice();
 
 	//初期化
-	g_player.pos = D3DXVECTOR3(0.0f, 0.0f, -840.0f);			//位置を初期化する
+	g_player.pos = D3DXVECTOR3(120.0f, 0.0f, -540.0f);			//位置を初期化する
 	g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//前の位置を初期化する
 	g_player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//移動量を初期化する
 	g_player.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//向きを初期化する
@@ -312,8 +314,8 @@ void UpdatePlayer(void)
 			{//Sキーが押された
 
 				//移動量を更新(増加させる)
-				g_player.move.x += sinf(pCamera->rot.y + -D3DX_PI * 0.75f) * PLAYER_BACKSPEED;
-				g_player.move.z += cosf(pCamera->rot.y + -D3DX_PI * 0.75f) * PLAYER_BACKSPEED;
+				g_player.move.x += sinf(pCamera->rot.y + -D3DX_PI * 0.75f) * PLAYER_SPEED;
+				g_player.move.z += cosf(pCamera->rot.y + -D3DX_PI * 0.75f) * PLAYER_SPEED;
 
 				g_player.rotDestPlayer.y = pCamera->rot.y + D3DX_PI * 0.25f;
 
@@ -370,8 +372,8 @@ void UpdatePlayer(void)
 			{//Sキーが押された
 
 				//移動量を更新(増加させる)
-				g_player.move.x += sinf(pCamera->rot.y + D3DX_PI * 0.75f) * PLAYER_BACKSPEED;
-				g_player.move.z += cosf(pCamera->rot.y + D3DX_PI * 0.75f) * PLAYER_BACKSPEED;
+				g_player.move.x += sinf(pCamera->rot.y + D3DX_PI * 0.75f) * PLAYER_SPEED;
+				g_player.move.z += cosf(pCamera->rot.y + D3DX_PI * 0.75f) * PLAYER_SPEED;
 
 				g_player.rotDestPlayer.y = pCamera->rot.y + (-D3DX_PI * 0.25f);
 
@@ -425,8 +427,8 @@ void UpdatePlayer(void)
 		{//Sキーが押された
 
 			//移動量を更新(増加させる)
-			g_player.move.x -= sinf(pCamera->rot.y) * PLAYER_BACKSPEED;
-			g_player.move.z -= cosf(pCamera->rot.y) * PLAYER_BACKSPEED;
+			g_player.move.x -= sinf(pCamera->rot.y) * PLAYER_SPEED;
+			g_player.move.z -= cosf(pCamera->rot.y) * PLAYER_SPEED;
 
 			g_player.rotDestPlayer.y = pCamera->rot.y;
 

@@ -32,12 +32,15 @@ void InitBlock(void)
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
 		// 初期化
-		g_aBlock[nCntBlock].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//位置
-		g_aBlock[nCntBlock].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//向き
-		g_aBlock[nCntBlock].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//移動量
+		g_aBlock[nCntBlock].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// 位置
+		g_aBlock[nCntBlock].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// 向き
+		g_aBlock[nCntBlock].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// 移動量
 		g_aBlock[nCntBlock].bUse = false;
 		g_aBlock[nCntBlock].bScoreAdded = false;
 		g_aBlock[nCntBlock].bSoundPlayed = false;
+		g_aBlock[nCntBlock].sightRange = 165.0f;					// ブロックの判定距離
+		g_aBlock[nCntBlock].sightAngle = D3DXToRadian(110.0f);		// ブロックの判定の広さ
+
 		g_aBlock[nCntBlock].nType = BLOCKTYPE_WALL;
 	}
 
@@ -209,6 +212,18 @@ void UpdateBlock(void)
 			{
 				g_aBlock[nCntBlock].rot.z += D3DX_PI * 2.0f;
 			}
+
+
+			if (InSightBlock())
+			{
+				if (KeyboardTrigger(DIK_E))
+				{
+
+				}
+			}
+
+
+
 
 			////位置を更新
 			//g_aBlock[nCntBlock].pos.x += g_aBlock[nCntBlock].move.x;
@@ -535,6 +550,56 @@ float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], co
 	return fabs(D3DXVec3Dot(&axes[0], &axis)) * size.x / 2 +
 		fabs(D3DXVec3Dot(&axes[1], &axis)) * size.y / 2 +
 		fabs(D3DXVec3Dot(&axes[2], &axis)) * size.z / 2;
+}
+//=================================
+//ブロックの判定範囲処理
+//=================================
+bool InSightBlock(void)
+{
+	Player* pPlayer = GetPlayer();// プレイヤーのポインタ
+
+	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
+	{
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE2)
+		{
+			// ブロックの正面ベクトル
+			D3DXVECTOR3 blockFront;
+
+			blockFront.x = -sinf(g_aBlock[nCntBlock].rot.y);
+			blockFront.y = 0.0f;
+			blockFront.z = -cosf(g_aBlock[nCntBlock].rot.y);
+
+			// プレイヤーとの方向ベクトル
+			D3DXVECTOR3 toPlayer;
+
+			toPlayer.x = pPlayer->pos.x - g_aBlock[nCntBlock].pos.x;
+			toPlayer.y = 0.0f;
+			toPlayer.z = pPlayer->pos.z - g_aBlock[nCntBlock].pos.z;
+
+			// ブロックの正面ベクトルを正規化
+			D3DXVec3Normalize(&blockFront, &blockFront);
+
+			// プレイヤーとの方向ベクトルを正規化
+			D3DXVec3Normalize(&toPlayer, &toPlayer);
+
+			float dotProduct = D3DXVec3Dot(&blockFront, &toPlayer);
+
+			if (dotProduct > cosf(g_aBlock[nCntBlock].sightAngle * 0.5f))
+			{
+				float distanceSquared =
+					(g_aBlock[nCntBlock].pos.x - pPlayer->pos.x) * (g_aBlock[nCntBlock].pos.x - pPlayer->pos.x) +
+					(g_aBlock[nCntBlock].pos.y - pPlayer->pos.y) * (g_aBlock[nCntBlock].pos.y - pPlayer->pos.y) +
+					(g_aBlock[nCntBlock].pos.z - pPlayer->pos.z) * (g_aBlock[nCntBlock].pos.z - pPlayer->pos.z);
+
+				if (distanceSquared <= g_aBlock[nCntBlock].sightRange * g_aBlock[nCntBlock].sightRange)
+				{
+					return true;// 判定範囲内
+				}
+			}
+
+			return false;// 判定範囲外
+		}
+	}
 }
 //============================================
 //ブロックの取得

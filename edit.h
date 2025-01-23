@@ -8,9 +8,12 @@
 #define _EDIT_H_//2重インクルード防止のマクロ定義
 
 #include "main.h"
+#include "block.h"
 
 #define BLOCKPATH_1 ("data/block.txt")
 #define WALLPATH_1 ("data/wall.txt")
+#define TITLEPATH_1 ("data/title.txt")
+
 #define MAX_EDITWORD (4096)
 
 //テクスチャ構造体
@@ -39,9 +42,13 @@ void InitEdit(void);
 void UninitEdit(void);
 void UpdateEdit(void);
 void DrawEdit(void);
+
 void SaveBlockData(void);
 void SaveWallData(void);
+void SaveTitleData(void);
+
 void LoadBlockData(void);
 void LoadWallData(void);
+void LoadTitleData(void);
 
 #endif

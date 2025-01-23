@@ -13,7 +13,6 @@
 
 //マクロ定義
 #define PLAYER_SPEED (0.70f)				//プレイヤーの歩くスピード
-#define PLAYER_BACKSPEED (0.45f)				//プレイヤーの後ろ歩きスピード
 #define PLAYER_DUSHSPEED (1.6f)				//プレイヤーのダッシュスピード
 #define PLAYER_STAMINA (240)				//プレイヤーのスタミナ
 

@@ -29,10 +29,12 @@ typedef enum
 	BLOCKTYPE_GASYAPON1,
 	BLOCKTYPE_RACEGAME,
 	BLOCKTYPE_EXCHANGE,
+
 	BLOCKTYPE_PARKROOF,
 	BLOCKTYPE_PARKENTRANCE_R,
 	BLOCKTYPE_PARKENTRANCE_L,
 	BLOCKTYPE_PARKWALL,
+
 	BLOCKTYPE_SLIDE_PILLAR,
 	BLOCKTYPE_SLIDE,
 	BLOCKTYPE_SLIDE_LADDER,
@@ -44,6 +46,9 @@ typedef enum
 	BLOCKTYPE_SLOT_CHAIR,
 	BLOCKTYPE_PURIKURA,
 	BLOCKTYPE_AIRHOCKEY,
+	BLOCKTYPE_SHOOTING,
+	BLOCKTYPE_VENDING,
+	BLOCKTYPE_UFOCATCHER_MINI,
 
 	BLOCKTYPE_MAX
 }BLOCKTYPE;
@@ -105,6 +110,9 @@ static const char* BLOCK[BLOCKTYPE_MAX] =
 	"data/MODEL/Chair.x",						// スロットのいす
 	"data/MODEL/Purikura.x",					// プリクラ
 	"data/MODEL/Airhockey.x",					// エアホッケー
+	"data/MODEL/Shootinggame.x",				// シューティングゲーム
+	"data/MODEL/Vending.x",						// 自販機
+	"data/MODEL/UFO_mini.x",					// UFOキャッチャーミニ
 
 };
 

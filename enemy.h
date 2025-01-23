@@ -24,8 +24,7 @@ typedef struct
 {
     D3DXVECTOR3 pos;                            // “G‚ÌˆÊ’u
     D3DXVECTOR3 posOld;						    // ‘O‚ÌˆÊ’u
-    D3DXVECTOR3 rot;						    
-    D3DXVECTOR3 direction;                      // “G‚ÌŒü‚«
+    D3DXVECTOR3 rot;						    // “G‚ÌŒü‚«
     float sightRange;                           // ‹ŠE‚Ì”ÍˆÍ
     float sightAngle;                           // ‹ŠE‚ÌŠp“x
     EnemyState state;                           // Œ»İ‚Ìó‘Ô

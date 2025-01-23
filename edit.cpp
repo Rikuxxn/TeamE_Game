@@ -26,6 +26,11 @@ int g_nCntEdit;
 //=============================
 void InitEdit(void)
 {
+
+    // カーソルを非表示にする
+    SetCursorVisibility(false);
+
+
     // ブロックの初期化処理
     InitBlock();
 

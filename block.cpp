@@ -13,10 +13,10 @@
 #include <stdio.h>
 
 //グローバル変数
-Block g_aBlock[MAX_BLOCK];//ブロック情報
-Block g_info[BLOCKTYPE_MAX];//ブロックの素材情報
+Block g_aBlock[MAX_BLOCK];		//ブロック情報
+Block g_info[BLOCKTYPE_MAX];	//ブロックの素材情報
 
-bool g_bExit;//出口に入ったか
+bool g_bExit;					//出口に入ったか
 
 //=============================
 //ブロックの初期化処理
@@ -55,9 +55,9 @@ void InitBlock(void)
 
 	}
 
-	int nNumVtx;//頂点数
-	DWORD sizeFVF;//頂点フォーマットのサイズ
-	BYTE* pVtxBuff;//頂点バッファへのポインタ
+	int nNumVtx;					//頂点数
+	DWORD sizeFVF;					//頂点フォーマットのサイズ
+	BYTE* pVtxBuff;					//頂点バッファへのポインタ
 
 	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
 	{
@@ -143,36 +143,33 @@ void UninitBlock(void)
 {
 	//StopSound(SOUND_LABEL_MONEY);
 
-	//for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
-	//{
-		for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
+	{
+
+		for (int nCntMat = 0; nCntMat < (int)g_info[nCnt].blockinfo[nCnt].dwNumMat; nCntMat++)
 		{
-
-			for (int nCntMat = 0; nCntMat < (int)g_info[nCnt].blockinfo[nCnt].dwNumMat; nCntMat++)
+			//テクスチャの破棄
+			if (g_info[nCnt].blockinfo[nCnt].apTexture[nCntMat] != NULL)
 			{
-				//テクスチャの破棄
-				if (g_info[nCnt].blockinfo[nCnt].apTexture[nCntMat] != NULL)
-				{
-					g_info[nCnt].blockinfo[nCnt].apTexture[nCntMat]->Release();
-					g_info[nCnt].blockinfo[nCnt].apTexture[nCntMat] = NULL;
-				}
-			}
-
-			//メッシュの破棄
-			if (g_info[nCnt].blockinfo[nCnt].pMesh != NULL)
-			{
-				g_info[nCnt].blockinfo[nCnt].pMesh->Release();
-				g_info[nCnt].blockinfo[nCnt].pMesh = NULL;
-			}
-
-			//マテリアルの破棄
-			if (g_info[nCnt].blockinfo[nCnt].pBuffMat != NULL)
-			{
-				g_info[nCnt].blockinfo[nCnt].pBuffMat->Release();
-				g_info[nCnt].blockinfo[nCnt].pBuffMat = NULL;
+				g_info[nCnt].blockinfo[nCnt].apTexture[nCntMat]->Release();
+				g_info[nCnt].blockinfo[nCnt].apTexture[nCntMat] = NULL;
 			}
 		}
-	//}
+
+		//メッシュの破棄
+		if (g_info[nCnt].blockinfo[nCnt].pMesh != NULL)
+		{
+			g_info[nCnt].blockinfo[nCnt].pMesh->Release();
+			g_info[nCnt].blockinfo[nCnt].pMesh = NULL;
+		}
+
+		//マテリアルの破棄
+		if (g_info[nCnt].blockinfo[nCnt].pBuffMat != NULL)
+		{
+			g_info[nCnt].blockinfo[nCnt].pBuffMat->Release();
+			g_info[nCnt].blockinfo[nCnt].pBuffMat = NULL;
+		}
+	}
 	
 }
 //=============================
@@ -312,8 +309,6 @@ void SetBlock(D3DXVECTOR3 pos, D3DXVECTOR3 rot,int nType)
 //=============================
 void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove, D3DXVECTOR3* pSize)
 {
-
-	//bool bTask = false;//触れているかどうか
 
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{

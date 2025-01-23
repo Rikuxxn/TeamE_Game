@@ -29,7 +29,7 @@ Enemy g_aEnemy;						//敵情報
 bool g_bEnd;						//捕まった判定
 bool Inside;						//視界に入ったか
 bool isPlayerInSightPrev = false;
-bool isReversePatrol = false; // 巡回の方向（false: 順回り, true: 逆回り）
+bool isReversePatrol = false;		// 巡回の方向（false: 順回り, true: 逆回り）
 
 int currentPatrolPoint = 0;			// 現在の巡回ポイント
 int g_nIdxShadowEnemy;
@@ -403,7 +403,7 @@ void UpdateEnemy(void)
 				g_aEnemy.move.x += sinf(angleToTarget) * moveSpeed;
 				g_aEnemy.move.z += cosf(angleToTarget) * moveSpeed;
 
-				g_aEnemy.direction.y = angleToTarget + D3DX_PI;
+				g_aEnemy.rot.y = angleToTarget + D3DX_PI;
 			}
 			else
 			{
@@ -439,7 +439,7 @@ void UpdateEnemy(void)
 			g_aEnemy.move.x += sinf(fAngle) * 1.15f;
 			g_aEnemy.move.z += cosf(fAngle) * 1.15f;
 
-			g_aEnemy.direction.y = fAngle + D3DX_PI;
+			g_aEnemy.rot.y = fAngle + D3DX_PI;
 
 			g_aEnemy.motion.motionType = MOTIONTYPE_MOVE;
 
@@ -523,7 +523,7 @@ void DrawEnemy(void)
 		D3DXMatrixIdentity(&g_aEnemy.mtxWorld);
 
 		//向きを反映
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, g_aEnemy.direction.y, g_aEnemy.direction.x, g_aEnemy.direction.z);
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, g_aEnemy.rot.y, g_aEnemy.rot.x, g_aEnemy.rot.z);
 		D3DXMatrixMultiply(&g_aEnemy.mtxWorld, &g_aEnemy.mtxWorld, &mtxRot);
 
 		//位置を反映
@@ -626,9 +626,9 @@ bool isPlayerInSight(void)
 	// 敵の正面ベクトルを計算
 	D3DXVECTOR3 enemyFront;
 
-	enemyFront.x = -sinf(g_aEnemy.direction.y);
+	enemyFront.x = -sinf(g_aEnemy.rot.y);
 	enemyFront.y = 0.0f;
-	enemyFront.z = -cosf(g_aEnemy.direction.y);
+	enemyFront.z = -cosf(g_aEnemy.rot.y);
 
 	// プレイヤーとの方向ベクトル
 	D3DXVECTOR3 toPlayer;

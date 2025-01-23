@@ -45,12 +45,15 @@ int g_nCntTitleAnim2;//タイトル状態
 int g_nPatternAnim;//状態パターン
 int g_aTimeCount;//タイムカウント
 
-
 //==================
 //タイトルの初期化
 //==================
 void InitTitle(void)
 {
+
+	// カーソルを表示する
+	SetCursorVisibility(true);
+
 
 	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
 

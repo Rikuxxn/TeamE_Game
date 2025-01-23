@@ -6,7 +6,7 @@
 //=======================================
 #include "main.h"
 #include "meshceiling.h"
-//ooooooooooooh
+
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureMeshCeiling = NULL;//テクスチャへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffMeshCeiling = NULL;//頂点バッファへのポインタ
@@ -40,7 +40,7 @@ void InitMeshCeiling(void)
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\ground2.png",
+		"data\\TEXTURE\\floor.png",
 		&g_pTextureMeshCeiling);
 
 	//インデックスバッファの生成

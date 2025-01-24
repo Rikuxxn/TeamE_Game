@@ -15,6 +15,7 @@
 #define TITLEPATH_1 ("data/title.txt")
 
 #define MAX_EDITWORD (4096)
+#define MAX_SPEED (10.0f)       // エディター上のブロックの移動量
 
 //テクスチャ構造体
 typedef struct

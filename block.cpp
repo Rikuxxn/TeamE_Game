@@ -38,9 +38,7 @@ void InitBlock(void)
 		g_aBlock[nCntBlock].bUse = false;
 		g_aBlock[nCntBlock].bScoreAdded = false;
 		g_aBlock[nCntBlock].bSoundPlayed = false;
-		g_aBlock[nCntBlock].sightRange = 165.0f;					// ブロックの判定距離
-		g_aBlock[nCntBlock].sightAngle = D3DXToRadian(110.0f);		// ブロックの判定の広さ
-
+		g_aBlock[nCntBlock].bInsight = false;
 		g_aBlock[nCntBlock].nType = BLOCKTYPE_WALL;
 	}
 
@@ -183,6 +181,8 @@ void UpdateBlock(void)
 
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
+		Player* pPlayer = GetPlayer(); // プレイヤー情報の取得
+
 		if (g_aBlock[nCntBlock].bUse == true)
 		{
 			// 回転角度の正規化
@@ -213,16 +213,19 @@ void UpdateBlock(void)
 				g_aBlock[nCntBlock].rot.z += D3DX_PI * 2.0f;
 			}
 
-
-			if (InSightBlock())
-			{
+			if (BlockInteraction())
+			{// 範囲内に入ったら
 				if (KeyboardTrigger(DIK_E))
 				{
-
+					// ミニゲーム用の判定をtrue
+					g_aBlock[nCntBlock].bInsight = true;
 				}
 			}
-
-
+			else
+			{// 範囲外
+				// ミニゲーム用の判定をfalse
+				g_aBlock[nCntBlock].bInsight = false;
+			}
 
 
 			////位置を更新
@@ -472,7 +475,7 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 bool CheckOBBCollision(const D3DXMATRIX& world1, const D3DXVECTOR3& size1,
 	const D3DXMATRIX& world2, const D3DXVECTOR3& size2)
 {
-	//ワールドマトリックス！！
+	// ワールドマトリックス！！
 	// 各 OBB の中心座標を計算
 	D3DXVECTOR3 center1(world1._41, world1._42, world1._43);
 	D3DXVECTOR3 center2(world2._41, world2._42, world2._43);
@@ -530,7 +533,7 @@ bool CheckOBBCollision(const D3DXMATRIX& world1, const D3DXVECTOR3& size1,
 bool OverlapOnAxis(const D3DXVECTOR3& center1, const D3DXVECTOR3 axes1[3], const D3DXVECTOR3& size1,
 	const D3DXVECTOR3& center2, const D3DXVECTOR3 axes2[3], const D3DXVECTOR3& size2, const D3DXVECTOR3& axis)
 {
-	// 各 OBB を指定された軸に投影したの時の半径を計算
+	// 各 OBB を指定された軸に投影した時の半径を計算
 	float radius1 = GetProjectionRadius(size1, axes1, axis);
 	float radius2 = GetProjectionRadius(size2, axes2, axis);
 
@@ -552,52 +555,32 @@ float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], co
 		fabs(D3DXVec3Dot(&axes[2], &axis)) * size.z / 2;
 }
 //=================================
-//ブロックの判定範囲処理
+//イベント判定処理
 //=================================
-bool InSightBlock(void)
+bool BlockInteraction(void)
 {
-	Player* pPlayer = GetPlayer();// プレイヤーのポインタ
 
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
-		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE2)
+		Player* pPlayer = GetPlayer();
+
+		if (g_aBlock[nCntBlock].bUse && g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
 		{
-			// ブロックの正面ベクトル
-			D3DXVECTOR3 blockFront;
+			// ブロックとの距離を計算
+			float distance = 
+				(g_aBlock[nCntBlock].pos.x - pPlayer->pos.x) * (g_aBlock[nCntBlock].pos.x - pPlayer->pos.x) +
+				(g_aBlock[nCntBlock].pos.y - pPlayer->pos.y) * (g_aBlock[nCntBlock].pos.y - pPlayer->pos.y) +
+				(g_aBlock[nCntBlock].pos.z - pPlayer->pos.z) * (g_aBlock[nCntBlock].pos.z - pPlayer->pos.z);
 
-			blockFront.x = -sinf(g_aBlock[nCntBlock].rot.y);
-			blockFront.y = 0.0f;
-			blockFront.z = -cosf(g_aBlock[nCntBlock].rot.y);
+			float interactionRange = 60.0f;// 判定範囲
 
-			// プレイヤーとの方向ベクトル
-			D3DXVECTOR3 toPlayer;
-
-			toPlayer.x = pPlayer->pos.x - g_aBlock[nCntBlock].pos.x;
-			toPlayer.y = 0.0f;
-			toPlayer.z = pPlayer->pos.z - g_aBlock[nCntBlock].pos.z;
-
-			// ブロックの正面ベクトルを正規化
-			D3DXVec3Normalize(&blockFront, &blockFront);
-
-			// プレイヤーとの方向ベクトルを正規化
-			D3DXVec3Normalize(&toPlayer, &toPlayer);
-
-			float dotProduct = D3DXVec3Dot(&blockFront, &toPlayer);
-
-			if (dotProduct > cosf(g_aBlock[nCntBlock].sightAngle * 0.5f))
+			// 範囲内
+			if (distance <= (interactionRange * interactionRange)) 
 			{
-				float distanceSquared =
-					(g_aBlock[nCntBlock].pos.x - pPlayer->pos.x) * (g_aBlock[nCntBlock].pos.x - pPlayer->pos.x) +
-					(g_aBlock[nCntBlock].pos.y - pPlayer->pos.y) * (g_aBlock[nCntBlock].pos.y - pPlayer->pos.y) +
-					(g_aBlock[nCntBlock].pos.z - pPlayer->pos.z) * (g_aBlock[nCntBlock].pos.z - pPlayer->pos.z);
-
-				if (distanceSquared <= g_aBlock[nCntBlock].sightRange * g_aBlock[nCntBlock].sightRange)
-				{
-					return true;// 判定範囲内
-				}
+				return true;
 			}
 
-			return false;// 判定範囲外
+			return false;// 範囲外
 		}
 	}
 }

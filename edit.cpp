@@ -169,19 +169,24 @@ void UpdateEdit(void)
     // ブロックの位置を変更
     if (KeyboardTrigger(DIK_UP) == true)
     {
-        g_Editinfo[g_nCntEdit].pos.z += 10.0f;
+        g_Editinfo[g_nCntEdit].pos.x -= sinf(pCamera->rot.y) * MAX_SPEED;
+        g_Editinfo[g_nCntEdit].pos.z -= cosf(pCamera->rot.y) * MAX_SPEED;
     }
     else if (KeyboardTrigger(DIK_DOWN) == true)
     {
-        g_Editinfo[g_nCntEdit].pos.z -= 10.0f;
+        g_Editinfo[g_nCntEdit].pos.x += sinf(pCamera->rot.y) * MAX_SPEED;
+        g_Editinfo[g_nCntEdit].pos.z += cosf(pCamera->rot.y) * MAX_SPEED;
     }
     else if (KeyboardTrigger(DIK_LEFT) == true)
     {
-        g_Editinfo[g_nCntEdit].pos.x -= 10.0f;
+        //移動量を更新(増加させる)
+        g_Editinfo[g_nCntEdit].pos.z -= sinf(pCamera->rot.y) * MAX_SPEED;
+        g_Editinfo[g_nCntEdit].pos.x += cosf(pCamera->rot.y) * MAX_SPEED;
     }
     else if (KeyboardTrigger(DIK_RIGHT) == true)
     {
-        g_Editinfo[g_nCntEdit].pos.x += 10.0f;
+        g_Editinfo[g_nCntEdit].pos.z += sinf(pCamera->rot.y) * MAX_SPEED;
+        g_Editinfo[g_nCntEdit].pos.x -= cosf(pCamera->rot.y) * MAX_SPEED;
     }
     else if (KeyboardTrigger(DIK_U) == true)
     {

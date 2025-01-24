@@ -71,14 +71,13 @@ typedef struct
 	D3DXVECTOR3 pos;					// 位置(オフセット)
 	D3DXVECTOR3 move;					// 移動量
 	D3DXVECTOR3 rot;					// 向き
-	D3DXVECTOR3 size;
-	int nType;
-	bool bUse;
+	D3DXVECTOR3 size;					// サイズ
+	int nType;							// タイプ 
+	bool bUse;							// 使用しているかどうか
 	D3DXMATRIX mtxWorld;				// ワールドマトリックス
 	bool bScoreAdded;					// スコア加算済みかどうか
 	bool bSoundPlayed;					// 音を再生済みかどうか
-	float sightRange;
-	float sightAngle;
+	bool bInsight;						//	範囲に入ったかどうか
 	Blockinfo blockinfo[BLOCKTYPE_MAX];
 }Block;
 
@@ -135,7 +134,9 @@ bool OverlapOnAxis(const D3DXVECTOR3& center1, const D3DXVECTOR3 axes1[3], const
 	const D3DXVECTOR3& center2, const D3DXVECTOR3 axes2[3], const D3DXVECTOR3& size2, const D3DXVECTOR3& axis);
 float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], const D3DXVECTOR3& axis);
 
-bool InSightBlock(void);
+// イベント判定用関数のプロトタイプ宣言
+bool BlockInteraction(void);
+
 Block* GetBlock(void);
 bool GetExit(void);
 

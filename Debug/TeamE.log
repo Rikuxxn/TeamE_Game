@@ -1,16 +1,2 @@
-﻿  block.cpp
-C:\Users\student\Desktop\TeamE_Game\TeamE_Game\block.cpp(527,17): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\TeamE_Game\TeamE_Game\block.cpp(539,51): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-  edit.cpp
-  enemy.cpp
-C:\Users\student\Desktop\TeamE_Game\TeamE_Game\enemy.cpp(386,4): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\TeamE_Game\TeamE_Game\enemy.cpp(676,18): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-  game.cpp
-  main.cpp
-  player.cpp
-C:\Users\student\Desktop\TeamE_Game\TeamE_Game\player.cpp(477,33): warning C4305: '-=': 'double' から 'float' へ切り詰めます。
-  result.cpp
-  title.cpp
-  コードを生成中...
-C:\Users\student\Desktop\TeamE_Game\TeamE_Game\block.cpp(589): warning C4715: 'InSightBlock': 値を返さないコントロール パスがあります。
+﻿  edit.cpp
   TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\Debug\TeamE.exe

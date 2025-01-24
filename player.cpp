@@ -40,21 +40,21 @@ void InitPlayer(void)
 	pDevice = GetDevice();
 
 	//初期化
-	g_player.pos = D3DXVECTOR3(120.0f, 0.0f, -540.0f);			//位置を初期化する
-	g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//前の位置を初期化する
-	g_player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//移動量を初期化する
-	g_player.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//向きを初期化する
-	g_player.rotDestPlayer = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//向きを初期化する
-	g_player.nDush = PLAYER_STAMINA;							//ダッシュ時の速度
-	g_player.nDrawDush = 0;										//ダッシュゲージ描画用
-	g_player.state = PLAYERSTATE_NORMAL;						//プレイヤーの状態
-	g_player.bDush = false;										//ダッシュしているか
-	g_player.bDisp = true;										//プレイヤーの描画
-	g_player.bEmpty = false;									//ダッシュできるか
-	g_player.bDrawDush = false;									//ダッシュゲージ描画用
-	g_player.motion.bLoopMotion = true;							//モーションをループさせるか
-	g_player.motion.nCounterMotion = 0;							//モーション用のカウンター
-	g_player.motion.aMotionInfo[MOTIONTYPE_MOVE].startKey = 1;	//モーションの最初のキー
+	g_player.pos = D3DXVECTOR3(120.0f, 0.0f, -540.0f);			// 位置を初期化する
+	g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 前の位置を初期化する
+	g_player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// 移動量を初期化する
+	g_player.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// 向きを初期化する
+	g_player.rotDestPlayer = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 向きを初期化する
+	g_player.nDush = PLAYER_STAMINA;							// ダッシュ時の速度
+	g_player.nDrawDush = 0;										// ダッシュゲージ描画用
+	g_player.state = PLAYERSTATE_NORMAL;						// プレイヤーの状態
+	g_player.bDush = false;										// ダッシュしているか
+	g_player.bDisp = true;										// プレイヤーの描画
+	g_player.bEmpty = false;									// ダッシュできるか
+	g_player.bDrawDush = false;									// ダッシュゲージ描画用
+	g_player.motion.bLoopMotion = true;							// モーションをループさせるか
+	g_player.motion.nCounterMotion = 0;							// モーション用のカウンター
+	g_player.motion.aMotionInfo[MOTIONTYPE_MOVE].startKey = 1;	// モーションの最初のキー
 	LoadPlayerTEXT();
 
 
@@ -192,10 +192,11 @@ void UpdatePlayer(void)
 	XINPUT_STATE* pStick;
 	pStick = GetJoyStickAngle();
 
+	Block* pBlock = GetBlock();
+
 	Camera* pCamera = GetCamera();
 	bool bExit = GetExit();
 	bool bEnd = GetEnd();
-
 	bool bFirstPerson = GetFirstPerson();
 
 	g_player.motion.motionType = MOTIONTYPE_NEUTRAL;
@@ -503,6 +504,9 @@ void UpdatePlayer(void)
 
 		g_player.pos.z += g_player.move.z;
 		CollisionBlock(&g_player.pos, &g_player.posOld, &g_player.move, &g_player.size);
+
+		// ブロックの接近判定
+		BlockInteraction();// 対象と範囲
 
 		//CollisionModel();
 

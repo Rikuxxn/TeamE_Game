@@ -33,6 +33,7 @@
 #include "meshceiling.h"
 //#include "sound.h"
 #include "guage.h"
+#include "shooting_game.h"
 
 //グローバル変数
 GAMESTATE g_gameState = GAMESTATE_NONE;//ゲームの状態

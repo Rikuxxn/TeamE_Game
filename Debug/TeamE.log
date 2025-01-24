@@ -1,2 +1,11 @@
-﻿  edit.cpp
-  TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\Debug\TeamE.exe
+﻿  shooting_background.cpp
+  shooting_bullet.cpp
+  shooting_clear.cpp
+  shooting_effect.cpp
+  shooting_enemy.cpp
+  shooting_fade.cpp
+  shooting_game.cpp
+  shooting_particle.cpp
+  shooting_player.cpp
+  コードを生成中...
+  TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\Debug\TeamE.exe

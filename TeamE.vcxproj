@@ -162,6 +162,15 @@
     <ClCompile Include="pause.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="result.cpp" />
+    <ClCompile Include="shooting_background.cpp" />
+    <ClCompile Include="shooting_bullet.cpp" />
+    <ClCompile Include="shooting_clear.cpp" />
+    <ClCompile Include="shooting_effect.cpp" />
+    <ClCompile Include="shooting_enemy.cpp" />
+    <ClCompile Include="shooting_fade.cpp" />
+    <ClCompile Include="shooting_game.cpp" />
+    <ClCompile Include="shooting_particle.cpp" />
+    <ClCompile Include="shooting_player.cpp" />
     <ClCompile Include="title.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +192,14 @@
     <ClInclude Include="pause.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="result.h" />
+    <ClInclude Include="shooting_bullet.h" />
+    <ClInclude Include="shooting_clear.h" />
+    <ClInclude Include="shooting_effect.h" />
+    <ClInclude Include="shooting_enemy.h" />
+    <ClInclude Include="shooting_fade.h" />
+    <ClInclude Include="shooting_game.h" />
+    <ClInclude Include="shooting_particle.h" />
+    <ClInclude Include="shooting_player.h" />
     <ClInclude Include="title.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

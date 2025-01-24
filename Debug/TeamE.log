@@ -1,16 +1,10 @@
-<<<<<<< HEAD
-﻿  shooting_background.cpp
-  shooting_bullet.cpp
-  shooting_clear.cpp
-  shooting_effect.cpp
-  shooting_enemy.cpp
-  shooting_fade.cpp
-  shooting_game.cpp
-  shooting_particle.cpp
-  shooting_player.cpp
+﻿  block.cpp
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\block.cpp(542,17): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\block.cpp(554,51): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+  game.cpp
+  player.cpp
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\player.cpp(478,33): warning C4305: '-=': 'double' から 'float' へ切り詰めます。
+  ui.cpp
   コードを生成中...
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\block.cpp(587): warning C4715: 'BlockInteraction': 値を返さないコントロール パスがあります。
   TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\Debug\TeamE.exe
-=======
-﻿  ui.cpp
-  TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\Debug\TeamE.exe
->>>>>>> 6750c9a2061840610a84cbf290dbcb5056a4c080

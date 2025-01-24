@@ -33,11 +33,8 @@
 #include "meshceiling.h"
 //#include "sound.h"
 #include "guage.h"
-<<<<<<< HEAD
 #include "shooting_game.h"
-=======
 #include "ui.h"
->>>>>>> 6750c9a2061840610a84cbf290dbcb5056a4c080
 
 //グローバル変数
 GAMESTATE g_gameState = GAMESTATE_NONE;//ゲームの状態

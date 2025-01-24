@@ -33,6 +33,7 @@
 #include "meshceiling.h"
 //#include "sound.h"
 #include "guage.h"
+#include "ui.h"
 
 //グローバル変数
 GAMESTATE g_gameState = GAMESTATE_NONE;//ゲームの状態
@@ -102,43 +103,14 @@ void InitGame(void)
 	////ビルボードの初期化処理
 	//InitBillboard();
 
+
 	//ゲージの初期化
 	InitGuage();
 
-	//ブロック
-	//SetBlock(D3DXVECTOR3(-220.0f, 0.0f, 325.0f), BLOCKTYPE_NORMAL);		//	壁
-	//SetBlock(D3DXVECTOR3(-220.0f, 0.0f, 85.0f), BLOCKTYPE_NORMAL);		//	ドア
 
+	//UIの初期化
+	InitUI();
 
-	//SetModel(D3DXVECTOR3(-220.0f, 0.0f, 285.0f), WALLTYPE_NORMAL);		//	壁
-
-
-	//// 壁のposが真ん中の時のやつ
-	////奥壁
-	//SetWall(D3DXVECTOR3(-350.0f, 50.0f, 350.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 350.0f, 50.0f);
-
-	////右壁
-	//SetWall(D3DXVECTOR3(350.0f, 50.0f, 350.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 350.0f, 50.0f);
-
-	////手前壁
-	//SetWall(D3DXVECTOR3(350.0f, 50.0f, -350.0f), D3DXVECTOR3(0.0, D3DX_PI, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 350.0f, 50.0f);
-
-	////左壁
-	//SetWall(D3DXVECTOR3(-350.0f, 50.0f, -350.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 350.0f, 50.0f);
-
-
-	////壁のposが端の時のやつ
-	////奥壁
-	//SetWall(D3DXVECTOR3(-350.0f, 50.0f, 350.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 350.0f, 50.0f);
-
-	////右壁
-	//SetWall(D3DXVECTOR3(350.0f, 50.0f, 350.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 350.0f, 50.0f);
-
-	////手前壁
-	//SetWall(D3DXVECTOR3(350.0f, 50.0f, -350.0f), D3DXVECTOR3(0.0, D3DX_PI, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 350.0f, 50.0f);
-
-	////左壁
-	//SetWall(D3DXVECTOR3(-350.0f, 50.0f, -350.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 350.0f, 50.0f);
 
 
 
@@ -246,8 +218,13 @@ void UninitGame(void)
 	////パーティクルの終了処理
 	//UninitParticle();
 
+
 	//ゲージの終了処理
 	UninitGuage();
+
+
+	//UIの終了処理
+	UninitUI();
 }
 //=========================================
 //ゲーム画面の更新処理
@@ -350,6 +327,10 @@ void UpdateGame(void)
 
 		//ゲージの更新処理
 		UpdateGuage();
+
+
+		//UIの更新処理
+		UpdateUI();
 	}
 
 	bool bEnd = GetEnd();
@@ -466,6 +447,10 @@ void DrawGame(void)
 
 	////タイムの描画処理
 	//DrawTime();
+
+
+	//UIの描画処理
+	DrawUI();
 
 	if (pPlayer->bDrawDush == true)
 	{

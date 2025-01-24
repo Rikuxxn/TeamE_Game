@@ -557,7 +557,7 @@ float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], co
 //=================================
 //イベント判定処理
 //=================================
-bool BlockInteraction(void)
+bool BlockInteraction()
 {
 
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
@@ -582,6 +582,7 @@ bool BlockInteraction(void)
 
 			return false;// 範囲外
 		}
+
 	}
 }
 //============================================

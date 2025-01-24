@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿  shooting_background.cpp
   shooting_bullet.cpp
   shooting_clear.cpp
@@ -9,3 +10,7 @@
   shooting_player.cpp
   コードを生成中...
   TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\Debug\TeamE.exe
+=======
+﻿  ui.cpp
+  TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\Debug\TeamE.exe
+>>>>>>> 6750c9a2061840610a84cbf290dbcb5056a4c080

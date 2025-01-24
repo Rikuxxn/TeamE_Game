@@ -505,9 +505,6 @@ void UpdatePlayer(void)
 		g_player.pos.z += g_player.move.z;
 		CollisionBlock(&g_player.pos, &g_player.posOld, &g_player.move, &g_player.size);
 
-		// ƒuƒƒbƒN‚ÌÚ‹ß”»’è
-		BlockInteraction();// ‘ÎÛ‚Æ”ÍˆÍ
-
 		//CollisionModel();
 
 	}

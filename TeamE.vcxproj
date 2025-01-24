@@ -172,6 +172,7 @@
     <ClCompile Include="shooting_particle.cpp" />
     <ClCompile Include="shooting_player.cpp" />
     <ClCompile Include="title.cpp" />
+    <ClCompile Include="ui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="shooting_particle.h" />
     <ClInclude Include="shooting_player.h" />
     <ClInclude Include="title.h" />
+    <ClInclude Include="ui.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

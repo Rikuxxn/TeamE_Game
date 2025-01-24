@@ -27,7 +27,7 @@ void InitCamera(void)
 	g_camera.posV = D3DXVECTOR3(0.0f, 280.0f, -20.0f);
 	g_camera.posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_camera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);//å≈íËÇ≈Ç¢Ç¢
-	g_camera.rot = D3DXVECTOR3(0.0f, 1.57f, 0.0f);
+	g_camera.rot = D3DXVECTOR3(0.0f, -1.57f, 0.0f);
 	g_camera.fDistance = sqrtf(((g_camera.posV.x - g_camera.posR.x) * (g_camera.posV.x - g_camera.posR.x)) + ((g_camera.posV.y - g_camera.posR.y) * (g_camera.posV.y - g_camera.posR.y)) + ((g_camera.posV.z - g_camera.posR.z) * (g_camera.posV.z - g_camera.posR.z)));
 	bFirstPerson = false;
 
@@ -116,13 +116,13 @@ void UpdateCamera(void)
 			g_camera.rot.x += deltaY; // êÇíºâÒì]
 
 			// êÇíºâÒì]ÇÃêßå¿
-			if (g_camera.rot.x > 0.72f)
+			if (g_camera.rot.x > 1.40f)
 			{
-				g_camera.rot.x = 0.72f;
+				g_camera.rot.x = 1.40f;
 			}
-			else if (g_camera.rot.x < -0.72f)
+			else if (g_camera.rot.x < -1.40f)
 			{
-				g_camera.rot.x = -0.72f;
+				g_camera.rot.x = -1.40f;
 			}
 
 			// êÖïΩâÒì]Çê≥ãKâª
@@ -148,10 +148,9 @@ void UpdateCamera(void)
 		g_camera.posV.y += 70.0f; // ì™ïîÇÃçÇÇ≥
 
 		// ÉJÉÅÉâÇÃâÒì]Ç…äÓÇ√Ç¢Çƒíçéãì_ÇåvéZ
-		float lookDistance = 10.0f; // íçéãì_Ç‹Ç≈ÇÃãóó£
-		g_camera.posR.x = g_camera.posV.x - sinf(g_camera.rot.y) * lookDistance * cosf(g_camera.rot.x);
-		g_camera.posR.y = g_camera.posV.y - sinf(g_camera.rot.x) * lookDistance;
-		g_camera.posR.z = g_camera.posV.z - cosf(g_camera.rot.y) * lookDistance * cosf(g_camera.rot.x);
+		g_camera.posR.x = g_camera.posV.x - sinf(g_camera.rot.y) * cosf(g_camera.rot.x);
+		g_camera.posR.y = g_camera.posV.y - sinf(g_camera.rot.x);
+		g_camera.posR.z = g_camera.posV.z - cosf(g_camera.rot.y) * cosf(g_camera.rot.x);
 
 	}
 
@@ -163,30 +162,24 @@ void UpdateCamera(void)
 		g_camera.posV.y += 70.0f; // ì™ïîÇÃçÇÇ≥
 
 		// ÉJÉÅÉâÇÃâÒì]Ç…äÓÇ√Ç¢Çƒíçéãì_ÇåvéZ
-		float lookDistance = 10.0f; // íçéãì_Ç‹Ç≈ÇÃãóó£
-		g_camera.posR.x = g_camera.posV.x - sinf(g_camera.rot.y) * lookDistance * cosf(g_camera.rot.x);
-		g_camera.posR.y = g_camera.posV.y - sinf(g_camera.rot.x) * lookDistance;
-		g_camera.posR.z = g_camera.posV.z - cosf(g_camera.rot.y) * lookDistance * cosf(g_camera.rot.x);
+		g_camera.posR.x = g_camera.posV.x - sinf(g_camera.rot.y) * cosf(g_camera.rot.x);
+		g_camera.posR.y = g_camera.posV.y - sinf(g_camera.rot.x);
+		g_camera.posR.z = g_camera.posV.z - cosf(g_camera.rot.y) * cosf(g_camera.rot.x);
 	}
 
 	//if (g_cameramode == CAMERAMODE_NORMAL)
 	//{
-		if (pMode != MODE_EDIT)
-		{
-			g_camera.posRDest.x = pPlayer->pos.x - sinf(fAngleA) * PLAYER_SPEED;
-			g_camera.posRDest.z = pPlayer->pos.z - cosf(fAngleA) * PLAYER_SPEED;
+		//g_camera.posRDest.x = pPlayer->pos.x - sinf(fAngleA) * PLAYER_SPEED;
+		//g_camera.posRDest.z = pPlayer->pos.z - cosf(fAngleA) * PLAYER_SPEED;
 
-			g_camera.posVDest.x = pPlayer->pos.x + sinf(g_camera.rot.y + D3DX_PI) * g_camera.fDistance;
-			g_camera.posVDest.z = pPlayer->pos.z + cosf(g_camera.rot.y + D3DX_PI) * g_camera.fDistance;
+		//g_camera.posVDest.x = pPlayer->pos.x + sinf(g_camera.rot.y + D3DX_PI) * g_camera.fDistance;
+		//g_camera.posVDest.z = pPlayer->pos.z + cosf(g_camera.rot.y + D3DX_PI) * g_camera.fDistance;
 
-			g_camera.posR.x += (g_camera.posRDest.x - g_camera.posR.x) * 0.05f;
-			g_camera.posV.x += (g_camera.posVDest.x - g_camera.posV.x) * 0.05f;
+		//g_camera.posR.x += (g_camera.posRDest.x - g_camera.posR.x) * 0.05f;
+		//g_camera.posV.x += (g_camera.posVDest.x - g_camera.posV.x) * 0.05f;
 
-			g_camera.posR.z += (g_camera.posRDest.z - g_camera.posR.z) * 0.05f;
-			g_camera.posV.z += (g_camera.posVDest.z - g_camera.posV.z) * 0.05f;
-		}
-
-
+		//g_camera.posR.z += (g_camera.posRDest.z - g_camera.posR.z) * 0.05f;
+		//g_camera.posV.z += (g_camera.posVDest.z - g_camera.posV.z) * 0.05f;
 
 
 		////íçéãì_ÇÃê˘âÒ(Xé≤)

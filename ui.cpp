@@ -104,16 +104,14 @@ void InitUI(void)
 void UninitUI(void)
 {
 
-	for (int nCntUI = 0; nCntUI < MAX_UI; nCntUI++)
+	for (int nCntUI = 0; nCntUI < UITYPE_MAX; nCntUI++)
 	{
-
 		//テクスチャの破棄
 		if (g_pTextureUI[nCntUI] != NULL)
 		{
 			g_pTextureUI[nCntUI]->Release();
 			g_pTextureUI[nCntUI] = NULL;
 		}
-
 	}
 
 	//頂点バッファの破棄
@@ -142,7 +140,7 @@ void UpdateUI(void)
 		if (BlockInteraction())
 		{
 			// UIを表示
-			SetUI(D3DXVECTOR3(600.0f, 600.0f, 0.0f), 100.0f, 15.0f, UITYPE_GAME);
+			//SetUI(D3DXVECTOR3(660.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
 		}
 		else// 範囲外
 		{
@@ -163,36 +161,25 @@ void UpdateUI(void)
 void DrawUI(void)
 {
 
-	int nCntUI;
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	LPDIRECT3DDEVICE9 pDevice;
-
-	//デバイスの取得
-	pDevice = GetDevice();
-
-	//頂点バッファをデータストリームに設定
+	// 頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, g_pVtxBuffUI, 0, sizeof(VERTEX_2D));
-
-	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
-	for (nCntUI = 0; nCntUI < MAX_UI; nCntUI++)
+	for (int nCntUI = 0; nCntUI < MAX_UI; nCntUI++)
 	{
-
-		if (g_aUI[nCntUI].bUse == true)
-		{//ブロックが使用されている
-
-			int nType = g_aUI[nCntUI].nType;
-
-			//テクスチャの設定
-			pDevice->SetTexture(0, g_pTextureUI[nType]);
-
-			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCntUI * 4, 2);
-
+		if (!g_aUI[nCntUI].bUse)
+		{
+			continue; // 使用していない UI をスキップ
 		}
 
-	}
+		// 使用中の UI のみ描画処理を行う
+		int nType = g_aUI[nCntUI].nType;
 
+		pDevice->SetTexture(0, g_pTextureUI[nType]);
+		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCntUI * 4, 2);
+	}
 }
 //===================================================
 // UIの設定処理

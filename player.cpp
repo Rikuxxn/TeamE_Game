@@ -54,6 +54,8 @@ void InitPlayer(void)
 	g_player.bDrawDush = false;									// ダッシュゲージ描画用
 	g_player.motion.bLoopMotion = true;							// モーションをループさせるか
 	g_player.motion.nCounterMotion = 0;							// モーション用のカウンター
+	g_player.interactionRange = 20.0f;							// 照準のインタラクト可能な範囲（距離）
+	g_player.interactionAngle = D3DXToRadian(30.0f);			// 照準のインタラクト可能な角度（視野）
 	g_player.motion.aMotionInfo[MOTIONTYPE_MOVE].startKey = 1;	// モーションの最初のキー
 	LoadPlayerTEXT();
 
@@ -292,8 +294,8 @@ void UpdatePlayer(void)
 					g_player.nDrawDush = 0;
 					g_player.bDrawDush = true;
 					//ダッシュ時の移動量を更新(増加させる)
-					g_player.move.x += sinf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
-					g_player.move.z += cosf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
+					g_player.move.x -= sinf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
+					g_player.move.z -= cosf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
 
 					g_player.rotDestPlayer.y = pCamera->rot.y + D3DX_PI * 0.75f;
 
@@ -302,8 +304,8 @@ void UpdatePlayer(void)
 				else				
 				{
 					//歩く時の移動量を更新(増加させる)
-					g_player.move.x += sinf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_SPEED;
-					g_player.move.z += cosf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_SPEED;
+					g_player.move.x -= sinf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_SPEED;
+					g_player.move.z -= cosf(pCamera->rot.y + -D3DX_PI * 0.25f) * PLAYER_SPEED;
 
 					g_player.rotDestPlayer.y = pCamera->rot.y + D3DX_PI * 0.75f;
 
@@ -315,8 +317,8 @@ void UpdatePlayer(void)
 			{//Sキーが押された
 
 				//移動量を更新(増加させる)
-				g_player.move.x += sinf(pCamera->rot.y + -D3DX_PI * 0.75f) * PLAYER_SPEED;
-				g_player.move.z += cosf(pCamera->rot.y + -D3DX_PI * 0.75f) * PLAYER_SPEED;
+				g_player.move.x -= sinf(pCamera->rot.y + -D3DX_PI * 0.75f) * PLAYER_SPEED;
+				g_player.move.z -= cosf(pCamera->rot.y + -D3DX_PI * 0.75f) * PLAYER_SPEED;
 
 				g_player.rotDestPlayer.y = pCamera->rot.y + D3DX_PI * 0.25f;
 
@@ -327,8 +329,8 @@ void UpdatePlayer(void)
 			{
 
 				//移動量を更新(増加させる)
-				g_player.move.z += sinf(pCamera->rot.y) * PLAYER_SPEED;
-				g_player.move.x -= cosf(pCamera->rot.y) * PLAYER_SPEED;
+				g_player.move.z -= sinf(pCamera->rot.y) * PLAYER_SPEED;
+				g_player.move.x += cosf(pCamera->rot.y) * PLAYER_SPEED;
 
 				g_player.rotDestPlayer.y = pCamera->rot.y + D3DX_PI * 0.5f;
 
@@ -351,8 +353,8 @@ void UpdatePlayer(void)
 					g_player.nDrawDush = 0;
 					g_player.bDrawDush = true;
 					//ダッシュの移動量を更新(増加させる)
-					g_player.move.x += sinf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
-					g_player.move.z += cosf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
+					g_player.move.x -= sinf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
+					g_player.move.z -= cosf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_DUSHSPEED;
 
 					g_player.rotDestPlayer.y = pCamera->rot.y + (-D3DX_PI * 0.75f);
 
@@ -361,8 +363,8 @@ void UpdatePlayer(void)
 				else
 				{
 					//歩く時の移動量を更新(増加させる)
-					g_player.move.x += sinf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_SPEED;
-					g_player.move.z += cosf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_SPEED;
+					g_player.move.x -= sinf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_SPEED;
+					g_player.move.z -= cosf(pCamera->rot.y + D3DX_PI * 0.25f) * PLAYER_SPEED;
 
 					g_player.rotDestPlayer.y = pCamera->rot.y + (-D3DX_PI * 0.75f);
 
@@ -373,8 +375,8 @@ void UpdatePlayer(void)
 			{//Sキーが押された
 
 				//移動量を更新(増加させる)
-				g_player.move.x += sinf(pCamera->rot.y + D3DX_PI * 0.75f) * PLAYER_SPEED;
-				g_player.move.z += cosf(pCamera->rot.y + D3DX_PI * 0.75f) * PLAYER_SPEED;
+				g_player.move.x -= sinf(pCamera->rot.y + D3DX_PI * 0.75f) * PLAYER_SPEED;
+				g_player.move.z -= cosf(pCamera->rot.y + D3DX_PI * 0.75f) * PLAYER_SPEED;
 
 				g_player.rotDestPlayer.y = pCamera->rot.y + (-D3DX_PI * 0.25f);
 
@@ -385,8 +387,8 @@ void UpdatePlayer(void)
 			{
 
 				//移動量を更新(増加させる)
-				g_player.move.z -= sinf(pCamera->rot.y) * PLAYER_SPEED;
-				g_player.move.x += cosf(pCamera->rot.y) * PLAYER_SPEED;
+				g_player.move.z += sinf(pCamera->rot.y) * PLAYER_SPEED;
+				g_player.move.x -= cosf(pCamera->rot.y) * PLAYER_SPEED;
 
 				g_player.rotDestPlayer.y = pCamera->rot.y + -D3DX_PI * 0.5f;
 
@@ -405,9 +407,10 @@ void UpdatePlayer(void)
 				g_player.bDush = true;
 				g_player.nDrawDush = 0;
 				g_player.bDrawDush = true;
+
 				//ダッシュの移動量を更新(増加させる)
-				g_player.move.x += sinf(pCamera->rot.y) * PLAYER_DUSHSPEED;
-				g_player.move.z += cosf(pCamera->rot.y) * PLAYER_DUSHSPEED;
+				g_player.move.x -= sinf(pCamera->rot.y) * PLAYER_DUSHSPEED;
+				g_player.move.z -= cosf(pCamera->rot.y) * PLAYER_DUSHSPEED;
 
 				g_player.rotDestPlayer.y = pCamera->rot.y + D3DX_PI;
 
@@ -416,8 +419,8 @@ void UpdatePlayer(void)
 			else
 			{
 				//歩く時の移動量を更新(増加させる)
-				g_player.move.x += sinf(pCamera->rot.y) * PLAYER_SPEED;
-				g_player.move.z += cosf(pCamera->rot.y) * PLAYER_SPEED;
+				g_player.move.x -= sinf(pCamera->rot.y) * PLAYER_SPEED;
+				g_player.move.z -= cosf(pCamera->rot.y) * PLAYER_SPEED;
 
 				g_player.rotDestPlayer.y = pCamera->rot.y + D3DX_PI;
 
@@ -428,8 +431,8 @@ void UpdatePlayer(void)
 		{//Sキーが押された
 
 			//移動量を更新(増加させる)
-			g_player.move.x -= sinf(pCamera->rot.y) * PLAYER_SPEED;
-			g_player.move.z -= cosf(pCamera->rot.y) * PLAYER_SPEED;
+			g_player.move.x += sinf(pCamera->rot.y) * PLAYER_SPEED;
+			g_player.move.z += cosf(pCamera->rot.y) * PLAYER_SPEED;
 
 			g_player.rotDestPlayer.y = pCamera->rot.y;
 
@@ -515,6 +518,11 @@ void UpdatePlayer(void)
 		g_player.pos.y = 0.0f;
 	}
 
+	// Y軸（上下方向）の回転角度から視線方向を計算
+	g_player.forward.x = cosf(g_player.rot.y);
+	g_player.forward.z = sinf(g_player.rot.y);
+	g_player.forward.y = 0.0f; // 水平方向のみを考慮
+	D3DXVec3Normalize(&g_player.forward, &g_player.forward); // 視線方向を正規化
 
 	//移動量を更新(減衰させる)
 	g_player.move.x += (0.0f - g_player.move.x) * 0.3f;

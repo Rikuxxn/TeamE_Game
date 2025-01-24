@@ -136,6 +136,11 @@ float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], co
 
 // イベント判定用関数のプロトタイプ宣言
 bool BlockInteraction(void);
+void HandleBlockInteraction(Block* pBlock);
+Block* RaycastToBlocks(const D3DXVECTOR3& rayOrigin, const D3DXVECTOR3& rayDirection);
+bool CheckRayOBBCollision(const D3DXVECTOR3& rayOrigin, const D3DXVECTOR3& rayDirection,
+	const D3DXMATRIX& obbWorld, const D3DXVECTOR3& obbSize, float* distance);
+void GetRayFromScreenCenter(D3DXVECTOR3* rayOrigin, D3DXVECTOR3* rayDirection);
 
 Block* GetBlock(void);
 bool GetExit(void);

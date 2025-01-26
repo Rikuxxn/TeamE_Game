@@ -51,9 +51,6 @@ typedef struct
 	bool bEmpty;							// スタミナ切れかどうか
 	bool bDrawDush;							// ダッシュゲージ描画用
 	D3DXVECTOR3 forward;					// プレイヤーの視線（正規化されたベクトル）
-	D3DXVECTOR3 lookAt;						// 視線の先の座標（照準の目標地点）
-	float interactionRange;					// 照準のインタラクト可能な範囲（距離）
-	float interactionAngle;					// 照準のインタラクト可能な角度（視野）
 	Motion motion;							// モーション情報
 }Player;
 

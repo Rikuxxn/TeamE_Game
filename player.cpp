@@ -54,8 +54,6 @@ void InitPlayer(void)
 	g_player.bDrawDush = false;									// ダッシュゲージ描画用
 	g_player.motion.bLoopMotion = true;							// モーションをループさせるか
 	g_player.motion.nCounterMotion = 0;							// モーション用のカウンター
-	g_player.interactionRange = 20.0f;							// 照準のインタラクト可能な範囲（距離）
-	g_player.interactionAngle = D3DXToRadian(30.0f);			// 照準のインタラクト可能な角度（視野）
 	g_player.motion.aMotionInfo[MOTIONTYPE_MOVE].startKey = 1;	// モーションの最初のキー
 	LoadPlayerTEXT();
 
@@ -508,21 +506,28 @@ void UpdatePlayer(void)
 		g_player.pos.z += g_player.move.z;
 		CollisionBlock(&g_player.pos, &g_player.posOld, &g_player.move, &g_player.size);
 
+		//BlockInteraction();
+
 		//CollisionModel();
 
 	}
 
+	// カメラの回転角（Yaw, Pitch）を取得
+	float yaw = pCamera->rot.y;   // 水平回転
+	float pitch = pCamera->rot.x; // 垂直回転
+
+	// 視線方向（forward）を計算
+	g_player.forward.x = -sinf(yaw) * cosf(pitch);
+	g_player.forward.y = -sinf(pitch);
+	g_player.forward.z = -cosf(yaw) * cosf(pitch);
+
+	// 視線方向を正規化
+	D3DXVec3Normalize(&g_player.forward, &g_player.forward);
 
 	if (g_player.pos.y <= 0)
 	{
 		g_player.pos.y = 0.0f;
 	}
-
-	// Y軸（上下方向）の回転角度から視線方向を計算
-	g_player.forward.x = cosf(g_player.rot.y);
-	g_player.forward.z = sinf(g_player.rot.y);
-	g_player.forward.y = 0.0f; // 水平方向のみを考慮
-	D3DXVec3Normalize(&g_player.forward, &g_player.forward); // 視線方向を正規化
 
 	//移動量を更新(減衰させる)
 	g_player.move.x += (0.0f - g_player.move.x) * 0.3f;

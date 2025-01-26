@@ -130,29 +130,38 @@ void UpdateUI(void)
 	Block* pBlock = GetBlock();
 	Player* pPlayer = GetPlayer();
 
-	//VERTEX_2D* pVtx;
-
 	int nCntUI;
+
+	bool bArcade = GetArcade();
+	bool bCatcher = GetCatcher();
 
 	for (nCntUI = 0; nCntUI < MAX_UI; nCntUI++)
 	{
-		// 範囲内
-		if (BlockInteraction())
+		// アーケードゲームの範囲内
+		if (bArcade == true)
 		{
 			// UIを表示
-			//SetUI(D3DXVECTOR3(660.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
+			SetUI(D3DXVECTOR3(660.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
 		}
 		else// 範囲外
 		{
-			if (g_aUI[nCntUI].nType == UITYPE_GAME)
-			{
-				// falseにする
-				g_aUI[nCntUI].bUse = false;
-			}
+			// falseにする
+			g_aUI[nCntUI].bUse = false;
+		}
+
+		// UFOキャッチャーの範囲内
+		if (bCatcher == true)
+		{
+			// UIを表示
+			SetUI(D3DXVECTOR3(660.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
+		}
+		else// 範囲外
+		{
+			// falseにする
+			g_aUI[nCntUI].bUse = false;
 		}
 
 		//pVtx += 4;
-
 	}
 }
 //=======================================================
@@ -221,4 +230,11 @@ void SetUI(D3DXVECTOR3 pos, float fWidth, float fHeight, int nType)
 	//頂点バッファをアンロックする
 	g_pVtxBuffUI->Unlock();
 
+}
+//===================================================
+// UI情報の取得
+//===================================================
+UI* GetUI(void)
+{
+	return &g_aUI[0];
 }

@@ -34,8 +34,8 @@ typedef struct
 static const char* UI_TEXTURE[UITYPE_MAX] =	// UIのテクスチャの設定
 {
 	"data/TEXTURE/UI3.png",// ミニゲーム
-	"data/TEXTURE/.png",// 拾う
-	"data/TEXTURE/.png",// 入力する
+	"data/TEXTURE/UI2.png",// 拾う
+	"data/TEXTURE/UI1.png",// 入力する
 
 };
 
@@ -45,6 +45,7 @@ void UninitUI(void);
 void UpdateUI(void);
 void DrawUI(void);
 void SetUI(D3DXVECTOR3 pos, float fWidth, float fHeight, int nType);
+UI* GetUI(void);
 
 
 #endif

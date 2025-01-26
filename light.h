@@ -11,8 +11,10 @@
 
 //プロトタイプ宣言
 void InitLight(void);
+void AddLight(D3DLIGHTTYPE type, D3DXCOLOR diffuse, D3DXVECTOR3 direction, D3DXVECTOR3 position);
+void RemoveLight(int index);
 void UninitLight(void);
-void UpdateLight(void);
+void UpdateLight(int index, D3DXVECTOR3 newDirection);
 
 #endif
 

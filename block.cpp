@@ -20,6 +20,9 @@ Block g_info[BLOCKTYPE_MAX];	//ブロックの素材情報
 
 bool g_bExit;					//出口に入ったか
 
+bool bArcade;					// アーケードゲームの判定
+bool bCatcher;					// UFOキャッチャーの判定
+
 //=============================
 //ブロックの初期化処理
 //=============================
@@ -43,6 +46,8 @@ void InitBlock(void)
 		g_aBlock[nCntBlock].bInsight = false;
 		g_aBlock[nCntBlock].nType = BLOCKTYPE_WALL;
 	}
+	bArcade = false;
+	bCatcher = false;
 
 	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
 	{
@@ -188,60 +193,13 @@ void UpdateBlock(void)
 
 		if (g_aBlock[nCntBlock].bUse == true)
 		{
-			// 回転角度の正規化
-			if (g_aBlock[nCntBlock].rot.y > D3DX_PI)
-			{
-				g_aBlock[nCntBlock].rot.y -= D3DX_PI * 2.0f;
-			}
-			if (g_aBlock[nCntBlock].rot.y < -D3DX_PI)
-			{
-				g_aBlock[nCntBlock].rot.y += D3DX_PI * 2.0f;
-			}
+			// 視錐台中央判定を実行
+			CheckBlocksInCenter();
 
-			if (g_aBlock[nCntBlock].rot.x > D3DX_PI)
+			if (g_aBlock[nCntBlock].bInsight)
 			{
-				g_aBlock[nCntBlock].rot.x -= D3DX_PI * 2.0f;
-			}
-			if (g_aBlock[nCntBlock].rot.x < -D3DX_PI)
-			{
-				g_aBlock[nCntBlock].rot.x += D3DX_PI * 2.0f;
-			}
-
-			if (g_aBlock[nCntBlock].rot.z > D3DX_PI)
-			{
-				g_aBlock[nCntBlock].rot.z -= D3DX_PI * 2.0f;
-			}
-			if (g_aBlock[nCntBlock].rot.z < -D3DX_PI)
-			{
-				g_aBlock[nCntBlock].rot.z += D3DX_PI * 2.0f;
-			}
-
-
-			// 視線方向を計算
-			D3DXMATRIX rotMatrix;
-			D3DXMatrixRotationYawPitchRoll(&rotMatrix, pCamera->rot.y, pCamera->rot.x, 0.0f);
-			pPlayer->forward = D3DXVECTOR3(rotMatrix._31, rotMatrix._32, rotMatrix._33); // Z軸が視線方向
-
-			// --- ここからレイキャスト処理 ---
-			D3DXVECTOR3 rayOrigin, rayDirection;
-			GetRayFromScreenCenter(&rayOrigin, &rayDirection);
-
-			Block* pBlock = RaycastToBlocks(pPlayer->pos, pPlayer->forward);
-
-			if (pBlock != NULL)
-			{
-				// インタラクト範囲内のブロックに照準を合わせた場合の処理
-				HandleBlockInteraction(pBlock);
-				g_aBlock[nCntBlock].bInsight = true;
-
-			}
-			else
-			{
-				// 照準範囲内にブロックがない場合
-				for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
-				{
-					g_aBlock[nCntBlock].bInsight = false;
-				}
+				// 中央範囲内のブロックがあれば何か処理をする
+				HandleBlockInteraction(&g_aBlock[nCntBlock]);
 			}
 
 			////位置を更新
@@ -554,7 +512,7 @@ bool OverlapOnAxis(const D3DXVECTOR3& center1, const D3DXVECTOR3 axes1[3], const
 
 	// OBB の中心の距離を指定された軸に投影
 	D3DXVECTOR3 centerDiff = center2 - center1;
-	float distance = fabs(D3DXVec3Dot(&centerDiff, &axis));
+	float distance = (float)fabs(D3DXVec3Dot(&centerDiff, &axis));
 
 	// 投影の重なりを判定
 	return distance <= (radius1 + radius2);
@@ -570,206 +528,97 @@ float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], co
 		fabs(D3DXVec3Dot(&axes[2], &axis)) * size.z / 2;
 }
 //=================================
-//イベント判定処理
-//=================================
-bool BlockInteraction()
-{
-	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
-	{
-		Player* pPlayer = GetPlayer(); // プレイヤー情報の取得
-
-		if (g_aBlock[nCntBlock].bUse == true)
-		{
-			// プレイヤーの前方方向を取得
-			D3DXVECTOR3 forward = pPlayer->forward; // プレイヤーの視線方向
-			D3DXVec3Normalize(&forward, &forward);  // 念のため正規化
-
-			// ブロックとプレイヤーの距離ベクトル
-			D3DXVECTOR3 toBlock = g_aBlock[nCntBlock].pos - pPlayer->pos;
-			float distanceSquared = D3DXVec3LengthSq(&toBlock);
-
-			// 距離範囲内にあるか確認
-			if (distanceSquared > (pPlayer->interactionRange * pPlayer->interactionRange))
-			{
-				return false;
-			}
-
-			// 距離ベクトルを正規化
-			D3DXVECTOR3 toBlockNormalized;
-			D3DXVec3Normalize(&toBlockNormalized, &toBlock);
-
-			// 視線方向とブロックへの方向の角度を計算
-			float dotProduct = D3DXVec3Dot(&forward, &toBlockNormalized);
-
-			// acosf の値を安全に計算（丸め誤差対策）
-			if (dotProduct < -1.0f) dotProduct = -1.0f;
-			if (dotProduct > 1.0f) dotProduct = 1.0f;
-
-			float angleToBlock = acosf(dotProduct);
-
-			// 照準範囲内かどうか確認
-			if (angleToBlock <= pPlayer->interactionAngle)
-			{
-				return true;
-			}
-		}
-
-	}
-
-	return false; // 照準範囲内にインタラクト可能なブロックがない
-}
-//=================================
 // ブロックインタラクト種類判定処理
 //=================================
 void HandleBlockInteraction(Block* pBlock)
 {
-	//for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
-	//{
+	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
+	{
+		UI* pUI = GetUI();
+
 		// ブロックの種類によってインタラクト内容を変更
 		switch (pBlock->nType)
 		{
 		case BLOCKTYPE_ARCADE1:
-			// アーケードブロックの動作
-			if (KeyboardTrigger(DIK_E))
-			{
-				SetUI(D3DXVECTOR3(660.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
-			}
+
+
 			break;
 
 		case BLOCKTYPE_UFOCATCHER1:
-			// UFOキャッチャーブロックの動作
-			// ミニゲーム開始
+
+
 			break;
 
 		default:
+
 			break;
 		}
-	//}
+	}
 }
-//===================================
-// ブロックのレイキャスト処理
-//===================================
-Block* RaycastToBlocks(const D3DXVECTOR3& rayOrigin, const D3DXVECTOR3& rayDirection)
+//=================================
+// 視錐台(フラスタム)中央判定処理
+//=================================
+void CheckBlocksInCenter(void)
 {
-	Block* closestBlock = NULL;
-	float closestDistance = FLT_MAX; // 非常に大きな値で初期化
+	Player* pPlayer = GetPlayer();
+	const float fov = D3DX_PI / 4.0f;  // 視野角 (45度)
+	const float centerFovRatio = 0.3f; // 中央範囲の幅 (20%)
+	const float nearDistance = 1.0f;   // 判定する最短距離
+	const float farDistance = 90.0f;   // 判定する最長距離
+	const float maxAngle = fov * centerFovRatio;
 
-	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++) 
+	// プレイヤーの視線方向を正規化
+	D3DXVECTOR3 forward = pPlayer->forward;
+	D3DXVec3Normalize(&forward, &forward);
+
+	// 全ブロックのbInsightをリセット
+	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
-		if (!g_aBlock[nCntBlock].bUse) 
-		{
-			continue; // 使用中でないブロックはスキップ
-		}
-
-		// ブロックのOBB情報を取得
-		D3DXMATRIX blockWorld = g_aBlock[nCntBlock].mtxWorld;
-		D3DXVECTOR3 blockSize = g_aBlock[nCntBlock].size;
-
-		// レイとOBBの交差判定
-		float distance = 0.0f;
-		if (CheckRayOBBCollision(rayOrigin, rayDirection, blockWorld, blockSize, &distance)) 
-		{
-			// レイキャスト結果が交差している場合
-			if (distance < closestDistance && distance > 0.0f) 
-			{
-				closestDistance = distance; // 最も近いブロックを記録
-				closestBlock = &g_aBlock[nCntBlock];
-			}
-		}
+		g_aBlock[nCntBlock].bInsight = false; // 初期化
+		bArcade = false;
+		bCatcher = false;
 	}
 
-	return closestBlock; // 最も近いブロックを返す（見つからなければNULL）
-}
-//===================================
-// レイとOBBの交差判定処理
-//===================================
-bool CheckRayOBBCollision(const D3DXVECTOR3& rayOrigin, const D3DXVECTOR3& rayDirection,
-	const D3DXMATRIX& obbWorld, const D3DXVECTOR3& obbSize, float* distance)
-{
-	D3DXVECTOR3 obbCenter(obbWorld._41, obbWorld._42, obbWorld._43);
-	D3DXVECTOR3 obbAxes[3] =
+	// 中央範囲判定
+	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
-		{obbWorld._11, obbWorld._12, obbWorld._13}, // X軸
-		{obbWorld._21, obbWorld._22, obbWorld._23}, // Y軸
-		{obbWorld._31, obbWorld._32, obbWorld._33}  // Z軸
-	};
-
-	D3DXVECTOR3 delta = obbCenter - rayOrigin;
-
-	// 各軸について投影を計算して交差判定
-	for (int i = 0; i < 3; i++)
-	{
-		float e = D3DXVec3Dot(&delta, &obbAxes[i]);
-		float f = D3DXVec3Dot(&rayDirection, &obbAxes[i]);
-
-		if (fabs(f) < 0.001f) // レイが平行な場合
+		if (!g_aBlock[nCntBlock].bUse)
 		{
-			if (fabs(e) > obbSize[i]) return false; // 平行で範囲外
+			continue; // 使用されていないブロックはスキップ
 		}
-		else
+
+		// 特定の種類のみ対象とする
+		if (g_aBlock[nCntBlock].nType != BLOCKTYPE_ARCADE1 && g_aBlock[nCntBlock].nType != BLOCKTYPE_UFOCATCHER1)
 		{
-			float t1 = (e - obbSize[i]) / f;
-			float t2 = (e + obbSize[i]) / f;
+			continue; // 対象外の種類はスキップ
+		}
 
-			// 入れ替え処理
-			if (t1 > t2) 
-			{
-				float temp = t1;
-				t1 = t2;
-				t2 = temp;
-			}
+		// ブロックまでのベクトルを計算
+		D3DXVECTOR3 toBlock = g_aBlock[nCntBlock].pos - pPlayer->pos;
+		float distance = D3DXVec3Length(&toBlock);
 
-			if (t1 > *distance) *distance = t1;
-			if (t2 < *distance) return false;
+		// 距離が範囲外の場合はスキップ
+		if (distance < nearDistance || distance > farDistance)
+		{
+			continue; // 中央判定はしない
+		}
+
+		// toBlockを正規化して方向ベクトルを得る
+		D3DXVECTOR3 toBlockNormalized;
+		D3DXVec3Normalize(&toBlockNormalized, &toBlock);
+
+		// 視線方向とブロック方向の角度を計算
+		float dotProduct = D3DXVec3Dot(&forward, &toBlockNormalized);
+		float angle = acosf(dotProduct); // 視線との角度（ラジアン）
+
+		// 中央範囲内にあるか判定
+		if (angle < maxAngle)
+		{
+			g_aBlock[nCntBlock].bInsight = true; // 中央範囲内
+			bArcade = true;
+			bCatcher = true;
 		}
 	}
-
-	return true;
-}
-//=======================================
-// 画面中心にレイキャストを設定する処理
-//=======================================
-void GetRayFromScreenCenter(D3DXVECTOR3* rayOrigin, D3DXVECTOR3* rayDirection)
-{
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-
-	// デバイスの取得
-	D3DVIEWPORT9 viewport;
-	D3DXMATRIX viewMatrix, projMatrix, viewProjMatrix, invViewProjMatrix;
-
-	pDevice->GetViewport(&viewport);
-	pDevice->GetTransform(D3DTS_VIEW, &viewMatrix);
-	pDevice->GetTransform(D3DTS_PROJECTION, &projMatrix);
-
-	// ViewProjection 行列を計算
-	D3DXMatrixMultiply(&viewProjMatrix, &viewMatrix, &projMatrix);
-
-	// ViewProjection 行列の逆行列を計算
-	if (D3DXMatrixInverse(&invViewProjMatrix, NULL, &viewProjMatrix) == NULL) 
-	{
-		return;
-	}
-
-	// スクリーン中央の座標
-	float screenX = viewport.Width * 0.5f;
-	float screenY = viewport.Height * 0.5f;
-
-	// スクリーン座標を正規化デバイス座標 (NDC) に変換
-	float ndcX = (screenX / viewport.Width) * 2.0f - 1.0f;
-	float ndcY = 1.0f - (screenY / viewport.Height) * 2.0f;
-
-	// NDCからクリップ空間 (clip space) への変換
-	D3DXVECTOR3 nearPoint(ndcX, ndcY, 0.0f);  // 近クリップ面
-	D3DXVECTOR3 farPoint(ndcX, ndcY, 1.0f);   // 遠クリップ面
-
-	// 逆行列を用いてワールド空間に変換
-	D3DXVec3TransformCoord(&nearPoint, &nearPoint, &invViewProjMatrix);
-	D3DXVec3TransformCoord(&farPoint, &farPoint, &invViewProjMatrix);
-
-	// レイの方向を計算
-	*rayOrigin = nearPoint;
-	*rayDirection = farPoint - nearPoint;
-	D3DXVec3Normalize(rayDirection, rayDirection); // 正規化
 }
 //============================================
 //ブロックの取得
@@ -779,9 +628,23 @@ Block* GetBlock(void)
 	return &g_aBlock[0];
 }
 //======================================================
-//出口判定
+// 出口判定
 //======================================================
 bool GetExit(void)
 {
 	return g_bExit;
+}
+//======================================================
+// アーケードゲーム判定
+//======================================================
+bool GetArcade(void)
+{
+	return bArcade;
+}
+//======================================================
+//UFOキャッチャー判定
+//======================================================
+bool GetCatcher(void)
+{
+	return bCatcher;
 }

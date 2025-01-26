@@ -135,15 +135,13 @@ bool OverlapOnAxis(const D3DXVECTOR3& center1, const D3DXVECTOR3 axes1[3], const
 float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], const D3DXVECTOR3& axis);
 
 // イベント判定用関数のプロトタイプ宣言
-bool BlockInteraction(void);
 void HandleBlockInteraction(Block* pBlock);
-Block* RaycastToBlocks(const D3DXVECTOR3& rayOrigin, const D3DXVECTOR3& rayDirection);
-bool CheckRayOBBCollision(const D3DXVECTOR3& rayOrigin, const D3DXVECTOR3& rayDirection,
-	const D3DXMATRIX& obbWorld, const D3DXVECTOR3& obbSize, float* distance);
-void GetRayFromScreenCenter(D3DXVECTOR3* rayOrigin, D3DXVECTOR3* rayDirection);
+void CheckBlocksInCenter(void);
 
 Block* GetBlock(void);
 bool GetExit(void);
+bool GetArcade(void);
+bool GetCatcher(void);
 
 #endif
 

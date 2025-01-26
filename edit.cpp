@@ -45,6 +45,43 @@ void InitEdit(void)
 
     // カメラの初期化処理
     InitCamera();
+    
+    // ライトの設定
+    AddLight(
+        D3DLIGHT_DIRECTIONAL,                  // ライトの種類
+        D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),    // 暗めの白い光
+        D3DXVECTOR3(0.0f, -1.0f, 0.0f),       // 真下方向
+        D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
+    );
+
+    AddLight(
+        D3DLIGHT_DIRECTIONAL,                  // ライトの種類
+        D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),    // 暗めの白い光
+        D3DXVECTOR3(-1.0f, 0.0f, 0.0f),       // 左方向
+        D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
+    );
+
+    AddLight(
+        D3DLIGHT_DIRECTIONAL,                  // ライトの種類
+        D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),    // 暗めの白い光
+        D3DXVECTOR3(0.0f, 0.0f, -1.0f),       // 手前方向
+        D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
+    );
+
+
+    AddLight(
+        D3DLIGHT_DIRECTIONAL,                  // ライトの種類
+        D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),    // 暗めの白い光
+        D3DXVECTOR3(1.0f, 0.0f, 0.0f),       // 右方向
+        D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
+    );
+
+    AddLight(
+        D3DLIGHT_DIRECTIONAL,                  // ライトの種類
+        D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),    // 暗めの白い光
+        D3DXVECTOR3(0.0f, 0.0f, 1.0f),       // 奥方向
+        D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
+    );
 
     LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
 
@@ -115,6 +152,9 @@ void UninitEdit(void)
 
     //メッシュシリンダーの終了処理
     UninitMeshcylinder();
+
+    // ライトの終了処理
+    UninitLight();
 
     for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
     {

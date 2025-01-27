@@ -1,23 +1,23 @@
-#ifndef _GAME_H_
-#define _GAME_H_
+#ifndef _SHHOTINGGAME_H_
+#define _SHHOTINGGAME_H_
 
 #include "main.h"
 
 typedef enum
 {
-	GAMESTATE_NONE = 0,//何もしていない状態
-	GAMESTATE_NORMAL,//通常状態（ゲーム進行中）
-	GAMESTATE_END,//終了状態（敵全滅、プレイヤー減、タイムオーバーなど）
-	GAMESTATE_MAX
-}SHOOTINGGAMESTATE;
+	STGSTATE_NONE = 0,//何もしていない状態
+	STGSTATE_NORMAL,//通常状態（ゲーム進行中）
+	STGSTATE_END,//終了状態（敵全滅、プレイヤー減、タイムオーバーなど）
+	STGSTATE_MAX
+}STGSTATE;
 
 //マクロ
 void InitShootingGame(void);
 void UninitShootingGame(void);
 void UpdateShootingGame(void);
 void DrawShootingGame(void);
-void SetShootingGameState(SHOOTINGGAMESTATE state);
-SHOOTINGGAMESTATE GetGameState(void);
+void SetShootingGameState(STGSTATE state);
+STGSTATE GetShootingGameState(void);
 
 
 #endif // !1

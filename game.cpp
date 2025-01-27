@@ -34,14 +34,19 @@
 //#include "sound.h"
 #include "guage.h"
 #include "shooting_game.h"
+#include "action_game.h"
 #include "ui.h"
 
 //グローバル変数
 GAMESTATE g_gameState = GAMESTATE_NONE;//ゲームの状態
 int g_nCounterGameState = 0;//状態管理カウンター
 
-bool g_bPause = false;//ポーズ中かどうか
+bool g_bPause = false;	//ポーズ中かどうか
+bool g_bDraw = false;	//ミニゲームの描画用
+bool g_bDraw2 = false;
 int nCounter;
+int nActCnt;
+int nStgCnt;
 
 //==============================================
 //ゲーム画面の初期化処理
@@ -92,7 +97,6 @@ void InitGame(void)
 	//プレイヤーの初期化処理
 	InitPlayer();
 
-
 	//敵の初期化
 	InitEnemy();
 
@@ -112,8 +116,9 @@ void InitGame(void)
 	//UIの初期化
 	InitUI();
 
-
-
+	//ミニゲームの初期化
+	InitShootingGame();
+	InitActionGame();
 
 	//// 敵
 	//SetEnemy(D3DXVECTOR3(280.0f, 0.0f, 260.0f));
@@ -143,6 +148,8 @@ void InitGame(void)
 	g_nCounterGameState = 0;
 	g_bPause = false;//ポーズ解除
 	nCounter = 0;
+	nActCnt = 0;
+	nStgCnt = 0;
 
 	//エディット読み込み
 	LoadBlockData();
@@ -226,6 +233,10 @@ void UninitGame(void)
 
 	//UIの終了処理
 	UninitUI();
+
+	//ミニゲームの終了処理
+	UninitShootingGame();
+	UninitActionGame();
 }
 //=========================================
 //ゲーム画面の更新処理
@@ -234,7 +245,8 @@ void UpdateGame(void)
 {
 	//int nTime = GetTime();
 	bool bExit = GetExit();
-
+	ACTSTATE pActState = GetActionGameState();
+	STGSTATE pStgState = GetShootingGameState();
 	Player* pPlayer = GetPlayer();//プレイヤーの情報へのポインタにプレイヤーの先頭アドレスが代入される
 
 	if (KeyboardTrigger(DIK_P) == true|| JoyPadTrigger(JOYKEY_START)==true)
@@ -256,15 +268,49 @@ void UpdateGame(void)
 
 	}
 	else
-	{
+	{//ポーズ中ではない
+		if (KeyboardTrigger(DIK_E) == true && pStgState != STGSTATE_END)
+		{//ミニゲーム(シューティング)の起動
+			g_bDraw = g_bDraw ? false : true;
+		}
+		if (KeyboardTrigger(DIK_Q) == true && pActState != ACTSTATE_END)
+		{//ミニゲーム(アクション)の起動
+			g_bDraw2 = g_bDraw2 ? false : true;
+		}
+		if (pStgState == STGSTATE_END)
+		{
+			if (nStgCnt <= 120)
+			{
+				nStgCnt++;
+			}
+		}
+		if (pActState == ACTSTATE_END)
+		{
+			if (nActCnt <= 120)
+			{
+				nActCnt++;
+			}
+		}
 
 		// カーソルを非表示する
 		SetCursorVisibility(false);
 
 
-		//プレイヤーの更新処理
-		UpdatePlayer();
-
+		if (g_bDraw == false && g_bDraw2 == false)
+		{
+			//プレイヤーの更新処理
+			UpdatePlayer();
+		}
+		if (g_bDraw == true)
+		{
+			//ミニゲーム(シューティング)の更新処理
+			UpdateShootingGame();
+		}
+		if (g_bDraw2 == true)
+		{
+			//ミニゲーム(アクション)の更新処理
+			UpdateActionGame();
+		}
 
 		//敵の更新処理
 		UpdateEnemy();
@@ -281,9 +327,11 @@ void UpdateGame(void)
 		//メッシュシリンダーの更新処理
 		UpdateMeshcylinder();
 
-
-		//カメラの更新処理
-		UpdateCamera();
+		if (g_bDraw == false && g_bDraw2 == false)
+		{
+			//カメラの更新処理
+			UpdateCamera();
+		}
 
 
 		//ライトの更新処理
@@ -332,6 +380,7 @@ void UpdateGame(void)
 
 		//UIの更新処理
 		UpdateUI();
+
 	}
 
 	bool bEnd = GetEnd();
@@ -385,11 +434,9 @@ void UpdateGame(void)
 				//SetRanking(GetScore());
 
 			}
-
 		}
 		break;
 	}
-
 }
 //===========================================
 //ゲーム画面の描画処理
@@ -465,6 +512,15 @@ void DrawGame(void)
 		DrawPause();
 	}
 
+	if (g_bDraw == true && nStgCnt <= 120)
+	{
+		//ミニゲームの描画処理
+		DrawShootingGame();
+	}
+	else if (g_bDraw2 == true && nActCnt <= 120)
+	{
+		DrawActionGame();
+	}
 }
 //=============================================
 //ゲームの状態の設定

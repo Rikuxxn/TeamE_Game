@@ -1,194 +1,82 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="block.cpp" />
+    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="edit.cpp" />
+    <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="fade.cpp" />
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="guage.cpp" />
+    <ClCompile Include="input.cpp" />
+    <ClCompile Include="light.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="meshceiling.cpp" />
+    <ClCompile Include="meshcylinder.cpp" />
+    <ClCompile Include="meshfield.cpp" />
+    <ClCompile Include="model.cpp" />
+    <ClCompile Include="motion.cpp" />
+    <ClCompile Include="pause.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="result.cpp" />
+    <ClCompile Include="shooting_background.cpp" />
+    <ClCompile Include="shooting_bullet.cpp" />
+    <ClCompile Include="shooting_clear.cpp" />
+    <ClCompile Include="shooting_effect.cpp" />
+    <ClCompile Include="shooting_enemy.cpp" />
+    <ClCompile Include="shooting_fade.cpp" />
+    <ClCompile Include="shooting_game.cpp" />
+    <ClCompile Include="shooting_particle.cpp" />
+    <ClCompile Include="shooting_player.cpp" />
+    <ClCompile Include="title.cpp" />
+    <ClCompile Include="ui.cpp" />
+    <ClCompile Include="action_background.cpp" />
+    <ClCompile Include="action_block.cpp" />
+    <ClCompile Include="action_clear.cpp" />
+    <ClCompile Include="action_effect.cpp" />
+    <ClCompile Include="action_fade.cpp" />
+    <ClCompile Include="action_game.cpp" />
+    <ClCompile Include="action_item.cpp" />
+    <ClCompile Include="action_particle.cpp" />
+    <ClCompile Include="action_player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="game.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="fade.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="input.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="light.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="title.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="result.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="enemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="motion.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="meshfield.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="meshcylinder.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="camera.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="pause.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="block.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="edit.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="meshceiling.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="guage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="shooting_background.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="shooting_bullet.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="shooting_clear.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="shooting_effect.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="shooting_enemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="shooting_fade.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="shooting_game.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="shooting_particle.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="shooting_player.cpp">
-=======
-    <ClCompile Include="ui.cpp">
->>>>>>> 6750c9a2061840610a84cbf290dbcb5056a4c080
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="main.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="game.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="fade.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="input.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="light.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="title.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="result.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="enemy.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="motion.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="model.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="meshfield.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="meshcylinder.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="camera.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="pause.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="block.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="edit.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="meshceiling.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="guage.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="shooting_bullet.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="shooting_clear.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="shooting_effect.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="shooting_enemy.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="shooting_fade.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="shooting_game.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="shooting_particle.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="shooting_player.h">
-=======
-    <ClInclude Include="ui.h">
->>>>>>> 6750c9a2061840610a84cbf290dbcb5056a4c080
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
+    <ClInclude Include="block.h" />
+    <ClInclude Include="camera.h" />
+    <ClInclude Include="edit.h" />
+    <ClInclude Include="enemy.h" />
+    <ClInclude Include="fade.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="guage.h" />
+    <ClInclude Include="input.h" />
+    <ClInclude Include="light.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="meshceiling.h" />
+    <ClInclude Include="meshcylinder.h" />
+    <ClInclude Include="meshfield.h" />
+    <ClInclude Include="model.h" />
+    <ClInclude Include="motion.h" />
+    <ClInclude Include="pause.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="result.h" />
+    <ClInclude Include="shooting_bullet.h" />
+    <ClInclude Include="shooting_clear.h" />
+    <ClInclude Include="shooting_effect.h" />
+    <ClInclude Include="shooting_enemy.h" />
+    <ClInclude Include="shooting_fade.h" />
+    <ClInclude Include="shooting_game.h" />
+    <ClInclude Include="shooting_particle.h" />
+    <ClInclude Include="shooting_player.h" />
+    <ClInclude Include="title.h" />
+    <ClInclude Include="ui.h" />
+    <ClInclude Include="action_background.h" />
+    <ClInclude Include="action_block.h" />
+    <ClInclude Include="action_clear.h" />
+    <ClInclude Include="action_effect.h" />
+    <ClInclude Include="action_fade.h" />
+    <ClInclude Include="action_game.h" />
+    <ClInclude Include="action_item.h" />
+    <ClInclude Include="action_particle.h" />
+    <ClInclude Include="action_player.h" />
   </ItemGroup>
 </Project>

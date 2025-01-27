@@ -131,37 +131,37 @@ void UpdateShootingPlayer(void)
 
 	if (g_player.bUse == true)
 	{
-		if (GetJoypadPress(JOYKEY_UP) == true)
-		{//上キー
-			g_player.move.x += 0.0f;
-			g_player.move.y -= 1.0f;
-		}
-		else if (GetJoypadPress(JOYKEY_DOWN) == true)
-		{//下キー
-			g_player.move.x += 0.0f;
-			g_player.move.y += 1.0f;
-		}
-		else if (GetJoypadPress(JOYKEY_LEFT) == true)
-		{
-			//移動量を更新（増加）
-			g_player.move.x -= 1.0f;
-			g_player.move.y += 0.0f;
-		}
-		else if (GetJoypadPress(JOYKEY_RIGHT) == true)
-		{
-			g_player.move.x += 1.0f;
-			g_player.move.y += 0.0f;
-		}
+		//if (GetJoypadPress(JOYKEY_UP) == true)
+		//{//上キー
+		//	g_player.move.x += 0.0f;
+		//	g_player.move.y -= 1.0f;
+		//}
+		//else if (GetJoypadPress(JOYKEY_DOWN) == true)
+		//{//下キー
+		//	g_player.move.x += 0.0f;
+		//	g_player.move.y += 1.0f;
+		//}
+		//else if (GetJoypadPress(JOYKEY_LEFT) == true)
+		//{
+		//	//移動量を更新（増加）
+		//	g_player.move.x -= 1.0f;
+		//	g_player.move.y += 0.0f;
+		//}
+		//else if (GetJoypadPress(JOYKEY_RIGHT) == true)
+		//{
+		//	g_player.move.x += 1.0f;
+		//	g_player.move.y += 0.0f;
+		//}
 
-		if (KeyboardRepeat(DIK_A) == true)
+		if (GetKeyboardPress(DIK_A) == true)
 		{
-			if (KeyboardRepeat(DIK_W) == true)
+			if (GetKeyboardPress(DIK_W) == true)
 			{
 				//移動量を更新（増加）
 				g_player.move.x += sinf(-D3DX_PI * 0.75f) * 0.75f;
 				g_player.move.y += cosf(-D3DX_PI * 0.75f) * 0.75f;
 			}
-			else if (KeyboardRepeat(DIK_S) == true)
+			else if (GetKeyboardPress(DIK_S) == true)
 			{
 				//移動量を更新（増加）
 				g_player.move.x += sinf(-D3DX_PI * 0.25f) * 0.75f;
@@ -174,14 +174,14 @@ void UpdateShootingPlayer(void)
 				g_player.move.y += 0.0f;
 			}
 		}
-		else if (KeyboardRepeat(DIK_D) == true)
+		else if (GetKeyboardPress(DIK_D) == true)
 		{
-			if (KeyboardRepeat(DIK_W) == true)
+			if (GetKeyboardPress(DIK_W) == true)
 			{
 				g_player.move.x += sinf(D3DX_PI * 0.75f) * 0.75f;
 				g_player.move.y += cosf(D3DX_PI * 0.75f) * 0.75f;
 			}
-			else if (KeyboardRepeat(DIK_S) == true)
+			else if (GetKeyboardPress(DIK_S) == true)
 			{
 				g_player.move.x += sinf(D3DX_PI * 0.25f) * 0.75f;
 				g_player.move.y += cosf(D3DX_PI * 0.25f) * 0.75f;
@@ -193,13 +193,13 @@ void UpdateShootingPlayer(void)
 			}
 
 		}
-		else if (KeyboardRepeat(DIK_W) == true)
+		else if (GetKeyboardPress(DIK_W) == true)
 		{
 			//上に移動
 			g_player.move.x += 0.0f;
 			g_player.move.y -= 1.0f;
 		}
-		else if (KeyboardRepeat(DIK_S) == true)
+		else if (GetKeyboardPress(DIK_S) == true)
 		{
 			//下に移動
 			g_player.move.x += 0.0f;
@@ -225,7 +225,7 @@ void UpdateShootingPlayer(void)
 		switch (g_player.nBulletType)
 		{
 		case 0:
-			if (KeyboardRepeat(DIK_SPACE) == true || GetJoypadPress(JOYKEY_A) == true)
+			if (GetKeyboardPress(DIK_SPACE) == true /*|| GetJoypadPress(JOYKEY_A) == true*/)
 			{//SPACE
 				g_player.nBulletCnt++;
 				if (g_player.nBulletCnt >= BULLETINTERVAL && g_player.nBulletMax < BULLETMAX)

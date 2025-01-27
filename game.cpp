@@ -116,11 +116,9 @@ void InitGame(void)
 	//UIの初期化
 	InitUI();
 
-<<<<<<< HEAD
 	//ミニゲームの初期化
 	InitShootingGame();
 	InitActionGame();
-=======
 
 	//// 天井の中央付近から特定エリアを照らすスポットライト
 	//AddLight(
@@ -165,7 +163,6 @@ void InitGame(void)
 		D3DXVECTOR3(0.0f, 0.0f, 1.0f),       // 奥方向
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
 	);
->>>>>>> dd8fab87714d2c7aa8f42709af36367b3fa8da26
 
 	//// 敵
 	//SetEnemy(D3DXVECTOR3(280.0f, 0.0f, 260.0f));
@@ -295,6 +292,7 @@ void UpdateGame(void)
 	ACTSTATE pActState = GetActionGameState();
 	STGSTATE pStgState = GetShootingGameState();
 	Player* pPlayer = GetPlayer();//プレイヤーの情報へのポインタにプレイヤーの先頭アドレスが代入される
+	bool bArcade = GetArcade();
 
 	if (KeyboardTrigger(DIK_P) == true|| JoyPadTrigger(JOYKEY_START)==true)
 	{//ESCAPE(ポーズ)キーが押された
@@ -316,7 +314,7 @@ void UpdateGame(void)
 	}
 	else
 	{//ポーズ中ではない
-		if (KeyboardTrigger(DIK_E) == true && pStgState != STGSTATE_END)
+		if (KeyboardTrigger(DIK_E) == true && pStgState != STGSTATE_END && bArcade == true)
 		{//ミニゲーム(シューティング)の起動
 			g_bDraw = g_bDraw ? false : true;
 		}
@@ -543,10 +541,11 @@ void DrawGame(void)
 	////タイムの描画処理
 	//DrawTime();
 
-
-	//UIの描画処理
-	DrawUI();
-
+	if (g_bDraw == false)
+	{
+		//UIの描画処理
+		DrawUI();
+	}
 	if (pPlayer->bDrawDush == true)
 	{
 		//ゲージの描画処理

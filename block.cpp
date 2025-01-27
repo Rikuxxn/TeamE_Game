@@ -575,8 +575,15 @@ void CheckBlocksInCenter(void)
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
 		g_aBlock[nCntBlock].bInsight = false; // ‰Šú‰»
-		bArcade = false;
-		bCatcher = false;
+
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_UFOCATCHER1)
+		{
+			bCatcher = false;
+		}
+		else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
+		{
+			bArcade = false;
+		}
 	}
 
 	// ’†‰›”ÍˆÍ”»’è
@@ -615,8 +622,15 @@ void CheckBlocksInCenter(void)
 		if (angle < maxAngle)
 		{
 			g_aBlock[nCntBlock].bInsight = true; // ’†‰›”ÍˆÍ“à
-			bArcade = true;
-			bCatcher = true;
+
+			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_UFOCATCHER1)
+			{
+				bCatcher = true;
+			}
+			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
+			{
+				bArcade = true;
+			}
 		}
 	}
 }

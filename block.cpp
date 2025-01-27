@@ -11,12 +11,17 @@
 #include "enemy.h"
 #include "edit.h"
 #include <stdio.h>
+#include "ui.h"
+#include "camera.h"
 
 //グローバル変数
 Block g_aBlock[MAX_BLOCK];		//ブロック情報
 Block g_info[BLOCKTYPE_MAX];	//ブロックの素材情報
 
 bool g_bExit;					//出口に入ったか
+
+bool bArcade;					// アーケードゲームの判定
+bool bCatcher;					// UFOキャッチャーの判定
 
 //=============================
 //ブロックの初期化処理
@@ -41,6 +46,8 @@ void InitBlock(void)
 		g_aBlock[nCntBlock].bInsight = false;
 		g_aBlock[nCntBlock].nType = BLOCKTYPE_WALL;
 	}
+	bArcade = false;
+	bCatcher = false;
 
 	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
 	{
@@ -182,51 +189,18 @@ void UpdateBlock(void)
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
 		Player* pPlayer = GetPlayer(); // プレイヤー情報の取得
+		Camera* pCamera = GetCamera();
 
 		if (g_aBlock[nCntBlock].bUse == true)
 		{
-			// 回転角度の正規化
-			if (g_aBlock[nCntBlock].rot.y > D3DX_PI)
-			{
-				g_aBlock[nCntBlock].rot.y -= D3DX_PI * 2.0f;
-			}
-			if (g_aBlock[nCntBlock].rot.y < -D3DX_PI)
-			{
-				g_aBlock[nCntBlock].rot.y += D3DX_PI * 2.0f;
-			}
+			// 視錐台中央判定を実行
+			CheckBlocksInCenter();
 
-			if (g_aBlock[nCntBlock].rot.x > D3DX_PI)
+			if (g_aBlock[nCntBlock].bInsight)
 			{
-				g_aBlock[nCntBlock].rot.x -= D3DX_PI * 2.0f;
+				// 中央範囲内のブロックがあれば何か処理をする
+				HandleBlockInteraction(&g_aBlock[nCntBlock]);
 			}
-			if (g_aBlock[nCntBlock].rot.x < -D3DX_PI)
-			{
-				g_aBlock[nCntBlock].rot.x += D3DX_PI * 2.0f;
-			}
-
-			if (g_aBlock[nCntBlock].rot.z > D3DX_PI)
-			{
-				g_aBlock[nCntBlock].rot.z -= D3DX_PI * 2.0f;
-			}
-			if (g_aBlock[nCntBlock].rot.z < -D3DX_PI)
-			{
-				g_aBlock[nCntBlock].rot.z += D3DX_PI * 2.0f;
-			}
-
-			if (BlockInteraction())
-			{// 範囲内に入ったら
-				if (KeyboardTrigger(DIK_E))
-				{
-					// ミニゲーム用の判定をtrue
-					g_aBlock[nCntBlock].bInsight = true;
-				}
-			}
-			else
-			{// 範囲外
-				// ミニゲーム用の判定をfalse
-				g_aBlock[nCntBlock].bInsight = false;
-			}
-
 
 			////位置を更新
 			//g_aBlock[nCntBlock].pos.x += g_aBlock[nCntBlock].move.x;
@@ -475,7 +449,6 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 bool CheckOBBCollision(const D3DXMATRIX& world1, const D3DXVECTOR3& size1,
 	const D3DXMATRIX& world2, const D3DXVECTOR3& size2)
 {
-	// ワールドマトリックス！！
 	// 各 OBB の中心座標を計算
 	D3DXVECTOR3 center1(world1._41, world1._42, world1._43);
 	D3DXVECTOR3 center2(world2._41, world2._42, world2._43);
@@ -539,7 +512,7 @@ bool OverlapOnAxis(const D3DXVECTOR3& center1, const D3DXVECTOR3 axes1[3], const
 
 	// OBB の中心の距離を指定された軸に投影
 	D3DXVECTOR3 centerDiff = center2 - center1;
-	float distance = fabs(D3DXVec3Dot(&centerDiff, &axis));
+	float distance = (float)fabs(D3DXVec3Dot(&centerDiff, &axis));
 
 	// 投影の重なりを判定
 	return distance <= (radius1 + radius2);
@@ -555,34 +528,96 @@ float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], co
 		fabs(D3DXVec3Dot(&axes[2], &axis)) * size.z / 2;
 }
 //=================================
-//イベント判定処理
+// ブロックインタラクト種類判定処理
 //=================================
-bool BlockInteraction()
+void HandleBlockInteraction(Block* pBlock)
 {
-
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
-		Player* pPlayer = GetPlayer();
+		UI* pUI = GetUI();
 
-		if (g_aBlock[nCntBlock].bUse && g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
+		// ブロックの種類によってインタラクト内容を変更
+		switch (pBlock->nType)
 		{
-			// ブロックとの距離を計算
-			float distance = 
-				(g_aBlock[nCntBlock].pos.x - pPlayer->pos.x) * (g_aBlock[nCntBlock].pos.x - pPlayer->pos.x) +
-				(g_aBlock[nCntBlock].pos.y - pPlayer->pos.y) * (g_aBlock[nCntBlock].pos.y - pPlayer->pos.y) +
-				(g_aBlock[nCntBlock].pos.z - pPlayer->pos.z) * (g_aBlock[nCntBlock].pos.z - pPlayer->pos.z);
+		case BLOCKTYPE_ARCADE1:
 
-			float interactionRange = 60.0f;// 判定範囲
 
-			// 範囲内
-			if (distance <= (interactionRange * interactionRange)) 
-			{
-				return true;
-			}
+			break;
 
-			return false;// 範囲外
+		case BLOCKTYPE_UFOCATCHER1:
+
+
+			break;
+
+		default:
+
+			break;
+		}
+	}
+}
+//=================================
+// 視錐台(フラスタム)中央判定処理
+//=================================
+void CheckBlocksInCenter(void)
+{
+	Player* pPlayer = GetPlayer();
+	const float fov = D3DX_PI / 4.0f;  // 視野角 (45度)
+	const float centerFovRatio = 0.3f; // 中央範囲の幅 (20%)
+	const float nearDistance = 1.0f;   // 判定する最短距離
+	const float farDistance = 90.0f;   // 判定する最長距離
+	const float maxAngle = fov * centerFovRatio;
+
+	// プレイヤーの視線方向を正規化
+	D3DXVECTOR3 forward = pPlayer->forward;
+	D3DXVec3Normalize(&forward, &forward);
+
+	// 全ブロックのbInsightをリセット
+	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
+	{
+		g_aBlock[nCntBlock].bInsight = false; // 初期化
+		bArcade = false;
+		bCatcher = false;
+	}
+
+	// 中央範囲判定
+	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
+	{
+		if (!g_aBlock[nCntBlock].bUse)
+		{
+			continue; // 使用されていないブロックはスキップ
 		}
 
+		// 特定の種類のみ対象とする
+		if (g_aBlock[nCntBlock].nType != BLOCKTYPE_ARCADE1 && g_aBlock[nCntBlock].nType != BLOCKTYPE_UFOCATCHER1)
+		{
+			continue; // 対象外の種類はスキップ
+		}
+
+		// ブロックまでのベクトルを計算
+		D3DXVECTOR3 toBlock = g_aBlock[nCntBlock].pos - pPlayer->pos;
+		float distance = D3DXVec3Length(&toBlock);
+
+		// 距離が範囲外の場合はスキップ
+		if (distance < nearDistance || distance > farDistance)
+		{
+			continue; // 中央判定はしない
+		}
+
+		// toBlockを正規化して方向ベクトルを得る
+		D3DXVECTOR3 toBlockNormalized;
+		D3DXVec3Normalize(&toBlockNormalized, &toBlock);
+
+		// 視線方向とブロック方向の角度を計算
+		float dotProduct = D3DXVec3Dot(&forward, &toBlockNormalized);
+		float angle = acosf(dotProduct); // 視線との角度（ラジアン）
+
+		// 中央範囲内にあるか判定
+		if (angle < maxAngle)
+		{
+			g_aBlock[nCntBlock].bInsight = true; // 中央範囲内
+			bArcade = true;
+			bCatcher = true;
+		}
 	}
 }
 //============================================
@@ -593,9 +628,23 @@ Block* GetBlock(void)
 	return &g_aBlock[0];
 }
 //======================================================
-//出口判定
+// 出口判定
 //======================================================
 bool GetExit(void)
 {
 	return g_bExit;
+}
+//======================================================
+// アーケードゲーム判定
+//======================================================
+bool GetArcade(void)
+{
+	return bArcade;
+}
+//======================================================
+//UFOキャッチャー判定
+//======================================================
+bool GetCatcher(void)
+{
+	return bCatcher;
 }

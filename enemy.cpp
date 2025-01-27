@@ -232,7 +232,7 @@ void UpdateEnemy(void)
 		CollisionBlock(&g_aEnemy.pos,&g_aEnemy.posOld,&g_aEnemy.move,&g_aEnemy.size);
 
 
-		D3DXVECTOR3 PlayerRadius(12.0f, 12.0f, 12.0f);
+		D3DXVECTOR3 PlayerRadius(13.0f, 13.0f, 13.0f);
 
 		float fDistance =
 			(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +

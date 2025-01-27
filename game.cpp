@@ -116,9 +116,56 @@ void InitGame(void)
 	//UIの初期化
 	InitUI();
 
+<<<<<<< HEAD
 	//ミニゲームの初期化
 	InitShootingGame();
 	InitActionGame();
+=======
+
+	//// 天井の中央付近から特定エリアを照らすスポットライト
+	//AddLight(
+	//	D3DLIGHT_SPOT,                         // ライトの種類
+	//	D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),    // 少し明るい光
+	//	D3DXVECTOR3(0.0f, -1.0f, 0.0f),       // 真下方向
+	//	D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井中央の位置
+	//);
+
+	AddLight(
+		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
+		D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),    // 暗めの白い光
+		D3DXVECTOR3(0.0f, -1.0f, 0.0f),       // 真下方向
+		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
+	);
+
+	AddLight(
+		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
+		D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),    // 暗めの白い光
+		D3DXVECTOR3(-1.0f, 0.0f, 0.0f),       // 左方向
+		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
+	);
+
+	AddLight(
+		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
+		D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),    // 暗めの白い光
+		D3DXVECTOR3(0.0f, 0.0f, -1.0f),       // 手前方向
+		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
+	);
+
+
+	AddLight(
+		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
+		D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),    // 暗めの白い光
+		D3DXVECTOR3(1.0f, 0.0f, 0.0f),       // 右方向
+		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
+	);
+
+	AddLight(
+		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
+		D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),    // 暗めの白い光
+		D3DXVECTOR3(0.0f, 0.0f, 1.0f),       // 奥方向
+		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
+	);
+>>>>>>> dd8fab87714d2c7aa8f42709af36367b3fa8da26
 
 	//// 敵
 	//SetEnemy(D3DXVECTOR3(280.0f, 0.0f, 260.0f));
@@ -335,7 +382,7 @@ void UpdateGame(void)
 
 
 		//ライトの更新処理
-		UpdateLight();
+		UpdateLight(0, D3DXVECTOR3(0.0f, -1.0f, 0.0f));
 
 
 		////モデルの更新処理
@@ -465,8 +512,8 @@ void DrawGame(void)
 	DrawMeshCeiling();
 
 
-	//メッシュシリンダーの描画処理
-	DrawMeshcylinder();
+	////メッシュシリンダーの描画処理
+	//DrawMeshcylinder();
 
 
 	////モデルの描画処理

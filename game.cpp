@@ -116,11 +116,9 @@ void InitGame(void)
 	//UIの初期化
 	InitUI();
 
-<<<<<<< HEAD
 	//ミニゲームの初期化
 	InitShootingGame();
 	InitActionGame();
-=======
 
 	//// 天井の中央付近から特定エリアを照らすスポットライト
 	//AddLight(
@@ -165,7 +163,6 @@ void InitGame(void)
 		D3DXVECTOR3(0.0f, 0.0f, 1.0f),       // 奥方向
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
 	);
->>>>>>> dd8fab87714d2c7aa8f42709af36367b3fa8da26
 
 	//// 敵
 	//SetEnemy(D3DXVECTOR3(280.0f, 0.0f, 260.0f));

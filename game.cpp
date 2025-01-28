@@ -37,6 +37,7 @@
 #include "crane_game.h"
 #include "ui.h"
 #include "shadow.h"
+#include "map.h"
 
 //グローバル変数
 GAMESTATE g_gameState = GAMESTATE_NONE;//ゲームの状態
@@ -48,6 +49,7 @@ bool g_bDraw2 = false;
 bool bSTClear;
 bool bACClear;
 bool bMinigame;
+bool bMap;
 
 int nCounter;
 int nStgCnt;
@@ -173,6 +175,8 @@ void InitGame(void)
 	//ポーズの初期化処理
 	InitPause();
 
+	//マップの初期化処理
+	InitMap();
 
 	////エフェクトの初期化処理
 	//InitEffect();
@@ -200,6 +204,7 @@ void InitGame(void)
 	bSTClear = false;
 	bACClear = false;
 	bMinigame = false;
+	bMap = false;
 
 	//エディット読み込み
 	LoadBlockData();
@@ -265,6 +270,13 @@ void UninitGame(void)
 	//UninitTime();
 
 
+	//ポーズの終了処理
+	UninitPause();
+
+
+	//マップの終了処理
+	UninitMap();
+
 	////エフェクトの終了処理
 	//UninitEffect();
 
@@ -299,7 +311,7 @@ void UpdateGame(void)
 	bool bEnd = GetEnd();
 
 
-	if (KeyboardTrigger(DIK_P) == true|| JoyPadTrigger(JOYKEY_START)==true)
+	if (bMap == false && (KeyboardTrigger(DIK_P) == true || JoyPadTrigger(JOYKEY_START) == true))
 	{//ESCAPE(ポーズ)キーが押された
 		g_bPause = g_bPause ? false : true;
 
@@ -320,15 +332,19 @@ void UpdateGame(void)
 	else
 	{//ポーズ中ではない
 
-		if (KeyboardTrigger(DIK_E) == true && pStgState != STGSTATE_END && bArcade == true)
+		if (KeyboardTrigger(DIK_E) == true && pStgState != STGSTATE_END && bArcade == true && bMap == false)
 		{//ミニゲーム(シューティング)の起動
 			g_bDraw = g_bDraw ? false : true;
 			bMinigame = bMinigame ? false : true;
 		}
-		if (KeyboardTrigger(DIK_E) == true && pCraneState != CRANEGAMESTATE_END && bCatcher == true)
+		if (KeyboardTrigger(DIK_E) == true && pCraneState != CRANEGAMESTATE_END && bCatcher == true && bMap == false)
 		{//ミニゲーム(アクション)の起動
 			g_bDraw2 = g_bDraw2 ? false : true;
 			bMinigame = bMinigame ? false : true;
+		}
+		if (bMinigame == false && (KeyboardTrigger(DIK_C) == true || JoyPadTrigger(JOYKEY_BACK) == true))
+		{//マップを開く
+			bMap = bMap ? false : true;
 		}
 		if (pStgState == STGSTATE_END)
 		{
@@ -454,6 +470,7 @@ void UpdateGame(void)
  		g_gameState = GAMESTATE_END;
 		g_bDraw = false;
 		g_bDraw2 = false;
+		bMap = false;
 	}
 
 	int nResultScore;
@@ -565,6 +582,10 @@ void DrawGame(void)
 	//影の描画処理
 	DrawShadow();
 
+	if (bMap == true)
+	{//マップの描画
+		DrawMap();
+	}
 	if (g_bPause == true)
 	{//ポーズ中
 		//ポーズの描画処理

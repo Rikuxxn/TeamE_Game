@@ -141,8 +141,12 @@ void UpdateUI(void)
 	bool bSTClear = GetSTClear();
 	bool bACClear = GetACClear();
 
+
 	for (nCntUI = 0; nCntUI < MAX_UI; nCntUI++)
 	{
+
+		//SetUI(D3DXVECTOR3(1000.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_MAP);
+
 		// アーケードゲームの範囲内
 		if (bArcade == true && bSTClear == false)
 		{

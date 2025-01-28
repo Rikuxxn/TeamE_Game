@@ -40,7 +40,7 @@ void InitMeshCeiling(void)
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\door.jpg",
+		"data\\TEXTURE\\wall001.jpg",
 		&g_pTextureMeshCeiling);
 
 	//インデックスバッファの生成

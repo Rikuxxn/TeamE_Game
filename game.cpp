@@ -310,12 +310,12 @@ void UpdateGame(void)
 	bool bEnd = GetEnd();
 
 
-	if (bMap == false && (KeyboardTrigger(DIK_P) == true || JoyPadTrigger(JOYKEY_START) == true))
-	{//ESCAPE(ポーズ)キーが押された
+	// ミニゲーム中はポーズを開けないようにする
+	if (g_bMini == false && bMap == false && (KeyboardTrigger(DIK_P) == true || JoyPadTrigger(JOYKEY_START) == true))
+	{
 		g_bPause = g_bPause ? false : true;
 
-		//PlaySound(SOUND_LABEL_PAUSE);
-
+		// PlaySound(SOUND_LABEL_PAUSE); // ポーズ音の再生
 	}
 
 	if (g_bPause == true)
@@ -331,20 +331,29 @@ void UpdateGame(void)
 	else
 	{//ポーズ中ではない
 
+		// ミニゲーム（シューティング）のトリガー
 		if (KeyboardTrigger(DIK_E) == true && pStgState != STGSTATE_END && bArcade == true && bMap == false)
-		{//ミニゲーム(シューティング)の起動
+		{
 			g_bDraw = g_bDraw ? false : true;
 			g_bMini = g_bMini ? false : true;
 		}
+
+		// ミニゲーム（アクション）のトリガー
 		if (KeyboardTrigger(DIK_E) == true && pCraneState != CRANEGAMESTATE_END && bCatcher == true && bMap == false)
-		{//ミニゲーム(アクション)の起動
+		{
 			g_bDraw2 = g_bDraw2 ? false : true;
 			g_bMini = g_bMini ? false : true;
 		}
-		//if (g_bMini == false && (KeyboardTrigger(DIK_C) == true || JoyPadTrigger(JOYKEY_BACK) == true))
-		//{//マップを開く
-		//	bMap = bMap ? false : true;
-		//}
+
+		// マップを開けるのはミニゲームがどちらも動いていない場合のみ
+		if (g_bMini == false && g_bDraw == false && g_bDraw2 == false &&
+			(KeyboardTrigger(DIK_C) == true || JoyPadTrigger(JOYKEY_BACK) == true))
+		{
+			bMap = bMap ? false : true;
+		}
+
+
+		// シューティングゲーム終了時の処理
 		if (pStgState == STGSTATE_END)
 		{
 			if (nStgCnt <= 120)
@@ -352,14 +361,19 @@ void UpdateGame(void)
 				nStgCnt++;
 			}
 
-			// 120(２秒)経ったら
+			// 120(2秒)経ったら
 			if (nStgCnt >= 120)
 			{
 				g_bDraw = false;
 				bSTClear = true;
-				g_bMini = false;
+				if (g_bDraw2 == false) // クレーンゲームが動いていないなら
+				{
+					g_bMini = false; // ミニゲーム全体を終了
+				}
 			}
 		}
+
+		// クレーンゲーム終了時の処理
 		if (pCraneState == CRANEGAMESTATE_END)
 		{
 			if (nCraneCnt <= 120)
@@ -367,12 +381,15 @@ void UpdateGame(void)
 				nCraneCnt++;
 			}
 
-			// 120(２秒)経ったら
+			// 120(2秒)経ったら
 			if (nCraneCnt >= 120)
 			{
 				g_bDraw2 = false;
 				bACClear = true;
-				g_bMini = false;
+				if (g_bDraw == false) // シューティングゲームが動いていないなら
+				{
+					g_bMini = false; // ミニゲーム全体を終了
+				}
 			}
 		}
 

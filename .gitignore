@@ -33,6 +33,3 @@
 /.vs
 /Debug
 /Release
-
-$ git rm -r --cached .
-$ git rm -r --cached [TeamE_Game]

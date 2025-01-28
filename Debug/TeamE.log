@@ -1,6 +1,57 @@
-﻿  game.cpp
-<<<<<<< HEAD
+﻿  block.cpp
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\block.cpp(563,51): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+  camera.cpp
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\camera.cpp(184,48): warning C4838: 'double' から 'LONG' への変換には縮小変換が必要です
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\camera.cpp(184,48): warning C4244: '初期化中': 'double' から 'LONG' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\camera.cpp(184,69): warning C4838: 'double' から 'LONG' への変換には縮小変換が必要です
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\camera.cpp(184,69): warning C4244: '初期化中': 'double' から 'LONG' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\camera.cpp(218,51): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\camera.cpp(218,30): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+  crane_background.cpp
+  crane_block.cpp
+  crane_clear.cpp
+  crane_effect.cpp
+  crane_fade.cpp
+  crane_game.cpp
+  crane_item.cpp
+  crane_particle.cpp
+  crane_player.cpp
+  edit.cpp
+  enemy.cpp
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\enemy.cpp(408,4): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\enemy.cpp(698,18): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  fade.cpp
+  game.cpp
+  guage.cpp
+  input.cpp
+  light.cpp
+  main.cpp
+  meshceiling.cpp
+  コードを生成中...
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\input.cpp(244): warning C4715: 'GetJoyTrigger': 値を返さないコントロール パスがあります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\input.cpp(62): warning C4715: 'InitKeyboard': 値を返さないコントロール パスがあります。
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\crane_item.cpp(280): warning C4715: 'GetCraneItem': 値を返さないコントロール パスがあります。
+  コンパイル中...
+  meshcylinder.cpp
+  meshfield.cpp
+  model.cpp
+  motion.cpp
+  pause.cpp
+  player.cpp
+C:\Users\student\Desktop\TeamE_Game\TeamE_Game\player.cpp(481,33): warning C4305: '-=': 'double' から 'float' へ切り詰めます。
+  result.cpp
+  shadow.cpp
+  shooting_background.cpp
+  shooting_bullet.cpp
+  shooting_clear.cpp
+  shooting_effect.cpp
+  shooting_enemy.cpp
+  shooting_fade.cpp
+  shooting_game.cpp
+  shooting_particle.cpp
+  shooting_player.cpp
+  title.cpp
+  tutorial.cpp
+  ui.cpp
+  コードを生成中...
   TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\Debug\TeamE.exe
-=======
-  TeamE.vcxproj -> C:\Users\student\Desktop\TeamE_Game\TeamE_Game\TeamE_Game\TeamE_Game\Debug\TeamE.exe
->>>>>>> 0c34892b3425a2b1991b8f9b12b6a5f1afde891a

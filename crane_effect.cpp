@@ -3,8 +3,8 @@
 // Author:Yoshida Atsushi
 //---------------------------------------------------------
 
-#include "action_effect.h"
-#include "action_player.h"
+#include "crane_effect.h"
+#include "crane_player.h"
 
 //マクロ
 #define MAX_EFFECT (4096)//弾の最大数 
@@ -19,14 +19,14 @@ typedef struct
 	int nLife;//寿命
 	bool bUse;//使用しているかどうか
 	int nType;//種類
-}ActionEffect;
+}CraneEffect;
 
 //グローバル
-LPDIRECT3DTEXTURE9 g_pTextureActionEffect = NULL;     //テクスチャへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffActionEffect = NULL;//頂点バッファへのポインタ
-ActionEffect g_aEffect[MAX_EFFECT];//弾の情報
+LPDIRECT3DTEXTURE9 g_pTextureCraneEffect = NULL;     //テクスチャへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffCraneEffect = NULL;//頂点バッファへのポインタ
+CraneEffect g_aEffect[MAX_EFFECT];//弾の情報
 
-void InitActionEffect(void)
+void InitCraneEffect(void)
 {
 	LPDIRECT3DDEVICE9 pDevice;
 	int nCntEffect;
@@ -37,7 +37,7 @@ void InitActionEffect(void)
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
 	"data\\TEXTURE\\effect000.jpg",      //テクスチャのファイル名
-	&g_pTextureActionEffect);
+	&g_pTextureCraneEffect);
 
 	//弾の情報の初期化
 	for (nCntEffect = 0; nCntEffect < MAX_EFFECT; nCntEffect++)
@@ -51,12 +51,17 @@ void InitActionEffect(void)
 		g_aEffect[nCntEffect].nType = 0;
 	}
 	//頂点バッファの設定
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_EFFECT, D3DUSAGE_WRITEONLY, FVF_VERTEX_2D, D3DPOOL_MANAGED, &g_pVtxBuffActionEffect, NULL);
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_EFFECT,
+														D3DUSAGE_WRITEONLY,
+														FVF_VERTEX_2D,
+														D3DPOOL_MANAGED,
+														&g_pVtxBuffCraneEffect,
+														NULL);
 
 	VERTEX_2D* pVtx;
 
 	//頂点バッファをロックし、頂点データへのポインタを取得
-	g_pVtxBuffActionEffect->Lock(0, 0, (void**)&pVtx, 0);
+	g_pVtxBuffCraneEffect->Lock(0, 0, (void**)&pVtx, 0);
 
 	for (nCntEffect = 0; nCntEffect < MAX_EFFECT; nCntEffect++)
 	{
@@ -87,25 +92,25 @@ void InitActionEffect(void)
 		pVtx += 4;//頂点データのポインタを４つ分進める
 	}
 	//頂点バッファをアンロック
-	g_pVtxBuffActionEffect->Unlock();
+	g_pVtxBuffCraneEffect->Unlock();
 }
-void UninitActionEffect(void)
+void UninitCraneEffect(void)
 {
 	//テクスチャの破棄
-	if (g_pTextureActionEffect != NULL)
+	if (g_pTextureCraneEffect != NULL)
 	{
-		g_pTextureActionEffect->Release();
-		g_pTextureActionEffect = NULL;
+		g_pTextureCraneEffect->Release();
+		g_pTextureCraneEffect = NULL;
 	}
 
 	//頂点バッファの破棄
-	if (g_pVtxBuffActionEffect != NULL)
+	if (g_pVtxBuffCraneEffect != NULL)
 	{
-		g_pVtxBuffActionEffect->Release();
-		g_pVtxBuffActionEffect = NULL;
+		g_pVtxBuffCraneEffect->Release();
+		g_pVtxBuffCraneEffect = NULL;
 	}
 }
-void UpdateActionEffect(void)
+void UpdateCraneEffect(void)
 {
 	int nCntEffect;
 	VERTEX_2D* pVtx=0;
@@ -113,7 +118,7 @@ void UpdateActionEffect(void)
 	pDevice = GetDevice();
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffActionEffect->Lock(0, 0, (void**)&pVtx, 0);
+	g_pVtxBuffCraneEffect->Lock(0, 0, (void**)&pVtx, 0);
 
 	for (nCntEffect = 0; nCntEffect < MAX_EFFECT; nCntEffect++)
 	{
@@ -147,13 +152,11 @@ void UpdateActionEffect(void)
 		}
 		pVtx += 4;//頂点データのポインタを４つ分進める
 	}
-
 	//頂点バッファをアンロックする
-	g_pVtxBuffActionEffect->Unlock();
-
+	g_pVtxBuffCraneEffect->Unlock();
 }
 //エフェクトの描画
-void DrawActionEffect(void)
+void DrawCraneEffect(void)
 {
 	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
 	int nCntEffect;
@@ -163,13 +166,13 @@ void DrawActionEffect(void)
 	pDevice = GetDevice();
 
 	//頂点バッファをデータストリーム
-	pDevice->SetStreamSource(0, g_pVtxBuffActionEffect, 0, sizeof(VERTEX_2D));
+	pDevice->SetStreamSource(0, g_pVtxBuffCraneEffect, 0, sizeof(VERTEX_2D));
 
 	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
 	//テクスチャの設定
-	pDevice->SetTexture(0, g_pTextureActionEffect);
+	pDevice->SetTexture(0, g_pTextureCraneEffect);
 
 	//αブレンディングを加算合成に設定
 	pDevice->SetRenderState(D3DRS_BLENDOP,D3DBLENDOP_ADD);
@@ -191,14 +194,14 @@ void DrawActionEffect(void)
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 }
 //エフェクトの設定処理
-void SetActionEffect(D3DXVECTOR3 pos,D3DXVECTOR3 move, D3DXCOLOR col, float fRadius, int nLife,int nType)
+void SetCraneEffect(D3DXVECTOR3 pos,D3DXVECTOR3 move, D3DXCOLOR col, float fRadius, int nLife,int nType)
 {
 	int nCntEffect;
 	VERTEX_2D* pVtx=0;
 	
 	//ロック
 	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffActionEffect->Lock(0, 0, (void**)&pVtx, 0);
+	g_pVtxBuffCraneEffect->Lock(0, 0, (void**)&pVtx, 0);
 
 	for (nCntEffect = 0; nCntEffect < MAX_EFFECT; nCntEffect++)
 	{
@@ -232,5 +235,5 @@ void SetActionEffect(D3DXVECTOR3 pos,D3DXVECTOR3 move, D3DXCOLOR col, float fRad
 
 	//アンロック
 	//頂点バッファをアンロック
-	g_pVtxBuffActionEffect->Unlock();
+	g_pVtxBuffCraneEffect->Unlock();
 }

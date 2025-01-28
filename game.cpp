@@ -34,7 +34,7 @@
 //#include "sound.h"
 #include "guage.h"
 #include "shooting_game.h"
-#include "action_game.h"
+#include "crane_game.h"
 #include "ui.h"
 #include "shadow.h"
 
@@ -47,10 +47,11 @@ bool g_bDraw = false;	//ミニゲームの描画用
 bool g_bDraw2 = false;
 bool bSTClear;
 bool bACClear;
+bool bMinigame;
 
 int nCounter;
-int nActCnt;
 int nStgCnt;
+int nCraneCnt;
 
 //==============================================
 //ゲーム画面の初期化処理
@@ -119,7 +120,7 @@ void InitGame(void)
 
 	//ミニゲームの初期化
 	InitShootingGame();
-	InitActionGame();
+	InitCraneGame();
 
 	//// 天井の中央付近から特定エリアを照らすスポットライト
 	//AddLight(
@@ -193,11 +194,12 @@ void InitGame(void)
 	g_nCounterGameState = 0;
 	g_bPause = false;//ポーズ解除
 	nCounter = 0;
-	nActCnt = 0;
+	nCraneCnt = 0;
 	nStgCnt = 0;
 
 	bSTClear = false;
 	bACClear = false;
+	bMinigame = false;
 
 	//エディット読み込み
 	LoadBlockData();
@@ -280,7 +282,7 @@ void UninitGame(void)
 
 	//ミニゲームの終了処理
 	UninitShootingGame();
-	UninitActionGame();
+	UninitCraneGame();
 }
 //=========================================
 //ゲーム画面の更新処理
@@ -289,11 +291,12 @@ void UpdateGame(void)
 {
 	//int nTime = GetTime();
 	bool bExit = GetExit();
-	ACTSTATE pActState = GetActionGameState();
 	STGSTATE pStgState = GetShootingGameState();
+	CRANEGAMESTATE pCraneState = GetCraneGameState();
 	Player* pPlayer = GetPlayer();//プレイヤーの情報へのポインタにプレイヤーの先頭アドレスが代入される
 	bool bArcade = GetArcade();
 	bool bCatcher = GetCatcher();
+	bool bEnd = GetEnd();
 
 
 	if (KeyboardTrigger(DIK_P) == true|| JoyPadTrigger(JOYKEY_START)==true)
@@ -320,10 +323,12 @@ void UpdateGame(void)
 		if (KeyboardTrigger(DIK_E) == true && pStgState != STGSTATE_END && bArcade == true)
 		{//ミニゲーム(シューティング)の起動
 			g_bDraw = g_bDraw ? false : true;
+			bMinigame = bMinigame ? false : true;
 		}
-		if (KeyboardTrigger(DIK_E) == true && pActState != ACTSTATE_END && bCatcher == true)
+		if (KeyboardTrigger(DIK_E) == true && pCraneState != CRANEGAMESTATE_END && bCatcher == true)
 		{//ミニゲーム(アクション)の起動
 			g_bDraw2 = g_bDraw2 ? false : true;
+			bMinigame = bMinigame ? false : true;
 		}
 		if (pStgState == STGSTATE_END)
 		{
@@ -339,21 +344,21 @@ void UpdateGame(void)
 				bSTClear = true;
 			}
 		}
-		if (pActState == ACTSTATE_END)
-		{
-			if (nActCnt <= 120)
-			{
-				nActCnt++;
-			}
+		//if (pActState == ACTSTATE_END)
+		//{
+		//	if (nActCnt <= 120)
+		//	{
+		//		nActCnt++;
+		//	}
 
-			// 120(２秒)経ったら
-			if (nActCnt >= 120)
-			{
-				g_bDraw2 = false;
-				bACClear = true;
-			}
+		//	// 120(２秒)経ったら
+		//	if (nActCnt >= 120)
+		//	{
+		//		g_bDraw2 = false;
+		//		bACClear = true;
+		//	}
 
-		}
+		//}
 
 		// カーソルを非表示する
 		SetCursorVisibility(false);
@@ -372,7 +377,7 @@ void UpdateGame(void)
 		if (g_bDraw2 == true)
 		{
 			//ミニゲーム(アクション)の更新処理
-			UpdateActionGame();
+			UpdateCraneGame();
 		}
 
 		//敵の更新処理
@@ -436,20 +441,19 @@ void UpdateGame(void)
 		//ゲージの更新処理
 		UpdateGuage();
 
-
 		//UIの更新処理
 		UpdateUI();
 
 	}
 
-	bool bEnd = GetEnd();
 
 	if ((pPlayer->bDisp == false || bExit == true /*|| nTime <= 0*/ || bEnd  == true) && g_gameState != GAMESTATE_NONE)
 	{
 
 		//モード設定(リザルト画面に移行)
  		g_gameState = GAMESTATE_END;
-
+		g_bDraw = false;
+		g_bDraw2 = false;
 	}
 
 	int nResultScore;
@@ -547,7 +551,7 @@ void DrawGame(void)
 	////タイムの描画処理
 	//DrawTime();
 
-	if (g_bDraw == false)
+	if (bMinigame == false)
 	{
 		//UIの描画処理
 		DrawUI();
@@ -572,9 +576,9 @@ void DrawGame(void)
 		//ミニゲームの描画処理
 		DrawShootingGame();
 	}
-	else if (g_bDraw2 == true && nActCnt <= 120)
+	else if (g_bDraw2 == true && nCraneCnt <= 120)
 	{
-		DrawActionGame();
+		DrawCraneGame();
 	}
 }
 //=============================================

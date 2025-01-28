@@ -3,14 +3,14 @@
 // Author:Yoshida Atsushi
 //---------------------------------------------------------
 
-#include "action_particle.h"
-#include "action_effect.h"
+#include "crane_particle.h"
+#include "crane_effect.h"
 
 //グローバル
-ActionParticle g_aParticle[MAX_PARTICLE];//パーティクルの情報
+CraneParticle g_aParticle[MAX_PARTICLE];//パーティクルの情報
 
 //syokika
-void InitActionParticle(void)
+void InitCraneParticle(void)
 {
 	int nCntParticle;
 	VERTEX_2D* pVtx = 0;
@@ -27,12 +27,12 @@ void InitActionParticle(void)
 	}
 }
 //syuuryou
-void UninitActionParticle(void)
+void UninitCraneParticle(void)
 {
 
 }
 //kousin
-void UpdateActionParticle(void)
+void UpdateCraneParticle(void)
 {
 	int nCntParticle;
 	int nCntAppear;
@@ -77,7 +77,7 @@ void UpdateActionParticle(void)
 					nLife = 50;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife,0);
+					SetCraneEffect(pos, move, col, fRadius, nLife,0);
 				}
 				else if (g_aParticle[nCntParticle].nType == 1)//ジャンプ
 				{
@@ -101,7 +101,7 @@ void UpdateActionParticle(void)
 					nLife = 40;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife,0);
+					SetCraneEffect(pos, move, col, fRadius, nLife,0);
 				}
 				else if(g_aParticle[nCntParticle].nType == 3)//バリアに当たった(右から)
 				{
@@ -125,7 +125,7 @@ void UpdateActionParticle(void)
 					nLife = 50;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife, 0);
+					SetCraneEffect(pos, move, col, fRadius, nLife, 0);
 				}
 				else if (g_aParticle[nCntParticle].nType == 4)//バリアに当たった(左から)
 				{
@@ -149,7 +149,7 @@ void UpdateActionParticle(void)
 					nLife = 50;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife, 0);
+					SetCraneEffect(pos, move, col, fRadius, nLife, 0);
 				}
 				else if (g_aParticle[nCntParticle].nType == 5)//着地
 				{
@@ -173,7 +173,7 @@ void UpdateActionParticle(void)
 					nLife = 30;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife, 0);
+					SetCraneEffect(pos, move, col, fRadius, nLife, 0);
 				}
 				else if (g_aParticle[nCntParticle].nType == 6)//空中ダッシュ(左から)
 				{
@@ -197,7 +197,7 @@ void UpdateActionParticle(void)
 					nLife = 40;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife, 0);
+					SetCraneEffect(pos, move, col, fRadius, nLife, 0);
 				}
 				else if (g_aParticle[nCntParticle].nType == 7)//空中ダッシュ(右から)
 				{
@@ -221,7 +221,7 @@ void UpdateActionParticle(void)
 					nLife = 40;
 	
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife, 0);
+					SetCraneEffect(pos, move, col, fRadius, nLife, 0);
 				}
 				else if (g_aParticle[nCntParticle].nType == 8)//地上走り(右に)
 				{
@@ -245,7 +245,7 @@ void UpdateActionParticle(void)
 					nLife = 15;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife, 0);
+					SetCraneEffect(pos, move, col, fRadius, nLife, 0);
 				}
 				else if (g_aParticle[nCntParticle].nType == 9)//地上走り(左に)
 				{
@@ -269,7 +269,7 @@ void UpdateActionParticle(void)
 					nLife = 15;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife, 0);
+					SetCraneEffect(pos, move, col, fRadius, nLife, 0);
 				}
 				else if (g_aParticle[nCntParticle].nType == 10)//タックル(右向き)
 				{
@@ -293,7 +293,7 @@ void UpdateActionParticle(void)
 					nLife = 50;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife, 0);
+					SetCraneEffect(pos, move, col, fRadius, nLife, 0);
 				}
 				else if (g_aParticle[nCntParticle].nType == 11)//タックル(左向き)
 				{
@@ -317,7 +317,7 @@ void UpdateActionParticle(void)
 					nLife = 50;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife, 0);
+					SetCraneEffect(pos, move, col, fRadius, nLife, 0);
 				}
 				else if (g_aParticle[nCntParticle].nType == 12)//チャージ完了
 				{
@@ -341,7 +341,7 @@ void UpdateActionParticle(void)
 					nLife = 6;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife, 0);
+					SetCraneEffect(pos, move, col, fRadius, nLife, 0);
 				}
 				else if (g_aParticle[nCntParticle].nType == 13)//弾の爆発
 				{
@@ -365,7 +365,7 @@ void UpdateActionParticle(void)
 					nLife = 20;
 					
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife, 0);
+					SetCraneEffect(pos, move, col, fRadius, nLife, 0);
 				}
 				else if (g_aParticle[nCntParticle].nType == 16)//ダッシュ右
 				{
@@ -389,7 +389,7 @@ void UpdateActionParticle(void)
 					nLife = 15;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife, 0);
+					SetCraneEffect(pos, move, col, fRadius, nLife, 0);
 				}
 				else if (g_aParticle[nCntParticle].nType == 17)//ダッシュ右
 				{
@@ -413,10 +413,8 @@ void UpdateActionParticle(void)
 					nLife = 15;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife, 0);
+					SetCraneEffect(pos, move, col, fRadius, nLife, 0);
 				}
-
-
 				//位置の設定
 				//pos=D3DXVECTOR3();
 
@@ -438,7 +436,7 @@ void UpdateActionParticle(void)
 				//nLife=;
 
 				//エフェクトの設定
-				//SetActionEffect();
+				//SetCraneEffect();
 			}
 
 			for (nCntAppear = 0; nCntAppear < 10; nCntAppear++)
@@ -465,7 +463,7 @@ void UpdateActionParticle(void)
 					nLife = 30;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife, 0);
+					SetCraneEffect(pos, move, col, fRadius, nLife, 0);
 				}
 				else if (g_aParticle[nCntParticle].nType == 15)//着地(右から)
 				{
@@ -489,9 +487,8 @@ void UpdateActionParticle(void)
 					nLife = 30;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife, 0);
+					SetCraneEffect(pos, move, col, fRadius, nLife, 0);
 				}
-
 			}
 
 			for (nCntAppear = 0; nCntAppear < 4; nCntAppear++)
@@ -518,7 +515,7 @@ void UpdateActionParticle(void)
 					nLife = 90;
 
 					//エフェクトの設定
-					SetActionEffect(pos, move, col, fRadius, nLife,1);
+					SetCraneEffect(pos, move, col, fRadius, nLife,1);
 				}
 			}
 
@@ -531,15 +528,15 @@ void UpdateActionParticle(void)
 		}
 	}
 }
-void DrawActionParticle(void)
+void DrawCraneParticle(void)
 {
 
 }
-ActionParticle* GetActionParticle(void)
+CraneParticle* GetCraneParticle(void)
 {
 	return &g_aParticle[0];
 }
-void SetActionParticle(D3DXVECTOR3 pos,int nType)
+void SetCraneParticle(D3DXVECTOR3 pos,int nType)
 {
 	int nCntParticle;
 	VERTEX_2D* pVtx = 0;

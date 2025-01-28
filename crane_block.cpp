@@ -3,10 +3,10 @@
 // Author:Yoshida Atsushi
 //---------------------------------------------------------
 
-#include "action_block.h"
-#include "action_player.h"
+#include "crane_block.h"
+#include "crane_player.h"
 #include "main.h"
-#include "action_particle.h"
+#include "crane_particle.h"
 
 //マクロ
 #define MAX_BLOCK (512)	//ブロックの最大数
@@ -16,11 +16,11 @@
 
 //グローバル
 LPDIRECT3DTEXTURE9 g_pTextureBlock[NUM_BLOCK] = {};     //テクスチャへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBlock = NULL;//頂点バッファへのポインタ
-ACTIONBLOCK g_aBlock[MAX_BLOCK];					//ブロックの情報
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBlock = NULL;			//頂点バッファへのポインタ
+CRANEBLOCK g_aBlock[MAX_BLOCK];							//ブロックの情報
 bool g_bTyakuti;
 
-void InitActionBlock(void)
+void InitCraneBlock(void)
 {
 	LPDIRECT3DDEVICE9 pDevice;
 	int nCntBlock;
@@ -28,10 +28,10 @@ void InitActionBlock(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice,
-	"data\\TEXTURE\\block2.png",		//テクスチャのファイル名
-		&g_pTextureBlock[0]);
+	////テクスチャの読み込み
+	//D3DXCreateTextureFromFile(pDevice,
+	//"data\\TEXTURE\\block2.png",		//テクスチャのファイル名
+	//	&g_pTextureBlock[0]);
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -55,7 +55,12 @@ void InitActionBlock(void)
 	}
 
 	//頂点バッファの設定
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_BLOCK, D3DUSAGE_WRITEONLY, FVF_VERTEX_2D, D3DPOOL_MANAGED, &g_pVtxBuffBlock, NULL);
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_BLOCK,
+														D3DUSAGE_WRITEONLY,
+														FVF_VERTEX_2D,
+														D3DPOOL_MANAGED,
+														&g_pVtxBuffBlock,
+														NULL);
 
 	VERTEX_2D* pVtx;
 
@@ -94,7 +99,7 @@ void InitActionBlock(void)
 	//頂点バッファをアンロック
 	g_pVtxBuffBlock->Unlock();
 }
-void UninitActionBlock(void)
+void UninitCraneBlock(void)
 {
 	for (int nCntBlock = 0; nCntBlock < NUM_BLOCK; nCntBlock++)
 	{
@@ -104,17 +109,16 @@ void UninitActionBlock(void)
 			g_pTextureBlock[nCntBlock]->Release();
 			g_pTextureBlock[nCntBlock] = NULL;
 		}
+	}
 
-		//頂点バッファの破棄
-		if (g_pVtxBuffBlock != NULL)
-		{
-			g_pVtxBuffBlock->Release();
-			g_pVtxBuffBlock = NULL;
-		}
-
+	//頂点バッファの破棄
+	if (g_pVtxBuffBlock != NULL)
+	{
+		g_pVtxBuffBlock->Release();
+		g_pVtxBuffBlock = NULL;
 	}
 }
-void UpdateActionBlock(void)
+void UpdateCraneBlock(void)
 {
 	VERTEX_2D* pVtx = 0;
 
@@ -142,13 +146,22 @@ void UpdateActionBlock(void)
 			pVtx[1].pos = D3DXVECTOR3(g_aBlock[nCntBlock].pos.x + 5.0f, g_aBlock[nCntBlock].pos.y - 5.0f, 0.0f);
 			pVtx[2].pos = D3DXVECTOR3(g_aBlock[nCntBlock].pos.x - 5.0f, g_aBlock[nCntBlock].pos.y + 5.0f, 0.0f);
 			pVtx[3].pos = D3DXVECTOR3(g_aBlock[nCntBlock].pos.x + 5.0f, g_aBlock[nCntBlock].pos.y + 5.0f, 0.0f);
+
+			if (g_aBlock[nCntBlock].nType == 0)
+			{
+				//頂点カラーの設定
+				pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f);//0.0～1.0で設定
+				pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f);
+				pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f);
+				pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f);
+			}
 		}
 		pVtx += 4;//頂点データのポインタを４つ分進める
 	}
 	//頂点バッファをアンロックする
 	g_pVtxBuffBlock->Unlock();
 }
-void DrawActionBlock(void)
+void DrawCraneBlock(void)
 {
 	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
 	int nCntBlock;
@@ -172,12 +185,12 @@ void DrawActionBlock(void)
 			pDevice->SetTexture(0, g_pTextureBlock[nType]);
 
 			//ポリゴンの描画
-			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,nCntBlock*4 , 2);
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCntBlock * 4, 2);
 		}
 	}
 }
 //ブロックの設定処理
-void SetActionBlock(D3DXVECTOR3 pos,D3DXVECTOR3 move,float fWidth,float fHeight,int nType)
+void SetCraneBlock(D3DXVECTOR3 pos,D3DXVECTOR3 move,float fWidth,float fHeight,int nType)
 {
 	int nCntBlock;
 	VERTEX_2D* pVtx=0;
@@ -203,6 +216,12 @@ void SetActionBlock(D3DXVECTOR3 pos,D3DXVECTOR3 move,float fWidth,float fHeight,
 			pVtx[2].pos = D3DXVECTOR3(g_aBlock[nCntBlock].pos.x - g_aBlock[nCntBlock].fWidth, g_aBlock[nCntBlock].pos.y + g_aBlock[nCntBlock].fHeight, 0.0f);
 			pVtx[3].pos = D3DXVECTOR3(g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].fWidth, g_aBlock[nCntBlock].pos.y + g_aBlock[nCntBlock].fHeight, 0.0f);
 
+			//頂点カラーの設定
+			pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);//0.0～1.0で設定
+			pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
+			pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
+			pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
+
 			//テクスチャ
 			pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 			pVtx[1].tex = D3DXVECTOR2(fWidth / BLOCK_HABA, 0.0f);
@@ -218,15 +237,15 @@ void SetActionBlock(D3DXVECTOR3 pos,D3DXVECTOR3 move,float fWidth,float fHeight,
 	g_pVtxBuffBlock->Unlock();
 }
 //ブロックのあたりはんてぇ
-bool CollisionActionBlock(D3DXVECTOR3* pPos,		 //現在の位置
+bool CollisionCraneBlock(D3DXVECTOR3* pPos,		 //現在の位置
 						D3DXVECTOR3* pPosOld,//前回の位置
 						D3DXVECTOR3* pMove,	 //移動量
 						float fWidth,		 //幅
 						float fHeight,		 //高さ
-						ACTIONBLOCK**pBlock)
+						CRANEBLOCK**pBlock)
 {
 	bool bLanding = false;//着地しているかどうか
-	ActionPlayer* pPlayer=GetActionPlayer();
+	CranePlayer* pPlayer=GetCranePlayer();
 
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
@@ -241,7 +260,7 @@ bool CollisionActionBlock(D3DXVECTOR3* pPos,		 //現在の位置
 					pPos->y = g_aBlock[nCntBlock].pos.y - g_aBlock[nCntBlock].fHeight;//ブロックの高さ
 					pMove->y = 0.0f;
 					bLanding = true;
-					pPlayer->bLanding = true;
+					//pPlayer->bLanding = true;
 					if (pBlock != NULL)
 					{//ブロックのアドレスをいれる場所がある
 						*pBlock = &g_aBlock[nCntBlock];//ブロックのアドレスを代入
@@ -274,14 +293,14 @@ bool CollisionActionBlock(D3DXVECTOR3* pPos,		 //現在の位置
 	}
 	return bLanding;
 }
-bool CollisionActionBlock2(D3DXVECTOR3* pPos,		 //現在の位置
+bool CollisionCraneBlock2(D3DXVECTOR3* pPos, //現在の位置
 						D3DXVECTOR3* pPosOld,//前回の位置
 						D3DXVECTOR3* pMove,	 //移動量
 						float fWidth,		 //幅
 						float fHeight)		 //高さ
 {
 	bool bUse = true;//着地しているかどうか
-	ActionPlayer* pPlayer = GetActionPlayer();
+	CranePlayer* pPlayer = GetCranePlayer();
 
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
@@ -303,4 +322,8 @@ bool CollisionActionBlock2(D3DXVECTOR3* pPos,		 //現在の位置
 		}
 	}
 	return bUse;
+}
+CRANEBLOCK* GetBlock(void)
+{
+	return g_aBlock;
 }

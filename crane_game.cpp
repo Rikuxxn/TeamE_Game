@@ -13,6 +13,7 @@
 #include "crane_item.h"
 #include "crane_background.h"
 #include "time.h"
+#include "game.h"
 //#include "sound.h"
 #include "crane_clear.h"
 

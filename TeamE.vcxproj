@@ -144,17 +144,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="action_background.cpp" />
-    <ClCompile Include="action_block.cpp" />
-    <ClCompile Include="action_clear.cpp" />
-    <ClCompile Include="action_effect.cpp" />
-    <ClCompile Include="action_fade.cpp" />
-    <ClCompile Include="action_game.cpp" />
-    <ClCompile Include="action_item.cpp" />
-    <ClCompile Include="action_particle.cpp" />
-    <ClCompile Include="action_player.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="crane_background.cpp" />
+    <ClCompile Include="crane_block.cpp" />
+    <ClCompile Include="crane_clear.cpp" />
+    <ClCompile Include="crane_effect.cpp" />
+    <ClCompile Include="crane_fade.cpp" />
+    <ClCompile Include="crane_game.cpp" />
+    <ClCompile Include="crane_item.cpp" />
+    <ClCompile Include="crane_particle.cpp" />
+    <ClCompile Include="crane_player.cpp" />
     <ClCompile Include="edit.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="fade.cpp" />
@@ -186,17 +186,17 @@
     <ClCompile Include="ui.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="action_background.h" />
-    <ClInclude Include="action_block.h" />
-    <ClInclude Include="action_clear.h" />
-    <ClInclude Include="action_effect.h" />
-    <ClInclude Include="action_fade.h" />
-    <ClInclude Include="action_game.h" />
-    <ClInclude Include="action_item.h" />
-    <ClInclude Include="action_particle.h" />
-    <ClInclude Include="action_player.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="crane_background.h" />
+    <ClInclude Include="crane_block.h" />
+    <ClInclude Include="crane_clear.h" />
+    <ClInclude Include="crane_effect.h" />
+    <ClInclude Include="crane_fade.h" />
+    <ClInclude Include="crane_game.h" />
+    <ClInclude Include="crane_item.h" />
+    <ClInclude Include="crane_particle.h" />
+    <ClInclude Include="crane_player.h" />
     <ClInclude Include="edit.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="fade.h" />

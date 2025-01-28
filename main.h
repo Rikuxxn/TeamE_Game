@@ -32,6 +32,10 @@
 #define SCREEN_HEIGHT (720)													//ウィンドウの高さ
 #define FVF_VERTEX_2D (D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX1)
 #define FVF_VERTEX_3D (D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_DIFFUSE|D3DFVF_TEX1)	//座標・法線・カラー・テクスチャ
+#define FIELD_LEFT (280.0f)//幅720.0f
+#define FIELD_RIGHT (1000.0f)
+#define FIELD_TOP (50.0f)//高さ400.0f
+#define FIELD_UNDER (450.0f)
 
 
 //画面の種類

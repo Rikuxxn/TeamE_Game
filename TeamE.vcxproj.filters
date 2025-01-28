@@ -41,6 +41,7 @@
     <ClCompile Include="crane_item.cpp" />
     <ClCompile Include="crane_particle.cpp" />
     <ClCompile Include="crane_player.cpp" />
+    <ClCompile Include="map.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
@@ -82,5 +83,6 @@
     <ClInclude Include="crane_item.h" />
     <ClInclude Include="crane_particle.h" />
     <ClInclude Include="crane_player.h" />
+    <ClInclude Include="map.h" />
   </ItemGroup>
 </Project>

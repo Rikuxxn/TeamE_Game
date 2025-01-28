@@ -130,27 +130,6 @@ void InitMeshcylinder(void)
 		}
 	}
 
-	////インデックスの設定
-	//pIdx[0] = 3;
-	//pIdx[1] = 0;
-
-	//pIdx[2] = 4;
-	//pIdx[3] = 1;
-
-	//pIdx[4] = 5;
-	//pIdx[5] = 2;
-
-	//pIdx[6] = 2;
-	//pIdx[7] = 6;
-
-	//pIdx[8] = 6;
-	//pIdx[9] = 3;
-
-	//pIdx[10] = 7;
-	//pIdx[11] = 4;
-
-	//pIdx[12] = 8;
-	//pIdx[13] = 5;
 
 	//インデックスバッファをアンロックする
 	g_pIdxBuffMeshcylinder->Unlock();
@@ -189,7 +168,6 @@ void UninitMeshcylinder(void)
 //==================================
 void UpdateMeshcylinder(void)
 {
-
 
 
 }
@@ -235,5 +213,4 @@ void DrawMeshcylinder(void)
 
 	//ポリゴンの描画
 	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, MESHCYLINDER_VERTEX, 0, MESHCYLINDER_PRIMITIVE);
-
 }

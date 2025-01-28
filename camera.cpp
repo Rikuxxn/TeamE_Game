@@ -145,7 +145,7 @@ void UpdateCamera(void)
 
 		// カメラの位置をプレイヤーの位置に設定
 		g_camera.posV = pPlayer->pos;
-		g_camera.posV.y += 70.0f; // 頭部の高さ
+		g_camera.posV.y += 75.0f; // 頭部の高さ
 
 		// カメラの回転に基づいて注視点を計算
 		g_camera.posR.x = g_camera.posV.x - sinf(g_camera.rot.y) * cosf(g_camera.rot.x);

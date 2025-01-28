@@ -10,7 +10,7 @@
 #include "main.h"
 
 #define MAX_BLOCK (200)	// ブロックの使う数
-#define MAX_BLOCKTEXTURE (512)//ブロックの最大テクスチャ
+#define MAX_BLOCKTEXTURE (64)//ブロックの最大テクスチャ
 
 // ブロックの種類
 typedef enum
@@ -50,6 +50,10 @@ typedef enum
 	BLOCKTYPE_VENDING,
 	BLOCKTYPE_UFOCATCHER_MINI,
 	BLOCKTYPE_TITLEBOARD,
+	BLOCKTYPE_EXIT,
+	BLOCKTYPE_EXIT_SIGN,
+	BLOCKTYPE_KEYPAD,
+	BLOCKTYPE_TUTORIALBOARD,
 
 	BLOCKTYPE_MAX
 }BLOCKTYPE;
@@ -116,6 +120,10 @@ static const char* BLOCK[BLOCKTYPE_MAX] =
 	"data/MODEL/Vending.x",						// 自販機
 	"data/MODEL/UFO_mini.x",					// UFOキャッチャーミニ
 	"data/MODEL/title_board.x",					// タイトルロゴ表示用ボード
+	"data/MODEL/exit.x",						// 出口ドア
+	"data/MODEL/exit_sign.x",					// 非常口看板
+	"data/MODEL/keypad.x",						// キーパッド
+	"data/MODEL/tutorial_board.x",				// チュートリアル表示用ボード
 
 };
 
@@ -142,6 +150,7 @@ Block* GetBlock(void);
 bool GetExit(void);
 bool GetArcade(void);
 bool GetCatcher(void);
+bool GetKeypad(void);
 
 #endif
 

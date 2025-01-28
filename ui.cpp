@@ -8,6 +8,7 @@
 #include "main.h"
 #include "player.h"
 #include "block.h"
+#include "game.h"
 
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureUI[UITYPE_MAX] = {};//テクスチャへのポインタ
@@ -127,6 +128,7 @@ void UninitUI(void)
 //============================================================
 void UpdateUI(void)
 {
+	MODE pMode = GetMode();
 	Block* pBlock = GetBlock();
 	Player* pPlayer = GetPlayer();
 
@@ -134,11 +136,15 @@ void UpdateUI(void)
 
 	bool bArcade = GetArcade();
 	bool bCatcher = GetCatcher();
+	bool bKeypad = GetKeypad();
+
+	bool bSTClear = GetSTClear();
+	bool bACClear = GetACClear();
 
 	for (nCntUI = 0; nCntUI < MAX_UI; nCntUI++)
 	{
 		// アーケードゲームの範囲内
-		if (bArcade == true)
+		if (bArcade == true && bSTClear == false)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
@@ -150,10 +156,22 @@ void UpdateUI(void)
 		}
 
 		// UFOキャッチャーの範囲内
-		if (bCatcher == true)
+		if (bCatcher == true && bACClear == false)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
+		}
+		else// 範囲外
+		{
+			// falseにする
+			g_aUI[nCntUI].bUse = false;
+		}
+
+		// キーパッドの範囲内
+		if (bKeypad == true)
+		{
+			// UIを表示
+			SetUI(D3DXVECTOR3(660.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_INPUT);
 		}
 		else// 範囲外
 		{
@@ -174,6 +192,7 @@ void DrawUI(void)
 
 	// 頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, g_pVtxBuffUI, 0, sizeof(VERTEX_2D));
+
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
 	for (int nCntUI = 0; nCntUI < MAX_UI; nCntUI++)
@@ -187,6 +206,7 @@ void DrawUI(void)
 		int nType = g_aUI[nCntUI].nType;
 
 		pDevice->SetTexture(0, g_pTextureUI[nType]);
+
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCntUI * 4, 2);
 	}
 }
@@ -205,24 +225,27 @@ void SetUI(D3DXVECTOR3 pos, float fWidth, float fHeight, int nType)
 
 	for (nCntUI = 0; nCntUI < MAX_UI; nCntUI++)
 	{
-		g_aUI[nCntUI].pos = pos;
-		g_aUI[nCntUI].nType = nType;
-		g_aUI[nCntUI].fWidth = fWidth;
-		g_aUI[nCntUI].fHeight = fHeight;
-		g_aUI[nCntUI].bUse = true;
+		if (g_aUI[nCntUI].bUse == false)
+		{
+			g_aUI[nCntUI].pos = pos;
+			g_aUI[nCntUI].nType = nType;
+			g_aUI[nCntUI].fWidth = fWidth;
+			g_aUI[nCntUI].fHeight = fHeight;
+			g_aUI[nCntUI].bUse = true;
 
-		//テクスチャ座標の設定
-		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+			//テクスチャ座標の設定
+			pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+			pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+			pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+			pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
-		pVtx[0].pos = D3DXVECTOR3(g_aUI[nCntUI].pos.x - g_aUI[nCntUI].fWidth, g_aUI[nCntUI].pos.y - g_aUI[nCntUI].fHeight, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(g_aUI[nCntUI].pos.x + g_aUI[nCntUI].fWidth, g_aUI[nCntUI].pos.y - g_aUI[nCntUI].fHeight, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(g_aUI[nCntUI].pos.x - g_aUI[nCntUI].fWidth, g_aUI[nCntUI].pos.y + g_aUI[nCntUI].fHeight, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(g_aUI[nCntUI].pos.x + g_aUI[nCntUI].fWidth, g_aUI[nCntUI].pos.y + g_aUI[nCntUI].fHeight, 0.0f);
+			pVtx[0].pos = D3DXVECTOR3(g_aUI[nCntUI].pos.x - g_aUI[nCntUI].fWidth, g_aUI[nCntUI].pos.y - g_aUI[nCntUI].fHeight, 0.0f);
+			pVtx[1].pos = D3DXVECTOR3(g_aUI[nCntUI].pos.x + g_aUI[nCntUI].fWidth, g_aUI[nCntUI].pos.y - g_aUI[nCntUI].fHeight, 0.0f);
+			pVtx[2].pos = D3DXVECTOR3(g_aUI[nCntUI].pos.x - g_aUI[nCntUI].fWidth, g_aUI[nCntUI].pos.y + g_aUI[nCntUI].fHeight, 0.0f);
+			pVtx[3].pos = D3DXVECTOR3(g_aUI[nCntUI].pos.x + g_aUI[nCntUI].fWidth, g_aUI[nCntUI].pos.y + g_aUI[nCntUI].fHeight, 0.0f);
 
-		break;
+			break;
+		}
 
 		pVtx += 4;//頂点データのポインタを4つ分進める
 	}

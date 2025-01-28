@@ -36,6 +36,7 @@
 #include "shooting_game.h"
 #include "action_game.h"
 #include "ui.h"
+#include "shadow.h"
 
 //グローバル変数
 GAMESTATE g_gameState = GAMESTATE_NONE;//ゲームの状態
@@ -44,6 +45,9 @@ int g_nCounterGameState = 0;//状態管理カウンター
 bool g_bPause = false;	//ポーズ中かどうか
 bool g_bDraw = false;	//ミニゲームの描画用
 bool g_bDraw2 = false;
+bool bSTClear;
+bool bACClear;
+
 int nCounter;
 int nActCnt;
 int nStgCnt;
@@ -82,20 +86,17 @@ void InitGame(void)
 	InitLight();
 
 
-	////モデルの初期化処理
-	//InitModel();
-
-
 	//ブロックの初期化処理
 	InitBlock();
 
 
-	////影の初期化
-	//InitShadow();
+	//影の初期化
+	InitShadow();
 
 
 	//プレイヤーの初期化処理
 	InitPlayer();
+	
 
 	//敵の初期化
 	InitEnemy();
@@ -122,14 +123,14 @@ void InitGame(void)
 
 	//// 天井の中央付近から特定エリアを照らすスポットライト
 	//AddLight(
-	//	D3DLIGHT_SPOT,                         // ライトの種類
-	//	D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),    // 少し明るい光
-	//	D3DXVECTOR3(0.0f, -1.0f, 0.0f),       // 真下方向
-	//	D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井中央の位置
+	//	D3DLIGHT_SPOT,                       // ライトの種類
+	//	D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),   // 少し明るい光
+	//	D3DXVECTOR3(0.0f, -1.0f, 0.0f),      // 真下方向
+	//	D3DXVECTOR3(0.0f, 5.0f, 0.0f)       // 天井中央の位置
 	//);
 
 	AddLight(
-		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
+		D3DLIGHT_DIRECTIONAL,                 // ライトの種類
 		D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),    // 暗めの白い光
 		D3DXVECTOR3(0.0f, -1.0f, 0.0f),       // 真下方向
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
@@ -164,8 +165,8 @@ void InitGame(void)
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
 	);
 
-	//// 敵
-	//SetEnemy(D3DXVECTOR3(280.0f, 0.0f, 260.0f));
+	// 敵
+	SetEnemy(D3DXVECTOR3(1000.0f, 0.0f, 160.0f));
 
 
 	//ポーズの初期化処理
@@ -194,6 +195,9 @@ void InitGame(void)
 	nCounter = 0;
 	nActCnt = 0;
 	nStgCnt = 0;
+
+	bSTClear = false;
+	bACClear = false;
 
 	//エディット読み込み
 	LoadBlockData();
@@ -235,16 +239,12 @@ void UninitGame(void)
 	UninitLight();
 
 
-	////モデルの終了処理
-	//UninitModel();
-
-
 	//ブロックの終了処理
 	UninitBlock();
 
 
-	////影の終了処理
-	//UninitShadow();
+	//影の終了処理
+	UninitShadow();
 
 
 	////ビルボードの終了処理
@@ -293,6 +293,8 @@ void UpdateGame(void)
 	STGSTATE pStgState = GetShootingGameState();
 	Player* pPlayer = GetPlayer();//プレイヤーの情報へのポインタにプレイヤーの先頭アドレスが代入される
 	bool bArcade = GetArcade();
+	bool bCatcher = GetCatcher();
+
 
 	if (KeyboardTrigger(DIK_P) == true|| JoyPadTrigger(JOYKEY_START)==true)
 	{//ESCAPE(ポーズ)キーが押された
@@ -314,11 +316,12 @@ void UpdateGame(void)
 	}
 	else
 	{//ポーズ中ではない
+
 		if (KeyboardTrigger(DIK_E) == true && pStgState != STGSTATE_END && bArcade == true)
 		{//ミニゲーム(シューティング)の起動
 			g_bDraw = g_bDraw ? false : true;
 		}
-		if (KeyboardTrigger(DIK_Q) == true && pActState != ACTSTATE_END)
+		if (KeyboardTrigger(DIK_E) == true && pActState != ACTSTATE_END && bCatcher == true)
 		{//ミニゲーム(アクション)の起動
 			g_bDraw2 = g_bDraw2 ? false : true;
 		}
@@ -328,6 +331,13 @@ void UpdateGame(void)
 			{
 				nStgCnt++;
 			}
+
+			// 120(２秒)経ったら
+			if (nStgCnt >= 120)
+			{
+				g_bDraw = false;
+				bSTClear = true;
+			}
 		}
 		if (pActState == ACTSTATE_END)
 		{
@@ -335,6 +345,14 @@ void UpdateGame(void)
 			{
 				nActCnt++;
 			}
+
+			// 120(２秒)経ったら
+			if (nActCnt >= 120)
+			{
+				g_bDraw2 = false;
+				bACClear = true;
+			}
+
 		}
 
 		// カーソルを非表示する
@@ -379,20 +397,16 @@ void UpdateGame(void)
 		}
 
 
-		//ライトの更新処理
-		UpdateLight(0, D3DXVECTOR3(0.0f, -1.0f, 0.0f));
-
-
-		////モデルの更新処理
-		//UpdateModel();
+		////ライトの更新処理
+		//UpdateLight(0, D3DXVECTOR3(0.0f, -1.0f, 0.0f));
 
 
 		//ブロックの更新処理
 		UpdateBlock();
 
 
-		////影の更新処理
-		//UpdateShadow();
+		//影の更新処理
+		UpdateShadow();
 
 
 		////ビルボードの更新処理
@@ -514,16 +528,8 @@ void DrawGame(void)
 	//DrawMeshcylinder();
 
 
-	////モデルの描画処理
-	DrawModel();
-
-
 	//ブロックの描画処理
 	DrawBlock();
-
-
-	////影の描画処理
-	//DrawShadow();
 
 
 	////エフェクトの描画処理
@@ -551,6 +557,9 @@ void DrawGame(void)
 		//ゲージの描画処理
 		DrawGuage();
 	}
+
+	//影の描画処理
+	DrawShadow();
 
 	if (g_bPause == true)
 	{//ポーズ中
@@ -589,6 +598,20 @@ GAMESTATE GetGameState(void)
 void SetEnablePause(bool bPause)
 {
 	g_bPause = bPause;
+}
+//============================================
+// STクリアの取得
+//============================================
+bool GetSTClear(void)
+{
+	return bSTClear;
+}
+//============================================
+// ACクリアの取得
+//============================================
+bool GetACClear(void)
+{
+	return bACClear;
 }
 
 

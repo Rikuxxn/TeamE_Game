@@ -17,6 +17,8 @@ typedef enum
 	UITYPE_GAME=0,
 	UITYPE_INTERACT,
 	UITYPE_INPUT,
+	UITYPE_MAP,
+
 	UITYPE_MAX
 }UITYPE;
 
@@ -36,6 +38,7 @@ static const char* UI_TEXTURE[UITYPE_MAX] =	// UIのテクスチャの設定
 	"data/TEXTURE/UI3.png",// ミニゲーム
 	"data/TEXTURE/UI2.png",// 拾う
 	"data/TEXTURE/UI1.png",// 入力する
+	"data/TEXTURE/UI4.png",// マップ
 
 };
 

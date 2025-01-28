@@ -183,6 +183,35 @@ void UninitEdit(void)
         }
     }
 
+
+    for (int nCnt = 0; nCnt < MAX_BLOCK; nCnt++)
+    {
+        for (int nCnt2 = 0; nCnt2 < BLOCKTYPE_MAX; nCnt2++)
+        {
+            for (int nCntMat = 0; nCntMat < (int)g_Editinfo[nCnt].blockTex[nCnt2].dwNumMat; nCntMat++)
+            {
+                //テクスチャの破棄
+                if (blockTex[nCnt].apTexture[nCntMat] != NULL)
+                {
+                    blockTex[nCnt].apTexture[nCntMat] = NULL;
+                }
+            }
+
+            //メッシュの破棄
+            if (blockTex[nCnt].pMesh != NULL)
+            {
+                blockTex[nCnt].pMesh = NULL;
+            }
+
+            //マテリアルの破棄
+            if (blockTex[nCnt].pBuffMat != NULL)
+            {
+                blockTex[nCnt].pBuffMat = NULL;
+            }
+        }
+    }
+
+
 }
 //=============================
 //エディターの更新処理
@@ -209,24 +238,36 @@ void UpdateEdit(void)
     // ブロックの位置を変更
     if (KeyboardTrigger(DIK_UP) == true)
     {
-        g_Editinfo[g_nCntEdit].pos.x -= sinf(pCamera->rot.y) * MAX_SPEED;
-        g_Editinfo[g_nCntEdit].pos.z -= cosf(pCamera->rot.y) * MAX_SPEED;
+        //g_Editinfo[g_nCntEdit].pos.x -= sinf(pCamera->rot.y) * MAX_SPEED;
+        //g_Editinfo[g_nCntEdit].pos.z -= cosf(pCamera->rot.y) * MAX_SPEED;
+
+        g_Editinfo[g_nCntEdit].pos.z += MAX_SPEED;
+
     }
     else if (KeyboardTrigger(DIK_DOWN) == true)
     {
-        g_Editinfo[g_nCntEdit].pos.x += sinf(pCamera->rot.y) * MAX_SPEED;
-        g_Editinfo[g_nCntEdit].pos.z += cosf(pCamera->rot.y) * MAX_SPEED;
+        //g_Editinfo[g_nCntEdit].pos.x += sinf(pCamera->rot.y) * MAX_SPEED;
+        //g_Editinfo[g_nCntEdit].pos.z += cosf(pCamera->rot.y) * MAX_SPEED;
+
+        g_Editinfo[g_nCntEdit].pos.z -= MAX_SPEED;
+
     }
     else if (KeyboardTrigger(DIK_LEFT) == true)
     {
-        //移動量を更新(増加させる)
-        g_Editinfo[g_nCntEdit].pos.z -= sinf(pCamera->rot.y) * MAX_SPEED;
-        g_Editinfo[g_nCntEdit].pos.x += cosf(pCamera->rot.y) * MAX_SPEED;
+        ////移動量を更新(増加させる)
+        //g_Editinfo[g_nCntEdit].pos.z -= sinf(pCamera->rot.y) * MAX_SPEED;
+        //g_Editinfo[g_nCntEdit].pos.x += cosf(pCamera->rot.y) * MAX_SPEED;
+
+        g_Editinfo[g_nCntEdit].pos.x -=  MAX_SPEED;
+
     }
     else if (KeyboardTrigger(DIK_RIGHT) == true)
     {
-        g_Editinfo[g_nCntEdit].pos.z += sinf(pCamera->rot.y) * MAX_SPEED;
-        g_Editinfo[g_nCntEdit].pos.x -= cosf(pCamera->rot.y) * MAX_SPEED;
+        //g_Editinfo[g_nCntEdit].pos.z += sinf(pCamera->rot.y) * MAX_SPEED;
+        //g_Editinfo[g_nCntEdit].pos.x -= cosf(pCamera->rot.y) * MAX_SPEED;
+
+        g_Editinfo[g_nCntEdit].pos.x += MAX_SPEED;
+
     }
     else if (KeyboardTrigger(DIK_U) == true)
     {
@@ -367,7 +408,7 @@ void UpdateEdit(void)
         LoadBlockData();
     }
     // 壁設置の情報を読み込む
-    else if (KeyboardTrigger(DIK_F3) == true)
+    else if (KeyboardTrigger(DIK_F4) == true)
     {
         LoadWallData();
     }

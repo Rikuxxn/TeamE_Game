@@ -22,6 +22,7 @@ bool g_bExit;					//出口に入ったか
 
 bool bArcade;					// アーケードゲームの判定
 bool bCatcher;					// UFOキャッチャーの判定
+bool bKeypad;					// キーパッドの判定
 
 //=============================
 //ブロックの初期化処理
@@ -46,8 +47,11 @@ void InitBlock(void)
 		g_aBlock[nCntBlock].bInsight = false;
 		g_aBlock[nCntBlock].nType = BLOCKTYPE_WALL;
 	}
+	g_bExit = false;
+
 	bArcade = false;
 	bCatcher = false;
+	bKeypad = false;
 
 	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
 	{
@@ -70,6 +74,9 @@ void InitBlock(void)
 	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
 	{
 		g_info[nCnt].bUse = true;
+
+		g_info[nCnt].blockinfo[nCnt].vtxMin = D3DXVECTOR3(FLT_MAX, FLT_MAX, FLT_MAX); // 最小値を初期化
+		g_info[nCnt].blockinfo[nCnt].vtxMax = D3DXVECTOR3(-FLT_MAX, -FLT_MAX, -FLT_MAX); // 最大値を初期化
 
 		//頂点数の取得
 		nNumVtx = g_info[nCnt].blockinfo[nCnt].pMesh->GetNumVertices();
@@ -141,7 +148,6 @@ void InitBlock(void)
 		}
 	}
 
-	g_bExit = false;
 
 }
 //=============================
@@ -179,6 +185,34 @@ void UninitBlock(void)
 		}
 	}
 	
+
+	for (int nCnt = 0; nCnt < MAX_BLOCK; nCnt++)
+	{
+		for (int nCnt2 = 0; nCnt2 < BLOCKTYPE_MAX; nCnt2++)
+		{
+			for (int nCntMat = 0; nCntMat < (int)g_aBlock[nCnt].blockinfo[nCnt2].dwNumMat; nCntMat++)
+			{
+				//テクスチャの破棄
+				if (g_info[nCnt].blockinfo[nCnt].apTexture[nCntMat] != NULL)
+				{
+					g_info[nCnt].blockinfo[nCnt].apTexture[nCntMat] = NULL;
+				}
+			}
+
+			//メッシュの破棄
+			if (g_info[nCnt].blockinfo[nCnt].pMesh != NULL)
+			{
+				g_info[nCnt].blockinfo[nCnt].pMesh = NULL;
+			}
+
+			//マテリアルの破棄
+			if (g_info[nCnt].blockinfo[nCnt].pBuffMat != NULL)
+			{
+				g_info[nCnt].blockinfo[nCnt].pBuffMat = NULL;
+			}
+		}
+	}
+
 }
 //=============================
 //ブロックの更新処理
@@ -356,7 +390,7 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 				}
 			}
 
-			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
+			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_EXIT)
 			{
 				// OBB 衝突判定
 				if (CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
@@ -368,6 +402,8 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 					{
 						// 衝突解消できたら、Z軸方向の移動量を滑らかに減衰
 						pMove->z *= 0.5f;  // Z軸移動を減速して滑りを再現
+						g_bExit = true;
+
 						continue;
 					}
 
@@ -469,7 +505,7 @@ bool CheckOBBCollision(const D3DXMATRIX& world1, const D3DXVECTOR3& size1,
 	};
 
 	// 分離軸定理 (Separating Axis Theorem) を用いて判定
-	for (int nCnt = 0; nCnt < 3; ++nCnt)
+	for (int nCnt = 0; nCnt < 3; nCnt++)
 	{
 		if (!OverlapOnAxis(center1, axes1, size1, center2, axes2, size2, axes1[nCnt]))
 		{
@@ -482,9 +518,9 @@ bool CheckOBBCollision(const D3DXMATRIX& world1, const D3DXVECTOR3& size1,
 	}
 
 	// クロス軸のチェック
-	for (int Cross = 0; Cross < 3; ++Cross)
+	for (int Cross = 0; Cross < 3; Cross++)
 	{
-		for (int Cross2 = 0; Cross2 < 3; ++Cross2)
+		for (int Cross2 = 0; Cross2 < 3; Cross2++)
 		{
 			D3DXVECTOR3 crossAxis;
 			D3DXVec3Cross(&crossAxis, &axes1[Cross], &axes2[Cross2]);
@@ -540,13 +576,12 @@ void HandleBlockInteraction(Block* pBlock)
 		switch (pBlock->nType)
 		{
 		case BLOCKTYPE_ARCADE1:
-
-
 			break;
 
 		case BLOCKTYPE_UFOCATCHER1:
+			break;
 
-
+		case BLOCKTYPE_KEYPAD:
 			break;
 
 		default:
@@ -562,10 +597,11 @@ void CheckBlocksInCenter(void)
 {
 	Player* pPlayer = GetPlayer();
 	const float fov = D3DX_PI / 4.0f;  // 視野角 (45度)
-	const float centerFovRatio = 0.3f; // 中央範囲の幅 (20%)
+	const float centerFovRatio = 0.4f; // 中央範囲の幅
 	const float nearDistance = 1.0f;   // 判定する最短距離
 	const float farDistance = 90.0f;   // 判定する最長距離
 	const float maxAngle = fov * centerFovRatio;
+	const float heightTolerance = 1.0f; // 高さの許容範囲（例: ±1.0）
 
 	// プレイヤーの視線方向を正規化
 	D3DXVECTOR3 forward = pPlayer->forward;
@@ -584,6 +620,11 @@ void CheckBlocksInCenter(void)
 		{
 			bArcade = false;
 		}
+		else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_KEYPAD)
+		{
+			bKeypad = false;
+		}
+
 	}
 
 	// 中央範囲判定
@@ -594,8 +635,10 @@ void CheckBlocksInCenter(void)
 			continue; // 使用されていないブロックはスキップ
 		}
 
+
 		// 特定の種類のみ対象とする
-		if (g_aBlock[nCntBlock].nType != BLOCKTYPE_ARCADE1 && g_aBlock[nCntBlock].nType != BLOCKTYPE_UFOCATCHER1)
+		if (g_aBlock[nCntBlock].nType != BLOCKTYPE_ARCADE1 && g_aBlock[nCntBlock].nType != BLOCKTYPE_UFOCATCHER1 &&
+			g_aBlock[nCntBlock].nType != BLOCKTYPE_KEYPAD)
 		{
 			continue; // 対象外の種類はスキップ
 		}
@@ -603,6 +646,12 @@ void CheckBlocksInCenter(void)
 		// ブロックまでのベクトルを計算
 		D3DXVECTOR3 toBlock = g_aBlock[nCntBlock].pos - pPlayer->pos;
 		float distance = D3DXVec3Length(&toBlock);
+
+		//// 高さ判定
+		//if (fabs(toBlock.y) > heightTolerance)
+		//{
+		//	continue; // 高さが許容範囲外ならスキップ
+		//}
 
 		// 距離が範囲外の場合はスキップ
 		if (distance < nearDistance || distance > farDistance)
@@ -614,8 +663,27 @@ void CheckBlocksInCenter(void)
 		D3DXVECTOR3 toBlockNormalized;
 		D3DXVec3Normalize(&toBlockNormalized, &toBlock);
 
-		// 視線方向とブロック方向の角度を計算
-		float dotProduct = D3DXVec3Dot(&forward, &toBlockNormalized);
+		// 視線方向を下向きに調整
+		D3DXVECTOR3 adjustedForward = forward;
+
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_KEYPAD)
+		{
+			adjustedForward.y += 0.0f; // 少し下向きにする
+		}
+		else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
+		{
+			adjustedForward.y += 0.4f; // 少し下向きにする
+		}
+		else
+		{
+			adjustedForward.y += 0.0f;
+		}
+
+		// 視線方向を正規化
+		D3DXVec3Normalize(&adjustedForward, &adjustedForward);
+
+		// adjustedForwardを使って中央判定を行う
+		float dotProduct = D3DXVec3Dot(&adjustedForward, &toBlockNormalized);
 		float angle = acosf(dotProduct); // 視線との角度（ラジアン）
 
 		// 中央範囲内にあるか判定
@@ -630,6 +698,10 @@ void CheckBlocksInCenter(void)
 			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
 			{
 				bArcade = true;
+			}
+			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_KEYPAD)
+			{
+				bKeypad = true;
 			}
 		}
 	}
@@ -656,9 +728,16 @@ bool GetArcade(void)
 	return bArcade;
 }
 //======================================================
-//UFOキャッチャー判定
+// UFOキャッチャー判定
 //======================================================
 bool GetCatcher(void)
 {
 	return bCatcher;
+}
+//======================================================
+// キーパッド判定
+//======================================================
+bool GetKeypad(void)
+{
+	return bKeypad;
 }

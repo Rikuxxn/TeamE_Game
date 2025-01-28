@@ -10,17 +10,39 @@
 #include "fade.h"
 #include "block.h"
 //#include "sound.h"
-//#include "shadow.h"
+#include "shadow.h"
 //#include "billboard.h"
 
 // 巡回ポイント配列
 D3DXVECTOR3 patrolPoints[] =
 {//左回りのポイント
 
-	D3DXVECTOR3(280.0f, 0.0f, 270.0f),		// 右上のポイント
-	D3DXVECTOR3(-260.0f, 0.0f, 270.0f),		// 左上のポイント
-	D3DXVECTOR3(-260.0f, 0.0f, -300.0f),	// 左下のポイント
-	D3DXVECTOR3(270.0f, 0.0f, -300.0f)		// 右下のポイント
+	D3DXVECTOR3(1000.0f, 0.0f, 160.0f),
+	D3DXVECTOR3(850.0f, 0.0f, 475.0f),
+	D3DXVECTOR3(520.0f, 0.0f, 490.0f),
+	D3DXVECTOR3(220.0f, 0.0f, 675.0f),
+	D3DXVECTOR3(-125.0f, 0.0f, 830.0f),
+	D3DXVECTOR3(-225.0f, 0.0f, 830.0f),
+	D3DXVECTOR3(-325.0f, 0.0f, 830.0f),
+	D3DXVECTOR3(-425.0f, 0.0f, 830.0f),
+	D3DXVECTOR3(500.0f, 0.0f, 830.0f),
+	D3DXVECTOR3(550.0f, 0.0f, 830.0f),
+	D3DXVECTOR3(600.0f, 0.0f, 830.0f),
+	D3DXVECTOR3(650.0f, 0.0f, 830.0f),
+	D3DXVECTOR3(700.0f, 0.0f, 830.0f),
+	D3DXVECTOR3(750.0f, 0.0f, 830.0f),
+	D3DXVECTOR3(800.0f, 0.0f, 830.0f),
+	D3DXVECTOR3(850.0f, 0.0f, 830.0f),
+	D3DXVECTOR3(900.0f, 0.0f, 830.0f),
+	D3DXVECTOR3(-975.0f, 0.0f, 860.0f),
+	D3DXVECTOR3(-1000.0f, 0.0f, 530.0f),
+	D3DXVECTOR3(-1015.0f, 0.0f, 260.0f),
+	D3DXVECTOR3(-700.0f, 0.0f, 300.0f),
+	D3DXVECTOR3(-695.0f, 0.0f, 510.0f),
+	D3DXVECTOR3(-415.0f, 0.0f, 510.0f),
+	D3DXVECTOR3(-410.0f, 0.0f, 295.0f),
+	D3DXVECTOR3(30.0f, 0.0f, 270.0f),
+	D3DXVECTOR3(465.0f, 0.0f, 204.0f),
 
 };
 
@@ -57,15 +79,15 @@ void InitEnemy(void)
 	g_aEnemy.posRadiusEnemy = D3DXVECTOR3(50.0f, 50.0f, 50.0f);
 	g_aEnemy.state = ENEMYSTATE_PATROLLING;
 	g_aEnemy.bUse = false;
-	g_aEnemy.sightRange = 165.0f;							//視界距離
-	g_aEnemy.sightAngle = D3DXToRadian(110.0f);				//視界範囲
+	g_aEnemy.sightRange = 250.0f;							//視界距離
+	g_aEnemy.sightAngle = D3DXToRadian(100.0f);				//視界範囲
 	g_bEnd = false;
 	Inside = false;
 	currentPatrolPoint = 0;
 
 	LoadEnemyTEXT();
 
-	//g_nIdxShadowEnemy = SetShadow(D3DXVECTOR3(g_aEnemy.pos.x, g_aEnemy.pos.y, g_aEnemy.pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	g_nIdxShadowEnemy = SetShadow(D3DXVECTOR3(g_aEnemy.pos.x, g_aEnemy.pos.y, g_aEnemy.pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	//オフセット考慮
 	for (int nCntOff = 0; nCntOff < g_aEnemy.motion.nNumModel; nCntOff++)
@@ -214,8 +236,8 @@ void UpdateEnemy(void)
 
 
 		//移動量を更新(減衰させる)
-		g_aEnemy.move.x += (0.0f - g_aEnemy.move.x) * 0.3f;
-		g_aEnemy.move.z += (0.0f - g_aEnemy.move.z) * 0.3f;
+		g_aEnemy.move.x += (0.0f - g_aEnemy.move.x) * 0.25f;
+		g_aEnemy.move.z += (0.0f - g_aEnemy.move.z) * 0.25f;
 		g_aEnemy.move.y += (0.0f - g_aEnemy.move.y) * 0.1f;
 
 		//前回の位置を更新
@@ -232,7 +254,7 @@ void UpdateEnemy(void)
 		CollisionBlock(&g_aEnemy.pos,&g_aEnemy.posOld,&g_aEnemy.move,&g_aEnemy.size);
 
 
-		D3DXVECTOR3 PlayerRadius(13.0f, 13.0f, 13.0f);
+		D3DXVECTOR3 PlayerRadius(20.0f, 20.0f, 20.0f);
 
 		float fDistance =
 			(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +
@@ -288,7 +310,7 @@ void UpdateEnemy(void)
 		}
 
 
-		//SetPositionShadow(g_nIdxShadowEnemy, D3DXVECTOR3(g_aEnemy.pos.x, 0.0f, g_aEnemy.pos.z));
+		SetPositionShadow(g_nIdxShadowEnemy, D3DXVECTOR3(g_aEnemy.pos.x, 0.0f, g_aEnemy.pos.z));
 
 
 		//敵の足音
@@ -408,7 +430,7 @@ void UpdateEnemy(void)
 			else
 			{
 				// 一定確率で逆回りに切り替える
-				if (rand() % 100 < 30) // 30%の確率で方向を切り替える
+				if (rand() % 100 < 25) // 25%の確率で方向を切り替える
 				{
 					isReversePatrol = !isReversePatrol;
 				}
@@ -436,8 +458,8 @@ void UpdateEnemy(void)
 
 			fAngle = atan2f(pPlayer->pos.x - g_aEnemy.pos.x, pPlayer->pos.z - g_aEnemy.pos.z);
 
-			g_aEnemy.move.x += sinf(fAngle) * 1.15f;
-			g_aEnemy.move.z += cosf(fAngle) * 1.15f;
+			g_aEnemy.move.x += sinf(fAngle) * 1.151f;
+			g_aEnemy.move.z += cosf(fAngle) * 1.151f;
 
 			g_aEnemy.rot.y = fAngle + D3DX_PI;
 

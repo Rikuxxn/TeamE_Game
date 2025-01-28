@@ -70,18 +70,21 @@ void AddLight(D3DLIGHTTYPE type, D3DXCOLOR diffuse, D3DXVECTOR3 direction, D3DXV
     newLight->light.Diffuse = diffuse;
 
     // ライトの位置と方向を設定
-    D3DXVec3Normalize(&direction, &direction); // 方向ベクトルを正規化
-    newLight->direction = direction;
-    newLight->light.Direction = direction;
+    D3DXVECTOR3 normalizedDirection;
+    D3DXVec3Normalize(&normalizedDirection, &direction); // 正規化された方向ベクトルを取得
+    newLight->direction = normalizedDirection;
+    newLight->light.Direction = normalizedDirection;
+
+
     newLight->position = position; // ライトの位置を保存
     newLight->light.Position = position; // ライト情報に設定
 
     // 点光源の設定
     if (type == D3DLIGHT_POINT) 
     {
-        newLight->light.Attenuation0 = 1.0f; // 減衰（一定の明るさ）
-        newLight->light.Attenuation1 = 0.0f; // 線形減衰なし
-        newLight->light.Attenuation2 = 0.0f; // 二次減衰なし
+        newLight->light.Attenuation0 = 0.0f;  // 減衰なし
+        newLight->light.Attenuation1 = 0.1f;  // 線形減衰
+        newLight->light.Attenuation2 = 0.01f; // 二次減衰
         newLight->light.Range = 100.0f;      // 照射範囲
     }
 
@@ -89,9 +92,9 @@ void AddLight(D3DLIGHTTYPE type, D3DXCOLOR diffuse, D3DXVECTOR3 direction, D3DXV
     if (type == D3DLIGHT_SPOT)
     {
         newLight->light.Range = 100.0f;                   // 照らす範囲
-        newLight->light.Theta = D3DXToRadian(20.0f);      // 内側のスポット角度
-        newLight->light.Phi = D3DXToRadian(45.0f);        // 外側のスポット角度
-        newLight->light.Falloff = 1.0f;                   // 光の減衰
+        newLight->light.Theta = D3DXToRadian(30.0f); // 内側のスポット角度
+        newLight->light.Phi = D3DXToRadian(45.0f);  // 外側のスポット角度
+        newLight->light.Falloff = 0.2f;                   // 光の減衰
     }
 
     // Direct3Dデバイスにライトを設定

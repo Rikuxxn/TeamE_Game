@@ -29,5 +29,7 @@ void DrawGame(void);
 void SetGameState(GAMESTATE state);
 void SetEnablePause(bool bPause);
 GAMESTATE GetGameState(void);
+bool GetSTClear(void);
+bool GetACClear(void);
 
 #endif

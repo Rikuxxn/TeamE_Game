@@ -20,7 +20,7 @@ bool g_bLow;
 void InitGuage(void)
 {
 	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-	g_fWidthGuage = 400.0f;
+	g_fWidthGuage = 470.0f;
 	g_fHeightGuage = 650.0f;
 	g_bLow = false;
 

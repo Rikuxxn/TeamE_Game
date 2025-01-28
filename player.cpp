@@ -8,7 +8,7 @@
 #include "player.h"
 #include "input.h"
 #include "camera.h"
-//#include "shadow.h"
+#include "shadow.h"
 //#include "particle.h"
 #include "model.h"
 #include "motion.h"
@@ -55,10 +55,12 @@ void InitPlayer(void)
 	g_player.motion.bLoopMotion = true;							// モーションをループさせるか
 	g_player.motion.nCounterMotion = 0;							// モーション用のカウンター
 	g_player.motion.aMotionInfo[MOTIONTYPE_MOVE].startKey = 1;	// モーションの最初のキー
+
+	// プレイヤーの読み込み
 	LoadPlayerTEXT();
 
-
-	//g_nIdxShadow = SetShadow(D3DXVECTOR3(g_player.pos.x, g_player.pos.y, g_player.pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	// 影の設定
+	g_nIdxShadow = SetShadow(D3DXVECTOR3(g_player.pos.x, g_player.pos.y, g_player.pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 
 	//オフセット考慮
@@ -543,7 +545,8 @@ void UpdatePlayer(void)
 		//PlaySound(SOUND_LABEL_STEP2);
 	}
 
-	//SetPositionShadow(g_nIdxShadow, D3DXVECTOR3(g_player.pos.x, 0.0f, g_player.pos.z));
+	// 影のpos設定
+	SetPositionShadow(g_nIdxShadow, D3DXVECTOR3(g_player.pos.x, 0.0f, g_player.pos.z));
 
 
 	//全モデルの更新

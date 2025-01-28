@@ -63,7 +63,7 @@ void InitResult(void)
 
 		//テクスチャの読み込み(背景)
 		D3DXCreateTextureFromFile(pDevice,
-			"data\\TEXTURE\\resultBG.png",
+			"data\\TEXTURE\\clear.png",
 			&g_pTextureResult);
 
 	}
@@ -299,7 +299,7 @@ void UpdateResult(void)
 	if (g_nRankCnt >= 180)
 	{
 		if (pPlayer->bDisp == true && bExit == true &&
-			(g_fade == FADE_NONE && (KeyboardTrigger(DIK_RETURN) == true || JoyPadTrigger(JOYKEY_A) == true)))
+			(g_fade == FADE_NONE && GetMouseButtonTrigger(0) /*|| JoyPadTrigger(JOYKEY_A) == true)*/))
 		{//決定キー(ENTERキー)が押された
 
 			//モード設定(タイトル画面に移行)
@@ -307,7 +307,7 @@ void UpdateResult(void)
 
 		}
 		else if ((pPlayer->bDisp == false || bExit == false /*|| nTime <= 0*/) &&
-			(g_fade == FADE_NONE && (KeyboardTrigger(DIK_RETURN) == true || JoyPadTrigger(JOYKEY_A) == true)))
+			(g_fade == FADE_NONE && GetMouseButtonTrigger(0) /*|| JoyPadTrigger(JOYKEY_A) == true)*/))
 		{
 
 			//モード設定(タイトル画面に移行)

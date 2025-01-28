@@ -21,6 +21,7 @@
 #include "player.h"
 #include "enemy.h"
 #include "light.h"
+#include "tutorial.h"
 
 //プロトタイプ宣言
 void DrawFPS(void);
@@ -442,13 +443,9 @@ void Update(void)
 		UpdateTitle();
 		break;
 
-	//case MODE_TUTORIAL://チュートリアル画面
-	//	UpdateTutorial();
-	//	break;
-
-	//case MODE_TUTORIAL2://チュートリアル画面2
-	//	UpdateTutorial2();
-	//	break;
+	case MODE_TUTORIAL://チュートリアル画面
+		UpdateTutorial();
+		break;
 
 	case MODE_GAME://ゲーム画面
 		UpdateGame();
@@ -508,13 +505,9 @@ void Draw(void)
 #endif
 			break;
 
-		//case MODE_TUTORIAL://チュートリアル画面
-		//	DrawTutorial();
-		//	break;
-
-		//case MODE_TUTORIAL2://チュートリアル画面2
-		//	DrawTutorial2();
-		//	break;
+		case MODE_TUTORIAL://チュートリアル画面
+			DrawTutorial();
+			break;
 
 		case MODE_GAME://ゲーム画面
 			DrawGame();
@@ -702,13 +695,9 @@ void SetMode(MODE mode)
 		UninitTitle();
 		break;
 
-	//case MODE_TUTORIAL://チュートリアル画面
-	//	UninitTutorial();
-	//	break;
-
-	//case MODE_TUTORIAL2://チュートリアル画面2
-	//	UninitTutorial2();
-	//	break;
+	case MODE_TUTORIAL://チュートリアル画面
+		UninitTutorial();
+		break;
 
 	case MODE_GAME://ゲーム画面
 		UninitGame();
@@ -737,13 +726,9 @@ void SetMode(MODE mode)
 		InitTitle();
 		break;
 
-	//case MODE_TUTORIAL://チュートリアル画面
-	//	InitTutorial();
-	//	break;
-
-	//case MODE_TUTORIAL2://チュートリアル画面2
-	//	InitTutorial2();
-	//	break;
+	case MODE_TUTORIAL://チュートリアル画面
+		InitTutorial();
+		break;
 
 	case MODE_GAME://ゲーム画面
 		InitGame();

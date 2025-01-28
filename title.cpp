@@ -15,6 +15,7 @@
 #include "edit.h"
 #include "player.h"
 #include "main.h"
+#include "ui.h"
 
 //#include "sound.h"
 
@@ -63,7 +64,6 @@ void InitTitle(void)
 
 	//プレイヤーの初期化処理
 	InitPlayer();
-
 
 	//エディット読み込み
 	LoadTitleData();
@@ -370,7 +370,7 @@ void UpdateTitle(void)
 			case TITLE_MENU_START:
 
 				// ゲーム画面に移行
-				SetFade(MODE_GAME);
+				SetFade(MODE_TUTORIAL);
 
 				break;
 

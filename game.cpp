@@ -48,9 +48,8 @@ bool g_bDraw = false;	//ミニゲームの描画用
 bool g_bDraw2 = false;
 bool bSTClear;
 bool bACClear;
-bool bMinigame;
 bool bMap;
-
+bool g_bMini;
 int nCounter;
 int nStgCnt;
 int nCraneCnt;
@@ -203,7 +202,7 @@ void InitGame(void)
 
 	bSTClear = false;
 	bACClear = false;
-	bMinigame = false;
+	g_bMini = false;
 	bMap = false;
 
 	//エディット読み込み
@@ -335,17 +334,17 @@ void UpdateGame(void)
 		if (KeyboardTrigger(DIK_E) == true && pStgState != STGSTATE_END && bArcade == true && bMap == false)
 		{//ミニゲーム(シューティング)の起動
 			g_bDraw = g_bDraw ? false : true;
-			bMinigame = bMinigame ? false : true;
+			g_bMini = g_bMini ? false : true;
 		}
 		if (KeyboardTrigger(DIK_E) == true && pCraneState != CRANEGAMESTATE_END && bCatcher == true && bMap == false)
 		{//ミニゲーム(アクション)の起動
 			g_bDraw2 = g_bDraw2 ? false : true;
-			bMinigame = bMinigame ? false : true;
+			g_bMini = g_bMini ? false : true;
 		}
-		if (bMinigame == false && (KeyboardTrigger(DIK_C) == true || JoyPadTrigger(JOYKEY_BACK) == true))
-		{//マップを開く
-			bMap = bMap ? false : true;
-		}
+		//if (g_bMini == false && (KeyboardTrigger(DIK_C) == true || JoyPadTrigger(JOYKEY_BACK) == true))
+		//{//マップを開く
+		//	bMap = bMap ? false : true;
+		//}
 		if (pStgState == STGSTATE_END)
 		{
 			if (nStgCnt <= 120)
@@ -358,6 +357,7 @@ void UpdateGame(void)
 			{
 				g_bDraw = false;
 				bSTClear = true;
+				g_bMini = false;
 			}
 		}
 		if (pCraneState == CRANEGAMESTATE_END)
@@ -371,7 +371,8 @@ void UpdateGame(void)
 			if (nCraneCnt >= 120)
 			{
 				g_bDraw2 = false;
-				nCraneCnt = true;
+				bACClear = true;
+				g_bMini = false;
 			}
 		}
 
@@ -567,7 +568,7 @@ void DrawGame(void)
 	////タイムの描画処理
 	//DrawTime();
 
-	if (bMinigame == false)
+	if (g_bMini == false)
 	{
 		//UIの描画処理
 		DrawUI();
@@ -581,7 +582,7 @@ void DrawGame(void)
 	//影の描画処理
 	DrawShadow();
 
-	if (bMap == true)
+	if (bMap == true && g_bMini == false)
 	{//マップの描画
 		DrawMap();
 	}

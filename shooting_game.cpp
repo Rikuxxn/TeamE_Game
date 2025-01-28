@@ -11,6 +11,7 @@
 #include "shooting_effect.h"
 #include "shooting_particle.h"
 #include "shooting_clear.h"
+#include "game.h"
 //#include "sound.h"
 
 //ƒOƒ[ƒoƒ‹

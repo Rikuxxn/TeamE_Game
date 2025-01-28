@@ -157,7 +157,7 @@ void UpdateCranePlayer(void)
 			g_nCounterAnimPlayer=0;//カウンターをリセット
 		}
 
-		if (g_player.bMove == true && (KeyboardTrigger(DIK_SPACE) == true /*|| JoypadTrigger(JOYKEY_A) == true*/))//ジャンプ
+		if (g_player.bMove == true && (GetMouseButtonTrigger(0) /*|| JoypadTrigger(JOYKEY_A) == true*/))//ジャンプ
 		{
 			//PlaySound(SOUND_LABEL_JAMP_SHORT);
 			g_player.move.y = DOWN;

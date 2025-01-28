@@ -63,7 +63,7 @@ void InitResult(void)
 
 		//テクスチャの読み込み(背景)
 		D3DXCreateTextureFromFile(pDevice,
-			"data\\TEXTURE\\clear.png",
+			"data\\TEXTURE\\exit.png",
 			&g_pTextureResult);
 
 	}

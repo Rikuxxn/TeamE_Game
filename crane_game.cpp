@@ -33,9 +33,9 @@ void InitCraneGame(void)
 
 	//SetCraneBlock(D3DXVECTOR3(640.0f, 700.0f, 0.0f),D3DXVECTOR3(0.0f,0.0f,0.0f), 240.0f, 20.0f, 1);			//地面
 	SetCraneBlock(D3DXVECTOR3(FIELD_LEFT + 100.0f, FIELD_UNDER - 20.0f, 0.0f), D3DXVECTOR3(), 30.0f, 20.0f, 0);	//ブロック
-	SetCraneItem(D3DXVECTOR3(740.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 0);					//アイテム
-	SetCraneItem(D3DXVECTOR3(540.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 1);
-	SetCraneItem(D3DXVECTOR3(640.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 2);
+	//SetCraneItem(D3DXVECTOR3(740.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 0);					//アイテム
+	//SetCraneItem(D3DXVECTOR3(540.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 1);
+	//SetCraneItem(D3DXVECTOR3(640.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 2);
 	SetCraneItem(D3DXVECTOR3(840.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 3);
 
 	g_gameState = CRANEGAMESTATE_NORMAL;//通常状態に設定
@@ -70,7 +70,7 @@ void UpdateCraneGame(void)
 	UpdateCraneEffect();		//エフェクトの更新処理
 	UpdateCraneItem();			//アイテムの更新処理
 
-	if (pPlayer->bUse == false || nNum==0)//終了条件
+	if (pPlayer->bUse == false || nNum <= 0)//終了条件
 	{
 		//画面(モード)の設定
 		g_gameState = CRANEGAMESTATE_END;
@@ -108,7 +108,7 @@ void DrawCraneGame(void)
 		DrawCraneClear();
 	}
 }
-void SetGameState(CRANEGAMESTATE state)
+void SetCraneGameState(CRANEGAMESTATE state)
 {
 	g_gameState = state;
 }

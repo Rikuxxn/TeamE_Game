@@ -360,21 +360,20 @@ void UpdateGame(void)
 				bSTClear = true;
 			}
 		}
-		//if (pActState == ACTSTATE_END)
-		//{
-		//	if (nActCnt <= 120)
-		//	{
-		//		nActCnt++;
-		//	}
+		if (pCraneState == CRANEGAMESTATE_END)
+		{
+			if (nCraneCnt <= 120)
+			{
+				nCraneCnt++;
+			}
 
-		//	// 120(２秒)経ったら
-		//	if (nActCnt >= 120)
-		//	{
-		//		g_bDraw2 = false;
-		//		bACClear = true;
-		//	}
-
-		//}
+			// 120(２秒)経ったら
+			if (nCraneCnt >= 120)
+			{
+				g_bDraw2 = false;
+				nCraneCnt = true;
+			}
+		}
 
 		// カーソルを非表示する
 		SetCursorVisibility(false);

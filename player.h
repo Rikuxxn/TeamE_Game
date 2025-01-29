@@ -14,7 +14,8 @@
 //マクロ定義
 #define PLAYER_SPEED (0.70f)				// プレイヤーの歩くスピード
 #define PLAYER_DUSHSPEED (1.6f)				// プレイヤーのダッシュスピード
-#define PLAYER_STAMINA (240)				// プレイヤーのスタミナ
+#define PLAYER_STAMINA (240.0f)				// プレイヤーのスタミナ
+#define STAMINA_RECOVERY (0.6f)				// スタミナの回復速度
 
 #define MAX_JUMP (40)						// ジャンプ力
 #define MAX_GRAVITY (0.8)					// 重力
@@ -43,7 +44,7 @@ typedef struct
 	D3DXVECTOR3 rotDestPlayer;				// 向き
 	PLAYERSTATE state;						// プレイヤーの状態
 	D3DXMATRIX mtxWorld;					// ワールドマトリックス
-	int nDush;								// ダッシュゲージ
+	float fDush;							// ダッシュゲージ
 	int nDrawDush;							// ダッシュゲージ描画用
 	bool bUse;								// 使われているかどうか
 	bool bDisp;								// 表示するかしないか

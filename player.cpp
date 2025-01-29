@@ -45,7 +45,7 @@ void InitPlayer(void)
 	g_player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// 移動量を初期化する
 	g_player.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// 向きを初期化する
 	g_player.rotDestPlayer = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 向きを初期化する
-	g_player.nDush = PLAYER_STAMINA;							// ダッシュ時の速度
+	g_player.fDush = PLAYER_STAMINA;							// ダッシュ時の速度
 	g_player.nDrawDush = 0;										// ダッシュゲージ描画用
 	g_player.state = PLAYERSTATE_NORMAL;						// プレイヤーの状態
 	g_player.bDush = false;										// ダッシュしているか
@@ -286,10 +286,10 @@ void UpdatePlayer(void)
 
 			if (GetKeyboardPress(DIK_W) == true /*|| GetJoypadPress(JOYKEY_UP) == true*/)
 			{//Wキーが押された
-				if (GetKeyboardPress(DIK_LSHIFT) == true && g_player.nDush >= 0 &&
-					g_player.nDush > 0 && g_player.bEmpty == false)
+				if (GetKeyboardPress(DIK_LSHIFT) == true && g_player.fDush >= 0 &&
+					g_player.fDush > 0 && g_player.bEmpty == false)
 				{// ダッシュ時
-					g_player.nDush--;
+					g_player.fDush--;
 					g_player.bDush = true;
 					g_player.nDrawDush = 0;
 					g_player.bDrawDush = true;
@@ -345,10 +345,10 @@ void UpdatePlayer(void)
 			if (GetKeyboardPress(DIK_W) == true /*|| GetJoypadPress(JOYKEY_UP) == true*/)
 			{//Wキーが押された
 				// ダッシュ時
-				if (GetKeyboardPress(DIK_LSHIFT) == true && g_player.nDush >= 0 &&
-					g_player.nDush > 0 && g_player.bEmpty == false)
+				if (GetKeyboardPress(DIK_LSHIFT) == true && g_player.fDush >= 0 &&
+					g_player.fDush > 0 && g_player.bEmpty == false)
 				{
-					g_player.nDush--;
+					g_player.fDush--;
 					g_player.bDush = true;
 					g_player.nDrawDush = 0;
 					g_player.bDrawDush = true;
@@ -400,10 +400,10 @@ void UpdatePlayer(void)
 		else if (GetKeyboardPress(DIK_W) == true /*|| GetJoypadPress(JOYKEY_UP) == true*/)
 		{//Wキーが押された	
 			// ダッシュ時
-			if (GetKeyboardPress(DIK_LSHIFT) == true && g_player.nDush >= 0 &&
-				g_player.nDush > 0 && g_player.bEmpty == false)
+			if (GetKeyboardPress(DIK_LSHIFT) == true && g_player.fDush >= 0 &&
+				g_player.fDush > 0 && g_player.bEmpty == false)
 			{
-				g_player.nDush--;
+				g_player.fDush--;
 				g_player.bDush = true;
 				g_player.nDrawDush = 0;
 				g_player.bDrawDush = true;
@@ -440,7 +440,7 @@ void UpdatePlayer(void)
 
 		}
 
-		if (g_player.nDush <= 0)
+		if (g_player.fDush <= 0)
 		{
 			g_player.bEmpty = true;
 			g_player.bDush = false;
@@ -454,18 +454,18 @@ void UpdatePlayer(void)
 
 		if (g_player.bDush == false)
 		{//スタミナ回復
-			if (g_player.nDush <= PLAYER_STAMINA)
+			if (g_player.fDush <= PLAYER_STAMINA)
 			{
-				g_player.nDush++;
+				g_player.fDush += STAMINA_RECOVERY;
 			}
-			else if (g_player.nDush >= PLAYER_STAMINA)
+			else if (g_player.fDush >= PLAYER_STAMINA)
 			{
-				g_player.nDush += 0;
+				g_player.fDush += 0;
 				g_player.bEmpty = false;
 			}
 		}
 
-		if (g_player.nDush >= PLAYER_STAMINA &&
+		if (g_player.fDush >= PLAYER_STAMINA &&
 			GetKeyboardPress(DIK_LSHIFT) == false)
 		{
 			g_player.nDrawDush++;

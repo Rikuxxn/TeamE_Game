@@ -160,11 +160,11 @@ void UninitLight(void)
 //=============================
 //ライトの更新処理
 //=============================
-void UpdateLight(int index, D3DXVECTOR3 newPosition)
+void UpdateLight(int index, D3DXVECTOR3 newPosition, D3DXVECTOR3 newDirection) 
 {
 
     // 範囲外チェック
-    if (index < 0 || index >= g_LightCount) 
+    if (index < 0 || index >= g_LightCount)
     {
         return; // 無効なインデックス
     }
@@ -172,11 +172,16 @@ void UpdateLight(int index, D3DXVECTOR3 newPosition)
     // デバイスの取得
     LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-    // 新しい位置を設定
+    // 位置の更新
     g_Lights[index].position = newPosition;
     g_Lights[index].light.Position = newPosition;
 
+    // 方向ベクトルの更新
+    D3DXVECTOR3 normalizedDirection;
+    D3DXVec3Normalize(&normalizedDirection, &newDirection); // 正規化
+    g_Lights[index].direction = normalizedDirection;
+    g_Lights[index].light.Direction = normalizedDirection;
+
     // Direct3Dデバイスに再設定
     pDevice->SetLight(index, &g_Lights[index].light);
-
 }

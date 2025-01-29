@@ -9,6 +9,7 @@
 #include "input.h"
 #include "player.h"
 #include "fade.h"
+#include "block.h"
 
 //グローバル変数
 Camera g_camera;//カメラ情報
@@ -55,6 +56,7 @@ void UpdateCamera(void)
 {
 	MODE pMode = GetMode();
 	FADE g_fade = GetFade(); // 現在の状態
+	bool bExit = GetExit();
 
 	Player* pPlayer = GetPlayer();
 
@@ -63,7 +65,7 @@ void UpdateCamera(void)
 	XINPUT_STATE* pStick;
 	pStick = GetJoyStickAngle();
 
-	if (pMode == MODE_GAME)
+	if (pMode == MODE_GAME && bExit == false)
 	{
 		//if (pStick != NULL) 
 		//{
@@ -93,7 +95,7 @@ void UpdateCamera(void)
 		// マウスの状態を取得
 		DIMOUSESTATE mouseState;
 
-		if (g_fade == FADE_NONE && GetMouseState(&mouseState))
+		if (GetMouseState(&mouseState))
 		{
 			// 前フレームのカーソル位置を記録する静的変数
 			static POINT prevCursorPos = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };

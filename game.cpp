@@ -48,6 +48,8 @@ bool g_bDraw = false;	//ミニゲームの描画用
 bool g_bDraw2 = false;
 bool bSTClear;
 bool bACClear;
+bool bBallClear;
+
 bool bMap;
 bool g_bMini;
 int nCounter;
@@ -128,7 +130,7 @@ void InitGame(void)
 	//	D3DLIGHT_SPOT,                       // ライトの種類
 	//	D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),   // 少し明るい光
 	//	D3DXVECTOR3(0.0f, -1.0f, 0.0f),      // 真下方向
-	//	D3DXVECTOR3(0.0f, 5.0f, 0.0f)       // 天井中央の位置
+	//	D3DXVECTOR3(0.0f, 5.0f, -50.0f)       // 天井中央の位置
 	//);
 
 	AddLight(
@@ -202,6 +204,8 @@ void InitGame(void)
 
 	bSTClear = false;
 	bACClear = false;
+	bBallClear = false;
+
 	g_bMini = false;
 	bMap = false;
 
@@ -307,6 +311,8 @@ void UpdateGame(void)
 	Player* pPlayer = GetPlayer();//プレイヤーの情報へのポインタにプレイヤーの先頭アドレスが代入される
 	bool bArcade = GetArcade();
 	bool bCatcher = GetCatcher();
+	bool bBall = GetBall();
+
 	bool bEnd = GetEnd();
 
 
@@ -436,7 +442,7 @@ void UpdateGame(void)
 
 
 		////ライトの更新処理
-		//UpdateLight(0, D3DXVECTOR3(0.0f, -1.0f, 0.0f));
+		//UpdateLight(0, D3DXVECTOR3(0.0f, 5.0f, 0.0f), D3DXVECTOR3(0.0f, -1.0f, 0.0f));
 
 
 		//ブロックの更新処理
@@ -642,18 +648,25 @@ void SetEnablePause(bool bPause)
 	g_bPause = bPause;
 }
 //============================================
-// STクリアの取得
+// シューティングクリアの取得
 //============================================
 bool GetSTClear(void)
 {
 	return bSTClear;
 }
 //============================================
-// ACクリアの取得
+// UFOキャッチャークリアの取得
 //============================================
 bool GetACClear(void)
 {
 	return bACClear;
+}
+//============================================
+// ボールプールクリアの取得
+//============================================
+bool GetBallClear(void)
+{
+	return bBallClear;
 }
 
 

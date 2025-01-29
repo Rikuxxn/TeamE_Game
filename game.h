@@ -31,5 +31,6 @@ void SetEnablePause(bool bPause);
 GAMESTATE GetGameState(void);
 bool GetSTClear(void);
 bool GetACClear(void);
+bool GetBallClear(void);
 
 #endif

@@ -22,6 +22,7 @@ bool g_bExit;					//出口に入ったか
 
 bool bArcade;					// アーケードゲームの判定
 bool bCatcher;					// UFOキャッチャーの判定
+bool bBall;						// ボールプールの判定
 bool bKeypad;					// キーパッドの判定
 
 //=============================
@@ -51,6 +52,7 @@ void InitBlock(void)
 
 	bArcade = false;
 	bCatcher = false;
+	bBall = false;
 	bKeypad = false;
 
 	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
@@ -581,6 +583,9 @@ void HandleBlockInteraction(Block* pBlock)
 		case BLOCKTYPE_UFOCATCHER1:
 			break;
 
+		case BLOCKTYPE_BALLPOOL:
+			break;
+
 		case BLOCKTYPE_KEYPAD:
 			break;
 
@@ -599,7 +604,7 @@ void CheckBlocksInCenter(void)
 	const float fov = D3DX_PI / 4.0f;  // 視野角 (45度)
 	const float centerFovRatio = 0.4f; // 中央範囲の幅
 	const float nearDistance = 1.0f;   // 判定する最短距離
-	const float farDistance = 90.0f;   // 判定する最長距離
+	float farDistance = 0.0f;   // 判定する最長距離
 	const float maxAngle = fov * centerFovRatio;
 	const float heightTolerance = 1.0f; // 高さの許容範囲（例: ±1.0）
 
@@ -620,6 +625,10 @@ void CheckBlocksInCenter(void)
 		{
 			bArcade = false;
 		}
+		else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BALLPOOL)
+		{
+			bBall = false;
+		}
 		else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_KEYPAD)
 		{
 			bKeypad = false;
@@ -635,10 +644,26 @@ void CheckBlocksInCenter(void)
 			continue; // 使用されていないブロックはスキップ
 		}
 
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_UFOCATCHER1)
+		{
+			farDistance = 90.0f;
+		}
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
+		{
+			farDistance = 90.0f;
+		}
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BALLPOOL)
+		{
+			farDistance = 150.0f;
+		}
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_KEYPAD)
+		{
+			farDistance = 90.0f;
+		}
 
 		// 特定の種類のみ対象とする
 		if (g_aBlock[nCntBlock].nType != BLOCKTYPE_ARCADE1 && g_aBlock[nCntBlock].nType != BLOCKTYPE_UFOCATCHER1 &&
-			g_aBlock[nCntBlock].nType != BLOCKTYPE_KEYPAD)
+			g_aBlock[nCntBlock].nType != BLOCKTYPE_BALLPOOL && g_aBlock[nCntBlock].nType != BLOCKTYPE_KEYPAD)
 		{
 			continue; // 対象外の種類はスキップ
 		}
@@ -699,6 +724,10 @@ void CheckBlocksInCenter(void)
 			{
 				bArcade = true;
 			}
+			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BALLPOOL)
+			{
+				bBall = true;
+			}
 			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_KEYPAD)
 			{
 				bKeypad = true;
@@ -733,6 +762,13 @@ bool GetArcade(void)
 bool GetCatcher(void)
 {
 	return bCatcher;
+}
+//======================================================
+// ボールプール判定
+//======================================================
+bool GetBall(void)
+{
+	return bBall;
 }
 //======================================================
 // キーパッド判定

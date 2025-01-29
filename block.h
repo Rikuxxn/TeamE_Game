@@ -150,6 +150,7 @@ Block* GetBlock(void);
 bool GetExit(void);
 bool GetArcade(void);
 bool GetCatcher(void);
+bool GetBall(void);
 bool GetKeypad(void);
 
 #endif

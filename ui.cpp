@@ -136,10 +136,12 @@ void UpdateUI(void)
 
 	bool bArcade = GetArcade();
 	bool bCatcher = GetCatcher();
+	bool bBall = GetBall();
 	bool bKeypad = GetKeypad();
 
 	bool bSTClear = GetSTClear();
 	bool bACClear = GetACClear();
+	bool bBallClear = GetBallClear();
 
 
 	for (nCntUI = 0; nCntUI < MAX_UI; nCntUI++)
@@ -161,6 +163,18 @@ void UpdateUI(void)
 
 		// UFOキャッチャーの範囲内
 		if (bCatcher == true && bACClear == false)
+		{
+			// UIを表示
+			SetUI(D3DXVECTOR3(660.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
+		}
+		else// 範囲外
+		{
+			// falseにする
+			g_aUI[nCntUI].bUse = false;
+		}
+
+		// ボールプールの範囲内
+		if (bBall == true && bBallClear == false)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);

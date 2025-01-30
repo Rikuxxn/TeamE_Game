@@ -24,6 +24,8 @@ bool bArcade;					// アーケードゲームの判定
 bool bCatcher;					// UFOキャッチャーの判定
 bool bBall;						// ボールプールの判定
 bool bKeypad;					// キーパッドの判定
+bool bFuse;						// ヒューズの判定
+
 
 //=============================
 //ブロックの初期化処理
@@ -54,6 +56,7 @@ void InitBlock(void)
 	bCatcher = false;
 	bBall = false;
 	bKeypad = false;
+	bFuse = false;
 
 	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
 	{
@@ -360,8 +363,8 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 					playerWorld._43 = pPos->z;
 					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
-						// 衝突解消できたら、Z軸方向の移動量を滑らかに減衰
-						pMove->z *= 0.5f;  // Z軸移動を減速して滑りを再現
+						// Z軸方向の移動量を滑らかに減衰
+						pMove->z *= 0.5f;
 						continue;
 					}
 
@@ -370,8 +373,8 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 					playerWorld._41 = pPos->x;
 					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
-						// 衝突解消できたら、X軸方向の移動量を滑らかに減衰
-						pMove->x *= 0.5f;  // X軸移動を減速して滑りを再現
+						// X軸方向の移動量を滑らかに減衰
+						pMove->x *= 0.5f;
 						continue;
 					}
 
@@ -380,12 +383,12 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 					playerWorld._42 = pPos->y;
 					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
-						// 衝突解消できたら、Y軸方向の移動量を滑らかに減衰
-						pMove->y *= 0.5f;  // Y軸移動を減速して滑りを再現
+						// Y軸方向の移動量を滑らかに減衰
+						pMove->y *= 0.5f;
 						continue;
 					}
 
-					// 最後に全軸を停止 (衝突解消できなかった場合)
+					// 最後に全軸を停止
 					pMove->x = 0.0f;
 					pMove->y = 0.0f;
 					pMove->z = 0.0f;
@@ -402,8 +405,8 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 					playerWorld._43 = pPos->z;
 					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
-						// 衝突解消できたら、Z軸方向の移動量を滑らかに減衰
-						pMove->z *= 0.5f;  // Z軸移動を減速して滑りを再現
+						// Z軸方向の移動量を滑らかに減衰
+						pMove->z *= 0.5f;
 						g_bExit = true;
 
 						continue;
@@ -414,8 +417,8 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 					playerWorld._41 = pPos->x;
 					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
-						// 衝突解消できたら、X軸方向の移動量を滑らかに減衰
-						pMove->x *= 0.5f;  // X軸移動を減速して滑りを再現
+						// X軸方向の移動量を滑らかに減衰
+						pMove->x *= 0.5f;
 						continue;
 					}
 
@@ -424,12 +427,12 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 					playerWorld._42 = pPos->y;
 					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
-						// 衝突解消できたら、Y軸方向の移動量を滑らかに減衰
-						pMove->y *= 0.5f;  // Y軸移動を減速して滑りを再現
+						// Y軸方向の移動量を滑らかに減衰
+						pMove->y *= 0.5f;
 						continue;
 					}
 
-					// 最後に全軸を停止 (衝突解消できなかった場合)
+					// 最後に全軸を停止 
 					pMove->x = 0.0f;
 					pMove->y = 0.0f;
 					pMove->z = 0.0f;
@@ -443,34 +446,37 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 					// Z軸の衝突補正
 					pPos->z = pPosOld->z;
 					playerWorld._43 = pPos->z;
+
 					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
-						// 衝突解消できたら、Z軸方向の移動量を滑らかに減衰
-						pMove->z *= 0.5f;  // Z軸移動を減速して滑りを再現
+						// Z軸方向の移動量を滑らかに減衰
+						pMove->z *= 0.5f;
 						continue;
 					}
 
 					// X軸の衝突補正
 					pPos->x = pPosOld->x;
 					playerWorld._41 = pPos->x;
+
 					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
-						// 衝突解消できたら、X軸方向の移動量を滑らかに減衰
-						pMove->x *= 0.5f;  // X軸移動を減速して滑りを再現
+						// X軸方向の移動量を滑らかに減衰
+						pMove->x *= 0.5f;
 						continue;
 					}
 
 					// Y軸の衝突補正
 					pPos->y = pPosOld->y;
 					playerWorld._42 = pPos->y;
+
 					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
-						// 衝突解消できたら、Y軸方向の移動量を滑らかに減衰
-						pMove->y *= 0.5f;  // Y軸移動を減速して滑りを再現
+						// Y軸方向の移動量を滑らかに減衰
+						pMove->y *= 0.5f;
 						continue;
 					}
 
-					// 最後に全軸を停止 (衝突解消できなかった場合)
+					// 最後に全軸を停止
 					pMove->x = 0.0f;
 					pMove->y = 0.0f;
 					pMove->z = 0.0f;
@@ -526,6 +532,7 @@ bool CheckOBBCollision(const D3DXMATRIX& world1, const D3DXVECTOR3& size1,
 		{
 			D3DXVECTOR3 crossAxis;
 			D3DXVec3Cross(&crossAxis, &axes1[Cross], &axes2[Cross2]);
+
 			if (D3DXVec3Length(&crossAxis) > 0.001f) 
 			{ // ゼロベクトルのチェック
 				if (!OverlapOnAxis(center1, axes1, size1, center2, axes2, size2, crossAxis)) 
@@ -536,7 +543,7 @@ bool CheckOBBCollision(const D3DXMATRIX& world1, const D3DXVECTOR3& size1,
 		}
 	}
 
-	return true; // 分離軸がないため衝突している
+	return true; // 衝突している
 }
 //=================================
 //OBB投影範囲計算処理
@@ -633,6 +640,10 @@ void CheckBlocksInCenter(void)
 		{
 			bKeypad = false;
 		}
+		else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE)
+		{
+			bFuse = false;
+		}
 
 	}
 
@@ -660,10 +671,15 @@ void CheckBlocksInCenter(void)
 		{
 			farDistance = 90.0f;
 		}
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE)
+		{
+			farDistance = 90.0f;
+		}
 
 		// 特定の種類のみ対象とする
 		if (g_aBlock[nCntBlock].nType != BLOCKTYPE_ARCADE1 && g_aBlock[nCntBlock].nType != BLOCKTYPE_UFOCATCHER1 &&
-			g_aBlock[nCntBlock].nType != BLOCKTYPE_BALLPOOL && g_aBlock[nCntBlock].nType != BLOCKTYPE_KEYPAD)
+			g_aBlock[nCntBlock].nType != BLOCKTYPE_BALLPOOL && g_aBlock[nCntBlock].nType != BLOCKTYPE_KEYPAD &&
+			g_aBlock[nCntBlock].nType != BLOCKTYPE_FUSE)
 		{
 			continue; // 対象外の種類はスキップ
 		}
@@ -732,6 +748,11 @@ void CheckBlocksInCenter(void)
 			{
 				bKeypad = true;
 			}
+			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE)
+			{
+				bFuse = true;
+			}
+
 		}
 	}
 }
@@ -776,4 +797,11 @@ bool GetBall(void)
 bool GetKeypad(void)
 {
 	return bKeypad;
+}
+//======================================================
+// ヒューズ判定
+//======================================================
+bool GetFuse(void)
+{
+	return bFuse;
 }

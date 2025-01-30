@@ -20,10 +20,9 @@ UI g_aUI[MAX_UI];
 //=========================================================
 void InitUI(void)
 {
+	int nCntUI;
 
 	LPDIRECT3DDEVICE9 pDevice;
-
-	int nCntUI;
 
 	//デバイスの取得
 	pDevice = GetDevice();
@@ -86,9 +85,9 @@ void InitUI(void)
 
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-		pVtx[1].tex = D3DXVECTOR2(4.0f, 0.0f);
+		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
 		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-		pVtx[3].tex = D3DXVECTOR2(4.0f, 1.0f);
+		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
 
 		pVtx += 4;//頂点データのポインタを4つ分進める
@@ -104,7 +103,6 @@ void InitUI(void)
 //==================================================
 void UninitUI(void)
 {
-
 	for (int nCntUI = 0; nCntUI < UITYPE_MAX; nCntUI++)
 	{
 		//テクスチャの破棄
@@ -121,13 +119,15 @@ void UninitUI(void)
 		g_pVtxBuffUI->Release();
 		g_pVtxBuffUI = NULL;
 	}
-
 }
 //============================================================
 // UIの更新処理
 //============================================================
 void UpdateUI(void)
 {
+
+	VERTEX_2D* pVtx;
+
 	MODE pMode = GetMode();
 	Block* pBlock = GetBlock();
 	Player* pPlayer = GetPlayer();
@@ -138,22 +138,23 @@ void UpdateUI(void)
 	bool bCatcher = GetCatcher();
 	bool bBall = GetBall();
 	bool bKeypad = GetKeypad();
+	bool bFuse = GetFuse();
 
 	bool bSTClear = GetSTClear();
 	bool bACClear = GetACClear();
 	bool bBallClear = GetBallClear();
 
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_pVtxBuffUI->Lock(0, 0, (void**)&pVtx, 0);
 
 	for (nCntUI = 0; nCntUI < MAX_UI; nCntUI++)
 	{
-
-		//SetUI(D3DXVECTOR3(1000.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_MAP);
 
 		// アーケードゲームの範囲内
 		if (bArcade == true && bSTClear == false)
 		{
 			// UIを表示
-			SetUI(D3DXVECTOR3(660.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
+			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
 		}
 		else// 範囲外
 		{
@@ -165,7 +166,7 @@ void UpdateUI(void)
 		if (bCatcher == true && bACClear == false)
 		{
 			// UIを表示
-			SetUI(D3DXVECTOR3(660.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
+			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
 		}
 		else// 範囲外
 		{
@@ -177,7 +178,7 @@ void UpdateUI(void)
 		if (bBall == true && bBallClear == false)
 		{
 			// UIを表示
-			SetUI(D3DXVECTOR3(660.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
+			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
 		}
 		else// 範囲外
 		{
@@ -189,7 +190,7 @@ void UpdateUI(void)
 		if (bKeypad == true)
 		{
 			// UIを表示
-			SetUI(D3DXVECTOR3(660.0f, 600.0f, 0.0f), 150.0f, 40.0f, UITYPE_INPUT);
+			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_INPUT);
 		}
 		else// 範囲外
 		{
@@ -197,8 +198,29 @@ void UpdateUI(void)
 			g_aUI[nCntUI].bUse = false;
 		}
 
-		//pVtx += 4;
+		// ヒューズの範囲内
+		if (bFuse == true)
+		{
+			// UIを表示
+			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_INTERACT);
+		}
+		else// 範囲外
+		{
+			// falseにする
+			g_aUI[nCntUI].bUse = false;
+		}
+
+		pVtx[0].pos = D3DXVECTOR3(g_aUI[nCntUI].pos.x - g_aUI[nCntUI].fWidth, g_aUI[nCntUI].pos.y - g_aUI[nCntUI].fHeight, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(g_aUI[nCntUI].pos.x + g_aUI[nCntUI].fWidth, g_aUI[nCntUI].pos.y - g_aUI[nCntUI].fHeight, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(g_aUI[nCntUI].pos.x - g_aUI[nCntUI].fWidth, g_aUI[nCntUI].pos.y + g_aUI[nCntUI].fHeight, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_aUI[nCntUI].pos.x + g_aUI[nCntUI].fWidth, g_aUI[nCntUI].pos.y + g_aUI[nCntUI].fHeight, 0.0f);
+
+		pVtx += 4;
 	}
+
+	//頂点バッファをアンロックする
+	g_pVtxBuffUI->Unlock();
+
 }
 //=======================================================
 // UIの描画処理

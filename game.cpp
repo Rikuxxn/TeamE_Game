@@ -121,6 +121,7 @@ void InitGame(void)
 	//UIの初期化
 	InitUI();
 
+
 	//ミニゲームの初期化
 	InitShootingGame();
 	InitCraneGame();
@@ -591,15 +592,16 @@ void DrawGame(void)
 	////タイムの描画処理
 	//DrawTime();
 
-	if (g_bMini == false)
-	{
-		//UIの描画処理
-		DrawUI();
-	}
 	if (pPlayer->bDrawDush == true)
 	{
 		//ゲージの描画処理
 		DrawGuage();
+	}
+
+	if (g_bMini == false)
+	{
+		//UIの描画処理
+		DrawUI();
 	}
 
 	//影の描画処理

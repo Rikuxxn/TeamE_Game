@@ -54,6 +54,7 @@ typedef enum
 	BLOCKTYPE_EXIT_SIGN,
 	BLOCKTYPE_KEYPAD,
 	BLOCKTYPE_TUTORIALBOARD,
+	BLOCKTYPE_FUSE,
 
 	BLOCKTYPE_MAX
 }BLOCKTYPE;
@@ -124,6 +125,7 @@ static const char* BLOCK[BLOCKTYPE_MAX] =
 	"data/MODEL/exit_sign.x",					// 非常口看板
 	"data/MODEL/keypad.x",						// キーパッド
 	"data/MODEL/tutorial_board.x",				// チュートリアル表示用ボード
+	"data/MODEL/huzu.x",						// ヒューズ
 
 };
 
@@ -152,6 +154,7 @@ bool GetArcade(void);
 bool GetCatcher(void);
 bool GetBall(void);
 bool GetKeypad(void);
+bool GetFuse(void);
 
 #endif
 

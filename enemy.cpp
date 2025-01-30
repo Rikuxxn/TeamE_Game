@@ -11,7 +11,6 @@
 #include "block.h"
 //#include "sound.h"
 #include "shadow.h"
-//#include "billboard.h"
 
 // 巡回ポイント配列
 D3DXVECTOR3 patrolPoints[] =

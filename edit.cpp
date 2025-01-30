@@ -282,7 +282,7 @@ void UpdateEdit(void)
     //ƒuƒƒbƒN‚ğ‰ñ“]‚·‚é
     if (KeyboardTrigger(DIK_Y) == true)
     {
-        g_Editinfo[g_nCntEdit].rot.y += D3DX_PI / 2;
+        g_Editinfo[g_nCntEdit].rot.y += 0.75f;
     }
     else if (KeyboardTrigger(DIK_H) == true)
     {

@@ -144,6 +144,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ball_background.cpp" />
+    <ClCompile Include="ball_block.cpp" />
+    <ClCompile Include="ball_clear.cpp" />
+    <ClCompile Include="ball_effect.cpp" />
+    <ClCompile Include="ball_fade.cpp" />
+    <ClCompile Include="ball_game.cpp" />
+    <ClCompile Include="ball_item.cpp" />
+    <ClCompile Include="ball_particle.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="crane_background.cpp" />
@@ -187,6 +195,14 @@
     <ClCompile Include="ui.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ball_background.h" />
+    <ClInclude Include="ball_block.h" />
+    <ClInclude Include="ball_clear.h" />
+    <ClInclude Include="ball_effect.h" />
+    <ClInclude Include="ball_fade.h" />
+    <ClInclude Include="ball_game.h" />
+    <ClInclude Include="ball_item.h" />
+    <ClInclude Include="ball_particle.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="crane_background.h" />

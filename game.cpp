@@ -35,6 +35,7 @@
 #include "guage.h"
 #include "shooting_game.h"
 #include "crane_game.h"
+#include "ball_game.h"
 #include "ui.h"
 #include "shadow.h"
 #include "map.h"
@@ -44,8 +45,9 @@ GAMESTATE g_gameState = GAMESTATE_NONE;//ゲームの状態
 int g_nCounterGameState = 0;//状態管理カウンター
 
 bool g_bPause = false;	//ポーズ中かどうか
-bool g_bDraw = false;	//ミニゲームの描画用
-bool g_bDraw2 = false;
+bool g_bDraw = false;	//シューティングミニゲームの描画用
+bool g_bDraw2 = false;	//アクション
+bool g_bDraw3 = false;	//ボールプール
 bool bSTClear;
 bool bACClear;
 bool bBallClear;
@@ -55,6 +57,7 @@ bool g_bMini;
 int nCounter;
 int nStgCnt;
 int nCraneCnt;
+int nBallCnt;
 
 //==============================================
 //ゲーム画面の初期化処理
@@ -124,6 +127,7 @@ void InitGame(void)
 	//ミニゲームの初期化
 	InitShootingGame();
 	InitCraneGame();
+	InitBallGame();
 
 	//// 天井の中央付近から特定エリアを照らすスポットライト
 	//AddLight(
@@ -201,6 +205,7 @@ void InitGame(void)
 	nCounter = 0;
 	nCraneCnt = 0;
 	nStgCnt = 0;
+	nBallCnt = 0;
 
 	bSTClear = false;
 	bACClear = false;
@@ -298,6 +303,7 @@ void UninitGame(void)
 	//ミニゲームの終了処理
 	UninitShootingGame();
 	UninitCraneGame();
+	UninitBallGame();
 }
 //=========================================
 //ゲーム画面の更新処理
@@ -308,6 +314,7 @@ void UpdateGame(void)
 	bool bExit = GetExit();
 	STGSTATE pStgState = GetShootingGameState();
 	CRANEGAMESTATE pCraneState = GetCraneGameState();
+	BALLGAMESTATE pBallState = GetBallGameState();
 	Player* pPlayer = GetPlayer();//プレイヤーの情報へのポインタにプレイヤーの先頭アドレスが代入される
 	bool bArcade = GetArcade();
 	bool bCatcher = GetCatcher();
@@ -351,8 +358,16 @@ void UpdateGame(void)
 			g_bMini = g_bMini ? false : true;
 		}
 
+		// ボールプールのトリガー
+		if (KeyboardTrigger(DIK_E) == true && pBallState != BALLGAMESTATE_END && bBall == true && bMap == false)
+		{
+			g_bDraw3 = g_bDraw3 ? false : true;
+			g_bMini = g_bMini ? false : true;
+		}
+
+
 		// マップを開けるのはミニゲームがどちらも動いていない場合のみ
-		if (g_bMini == false && g_bDraw == false && g_bDraw2 == false &&
+		if (g_bMini == false && g_bDraw == false && g_bDraw2 == false && g_bDraw3 == false &&
 			(KeyboardTrigger(DIK_C) == true || JoyPadTrigger(JOYKEY_BACK) == true))
 		{
 			bMap = bMap ? false : true;
@@ -399,11 +414,32 @@ void UpdateGame(void)
 			}
 		}
 
+		// クレーンゲーム終了時の処理
+		if (pBallState == BALLGAMESTATE_END)
+		{
+			if (nBallCnt <= 120)
+			{
+				nBallCnt++;
+			}
+
+			// 120(2秒)経ったら
+			if (nBallCnt >= 120)
+			{
+				g_bDraw3 = false;
+				bBallClear = true;
+				if (g_bDraw == false) // シューティングゲームが動いていないなら
+				{
+					g_bMini = false; // ミニゲーム全体を終了
+				}
+			}
+		}
+
+
 		// カーソルを非表示する
 		SetCursorVisibility(false);
 
 
-		if (g_bDraw == false && g_bDraw2 == false)
+		if (g_bDraw == false && g_bDraw2 == false && g_bDraw3 == false)
 		{
 			//プレイヤーの更新処理
 			UpdatePlayer();
@@ -417,6 +453,14 @@ void UpdateGame(void)
 		{
 			//ミニゲーム(アクション)の更新処理
 			UpdateCraneGame();
+		}
+		if (g_bDraw3 == true)
+		{
+			//ボールプールの更新処理
+			UpdateBallGame();
+
+			// カーソルを表示する
+			SetCursorVisibility(true);
 		}
 
 		//敵の更新処理
@@ -434,7 +478,7 @@ void UpdateGame(void)
 		//メッシュシリンダーの更新処理
 		UpdateMeshcylinder();
 
-		if (g_bDraw == false && g_bDraw2 == false)
+		if (g_bDraw == false && g_bDraw2 == false && g_bDraw3 == false)
 		{
 			//カメラの更新処理
 			UpdateCamera();
@@ -493,6 +537,7 @@ void UpdateGame(void)
  		g_gameState = GAMESTATE_END;
 		g_bDraw = false;
 		g_bDraw2 = false;
+		g_bDraw3 = false;
 		bMap = false;
 	}
 
@@ -623,6 +668,10 @@ void DrawGame(void)
 	else if (g_bDraw2 == true && nCraneCnt <= 120)
 	{
 		DrawCraneGame();
+	}
+	else if (g_bDraw3 == true && nBallCnt <= 120)
+	{
+		DrawBallGame();
 	}
 }
 //=============================================

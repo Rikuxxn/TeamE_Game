@@ -100,7 +100,7 @@ void InitCraneItem(void)
 }
 void UninitCraneItem(void)
 {
-	for (int nCntItem = 0; nCntItem < MAX_ITEM; nCntItem++)
+	for (int nCntItem = 0; nCntItem < NUM_ITEM; nCntItem++)
 	{
 		//テクスチャの破棄
 		if (g_pTextureItem[nCntItem] != NULL)

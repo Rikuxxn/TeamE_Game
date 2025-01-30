@@ -42,6 +42,14 @@
     <ClCompile Include="crane_particle.cpp" />
     <ClCompile Include="crane_player.cpp" />
     <ClCompile Include="map.cpp" />
+    <ClCompile Include="ball_background.cpp" />
+    <ClCompile Include="ball_clear.cpp" />
+    <ClCompile Include="ball_effect.cpp" />
+    <ClCompile Include="ball_fade.cpp" />
+    <ClCompile Include="ball_game.cpp" />
+    <ClCompile Include="ball_item.cpp" />
+    <ClCompile Include="ball_particle.cpp" />
+    <ClCompile Include="ball_block.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
@@ -84,5 +92,13 @@
     <ClInclude Include="crane_particle.h" />
     <ClInclude Include="crane_player.h" />
     <ClInclude Include="map.h" />
+    <ClInclude Include="ball_background.h" />
+    <ClInclude Include="ball_clear.h" />
+    <ClInclude Include="ball_effect.h" />
+    <ClInclude Include="ball_fade.h" />
+    <ClInclude Include="ball_game.h" />
+    <ClInclude Include="ball_item.h" />
+    <ClInclude Include="ball_particle.h" />
+    <ClInclude Include="ball_block.h" />
   </ItemGroup>
 </Project>

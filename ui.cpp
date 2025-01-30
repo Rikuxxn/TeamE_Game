@@ -139,6 +139,10 @@ void UpdateUI(void)
 	bool bBall = GetBall();
 	bool bKeypad = GetKeypad();
 	bool bFuse = GetFuse();
+	bool bFusebox = GetFusebox();
+
+	bool bFuseGet = GetFuseGet();
+	bool bFuseCmp = GetFuseCmp();
 
 	bool bSTClear = GetSTClear();
 	bool bACClear = GetACClear();
@@ -150,8 +154,11 @@ void UpdateUI(void)
 	for (nCntUI = 0; nCntUI < MAX_UI; nCntUI++)
 	{
 
+		//// UIを表示
+		//SetUI(D3DXVECTOR3(130.0f, 680.0f, 0.0f), 100.0f, 30.0f, UITYPE_MAP);
+
 		// アーケードゲームの範囲内
-		if (bArcade == true && bSTClear == false)
+		if (bArcade == true && bFuseCmp == true && bSTClear == false)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
@@ -163,7 +170,7 @@ void UpdateUI(void)
 		}
 
 		// UFOキャッチャーの範囲内
-		if (bCatcher == true && bACClear == false)
+		if (bCatcher == true && bFuseCmp == true && bACClear == false)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
@@ -175,7 +182,7 @@ void UpdateUI(void)
 		}
 
 		// ボールプールの範囲内
-		if (bBall == true && bBallClear == false)
+		if (bBall == true && bFuseCmp == true && bBallClear == false)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
@@ -203,6 +210,18 @@ void UpdateUI(void)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_INTERACT);
+		}
+		else// 範囲外
+		{
+			// falseにする
+			g_aUI[nCntUI].bUse = false;
+		}
+
+		// ヒューズボックスの範囲内
+		if (bFusebox == true && bFuseGet == true && bFuseCmp == false)
+		{
+			// UIを表示
+			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_USE);
 		}
 		else// 範囲外
 		{

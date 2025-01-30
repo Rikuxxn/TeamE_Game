@@ -55,6 +55,7 @@ typedef enum
 	BLOCKTYPE_KEYPAD,
 	BLOCKTYPE_TUTORIALBOARD,
 	BLOCKTYPE_FUSE,
+	BLOCKTYPE_FUSEBOX,
 
 	BLOCKTYPE_MAX
 }BLOCKTYPE;
@@ -126,6 +127,7 @@ static const char* BLOCK[BLOCKTYPE_MAX] =
 	"data/MODEL/keypad.x",						// キーパッド
 	"data/MODEL/tutorial_board.x",				// チュートリアル表示用ボード
 	"data/MODEL/huzu.x",						// ヒューズ
+	"data/MODEL/fusebox.x",						// ヒューズボックス
 
 };
 
@@ -155,6 +157,9 @@ bool GetCatcher(void);
 bool GetBall(void);
 bool GetKeypad(void);
 bool GetFuse(void);
+bool GetFusebox(void);
+bool GetFuseGet(void);
+bool GetFuseCmp(void);
 
 #endif
 

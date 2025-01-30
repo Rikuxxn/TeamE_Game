@@ -248,7 +248,7 @@ void SetEnemy(D3DXVECTOR3 pos,D3DXVECTOR3 move, int nType)
 			g_aEnemy[nCntEnemy].move = move;
 			g_aEnemy[nCntEnemy].pos = pos;
 			g_aEnemy[nCntEnemy].state = ENEMYSTATE_NORMAL;
-			g_aEnemy[nCntEnemy].nLife = 20;
+			g_aEnemy[nCntEnemy].nLife = 9;
 			g_aEnemy[nCntEnemy].BulletCounter = 0;
 			g_aEnemy[nCntEnemy].bUse = true;
 			g_aEnemy[nCntEnemy].MoveCnt = 0;

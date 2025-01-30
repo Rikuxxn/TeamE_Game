@@ -320,6 +320,8 @@ void UpdateGame(void)
 	bool bArcade = GetArcade();
 	bool bCatcher = GetCatcher();
 	bool bBall = GetBall();
+	bool bFuseCmp = GetFuseCmp();
+
 
 	bool bEnd = GetEnd();
 
@@ -346,21 +348,24 @@ void UpdateGame(void)
 	{//ポーズ中ではない
 
 		// ミニゲーム（シューティング）のトリガー
-		if (KeyboardTrigger(DIK_E) == true && pStgState != STGSTATE_END && bArcade == true && bMap == false)
+		if (KeyboardTrigger(DIK_E) == true && pStgState != STGSTATE_END && bArcade == true && bMap == false && 
+			bFuseCmp == true)
 		{
 			g_bDraw = g_bDraw ? false : true;
 			g_bMini = g_bMini ? false : true;
 		}
 
 		// ミニゲーム（アクション）のトリガー
-		if (KeyboardTrigger(DIK_E) == true && pCraneState != CRANEGAMESTATE_END && bCatcher == true && bMap == false)
+		if (KeyboardTrigger(DIK_E) == true && pCraneState != CRANEGAMESTATE_END && bCatcher == true && bMap == false &&
+			bFuseCmp == true)
 		{
 			g_bDraw2 = g_bDraw2 ? false : true;
 			g_bMini = g_bMini ? false : true;
 		}
 
 		// ボールプールのトリガー
-		if (KeyboardTrigger(DIK_E) == true && pBallState != BALLGAMESTATE_END && bBall == true && bMap == false)
+		if (KeyboardTrigger(DIK_E) == true && pBallState != BALLGAMESTATE_END && bBall == true && bMap == false &&
+			bFuseCmp == true)
 		{
 			g_bDraw3 = g_bDraw3 ? false : true;
 			g_bMini = g_bMini ? false : true;

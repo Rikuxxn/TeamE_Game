@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include "ui.h"
 #include "camera.h"
+#include "game.h"
 
 //グローバル変数
 Block g_aBlock[MAX_BLOCK];		//ブロック情報
@@ -25,7 +26,9 @@ bool bCatcher;					// UFOキャッチャーの判定
 bool bBall;						// ボールプールの判定
 bool bKeypad;					// キーパッドの判定
 bool bFuse;						// ヒューズの判定
-
+bool bFusebox;					// ヒューズボックスの判定
+bool bFuseGet;
+bool bFuseCmp;
 
 //=============================
 //ブロックの初期化処理
@@ -57,6 +60,9 @@ void InitBlock(void)
 	bBall = false;
 	bKeypad = false;
 	bFuse = false;
+	bFusebox = false;
+	bFuseGet = false;
+	bFuseCmp = false;
 
 	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
 	{
@@ -241,6 +247,25 @@ void UpdateBlock(void)
 				HandleBlockInteraction(&g_aBlock[nCntBlock]);
 			}
 
+			// ヒューズを手に入れた
+			if (bFuse == true && KeyboardTrigger(DIK_E) == true && g_aBlock[nCntBlock].bInsight == true)
+			{
+				if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE)
+				{
+					g_aBlock[nCntBlock].bUse = false;
+					bFuseGet = true;
+				}
+			}
+
+			// ヒューズボックスにヒューズをはめた
+			if (bFuseGet == true && KeyboardTrigger(DIK_E) == true && g_aBlock[nCntBlock].bInsight == true)
+			{
+				if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSEBOX)
+				{
+					bFuseCmp = true;
+				}
+			}
+
 			////位置を更新
 			//g_aBlock[nCntBlock].pos.x += g_aBlock[nCntBlock].move.x;
 			//g_aBlock[nCntBlock].pos.y += g_aBlock[nCntBlock].move.y;
@@ -288,7 +313,6 @@ void DrawBlock(void)
 
 			// 現在のマテリアルの取得
 			pDevice->GetMaterial(&matDef);
-
 
 			for (int nCntMat = 0; nCntMat < (int)g_aBlock[nCntBlock].blockinfo[nType].dwNumMat; nCntMat++) 
 			{
@@ -340,6 +364,10 @@ void SetBlock(D3DXVECTOR3 pos, D3DXVECTOR3 rot,int nType)
 //=============================
 void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove, D3DXVECTOR3* pSize)
 {
+
+	bool bSTClear = GetSTClear();
+	bool bACClear = GetACClear();
+	bool bBallClear = GetBallClear();
 
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
@@ -407,7 +435,12 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 					{
 						// Z軸方向の移動量を滑らかに減衰
 						pMove->z *= 0.5f;
-						g_bExit = true;
+
+						// ミニゲームをすべてクリアしていたら
+						if (bSTClear == true && bACClear == true && bBallClear == true)
+						{
+							g_bExit = true;
+						}
 
 						continue;
 					}
@@ -608,12 +641,17 @@ void HandleBlockInteraction(Block* pBlock)
 void CheckBlocksInCenter(void)
 {
 	Player* pPlayer = GetPlayer();
+	Camera* pCamera = GetCamera();
+
 	const float fov = D3DX_PI / 4.0f;  // 視野角 (45度)
 	const float centerFovRatio = 0.4f; // 中央範囲の幅
-	const float nearDistance = 1.0f;   // 判定する最短距離
-	float farDistance = 0.0f;   // 判定する最長距離
 	const float maxAngle = fov * centerFovRatio;
 	const float heightTolerance = 1.0f; // 高さの許容範囲（例: ±1.0）
+
+	float interactionDistance = 40.0f; // インタラクト可能な最大距離
+
+	// プレイヤーの目線を基準にする
+	D3DXVECTOR3 eyePos = pCamera->posV; // カメラ位置を基準に
 
 	// プレイヤーの視線方向を正規化
 	D3DXVECTOR3 forward = pPlayer->forward;
@@ -644,6 +682,10 @@ void CheckBlocksInCenter(void)
 		{
 			bFuse = false;
 		}
+		else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSEBOX)
+		{
+			bFusebox = false;
+		}
 
 	}
 
@@ -655,86 +697,46 @@ void CheckBlocksInCenter(void)
 			continue; // 使用されていないブロックはスキップ
 		}
 
-		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_UFOCATCHER1)
-		{
-			farDistance = 90.0f;
-		}
-		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
-		{
-			farDistance = 90.0f;
-		}
-		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BALLPOOL)
-		{
-			farDistance = 150.0f;
-		}
-		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_KEYPAD)
-		{
-			farDistance = 90.0f;
-		}
-		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE)
-		{
-			farDistance = 90.0f;
-		}
-
 		// 特定の種類のみ対象とする
 		if (g_aBlock[nCntBlock].nType != BLOCKTYPE_ARCADE1 && g_aBlock[nCntBlock].nType != BLOCKTYPE_UFOCATCHER1 &&
 			g_aBlock[nCntBlock].nType != BLOCKTYPE_BALLPOOL && g_aBlock[nCntBlock].nType != BLOCKTYPE_KEYPAD &&
-			g_aBlock[nCntBlock].nType != BLOCKTYPE_FUSE)
+			g_aBlock[nCntBlock].nType != BLOCKTYPE_FUSE && g_aBlock[nCntBlock].nType != BLOCKTYPE_FUSEBOX)
 		{
 			continue; // 対象外の種類はスキップ
 		}
 
-		// ブロックまでのベクトルを計算
-		D3DXVECTOR3 toBlock = g_aBlock[nCntBlock].pos - pPlayer->pos;
+		// ブロックまでのベクトルを計算(カメラの位置を基準にする)
+		D3DXVECTOR3 toBlock = g_aBlock[nCntBlock].pos - eyePos;
 		float distance = D3DXVec3Length(&toBlock);
 
-		//// 高さ判定
-		//if (fabs(toBlock.y) > heightTolerance)
-		//{
-		//	continue; // 高さが許容範囲外ならスキップ
-		//}
-
-		// 距離が範囲外の場合はスキップ
-		if (distance < nearDistance || distance > farDistance)
-		{
-			continue; // 中央判定はしない
-		}
+		//// 一定の距離内ならインタラクト可能
+		//bool bInteractable = (distance < interactionDistance);
 
 		// toBlockを正規化して方向ベクトルを得る
 		D3DXVECTOR3 toBlockNormalized;
 		D3DXVec3Normalize(&toBlockNormalized, &toBlock);
 
-		// 視線方向を下向きに調整
+		// adjustedForwardのY成分を調整
 		D3DXVECTOR3 adjustedForward = forward;
 
-		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_KEYPAD)
-		{
-			adjustedForward.y += 0.0f; // 少し下向きにする
-		}
-		else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
-		{
-			adjustedForward.y += 0.4f; // 少し下向きにする
-		}
-		else
-		{
-			adjustedForward.y += 0.0f;
-		}
+		// 視線を少し下げる
+		adjustedForward.y -= 0.2f; // これで低いブロックも視線に入るようにする
 
 		// 視線方向を正規化
 		D3DXVec3Normalize(&adjustedForward, &adjustedForward);
 
-		// adjustedForwardを使って中央判定を行う
+		// 視線との角度を計算
 		float dotProduct = D3DXVec3Dot(&adjustedForward, &toBlockNormalized);
 		float angle = acosf(dotProduct); // 視線との角度（ラジアン）
 
 		// 中央範囲内にあるか判定
 		if (angle < maxAngle)
 		{
-			g_aBlock[nCntBlock].bInsight = true; // 中央範囲内
+			g_aBlock[nCntBlock].bInsight = true;
 
-			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_UFOCATCHER1)
+			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE)
 			{
-				bCatcher = true;
+				bFuse = true;
 			}
 			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
 			{
@@ -748,12 +750,17 @@ void CheckBlocksInCenter(void)
 			{
 				bKeypad = true;
 			}
-			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE)
+			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_UFOCATCHER1)
 			{
-				bFuse = true;
+				bCatcher = true;
+			}
+			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSEBOX)
+			{
+				bFusebox = true;
 			}
 
 		}
+
 	}
 }
 //============================================
@@ -805,3 +812,25 @@ bool GetFuse(void)
 {
 	return bFuse;
 }
+//======================================================
+// ヒューズボックス判定
+//======================================================
+bool GetFusebox(void)
+{
+	return bFusebox;
+}
+//======================================================
+// ヒューズゲット判定
+//======================================================
+bool GetFuseGet(void)
+{
+	return bFuseGet;
+}
+//======================================================
+// ヒューズコンプリート判定
+//======================================================
+bool GetFuseCmp(void)
+{
+	return bFuseCmp;
+}
+

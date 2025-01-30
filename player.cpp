@@ -452,7 +452,7 @@ void UpdatePlayer(void)
 			g_player.bDush = false;
 		}
 
-		if (g_player.bDush == false)
+		if (g_player.bDush == false || GetKeyboardPress(DIK_W) == false)
 		{//スタミナ回復
 			if (g_player.fDush <= PLAYER_STAMINA)
 			{

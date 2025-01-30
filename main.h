@@ -36,6 +36,10 @@
 #define FIELD_RIGHT (1000.0f)
 #define FIELD_TOP (50.0f)//çÇÇ≥400.0f
 #define FIELD_UNDER (450.0f)
+#define BALLFIELD_LEFT (230.0f)//ïù820.0f
+#define BALLFIELD_RIGHT (1050.0f)
+#define BALLFIELD_TOP (50.0f)//çÇÇ≥400.0f
+#define BALLFIELD_UNDER (650.0f)
 
 
 //âÊñ ÇÃéÌóﬁ

@@ -36,6 +36,7 @@
 #define FIELD_RIGHT (1000.0f)
 #define FIELD_TOP (50.0f)//高さ400.0f
 #define FIELD_UNDER (450.0f)
+
 #define BALLFIELD_LEFT (230.0f)//幅820.0f
 #define BALLFIELD_RIGHT (1050.0f)
 #define BALLFIELD_TOP (50.0f)//高さ400.0f
@@ -92,5 +93,6 @@ void onWireFrame(void);
 void offWireFrame(void);
 void ToggleFullscreen(HWND hWnd);// ウィンドウをフルスクリーン
 MODE GetMode(void);
+bool GetFullScreen(void);
 
 #endif

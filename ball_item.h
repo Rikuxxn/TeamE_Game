@@ -18,14 +18,15 @@
 //弾構造体の定義
 typedef struct
 {
-	D3DXVECTOR3 pos;	//位置
-	D3DXVECTOR3 move;	//移動量
-	float fWidth;		//幅
-	float fHeight;		//高さ
-	int nType;			//テクスチャの種類
-	bool bUse;			//使用しているかどうか
-	bool bGet;			//取得したかどうか
-	bool bcatch;		//キャッチしたか
+	D3DXVECTOR3 pos;		// 位置
+	D3DXVECTOR3 move;		// 移動量
+	float fWidth;			// 幅
+	float fHeight;			// 高さ
+	int nType;				// テクスチャの種類
+	bool bUse;				// 使用しているかどうか
+	bool bGet;				// 取得したかどうか
+	bool bcatch;			// キャッチしたか
+	D3DXVECTOR3 dragOffset;	// マウスを押した位置のオフセット
 }BALLITEM;
 
 //プロト

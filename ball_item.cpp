@@ -16,7 +16,7 @@ int g_nBallItem;
 
 // アイテム項目の拡大率を管理する配列
 float ItemScales[MAX_ITEM] = { ITEM_MIN_SCALE, ITEM_MIN_SCALE, ITEM_MIN_SCALE, ITEM_MIN_SCALE };
-
+bool bHoldingItem = false;  // アイテムを持っているか
 
 void InitBallItem(void)
 {
@@ -55,8 +55,10 @@ void InitBallItem(void)
 		g_ballitem[nCntItem].bUse = false;//使用していない状態にする
 		g_ballitem[nCntItem].bGet = false;
 		g_ballitem[nCntItem].bcatch = false;
+		g_ballitem[nCntItem].dragOffset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
 	g_nBallItem = 0;
+	bHoldingItem = false;
 
 	//頂点バッファの設定
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_ITEM,
@@ -140,9 +142,8 @@ void UpdateBallItem(void)
 	GetClientRect(hwnd, &clientRect);
 
 	// ウィンドウスケールを計算
-	float screenWidth = 1920.0f; // ゲームの解像度
-	float screenHeight = 1080.0f;
-
+	float screenWidth = 1280.0f; // ゲームの解像度
+	float screenHeight = 720.0f;
 	float scaleX = screenWidth / (clientRect.right - clientRect.left);
 	float scaleY = screenHeight / (clientRect.bottom - clientRect.top);
 
@@ -150,38 +151,64 @@ void UpdateBallItem(void)
 	float mouseX = cursorPos.x * scaleX;
 	float mouseY = cursorPos.y * scaleY;
 
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_pVtxBuffBallItem->Lock(0, 0, (void**)&pVtx, 0);
+
 	for (int nCntItem = 0; nCntItem < MAX_ITEM; nCntItem++)
 	{
-		float scale = ItemScales[nCntItem];
-		float centerX = 650.0f; // 中心X座標
-		float centerY = 200.0f + nCntItem * 150.0f; // 中心Y座標
+		if (g_ballitem[nCntItem].bUse)
+		{
+			float itemLeft = g_ballitem[nCntItem].pos.x - g_ballitem[nCntItem].fWidth / 2;
+			float itemRight = g_ballitem[nCntItem].pos.x + g_ballitem[nCntItem].fWidth / 2;
+			float itemTop = g_ballitem[nCntItem].pos.y - g_ballitem[nCntItem].fHeight / 2;
+			float itemBottom = g_ballitem[nCntItem].pos.y + g_ballitem[nCntItem].fHeight / 2;
 
-		if (g_ballitem[nCntItem].bUse == true)
-		{//使用しているアイテムを全てチェックする
-			if (g_ballitem[nCntItem].pos.x >= cursorPos.x - ITEM_WIDTH
-				&& g_ballitem[nCntItem].pos.x <= cursorPos.x + ITEM_WIDTH
-				&& g_ballitem[nCntItem].pos.y >= cursorPos.y - ITEM_HEIGHT
-				&& g_ballitem[nCntItem].pos.y <= cursorPos.y + ITEM_HEIGHT)
+			if (mouseX >= itemLeft && mouseX <= itemRight &&
+				mouseY >= itemTop && mouseY <= itemBottom)
 			{
-				if (GetMouseButtonPress(0) == true)
+				if (!bHoldingItem && GetMouseButtonPress(0))
 				{
 					g_ballitem[nCntItem].bcatch = true;
-				}
-				if (GetMouseButtonRelease(0) == true)
+					bHoldingItem = true;  // アイテムを持っていることを記録
+
+					// マウスのどこを掴んだかを記録
+					g_ballitem[nCntItem].dragOffset.x = g_ballitem[nCntItem].pos.x - mouseX;
+					g_ballitem[nCntItem].dragOffset.y = g_ballitem[nCntItem].pos.y - mouseY;
+				}				
+				if (GetMouseButtonRelease(0))
 				{
 					g_ballitem[nCntItem].bcatch = false;
+					bHoldingItem = false;  // 持っている状態を解除
+
+					// 画面端の制限
+					if (g_ballitem[nCntItem].pos.x < BALLFIELD_LEFT + g_ballitem[nCntItem].fWidth / 2)
+					{
+						g_ballitem[nCntItem].pos.x = BALLFIELD_LEFT + g_ballitem[nCntItem].fWidth / 2;
+					}
+					if (g_ballitem[nCntItem].pos.x > BALLFIELD_RIGHT - g_ballitem[nCntItem].fWidth / 2)
+					{
+						g_ballitem[nCntItem].pos.x = BALLFIELD_RIGHT - g_ballitem[nCntItem].fWidth / 2;
+					}
+					if (g_ballitem[nCntItem].pos.y < BALLFIELD_TOP + g_ballitem[nCntItem].fHeight / 2)
+					{
+						g_ballitem[nCntItem].pos.y = BALLFIELD_TOP + g_ballitem[nCntItem].fHeight / 2;
+					}
+					if (g_ballitem[nCntItem].pos.y > BALLFIELD_UNDER - g_ballitem[nCntItem].fHeight / 2)
+					{
+						g_ballitem[nCntItem].pos.y = BALLFIELD_UNDER - g_ballitem[nCntItem].fHeight / 2;
+					}
 				}
 			}
-		}
-	}
 
-	for (int nCntItem = 0; nCntItem < MAX_ITEM; nCntItem++)
-	{
-		if (g_ballitem[nCntItem].bcatch == true)
-		{
-			g_ballitem[nCntItem].pos.x = cursorPos.x;
-			g_ballitem[nCntItem].pos.y = cursorPos.y;
 
+			if (g_ballitem[nCntItem].bcatch)
+			{
+				// マウスの位置にオフセットを足して移動
+				g_ballitem[nCntItem].pos.x = mouseX + g_ballitem[nCntItem].dragOffset.x;
+				g_ballitem[nCntItem].pos.y = mouseY + g_ballitem[nCntItem].dragOffset.y;
+			}
+
+		
 		}
 
 		g_ballitem[nCntItem].pos += g_ballitem[nCntItem].move;
@@ -189,27 +216,23 @@ void UpdateBallItem(void)
 		if (g_ballitem[nCntItem].pos.y >= BALLFIELD_UNDER - g_ballitem[nCntItem].fHeight)
 		{//地面
 			g_ballitem[nCntItem].pos.y = BALLFIELD_UNDER - g_ballitem[nCntItem].fHeight;
-			g_ballitem[nCntItem].bcatch = false;
 		}
-		
+
 		if (g_ballitem[nCntItem].pos.y <= BALLFIELD_TOP + g_ballitem[nCntItem].fHeight)
 		{//天井
 			g_ballitem[nCntItem].pos.y = BALLFIELD_TOP + g_ballitem[nCntItem].fHeight;
-			g_ballitem[nCntItem].bcatch = false;
 		}
-		
+
 		if (g_ballitem[nCntItem].pos.x <= BALLFIELD_LEFT + g_ballitem[nCntItem].fWidth)
 		{//左端
 			g_ballitem[nCntItem].pos.x = BALLFIELD_LEFT + g_ballitem[nCntItem].fWidth;
-			g_ballitem[nCntItem].bcatch = false;
 		}
 
 		if (g_ballitem[nCntItem].pos.x >= BALLFIELD_RIGHT - g_ballitem[nCntItem].fWidth)
 		{//右端
 			g_ballitem[nCntItem].pos.x = BALLFIELD_RIGHT - g_ballitem[nCntItem].fWidth;
-			g_ballitem[nCntItem].bcatch = false;
 		}
-		
+
 		if (g_ballitem[nCntItem].pos.y >= ITEM_CLEARPOSY - ITEM_CLEARZONEY
 			&& g_ballitem[nCntItem].pos.x - g_ballitem[nCntItem].fWidth >= ITEM_CLEARPOSX - ITEM_CLEARZONEX
 			&& g_ballitem[nCntItem].pos.x + g_ballitem[nCntItem].fWidth <= ITEM_CLEARPOSX + ITEM_CLEARZONEX
@@ -218,25 +241,20 @@ void UpdateBallItem(void)
 			g_ballitem[nCntItem].bUse = false;
 			g_nBallItem--;
 		}
-	}
 
-	//ロック
-	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffBallItem->Lock(0, 0, (void**)&pVtx, 0);
-
-	for (int nCntItem = 0; nCntItem < MAX_ITEM; nCntItem++)
-	{
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(g_ballitem[nCntItem].pos.x - g_ballitem[nCntItem].fWidth, g_ballitem[nCntItem].pos.y - g_ballitem[nCntItem].fHeight, 0.0f);
 		pVtx[1].pos = D3DXVECTOR3(g_ballitem[nCntItem].pos.x + g_ballitem[nCntItem].fWidth, g_ballitem[nCntItem].pos.y - g_ballitem[nCntItem].fHeight, 0.0f);
 		pVtx[2].pos = D3DXVECTOR3(g_ballitem[nCntItem].pos.x - g_ballitem[nCntItem].fWidth, g_ballitem[nCntItem].pos.y + g_ballitem[nCntItem].fHeight, 0.0f);
 		pVtx[3].pos = D3DXVECTOR3(g_ballitem[nCntItem].pos.x + g_ballitem[nCntItem].fWidth, g_ballitem[nCntItem].pos.y + g_ballitem[nCntItem].fHeight, 0.0f);
-	
+
 		pVtx += 4;//頂点データのポインタを４つ分進める
+
 	}
-	//アンロック
+
 	//頂点バッファをアンロック
 	g_pVtxBuffBallItem->Unlock();
+
 }
 void DrawBallItem(void)
 {

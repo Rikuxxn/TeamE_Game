@@ -39,6 +39,7 @@
 #include "ui.h"
 #include "shadow.h"
 #include "map.h"
+#include "task.h"
 
 //グローバル変数
 GAMESTATE g_gameState = GAMESTATE_NONE;//ゲームの状態
@@ -124,6 +125,12 @@ void InitGame(void)
 	//UIの初期化
 	InitUI();
 
+	//タスクUIの初期化処理
+	InitTask();
+
+	SetTask(D3DXVECTOR3(2350.0f, 200.0f, 0.0f), 160.0f, 25.0f, TASKTYPE_ONE);
+	SetTask(D3DXVECTOR3(2350.0f, 200.0f, 0.0f), 160.0f, 25.0f, TASKTYPE_TWO);
+	SetTask(D3DXVECTOR3(2350.0f, 200.0f, 0.0f), 160.0f, 25.0f, TASKTYPE_THREE);
 
 	//ミニゲームの初期化
 	InitShootingGame();
@@ -300,6 +307,11 @@ void UninitGame(void)
 
 	//UIの終了処理
 	UninitUI();
+
+
+	// タスクUIの終了処理
+	UninitTask();
+
 
 	//ミニゲームの終了処理
 	UninitShootingGame();
@@ -533,6 +545,9 @@ void UpdateGame(void)
 		//UIの更新処理
 		UpdateUI();
 
+		// タスクUIの更新処理
+		UpdateTask();
+
 	}
 
 
@@ -650,6 +665,9 @@ void DrawGame(void)
 
 	if (g_bMini == false)
 	{
+		// タスクUIの描画処理
+		DrawTask();
+
 		//UIの描画処理
 		DrawUI();
 	}

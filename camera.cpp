@@ -67,6 +67,8 @@ void UpdateCamera(void)
 
 	if (pMode == MODE_GAME && bExit == false)
 	{
+
+
 		//if (pStick != NULL) 
 		//{
 		//	// 右スティックの値を取得
@@ -344,6 +346,7 @@ void UpdateCamera(void)
 //=============================
 void SetCamera(void)
 {
+	MODE pMode = GetMode();
 
 	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
 
@@ -365,12 +368,24 @@ void SetCamera(void)
 	//プロジェクションマトリックスの初期化
 	D3DXMatrixIdentity(&g_camera.mtxProjection);
 
-	//プロジェクションマトリックスの作成
-	D3DXMatrixPerspectiveFovLH(&g_camera.mtxProjection,
-		D3DXToRadian(45.0f),                  // 視野角
-		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, // アスペクト比
-		1.0f,                                // 近クリップ面
-		1300.0f);                            // 遠クリップ面
+	if (pMode == MODE_GAME)
+	{
+		//プロジェクションマトリックスの作成
+		D3DXMatrixPerspectiveFovLH(&g_camera.mtxProjection,
+			D3DXToRadian(65.0f),                  // 視野角
+			(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, // アスペクト比
+			1.0f,                                // 近クリップ面
+			1300.0f);                            // 遠クリップ面
+	}
+	else
+	{
+		//プロジェクションマトリックスの作成
+		D3DXMatrixPerspectiveFovLH(&g_camera.mtxProjection,
+			D3DXToRadian(45.0f),                  // 視野角
+			(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, // アスペクト比
+			1.0f,                                // 近クリップ面
+			1300.0f);                            // 遠クリップ面
+	}
 
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &g_camera.mtxProjection);

@@ -629,6 +629,12 @@ void HandleBlockInteraction(Block* pBlock)
 		case BLOCKTYPE_KEYPAD:
 			break;
 
+		case BLOCKTYPE_FUSE:
+			break;
+
+		case BLOCKTYPE_FUSEBOX:
+			break;
+
 		default:
 
 			break;
@@ -648,7 +654,7 @@ void CheckBlocksInCenter(void)
 	const float maxAngle = fov * centerFovRatio;
 	const float heightTolerance = 1.0f; // 高さの許容範囲（例: ±1.0）
 
-	float interactionDistance = 40.0f; // インタラクト可能な最大距離
+	float maxDistance = 0.0f;    // インタラクト可能な最大距離
 
 	// プレイヤーの目線を基準にする
 	D3DXVECTOR3 eyePos = pCamera->posV; // カメラ位置を基準に
@@ -662,40 +668,66 @@ void CheckBlocksInCenter(void)
 	{
 		g_aBlock[nCntBlock].bInsight = false; // 初期化
 
-		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_UFOCATCHER1)
+		// ブロックごとのインタラクトフラグを設定
+		switch (g_aBlock[nCntBlock].nType)
 		{
-			bCatcher = false;
-		}
-		else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
-		{
-			bArcade = false;
-		}
-		else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BALLPOOL)
-		{
-			bBall = false;
-		}
-		else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_KEYPAD)
-		{
-			bKeypad = false;
-		}
-		else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE)
-		{
+		case BLOCKTYPE_FUSE:
 			bFuse = false;
-		}
-		else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSEBOX)
-		{
+			break;
+
+		case BLOCKTYPE_ARCADE1:
+			bArcade = false;
+			break;
+
+		case BLOCKTYPE_BALLPOOL:
+			bBall = false;
+			break;
+
+		case BLOCKTYPE_KEYPAD:
+			bKeypad = false;
+			break;
+
+		case BLOCKTYPE_UFOCATCHER1:
+			bCatcher = false;
+			break;
+
+		case BLOCKTYPE_FUSEBOX:
 			bFusebox = false;
+			break;
+
 		}
 
 	}
 
-	// 中央範囲判定
+	// 中央範囲かつ指定距離内にあるブロックをチェック
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
 		if (!g_aBlock[nCntBlock].bUse)
 		{
 			continue; // 使用されていないブロックはスキップ
 		}
+
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE)
+		{
+			maxDistance = 100.0f;
+		}
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSEBOX)
+		{
+			maxDistance = 100.0f;
+		}
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_UFOCATCHER1)
+		{
+			maxDistance = 120.0f;
+		}
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
+		{
+			maxDistance = 100.0f;
+		}
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BALLPOOL)
+		{
+			maxDistance = 160.0f;
+		}
+
 
 		// 特定の種類のみ対象とする
 		if (g_aBlock[nCntBlock].nType != BLOCKTYPE_ARCADE1 && g_aBlock[nCntBlock].nType != BLOCKTYPE_UFOCATCHER1 &&
@@ -709,58 +741,59 @@ void CheckBlocksInCenter(void)
 		D3DXVECTOR3 toBlock = g_aBlock[nCntBlock].pos - eyePos;
 		float distance = D3DXVec3Length(&toBlock);
 
-		//// 一定の距離内ならインタラクト可能
-		//bool bInteractable = (distance < interactionDistance);
+		// 距離チェック (一定距離以上ならスキップ)
+		if (distance > maxDistance)
+		{
+			continue;
+		}
 
 		// toBlockを正規化して方向ベクトルを得る
 		D3DXVECTOR3 toBlockNormalized;
 		D3DXVec3Normalize(&toBlockNormalized, &toBlock);
 
-		// adjustedForwardのY成分を調整
+		// adjustedForwardのY成分を調整（視線を少し下げる）
 		D3DXVECTOR3 adjustedForward = forward;
-
-		// 視線を少し下げる
-		adjustedForward.y -= 0.2f; // これで低いブロックも視線に入るようにする
-
-		// 視線方向を正規化
+		adjustedForward.y -= 0.2f;
 		D3DXVec3Normalize(&adjustedForward, &adjustedForward);
 
 		// 視線との角度を計算
 		float dotProduct = D3DXVec3Dot(&adjustedForward, &toBlockNormalized);
 		float angle = acosf(dotProduct); // 視線との角度（ラジアン）
 
-		// 中央範囲内にあるか判定
+		// 中央範囲かつ指定距離内にある場合のみ true
 		if (angle < maxAngle)
 		{
 			g_aBlock[nCntBlock].bInsight = true;
 
-			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE)
+			// ブロックごとのインタラクトフラグを設定
+			switch (g_aBlock[nCntBlock].nType)
 			{
+			case BLOCKTYPE_FUSE:        
 				bFuse = true;
-			}
-			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
-			{
-				bArcade = true;
-			}
-			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BALLPOOL)
-			{
-				bBall = true;
-			}
-			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_KEYPAD)
-			{
-				bKeypad = true;
-			}
-			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_UFOCATCHER1)
-			{
-				bCatcher = true;
-			}
-			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSEBOX)
-			{
-				bFusebox = true;
-			}
+				break;
 
+			case BLOCKTYPE_ARCADE1:     
+				bArcade = true; 
+				break;
+
+			case BLOCKTYPE_BALLPOOL:    
+				bBall = true; 
+				break;
+
+			case BLOCKTYPE_KEYPAD:      
+				bKeypad = true; 
+				break;
+
+			case BLOCKTYPE_UFOCATCHER1: 
+				bCatcher = true; 
+				break;
+
+			case BLOCKTYPE_FUSEBOX:     
+				bFusebox = true; 
+				break;
+
+			}
 		}
-
 	}
 }
 //============================================

@@ -804,3 +804,7 @@ void offWireFrame()
 {
 	g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
+bool GetFullScreen(void)
+{
+	return g_isFullscreen;
+}

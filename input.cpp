@@ -10,22 +10,22 @@
 #define NUM_KEY_MAX (256)//キーの最大数
 
 //グローバル変数
-XINPUT_STATE g_joyKeyState;//ジョイパッドのプレス情報
-XINPUT_STATE g_joyKeyStateTrigger;//ジョイパッドのトリガー情報
-XINPUT_STATE g_joyKeyStateRelease;//ジョイパッドのトリガー情報
+XINPUT_STATE g_joyKeyState;						//ジョイパッドのプレス情報
+XINPUT_STATE g_joyKeyStateTrigger;				//ジョイパッドのトリガー情報
+XINPUT_STATE g_joyKeyStateRelease;				//ジョイパッドのトリガー情報
 
-XINPUT_STATE g_aOldJoyKeyState;//
+XINPUT_STATE g_aOldJoyKeyState;
 
-LPDIRECTINPUT8 g_pInput = NULL;//DirectInputオブジェクトへのポインタ
-LPDIRECTINPUTDEVICE8 g_pDevKeyboard = NULL;//入力デバイスへのポインタ
-BYTE g_aKeyState[NUM_KEY_MAX];//キーボードプレス情報
-BYTE g_aOldState[NUM_KEY_MAX];//
+LPDIRECTINPUT8 g_pInput = NULL;					//DirectInputオブジェクトへのポインタ
+LPDIRECTINPUTDEVICE8 g_pDevKeyboard = NULL;		//入力デバイスへのポインタ
+BYTE g_aKeyState[NUM_KEY_MAX];					//キーボードプレス情報
+BYTE g_aOldState[NUM_KEY_MAX];
 
-//XINPUT_STATE g_joyKeyStateTrigger;//ジョイパッドのプレス情報
+//XINPUT_STATE g_joyKeyStateTrigger;			//ジョイパッドのプレス情報
 bool g_joyKeyFlag[JOYKEY_MAX];
 
-//LPDIRECTINPUT8 g_pMouse = NULL;//DirectInputオブジェクトへのポインタ
-LPDIRECTINPUTDEVICE8 g_pDevMouse = NULL;//入力デバイスへのポインタ
+//LPDIRECTINPUT8 g_pMouse = NULL;				//DirectInputオブジェクトへのポインタ
+LPDIRECTINPUTDEVICE8 g_pDevMouse = NULL;		//入力デバイスへのポインタ
 DIMOUSESTATE g_mouseState;
 
 //=============================

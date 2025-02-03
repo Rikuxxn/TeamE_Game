@@ -38,9 +38,11 @@ int g_nRankCnt = 0;
 
 LPDIRECT3DTEXTURE9 g_pTextureResultTimeMinute = NULL;//テクスチャへのポインタ
 LPDIRECT3DTEXTURE9 g_pTextureResultTimeSecond = NULL;//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureResultColon = NULL;				//テクスチャへのポインタ
 
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultTimeMinute = NULL;//頂点バッファへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultTimeSecond = NULL;//頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultColon = NULL;			//頂点バッファへのポインタ
 
 
 D3DXVECTOR3 g_posResultTime;//タイムの位置
@@ -412,13 +414,18 @@ void InitResultTime(void)
 
 	//テクスチャの読み込み(分)
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\num002.png",
+		"data\\TEXTURE\\time.png",
 		&g_pTextureResultTimeMinute);
 
 	//テクスチャの読み込み(秒)
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\num002.png",
+		"data\\TEXTURE\\time.png",
 		&g_pTextureResultTimeSecond);
+
+	//テクスチャの読み込み(コロン)
+	D3DXCreateTextureFromFile(pDevice,
+		"data\\TEXTURE\\colon.png",
+		&g_pTextureResultColon);
 
 	//初期化
 	g_posResultTime = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//位置を初期化する(始まりの位置)
@@ -441,6 +448,14 @@ void InitResultTime(void)
 		FVF_VERTEX_2D,
 		D3DPOOL_MANAGED,
 		&g_pVtxBuffResultTimeSecond,
+		NULL);
+
+	//頂点バッファの生成
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_2D,
+		D3DPOOL_MANAGED,
+		&g_pVtxBuffResultColon,
 		NULL);
 
 	VERTEX_2D* pVtx;
@@ -483,6 +498,32 @@ void InitResultTime(void)
 	//頂点バッファをアンロックする
 	g_pVtxBuffResultTimeMinute->Unlock();
 
+	// コロンの頂点バッファをロック
+	g_pVtxBuffResultColon->Lock(0, 0, (void**)&pVtx, 0);
+
+	float colonX = 680.0f; // コロンのX座標
+	float colonY = 20.0f;  // コロンのY座標
+
+	// コロンの頂点座標設定
+	pVtx[0].pos = D3DXVECTOR3(colonX, colonY, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(colonX + 20.0f, colonY, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(colonX, colonY + 60.0f, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(colonX + 20.0f, colonY + 60.0f, 0.0f);
+
+	for (int nCntColon = 0; nCntColon < 4; nCntColon++)
+	{
+		pVtx[nCntColon].rhw = 1.0f;
+		pVtx[nCntColon].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	}
+
+	// コロンのテクスチャ座標設定（1枚の画像の場合は固定）
+	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+
+	// 頂点バッファをアンロック
+	g_pVtxBuffResultColon->Unlock();
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffResultTimeSecond->Lock(0, 0, (void**)&pVtx, 0);
@@ -543,6 +584,13 @@ void UninitResultTime(void)
 		g_pTextureResultTimeSecond = NULL;
 	}
 
+	//テクスチャの破棄(コロン)
+	if (g_pTextureResultColon != NULL)
+	{
+		g_pTextureResultColon->Release();
+		g_pTextureResultColon = NULL;
+	}
+
 	//頂点バッファの破棄(分)
 	if (g_pVtxBuffResultTimeMinute != NULL)
 	{
@@ -555,6 +603,13 @@ void UninitResultTime(void)
 	{
 		g_pVtxBuffResultTimeSecond->Release();
 		g_pVtxBuffResultTimeSecond = NULL;
+	}
+
+	//頂点バッファの破棄(コロン)
+	if (g_pVtxBuffResultColon != NULL)
+	{
+		g_pVtxBuffResultColon->Release();
+		g_pVtxBuffResultColon = NULL;
 	}
 
 }
@@ -665,6 +720,22 @@ void DrawResultTime(void)
 	}
 
 	//=================
+	// コロン
+	//=================
+
+	//頂点バッファをデータストリームに設定
+	pDevice->SetStreamSource(0, g_pVtxBuffResultColon, 0, sizeof(VERTEX_2D));
+
+	//頂点フォーマットの設定
+	pDevice->SetFVF(FVF_VERTEX_2D);
+
+	//テクスチャの設定
+	pDevice->SetTexture(0, g_pTextureResultColon);
+
+	//ポリゴンの描画
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+
+	//=================
 	// 秒
 	//=================
 
@@ -687,70 +758,5 @@ void DrawResultTime(void)
 
 		}
 	}
-
-}
-//=============================
-// リザルトタイムの設定処理
-//=============================
-void SetResultTime(void)
-{
-	//int nMinutes = GetTimeMinutes();
-	//int nSeconds = GetTimeSeconds();
-
-	//VERTEX_2D* pVtx;
-
-	//g_nResultMinutes = nMinutes;
-	//g_nResultSeconds = nSeconds;
-
-	//int min10 = g_nResultMinutes / 10;	// 分の10の位
-	//int min1 = g_nResultMinutes % 10;		// 分の1の位
-	//int sec10 = g_nResultSeconds / 10;	// 秒の10の位
-	//int sec1 = g_nResultSeconds % 10;		// 秒の1の位
-
-	//float texOffset = 0.1f;			// 1桁分のテクスチャ範囲（0.0～1.0を10分割）
-
-	////===============================
-	//// 分のテクスチャ設定
-	////===============================
-
-	////頂点バッファをロックし、頂点情報へのポインタを取得
-	//g_pVtxBuffResultTimeMinute->Lock(0, 0, (void**)&pVtx, 0);
-
-	//// 分の10の位
-	//pVtx[0].tex = D3DXVECTOR2(texOffset * min10, 0.0f);
-	//pVtx[1].tex = D3DXVECTOR2(texOffset * min10 + texOffset, 0.0f);
-	//pVtx[2].tex = D3DXVECTOR2(texOffset * min10, 1.0f);
-	//pVtx[3].tex = D3DXVECTOR2(texOffset * min10 + texOffset, 1.0f);
-
-	//// 分の1の位
-	//pVtx[4].tex = D3DXVECTOR2(texOffset * min1, 0.0f);
-	//pVtx[5].tex = D3DXVECTOR2(texOffset * min1 + texOffset, 0.0f);
-	//pVtx[6].tex = D3DXVECTOR2(texOffset * min1, 1.0f);
-	//pVtx[7].tex = D3DXVECTOR2(texOffset * min1 + texOffset, 1.0f);
-
-	////頂点バッファをアンロックする
-	//g_pVtxBuffResultTimeMinute->Unlock();
-
-	////===============================
-	//// 秒のテクスチャ設定
-	////===============================
-
-	////頂点バッファをロックし、頂点情報へのポインタを取得
-	//g_pVtxBuffResultTimeSecond->Lock(0, 0, (void**)&pVtx, 0);
-
-	//// 秒の10の位
-	//pVtx[0].tex = D3DXVECTOR2(texOffset * sec10, 0.0f);
-	//pVtx[1].tex = D3DXVECTOR2(texOffset * sec10 + texOffset, 0.0f);
-	//pVtx[2].tex = D3DXVECTOR2(texOffset * sec10, 1.0f);
-	//pVtx[3].tex = D3DXVECTOR2(texOffset * sec10 + texOffset, 1.0f);
-
-	//// 秒の1の位
-	//pVtx[4].tex = D3DXVECTOR2(texOffset * sec1, 0.0f);
-	//pVtx[5].tex = D3DXVECTOR2(texOffset * sec1 + texOffset, 0.0f);
-	//pVtx[6].tex = D3DXVECTOR2(texOffset * sec1, 1.0f);
-	//pVtx[7].tex = D3DXVECTOR2(texOffset * sec1 + texOffset, 1.0f);
-
-	////頂点バッファをアンロックする
-	//g_pVtxBuffResultTimeSecond->Unlock();
 
 }

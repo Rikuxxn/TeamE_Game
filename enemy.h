@@ -28,7 +28,7 @@ typedef struct
     float sightRange;                           // 視界の範囲
     float sightAngle;                           // 視界の角度
     EnemyState state;                           // 現在の状態
-    Motion motion;
+    EnemyMotion enemymotion;
     D3DXMATRIX mtxWorld;
     D3DXVECTOR3 size;						    // サイズ
     D3DXVECTOR3 vtxMin;						    // サイズ

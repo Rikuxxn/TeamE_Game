@@ -279,14 +279,24 @@ void UpdateEdit(void)
     }
 
 
-    //ブロックを回転する
+    //ブロックをY軸回転する
     if (KeyboardTrigger(DIK_Y) == true)
     {
         g_Editinfo[g_nCntEdit].rot.y += 0.75f;
     }
     else if (KeyboardTrigger(DIK_H) == true)
     {
-        g_Editinfo[g_nCntEdit].rot.y -= D3DX_PI / 2;
+        g_Editinfo[g_nCntEdit].rot.y -= 0.75f;
+    }
+
+    //ブロックをX軸回転する
+    if (KeyboardTrigger(DIK_T) == true)
+    {
+        g_Editinfo[g_nCntEdit].rot.x += 0.75f;
+    }
+    else if (KeyboardTrigger(DIK_G) == true)
+    {
+        g_Editinfo[g_nCntEdit].rot.x -= 0.75f;
     }
 
     // ブロックを設置

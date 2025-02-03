@@ -206,7 +206,7 @@ void UpdatePlayer(void)
 
 	if (bEnd == true)
 	{
-		g_player.motion.motionType = MOTIONTYPE_NEUTRAL2;
+		g_player.motion.motionType = MOTIONTYPE_NEUTRAL;
 	}
 
 	if (bExit == false && g_player.bDisp == true && bEnd == false)

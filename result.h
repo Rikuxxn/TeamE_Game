@@ -10,7 +10,6 @@
 //マクロ定義
 #define MAX_RESULT_TIMEDIGIT (2)	//桁の最大数
 
-
 //プロトタイプ宣言
 void InitResult(void);
 void UninitResult(void);
@@ -21,7 +20,6 @@ void InitResultTime(void);
 void UninitResultTime(void);
 void UpdateResultTime(void);
 void DrawResultTime(void);
-void SetResultTime(void);
 
 #endif
 

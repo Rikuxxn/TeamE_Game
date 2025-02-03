@@ -16,7 +16,6 @@
 typedef struct
 {
 	bool bUse;
-
 }Time;
 
 //プロトタイプ宣言

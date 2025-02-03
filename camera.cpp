@@ -160,7 +160,6 @@ void UpdateCamera(void)
 
 	if (pMode == MODE_TITLE)
 	{
-
 		// カメラの位置をプレイヤーの位置に設定
 		g_camera.posV = pPlayer->pos;
 		g_camera.posV.y += 70.0f; // 頭部の高さ
@@ -372,7 +371,7 @@ void SetCamera(void)
 	{
 		//プロジェクションマトリックスの作成
 		D3DXMatrixPerspectiveFovLH(&g_camera.mtxProjection,
-			D3DXToRadian(65.0f),                  // 視野角
+			D3DXToRadian(60.0f),                  // 視野角
 			(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, // アスペクト比
 			1.0f,                                // 近クリップ面
 			2500.0f);                            // 遠クリップ面

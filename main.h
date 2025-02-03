@@ -95,5 +95,6 @@ void offWireFrame(void);
 void ToggleFullscreen(HWND hWnd);// ウィンドウをフルスクリーン
 MODE GetMode(void);
 bool GetFullScreen(void);
+void SetupVertexFog(LPDIRECT3DDEVICE9 pDevice, DWORD Color, DWORD Mode, BOOL UseRange, FLOAT Density);
 
 #endif

@@ -181,6 +181,13 @@ void InitTitle(void)
 //==================
 void UninitTitle(void)
 {
+	LPDIRECT3DDEVICE9 pDevice; // 事前に作成・初期化されているデバイス
+
+	//デバイスの取得
+	pDevice = GetDevice();
+
+	// 霧の無効化
+	pDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
 
 	//メッシュフィールドの終了処理
 	UninitMeshfield();
@@ -402,6 +409,12 @@ void UpdateTitle(void)
 //==================
 void DrawTitle(void)
 {
+	LPDIRECT3DDEVICE9 pDevice; // 事前に作成・初期化されているデバイス
+
+	//デバイスの取得
+	pDevice = GetDevice();
+
+	SetupVertexFog(pDevice, D3DCOLOR_XRGB(0, 0, 0), D3DFOG_LINEAR, TRUE, 0.0f);
 
 	//プレイヤーの描画処理
 	DrawPlayer();
@@ -420,10 +433,8 @@ void DrawTitle(void)
 
 	int nCntTitle;
 
-	LPDIRECT3DDEVICE9 pDevice;
-
-	//デバイスの取得
-	pDevice = GetDevice();
+	// 霧の無効化
+	pDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
 
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, g_pVtxBuffTitle, 0, sizeof(VERTEX_2D));
@@ -440,6 +451,9 @@ void DrawTitle(void)
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCntTitle * 4, 2);
 
 	}
+
+	// 霧の無効化
+	pDevice->SetRenderState(D3DRS_FOGENABLE, TRUE);
 
 }
 

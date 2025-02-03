@@ -234,6 +234,13 @@ void InitGame(void)
 //============================================
 void UninitGame(void)
 {
+	LPDIRECT3DDEVICE9 pDevice; // 事前に作成・初期化されているデバイス
+
+	//デバイスの取得
+	pDevice = GetDevice();
+
+	// 霧の無効化
+	pDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
 
 	//StopSound(SOUND_LABEL_GAMEBGM);
 	//StopSound();
@@ -612,6 +619,14 @@ void UpdateGame(void)
 //===========================================
 void DrawGame(void)
 {
+	LPDIRECT3DDEVICE9 pDevice; // 事前に作成・初期化されているデバイス
+
+	//デバイスの取得
+	pDevice = GetDevice();
+
+	SetupVertexFog(pDevice, D3DCOLOR_XRGB(0, 0, 0), D3DFOG_LINEAR, TRUE, 0.0f);
+	//SetupVertexFog(pDevice, D3DCOLOR_XRGB(200, 200, 200), D3DFOG_EXP, TRUE, 0.01f);
+
 	Player* pPlayer = GetPlayer();	//プレイヤー取得
 
 	//プレイヤーの描画処理
@@ -634,13 +649,17 @@ void DrawGame(void)
 	DrawMeshCeiling();
 
 
-
-
 	//ブロックの描画処理
 	DrawBlock();
 
+
 	//メッシュシリンダーの描画処理
 	DrawMeshcylinder();
+
+
+	// 霧の無効化
+	pDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
+
 
 	////エフェクトの描画処理
 	//DrawEffect();
@@ -697,6 +716,10 @@ void DrawGame(void)
 	{
 		DrawBallGame();
 	}
+
+	// 霧の有効化
+	pDevice->SetRenderState(D3DRS_FOGENABLE, TRUE);
+
 }
 //=============================================
 //ゲームの状態の設定

@@ -408,10 +408,10 @@ void LoadEnemyTEXT(void)
 								D3DXMESH_SYSTEMMEM,
 								pDevice,
 								NULL,
-								&pEnemy->motion.aModel[nCnt].pBuffMat,
+								&pEnemy->enemymotion.aModel[nCnt].pBuffMat,
 								NULL,
-								&pEnemy->motion.aModel[nCnt].dwNumMat,
-								&pEnemy->motion.aModel[nCnt].pMesh);
+								&pEnemy->enemymotion.aModel[nCnt].dwNumMat,
+								&pEnemy->enemymotion.aModel[nCnt].pMesh);
 
 							nCnt++; // nCntをインクリメント
 						}
@@ -430,7 +430,7 @@ void LoadEnemyTEXT(void)
 
 								if (strcmp(&aString[0], "=") == 0)
 								{// 値を代入
-									fscanf(pFile, "%d", &pEnemy->motion.nNumModel);
+									fscanf(pFile, "%d", &pEnemy->enemymotion.nNumModel);
 								}
 							}
 							else if (strcmp(&aString[0], "PARTSSET") == 0)
@@ -459,7 +459,7 @@ void LoadEnemyTEXT(void)
 										if (strcmp(&aString[0], "=") == 0)
 										{// 代入
 											// 親
-											fscanf(pFile, "%d", &pEnemy->motion.aModel[nIdx].nIdxModelParent);
+											fscanf(pFile, "%d", &pEnemy->enemymotion.aModel[nIdx].nIdxModelParent);
 										}
 									}
 
@@ -471,9 +471,9 @@ void LoadEnemyTEXT(void)
 
 										if (strcmp(&aString[0], "=") == 0)
 										{// 座標を代入
-											fscanf(pFile, "%f", &pEnemy->motion.aModel[nIdx].pos.x);
-											fscanf(pFile, "%f", &pEnemy->motion.aModel[nIdx].pos.y);
-											fscanf(pFile, "%f", &pEnemy->motion.aModel[nIdx].pos.z);
+											fscanf(pFile, "%f", &pEnemy->enemymotion.aModel[nIdx].pos.x);
+											fscanf(pFile, "%f", &pEnemy->enemymotion.aModel[nIdx].pos.y);
+											fscanf(pFile, "%f", &pEnemy->enemymotion.aModel[nIdx].pos.z);
 										}
 									}
 
@@ -484,9 +484,9 @@ void LoadEnemyTEXT(void)
 
 										if (strcmp(&aString[0], "=") == 0)
 										{// 角度を代入
-											fscanf(pFile, "%f", &pEnemy->motion.aModel[nIdx].rot.x);
-											fscanf(pFile, "%f", &pEnemy->motion.aModel[nIdx].rot.y);
-											fscanf(pFile, "%f", &pEnemy->motion.aModel[nIdx].rot.z);
+											fscanf(pFile, "%f", &pEnemy->enemymotion.aModel[nIdx].rot.x);
+											fscanf(pFile, "%f", &pEnemy->enemymotion.aModel[nIdx].rot.y);
+											fscanf(pFile, "%f", &pEnemy->enemymotion.aModel[nIdx].rot.z);
 										}
 									}
 
@@ -530,10 +530,10 @@ void LoadEnemyTEXT(void)
 
 								if (strcmp(&aString[0], "=") == 0)
 								{// 値を代入
-									fscanf(pFile, "%d", &pEnemy->motion.aMotionInfo[nCntMotion].nNumKey);
+									fscanf(pFile, "%d", &pEnemy->enemymotion.aEnemyMotionInfo[nCntMotion].nNumKey);
 								}
 
-								while (nCntKey < pEnemy->motion.aMotionInfo[nCntMotion].nNumKey)
+								while (nCntKey < pEnemy->enemymotion.aEnemyMotionInfo[nCntMotion].nNumKey)
 								{
 
 									fscanf(pFile, "%s", &aString[0]);
@@ -552,7 +552,7 @@ void LoadEnemyTEXT(void)
 
 												if (strcmp(&aString[0], "=") == 0)
 												{// 値を代入
-													fscanf(pFile, "%d", &pEnemy->motion.aMotionInfo[nCntMotion].aKeyInfo[nCntKey].nFrame);
+													fscanf(pFile, "%d", &pEnemy->enemymotion.aEnemyMotionInfo[nCntMotion].aEnemyKeyInfo[nCntKey].nFrame);
 													break;
 												}
 											}
@@ -577,9 +577,9 @@ void LoadEnemyTEXT(void)
 
 														if (strcmp(&aString[0], "=") == 0)
 														{// 値を代入
-															fscanf(pFile, "%f", &pEnemy->motion.aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntPos].fPosX);
-															fscanf(pFile, "%f", &pEnemy->motion.aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntPos].fPosY);
-															fscanf(pFile, "%f", &pEnemy->motion.aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntPos].fPosZ);
+															fscanf(pFile, "%f", &pEnemy->enemymotion.aEnemyMotionInfo[nCntMotion].aEnemyKeyInfo[nCntKey].aKey[nCntPos].fPosX);
+															fscanf(pFile, "%f", &pEnemy->enemymotion.aEnemyMotionInfo[nCntMotion].aEnemyKeyInfo[nCntKey].aKey[nCntPos].fPosY);
+															fscanf(pFile, "%f", &pEnemy->enemymotion.aEnemyMotionInfo[nCntMotion].aEnemyKeyInfo[nCntKey].aKey[nCntPos].fPosZ);
 															nCntPos++;
 														}
 
@@ -591,9 +591,9 @@ void LoadEnemyTEXT(void)
 
 														if (strcmp(&aString[0], "=") == 0)
 														{// 値を代入
-															fscanf(pFile, "%f", &pEnemy->motion.aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntRot].fRotX);
-															fscanf(pFile, "%f", &pEnemy->motion.aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntRot].fRotY);
-															fscanf(pFile, "%f", &pEnemy->motion.aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntRot].fRotZ);
+															fscanf(pFile, "%f", &pEnemy->enemymotion.aEnemyMotionInfo[nCntMotion].aEnemyKeyInfo[nCntKey].aKey[nCntRot].fRotX);
+															fscanf(pFile, "%f", &pEnemy->enemymotion.aEnemyMotionInfo[nCntMotion].aEnemyKeyInfo[nCntKey].aKey[nCntRot].fRotY);
+															fscanf(pFile, "%f", &pEnemy->enemymotion.aEnemyMotionInfo[nCntMotion].aEnemyKeyInfo[nCntKey].aKey[nCntRot].fRotZ);
 															nCntRot++;
 														}
 

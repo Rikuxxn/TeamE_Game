@@ -375,7 +375,7 @@ void SetCamera(void)
 			D3DXToRadian(65.0f),                  // 視野角
 			(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, // アスペクト比
 			1.0f,                                // 近クリップ面
-			1300.0f);                            // 遠クリップ面
+			2500.0f);                            // 遠クリップ面
 	}
 	else
 	{

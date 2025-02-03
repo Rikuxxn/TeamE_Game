@@ -6,6 +6,7 @@
 //=======================================
 #include "main.h"
 #include "light.h"
+#include "player.h"
 
 #define MAX_LIGHT (3)// ライトの最大数
 
@@ -26,6 +27,7 @@ static int g_LightCapacity = 0;    // ライトリストの容量
 //=============================
 void InitLight(void)
 {
+    Player* pPlayer = GetPlayer();
 
     // 初期容量でライトリストを確保
     g_LightCapacity = MAX_LIGHT;
@@ -44,66 +46,52 @@ void InitLight(void)
 //=============================
 void AddLight(D3DLIGHTTYPE type, D3DXCOLOR diffuse, D3DXVECTOR3 direction, D3DXVECTOR3 position) 
 {
-    // デバイスの取得
     LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-    // 容量が不足している場合、容量を拡張
     if (g_LightCount >= g_LightCapacity)
     {
-        g_LightCapacity *= 2; // 容量を2倍に拡張
+        g_LightCapacity *= 2; // 容量拡張
         LightInfo* newLights = (LightInfo*)realloc(g_Lights, sizeof(LightInfo) * g_LightCapacity);
-        if (!newLights)
-        {
-            // realloc失敗時は容量を元に戻す
-            g_LightCapacity /= 2;
-            return;
-        }
+        if (!newLights) return;
         g_Lights = newLights;
     }
 
-    // 新しいライト情報を設定
     LightInfo* newLight = &g_Lights[g_LightCount];
     ZeroMemory(&newLight->light, sizeof(D3DLIGHT9));
 
-    // ライトの種類と色を設定
     newLight->light.Type = type;
     newLight->light.Diffuse = diffuse;
 
-    // ライトの位置と方向を設定
-    D3DXVECTOR3 normalizedDirection;
-    D3DXVec3Normalize(&normalizedDirection, &direction); // 正規化された方向ベクトルを取得
-    newLight->direction = normalizedDirection;
-    newLight->light.Direction = normalizedDirection;
-
-
-    newLight->position = position; // ライトの位置を保存
-    newLight->light.Position = position; // ライト情報に設定
-
-    // 点光源の設定
-    if (type == D3DLIGHT_POINT) 
+    // 方向ベクトルの初期化（ゼロベクトル防止）
+    if (D3DXVec3Length(&direction) == 0.0f) 
     {
-        newLight->light.Attenuation0 = 0.0f;  // 減衰なし
-        newLight->light.Attenuation1 = 0.1f;  // 線形減衰
-        newLight->light.Attenuation2 = 0.01f; // 二次減衰
-        newLight->light.Range = 100.0f;      // 照射範囲
+        direction = D3DXVECTOR3(0, -1, 0); // デフォルトは下向き
+    }
+    D3DXVec3Normalize(&newLight->direction, &direction);
+    newLight->light.Direction = newLight->direction;
+
+    newLight->position = position;
+    newLight->light.Position = position;
+
+    // ライトの種類ごとの設定
+    if (type == D3DLIGHT_POINT)
+    {
+        newLight->light.Attenuation0 = 0.0f;
+        newLight->light.Attenuation1 = 0.1f;
+        newLight->light.Attenuation2 = 0.01f;
+        newLight->light.Range = 100.0f;
+    }
+    else if (type == D3DLIGHT_SPOT)
+    {
+        newLight->light.Range = 500.0f;
+        newLight->light.Theta = D3DXToRadian(30.0f);
+        newLight->light.Phi = D3DXToRadian(45.0f);
+        newLight->light.Falloff = 1.0f;
     }
 
-    // スポットライトの設定
-    if (type == D3DLIGHT_SPOT)
-    {
-        newLight->light.Range = 100.0f;                   // 照らす範囲
-        newLight->light.Theta = D3DXToRadian(30.0f); // 内側のスポット角度
-        newLight->light.Phi = D3DXToRadian(45.0f);  // 外側のスポット角度
-        newLight->light.Falloff = 0.2f;                   // 光の減衰
-    }
-
-    // Direct3Dデバイスにライトを設定
     pDevice->SetLight(g_LightCount, &newLight->light);
-
-    // ライトを有効化
     pDevice->LightEnable(g_LightCount, TRUE);
 
-    // ライト数を増加
     g_LightCount++;
 }
 //=============================
@@ -163,25 +151,76 @@ void UninitLight(void)
 void UpdateLight(int index, D3DXVECTOR3 newPosition, D3DXVECTOR3 newDirection) 
 {
 
-    // 範囲外チェック
     if (index < 0 || index >= g_LightCount)
     {
-        return; // 無効なインデックス
+        return;
     }
 
-    // デバイスの取得
     LPDIRECT3DDEVICE9 pDevice = GetDevice();
+    LightInfo* light = &g_Lights[index];
 
     // 位置の更新
-    g_Lights[index].position = newPosition;
-    g_Lights[index].light.Position = newPosition;
+    light->position = newPosition;
+    light->light.Position = newPosition;
 
-    // 方向ベクトルの更新
-    D3DXVECTOR3 normalizedDirection;
-    D3DXVec3Normalize(&normalizedDirection, &newDirection); // 正規化
-    g_Lights[index].direction = normalizedDirection;
-    g_Lights[index].light.Direction = normalizedDirection;
+    // 方向の更新（ゼロベクトル防止）
+    if (D3DXVec3Length(&newDirection) == 0.0f) 
+    {
+        newDirection = D3DXVECTOR3(0, -1, 0);  // デフォルトは下向き
+    }
 
-    // Direct3Dデバイスに再設定
-    pDevice->SetLight(index, &g_Lights[index].light);
+    D3DXVec3Normalize(&light->direction, &newDirection);
+    light->light.Direction = light->direction;
+
+    // スポットライトの場合、レンジや角度を再設定する
+    if (light->light.Type == D3DLIGHT_SPOT) 
+    {
+        light->light.Range = 100.0f;
+        light->light.Theta = D3DXToRadian(30.0f);
+        light->light.Phi = D3DXToRadian(45.0f);
+        light->light.Falloff = 1.0f;
+    }
+
+    // ライトを再設定
+    pDevice->SetLight(index, &light->light);
+
+    // 念のためライトを再度有効化
+    pDevice->LightEnable(index, TRUE);
+
+}
+//=============================
+// プレイヤーライトの設定処理
+//=============================
+void AddLightPlayer(D3DLIGHTTYPE type, D3DXCOLOR diffuse)
+{
+    LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+    Player* pPlayer = GetPlayer();
+
+    if (!pPlayer)
+    {
+        return;
+    }
+
+    // プレイヤーの位置と視線方向を取得
+    D3DXVECTOR3 playerPos = pPlayer->pos;  // プレイヤーの現在位置
+    D3DXVECTOR3 playerDir = pPlayer->forward; // プレイヤーの視線方向
+
+    // プレイヤーの目の高さにライトを設定
+    playerPos.y += 75.0f;
+
+    // 目線方向がゼロベクトルでないか確認し、正規化
+    if (D3DXVec3Length(&playerDir) == 0.0f)
+    {
+        playerDir = D3DXVECTOR3(0, 0, 1); // デフォルトの視線方向
+    }
+
+    D3DXVec3Normalize(&playerDir, &playerDir);
+
+    // プレイヤーの視線方向に少し前方にライトを配置
+    D3DXVECTOR3 lightPos = playerPos + (playerDir);
+
+    // ライトを追加
+    AddLight(type, diffuse, playerDir, lightPos);
+
 }

@@ -17,6 +17,7 @@
 #include <string.h>
 #include "enemy.h"
 #include "block.h"
+#include "light.h"
 //#include "sound.h"
 
 //ƒOƒ[ƒoƒ‹•Ï”

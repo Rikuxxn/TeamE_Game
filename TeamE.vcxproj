@@ -191,6 +191,7 @@
     <ClCompile Include="shooting_particle.cpp" />
     <ClCompile Include="shooting_player.cpp" />
     <ClCompile Include="task.cpp" />
+    <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="ui.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="shooting_particle.h" />
     <ClInclude Include="shooting_player.h" />
     <ClInclude Include="task.h" />
+    <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="ui.h" />

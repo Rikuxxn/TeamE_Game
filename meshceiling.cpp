@@ -66,9 +66,9 @@ void InitMeshCeiling(void)
 		for (int nCnt2 = 0; nCnt2 <= MESHCEILING_X; nCnt2++)
 		{
 
-			pVtx[nCnt].pos = D3DXVECTOR3(0.0f + ((MAX_WIDTH / MESHCEILING_X) * nCnt2) - (MAX_WIDTH * 0.5f),
+			pVtx[nCnt].pos = D3DXVECTOR3(0.0f + ((MAX_WIDTH_CEILING / MESHCEILING_X) * nCnt2) - (MAX_WIDTH_CEILING * 0.5f),
 				0.0f,
-				MAX_HEIGHT - ((MAX_HEIGHT / MESHCEILING_Z) * nCnt1) - (MAX_HEIGHT * 0.5f));
+				MAX_HEIGHT_CEILING - ((MAX_HEIGHT_CEILING / MESHCEILING_Z) * nCnt1) - (MAX_HEIGHT_CEILING * 0.5f));
 
 			//Še’¸“_‚Ì–@ü‚ÌÝ’è
 			pVtx[nCnt].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);

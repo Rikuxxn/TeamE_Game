@@ -35,6 +35,20 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultGameover = NULL;	//’¸“_ƒoƒbƒtƒ@‚Ö‚Ìƒ|ƒCƒ
 float g_fAlphaGameover = 0.0f;								// ƒQ[ƒ€ƒI[ƒo[—p‚ÌƒAƒ‹ƒtƒ@’l
 int g_nRankCnt = 0;
 
+
+LPDIRECT3DTEXTURE9 g_pTextureResultTimeMinute = NULL;//ƒeƒNƒXƒ`ƒƒ‚Ö‚Ìƒ|ƒCƒ“ƒ^
+LPDIRECT3DTEXTURE9 g_pTextureResultTimeSecond = NULL;//ƒeƒNƒXƒ`ƒƒ‚Ö‚Ìƒ|ƒCƒ“ƒ^
+
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultTimeMinute = NULL;//’¸“_ƒoƒbƒtƒ@‚Ö‚Ìƒ|ƒCƒ“ƒ^
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultTimeSecond = NULL;//’¸“_ƒoƒbƒtƒ@‚Ö‚Ìƒ|ƒCƒ“ƒ^
+
+
+D3DXVECTOR3 g_posResultTime;//ƒ^ƒCƒ€‚ÌˆÊ’u
+Time g_aResultTime[MAX_RESULT_TIMEDIGIT];
+
+int g_nResultMinutes;		// •ª
+int g_nResultSeconds;		// •b
+
 //================================================
 //ƒŠƒUƒ‹ƒg‰æ–Ê‚Ì‰Šú‰»ˆ—
 //================================================
@@ -52,7 +66,6 @@ void InitResult(void)
 
 	bool bEnd = GetEnd();
 	bool bExit = GetExit();
-	//nScore = GetScore();
 	//nTime = GetTime();
 
 	if (bExit == true)
@@ -67,7 +80,7 @@ void InitResult(void)
 			&g_pTextureResult);
 
 	}
-	else if (bEnd == true /*|| nTime == 0*/)
+	else if (bEnd == true)
 	{//•ß‚Ü‚Á‚½‚ç‚Ü‚½‚Íƒ^ƒCƒ€‚ª0‚É‚È‚Á‚½‚ç
 
 		////ƒŠƒUƒ‹ƒg(ƒQ[ƒ€ƒI[ƒo[)‰æ–Ê‚É‘JˆÚ
@@ -382,5 +395,362 @@ void DrawResult(void)
 		//ƒ|ƒŠƒSƒ“‚Ì•`‰æ
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 	}
+
+}
+//=============================
+// ƒŠƒUƒ‹ƒgƒ^ƒCƒ€‚Ì‰Šú‰»ˆ—
+//=============================
+void InitResultTime(void)
+{
+
+	int nCnt;
+
+	LPDIRECT3DDEVICE9 pDevice;
+
+	//ƒfƒoƒCƒX‚ÌŽæ“¾
+	pDevice = GetDevice();
+
+	//ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚Ýž‚Ý(•ª)
+	D3DXCreateTextureFromFile(pDevice,
+		"data\\TEXTURE\\num002.png",
+		&g_pTextureResultTimeMinute);
+
+	//ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚Ýž‚Ý(•b)
+	D3DXCreateTextureFromFile(pDevice,
+		"data\\TEXTURE\\num002.png",
+		&g_pTextureResultTimeSecond);
+
+	//‰Šú‰»
+	g_posResultTime = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//ˆÊ’u‚ð‰Šú‰»‚·‚é(Žn‚Ü‚è‚ÌˆÊ’u)
+	g_nResultMinutes = 0;
+	g_nResultSeconds = 0;
+
+	nCnt = 0;
+
+	//’¸“_ƒoƒbƒtƒ@‚Ì¶¬
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_TIMEDIGIT,
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_2D,
+		D3DPOOL_MANAGED,
+		&g_pVtxBuffResultTimeMinute,
+		NULL);
+
+	//’¸“_ƒoƒbƒtƒ@‚Ì¶¬
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_TIMEDIGIT,
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_2D,
+		D3DPOOL_MANAGED,
+		&g_pVtxBuffResultTimeSecond,
+		NULL);
+
+	VERTEX_2D* pVtx;
+
+	//’¸“_ƒoƒbƒtƒ@‚ðƒƒbƒN‚µA’¸“_î•ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ðŽæ“¾
+	g_pVtxBuffResultTimeMinute->Lock(0, 0, (void**)&pVtx, 0);
+
+	for (nCnt = 0; nCnt < MAX_RESULT_TIMEDIGIT; nCnt++)
+	{
+
+		g_aResultTime[nCnt].bUse = true;
+
+		//’¸“_À•W‚ÌÝ’è
+		pVtx[0].pos = D3DXVECTOR3(610.0f + nCnt * 35.0f, 20.0f, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(610.0f + nCnt * 35.0f + 40.0f, 20.0f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(610.0f + nCnt * 35.0f, 80.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(610.0f + nCnt * 35.0f + 40.0f, 80.0f, 0.0f);
+
+		//rhw‚ÌÝ’è
+		pVtx[0].rhw = 1.0f;
+		pVtx[1].rhw = 1.0f;
+		pVtx[2].rhw = 1.0f;
+		pVtx[3].rhw = 1.0f;
+
+		//’¸“_ƒJƒ‰[‚ÌÝ’è
+		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+
+		//ƒeƒNƒXƒ`ƒƒÀ•W‚ÌÝ’è
+		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+		pVtx[1].tex = D3DXVECTOR2(0.1f, 0.0f);
+		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+		pVtx[3].tex = D3DXVECTOR2(0.1f, 1.0f);
+
+		pVtx += 4;
+	}
+
+	//’¸“_ƒoƒbƒtƒ@‚ðƒAƒ“ƒƒbƒN‚·‚é
+	g_pVtxBuffResultTimeMinute->Unlock();
+
+
+	//’¸“_ƒoƒbƒtƒ@‚ðƒƒbƒN‚µA’¸“_î•ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ðŽæ“¾
+	g_pVtxBuffResultTimeSecond->Lock(0, 0, (void**)&pVtx, 0);
+
+	for (nCnt = 0; nCnt < MAX_RESULT_TIMEDIGIT; nCnt++)
+	{
+
+		g_aResultTime[nCnt].bUse = true;
+
+		//’¸“_À•W‚ÌÝ’è
+		pVtx[0].pos = D3DXVECTOR3(710.0f + nCnt * 35.0f, 20.0f, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(710.0f + nCnt * 35.0f + 40.0f, 20.0f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(710.0f + nCnt * 35.0f, 80.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(710.0f + nCnt * 35.0f + 40.0f, 80.0f, 0.0f);
+
+		//rhw‚ÌÝ’è
+		pVtx[0].rhw = 1.0f;
+		pVtx[1].rhw = 1.0f;
+		pVtx[2].rhw = 1.0f;
+		pVtx[3].rhw = 1.0f;
+
+		//’¸“_ƒJƒ‰[‚ÌÝ’è
+		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+
+		//ƒeƒNƒXƒ`ƒƒÀ•W‚ÌÝ’è
+		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+		pVtx[1].tex = D3DXVECTOR2(0.1f, 0.0f);
+		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+		pVtx[3].tex = D3DXVECTOR2(0.1f, 1.0f);
+
+		pVtx += 4;
+	}
+
+	//’¸“_ƒoƒbƒtƒ@‚ðƒAƒ“ƒƒbƒN‚·‚é
+	g_pVtxBuffResultTimeSecond->Unlock();
+
+}
+//=============================
+// ƒŠƒUƒ‹ƒgƒ^ƒCƒ€‚ÌI—¹ˆ—
+//=============================
+void UninitResultTime(void)
+{
+
+	//ƒeƒNƒXƒ`ƒƒ‚Ì”jŠü(•ª)
+	if (g_pTextureResultTimeMinute != NULL)
+	{
+		g_pTextureResultTimeMinute->Release();
+		g_pTextureResultTimeMinute = NULL;
+	}
+
+	//ƒeƒNƒXƒ`ƒƒ‚Ì”jŠü(•b)
+	if (g_pTextureResultTimeSecond != NULL)
+	{
+		g_pTextureResultTimeSecond->Release();
+		g_pTextureResultTimeSecond = NULL;
+	}
+
+	//’¸“_ƒoƒbƒtƒ@‚Ì”jŠü(•ª)
+	if (g_pVtxBuffResultTimeMinute != NULL)
+	{
+		g_pVtxBuffResultTimeMinute->Release();
+		g_pVtxBuffResultTimeMinute = NULL;
+	}
+
+	//’¸“_ƒoƒbƒtƒ@‚Ì”jŠü(•b)
+	if (g_pVtxBuffResultTimeSecond != NULL)
+	{
+		g_pVtxBuffResultTimeSecond->Release();
+		g_pVtxBuffResultTimeSecond = NULL;
+	}
+
+}
+//=============================
+// ƒŠƒUƒ‹ƒgƒ^ƒCƒ€‚ÌXVˆ—
+//=============================
+void UpdateResultTime(void)
+{
+
+
+	int nMinutes = GetTimeMinutes();
+	int nSeconds = GetTimeSeconds();
+
+	VERTEX_2D* pVtx;
+
+	g_nResultMinutes = nMinutes;
+	g_nResultSeconds = nSeconds;
+
+	int min10 = g_nResultMinutes / 10;	// •ª‚Ì10‚ÌˆÊ
+	int min1 = g_nResultMinutes % 10;		// •ª‚Ì1‚ÌˆÊ
+	int sec10 = g_nResultSeconds / 10;	// •b‚Ì10‚ÌˆÊ
+	int sec1 = g_nResultSeconds % 10;		// •b‚Ì1‚ÌˆÊ
+
+	float texOffset = 0.1f;			// 1Œ…•ª‚ÌƒeƒNƒXƒ`ƒƒ”ÍˆÍi0.0`1.0‚ð10•ªŠ„j
+
+	//===============================
+	// •ª‚ÌƒeƒNƒXƒ`ƒƒÝ’è
+	//===============================
+
+	//’¸“_ƒoƒbƒtƒ@‚ðƒƒbƒN‚µA’¸“_î•ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ðŽæ“¾
+	g_pVtxBuffResultTimeMinute->Lock(0, 0, (void**)&pVtx, 0);
+
+	// •ª‚Ì10‚ÌˆÊ
+	pVtx[0].tex = D3DXVECTOR2(texOffset * min10, 0.0f);
+	pVtx[1].tex = D3DXVECTOR2(texOffset * min10 + texOffset, 0.0f);
+	pVtx[2].tex = D3DXVECTOR2(texOffset * min10, 1.0f);
+	pVtx[3].tex = D3DXVECTOR2(texOffset * min10 + texOffset, 1.0f);
+
+	// •ª‚Ì1‚ÌˆÊ
+	pVtx[4].tex = D3DXVECTOR2(texOffset * min1, 0.0f);
+	pVtx[5].tex = D3DXVECTOR2(texOffset * min1 + texOffset, 0.0f);
+	pVtx[6].tex = D3DXVECTOR2(texOffset * min1, 1.0f);
+	pVtx[7].tex = D3DXVECTOR2(texOffset * min1 + texOffset, 1.0f);
+
+	//’¸“_ƒoƒbƒtƒ@‚ðƒAƒ“ƒƒbƒN‚·‚é
+	g_pVtxBuffResultTimeMinute->Unlock();
+
+	//===============================
+	// •b‚ÌƒeƒNƒXƒ`ƒƒÝ’è
+	//===============================
+
+	//’¸“_ƒoƒbƒtƒ@‚ðƒƒbƒN‚µA’¸“_î•ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ðŽæ“¾
+	g_pVtxBuffResultTimeSecond->Lock(0, 0, (void**)&pVtx, 0);
+
+	// •b‚Ì10‚ÌˆÊ
+	pVtx[0].tex = D3DXVECTOR2(texOffset * sec10, 0.0f);
+	pVtx[1].tex = D3DXVECTOR2(texOffset * sec10 + texOffset, 0.0f);
+	pVtx[2].tex = D3DXVECTOR2(texOffset * sec10, 1.0f);
+	pVtx[3].tex = D3DXVECTOR2(texOffset * sec10 + texOffset, 1.0f);
+
+	// •b‚Ì1‚ÌˆÊ
+	pVtx[4].tex = D3DXVECTOR2(texOffset * sec1, 0.0f);
+	pVtx[5].tex = D3DXVECTOR2(texOffset * sec1 + texOffset, 0.0f);
+	pVtx[6].tex = D3DXVECTOR2(texOffset * sec1, 1.0f);
+	pVtx[7].tex = D3DXVECTOR2(texOffset * sec1 + texOffset, 1.0f);
+
+	//’¸“_ƒoƒbƒtƒ@‚ðƒAƒ“ƒƒbƒN‚·‚é
+	g_pVtxBuffResultTimeSecond->Unlock();
+
+}
+//=============================
+// ƒŠƒUƒ‹ƒgƒ^ƒCƒ€‚Ì•`‰æˆ—
+//=============================
+void DrawResultTime(void)
+{
+
+	//•K—vŒ…”•ª‚Ì•`‰æ
+
+	int nCnt;
+
+	LPDIRECT3DDEVICE9 pDevice;
+
+	//ƒfƒoƒCƒX‚ÌŽæ“¾
+	pDevice = GetDevice();
+
+	//=================
+	// •ª
+	//=================
+
+	//’¸“_ƒoƒbƒtƒ@‚ðƒf[ƒ^ƒXƒgƒŠ[ƒ€‚ÉÝ’è
+	pDevice->SetStreamSource(0, g_pVtxBuffResultTimeMinute, 0, sizeof(VERTEX_2D));
+
+	//’¸“_ƒtƒH[ƒ}ƒbƒg‚ÌÝ’è
+	pDevice->SetFVF(FVF_VERTEX_2D);
+
+	for (nCnt = 0; nCnt < MAX_RESULT_TIMEDIGIT; nCnt++)
+	{
+		if (g_aResultTime[nCnt].bUse == true)
+		{
+
+			//ƒeƒNƒXƒ`ƒƒ‚ÌÝ’è
+			pDevice->SetTexture(0, g_pTextureResultTimeMinute);
+
+			//ƒ|ƒŠƒSƒ“‚Ì•`‰æ
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
+
+		}
+	}
+
+	//=================
+	// •b
+	//=================
+
+	//’¸“_ƒoƒbƒtƒ@‚ðƒf[ƒ^ƒXƒgƒŠ[ƒ€‚ÉÝ’è
+	pDevice->SetStreamSource(0, g_pVtxBuffResultTimeSecond, 0, sizeof(VERTEX_2D));
+
+	//’¸“_ƒtƒH[ƒ}ƒbƒg‚ÌÝ’è
+	pDevice->SetFVF(FVF_VERTEX_2D);
+
+	for (nCnt = 0; nCnt < MAX_RESULT_TIMEDIGIT; nCnt++)
+	{
+		if (g_aResultTime[nCnt].bUse == true)
+		{
+
+			//ƒeƒNƒXƒ`ƒƒ‚ÌÝ’è
+			pDevice->SetTexture(0, g_pTextureResultTimeSecond);
+
+			//ƒ|ƒŠƒSƒ“‚Ì•`‰æ
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
+
+		}
+	}
+
+}
+//=============================
+// ƒŠƒUƒ‹ƒgƒ^ƒCƒ€‚ÌÝ’èˆ—
+//=============================
+void SetResultTime(void)
+{
+	//int nMinutes = GetTimeMinutes();
+	//int nSeconds = GetTimeSeconds();
+
+	//VERTEX_2D* pVtx;
+
+	//g_nResultMinutes = nMinutes;
+	//g_nResultSeconds = nSeconds;
+
+	//int min10 = g_nResultMinutes / 10;	// •ª‚Ì10‚ÌˆÊ
+	//int min1 = g_nResultMinutes % 10;		// •ª‚Ì1‚ÌˆÊ
+	//int sec10 = g_nResultSeconds / 10;	// •b‚Ì10‚ÌˆÊ
+	//int sec1 = g_nResultSeconds % 10;		// •b‚Ì1‚ÌˆÊ
+
+	//float texOffset = 0.1f;			// 1Œ…•ª‚ÌƒeƒNƒXƒ`ƒƒ”ÍˆÍi0.0`1.0‚ð10•ªŠ„j
+
+	////===============================
+	//// •ª‚ÌƒeƒNƒXƒ`ƒƒÝ’è
+	////===============================
+
+	////’¸“_ƒoƒbƒtƒ@‚ðƒƒbƒN‚µA’¸“_î•ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ðŽæ“¾
+	//g_pVtxBuffResultTimeMinute->Lock(0, 0, (void**)&pVtx, 0);
+
+	//// •ª‚Ì10‚ÌˆÊ
+	//pVtx[0].tex = D3DXVECTOR2(texOffset * min10, 0.0f);
+	//pVtx[1].tex = D3DXVECTOR2(texOffset * min10 + texOffset, 0.0f);
+	//pVtx[2].tex = D3DXVECTOR2(texOffset * min10, 1.0f);
+	//pVtx[3].tex = D3DXVECTOR2(texOffset * min10 + texOffset, 1.0f);
+
+	//// •ª‚Ì1‚ÌˆÊ
+	//pVtx[4].tex = D3DXVECTOR2(texOffset * min1, 0.0f);
+	//pVtx[5].tex = D3DXVECTOR2(texOffset * min1 + texOffset, 0.0f);
+	//pVtx[6].tex = D3DXVECTOR2(texOffset * min1, 1.0f);
+	//pVtx[7].tex = D3DXVECTOR2(texOffset * min1 + texOffset, 1.0f);
+
+	////’¸“_ƒoƒbƒtƒ@‚ðƒAƒ“ƒƒbƒN‚·‚é
+	//g_pVtxBuffResultTimeMinute->Unlock();
+
+	////===============================
+	//// •b‚ÌƒeƒNƒXƒ`ƒƒÝ’è
+	////===============================
+
+	////’¸“_ƒoƒbƒtƒ@‚ðƒƒbƒN‚µA’¸“_î•ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ðŽæ“¾
+	//g_pVtxBuffResultTimeSecond->Lock(0, 0, (void**)&pVtx, 0);
+
+	//// •b‚Ì10‚ÌˆÊ
+	//pVtx[0].tex = D3DXVECTOR2(texOffset * sec10, 0.0f);
+	//pVtx[1].tex = D3DXVECTOR2(texOffset * sec10 + texOffset, 0.0f);
+	//pVtx[2].tex = D3DXVECTOR2(texOffset * sec10, 1.0f);
+	//pVtx[3].tex = D3DXVECTOR2(texOffset * sec10 + texOffset, 1.0f);
+
+	//// •b‚Ì1‚ÌˆÊ
+	//pVtx[4].tex = D3DXVECTOR2(texOffset * sec1, 0.0f);
+	//pVtx[5].tex = D3DXVECTOR2(texOffset * sec1 + texOffset, 0.0f);
+	//pVtx[6].tex = D3DXVECTOR2(texOffset * sec1, 1.0f);
+	//pVtx[7].tex = D3DXVECTOR2(texOffset * sec1 + texOffset, 1.0f);
+
+	////’¸“_ƒoƒbƒtƒ@‚ðƒAƒ“ƒƒbƒN‚·‚é
+	//g_pVtxBuffResultTimeSecond->Unlock();
 
 }

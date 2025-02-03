@@ -150,6 +150,8 @@ float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], co
 void HandleBlockInteraction(Block* pBlock);
 void CheckBlocksInCenter(void);
 
+void MeshcylinderOnBlock(int targetType);
+
 Block* GetBlock(void);
 bool GetExit(void);
 bool GetArcade(void);

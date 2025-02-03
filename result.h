@@ -8,9 +8,7 @@
 #define _RESULT_H_//2重インクルード防止のマクロ定義
 
 //マクロ定義
-#define EIGHT (10000000)
-#define SEVEN (1000000)
-#define MAX_RESULTDIGIT (8)	//桁の最大数
+#define MAX_RESULT_TIMEDIGIT (2)	//桁の最大数
 
 
 //プロトタイプ宣言
@@ -18,6 +16,12 @@ void InitResult(void);
 void UninitResult(void);
 void UpdateResult(void);
 void DrawResult(void);
+
+void InitResultTime(void);
+void UninitResultTime(void);
+void UpdateResultTime(void);
+void DrawResultTime(void);
+void SetResultTime(void);
 
 #endif
 

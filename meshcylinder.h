@@ -9,8 +9,8 @@
 
 #include "main.h"
 
-#define MESHCYLINDER_WIDTH (150.0f)		//横幅
-#define MESHCYLINDER_HEIGHT (100.0f)		//縦幅
+#define MESHCYLINDER_WIDTH (150.0f)			//横幅
+#define MESHCYLINDER_HEIGHT (120.0f)		//縦幅
 
 #define MESHCYLINDER_X (8)				//X方向のブロック数
 #define MESHCYLINDER_Z (1)				//Z方向のブロック数
@@ -22,10 +22,20 @@
 #define MESHCYLINDER_VERTEX ((MESHCYLINDER_X + 1) * (MESHCYLINDER_Z + 1))//頂点数
 #define MESHCYLINDER_INDEX (MESHCYLINDER_PRIMITIVE + 2)//インデックス数
 
+// メッシュシリンダー構造体
+typedef struct
+{
+	D3DXVECTOR3 pos;
+	D3DXVECTOR3 rot;
+	D3DXMATRIX mtxWorld;
+	bool bUse;
+}Cylinder;
+
 //プロトタイプ宣言
 void InitMeshcylinder(void);
 void UninitMeshcylinder(void);
 void UpdateMeshcylinder(void);
 void DrawMeshcylinder(void);
+void SetMeshcylinder(D3DXVECTOR3 pos);
 
 #endif

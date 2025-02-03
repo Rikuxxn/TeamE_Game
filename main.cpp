@@ -424,6 +424,8 @@ void Uninit(void)
 //=============================================
 void Update(void)
 {
+	bool bExit = GetExit();
+
 
 	//ジョイパッドの更新処理
 	UpdateJoypad();
@@ -453,6 +455,12 @@ void Update(void)
 
 	case MODE_RESULT://リザルト画面
 		UpdateResult();
+
+		if (bExit == true)
+		{
+			UpdateResultTime();
+		}
+
 		break;
 
 	//case MODE_RANKING://ランキング画面
@@ -521,6 +529,12 @@ void Draw(void)
 
 		case MODE_RESULT://リザルト画面
 			DrawResult();
+
+			if (bExit == true)
+			{
+				//リザルトタイムの描画処理
+				DrawResultTime();
+			}
 
 			break;
 
@@ -705,6 +719,7 @@ void SetMode(MODE mode)
 
 	case MODE_RESULT://リザルト画面
 		UninitResult();
+		UninitResultTime();
 
 		break;
 
@@ -736,6 +751,7 @@ void SetMode(MODE mode)
 
 	case MODE_RESULT://リザルト画面
 		InitResult();
+		InitResultTime();
 
 		break;
 

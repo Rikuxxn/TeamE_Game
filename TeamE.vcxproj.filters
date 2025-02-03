@@ -51,6 +51,7 @@
     <ClCompile Include="ball_particle.cpp" />
     <ClCompile Include="ball_block.cpp" />
     <ClCompile Include="task.cpp" />
+    <ClCompile Include="time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
@@ -102,5 +103,6 @@
     <ClInclude Include="ball_particle.h" />
     <ClInclude Include="ball_block.h" />
     <ClInclude Include="task.h" />
+    <ClInclude Include="time.h" />
   </ItemGroup>
 </Project>

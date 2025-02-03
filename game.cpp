@@ -14,7 +14,6 @@
 #include "result.h"
 #include "fade.h"
 #include "pause.h"
-#include "time.h"
 //#include "particle.h"
 //#include "effect.h"
 #include "camera.h"
@@ -40,6 +39,7 @@
 #include "shadow.h"
 #include "map.h"
 #include "task.h"
+#include "time.h"
 
 //グローバル変数
 GAMESTATE g_gameState = GAMESTATE_NONE;//ゲームの状態
@@ -110,8 +110,8 @@ void InitGame(void)
 	InitEnemy();
 
 
-	////タイムの初期化処理
-	//InitTime();
+	//タイムの初期化処理
+	InitTime();
 
 
 	////ビルボードの初期化処理
@@ -142,7 +142,7 @@ void InitGame(void)
 	//	D3DLIGHT_SPOT,                       // ライトの種類
 	//	D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),   // 少し明るい光
 	//	D3DXVECTOR3(0.0f, -1.0f, 0.0f),      // 真下方向
-	//	D3DXVECTOR3(0.0f, 5.0f, -50.0f)       // 天井中央の位置
+	//	D3DXVECTOR3(0.0f, 5.0f, 0.0f)       // 天井中央の位置
 	//);
 
 	AddLight(
@@ -282,8 +282,8 @@ void UninitGame(void)
 	UninitEnemy();
 
 
-	////タイムの終了処理
-	//UninitTime();
+	//タイムの終了処理
+	UninitTime();
 
 
 	//ポーズの終了処理
@@ -461,6 +461,7 @@ void UpdateGame(void)
 		{
 			//プレイヤーの更新処理
 			UpdatePlayer();
+
 		}
 		if (g_bDraw == true)
 		{
@@ -480,6 +481,7 @@ void UpdateGame(void)
 			// カーソルを表示する
 			SetCursorVisibility(true);
 		}
+
 
 		//敵の更新処理
 		UpdateEnemy();
@@ -503,8 +505,8 @@ void UpdateGame(void)
 		}
 
 
-		////ライトの更新処理
-		//UpdateLight(0, D3DXVECTOR3(0.0f, 5.0f, 0.0f), D3DXVECTOR3(0.0f, -1.0f, 0.0f));
+		//ライトの更新処理
+		UpdateLight(0, D3DXVECTOR3(0.0f, 5.0f, -400.0f), D3DXVECTOR3(0.0f, -1.0f, 0.0f));
 
 
 		//ブロックの更新処理
@@ -523,8 +525,8 @@ void UpdateGame(void)
 		//UpdateEffect();
 
 
-		////タイムの更新処理
-		//UpdateTime();
+		//タイムの更新処理
+		UpdateTime();
 
 
 		////パーティクルの更新処理
@@ -548,6 +550,8 @@ void UpdateGame(void)
 		// タスクUIの更新処理
 		UpdateTask();
 
+		// マップの更新処理
+		UpdateMap();
 	}
 
 
@@ -587,12 +591,8 @@ void UpdateGame(void)
 			if (bExit == true)
 			{
 
-				////タイムに応じてスコア加算
-				//AddScore((nTime* GetScore()) * 0.2f);
-
-
-				////リザルトスコアの設定
-				//SetResultScore(GetScore());
+				////リザルトタイムの設定
+				//SetResultTime();
 
 
 				////ランキングのリセット
@@ -634,13 +634,13 @@ void DrawGame(void)
 	DrawMeshCeiling();
 
 
-	////メッシュシリンダーの描画処理
-	//DrawMeshcylinder();
 
 
 	//ブロックの描画処理
 	DrawBlock();
 
+	//メッシュシリンダーの描画処理
+	DrawMeshcylinder();
 
 	////エフェクトの描画処理
 	//DrawEffect();
@@ -653,9 +653,6 @@ void DrawGame(void)
 	////ビルボードの描画処理
 	//DrawBillboard();
 
-
-	////タイムの描画処理
-	//DrawTime();
 
 	if (pPlayer->bDrawDush == true)
 	{
@@ -671,6 +668,8 @@ void DrawGame(void)
 		//UIの描画処理
 		DrawUI();
 	}
+	//タイムの描画処理
+	DrawTime();
 
 	//影の描画処理
 	DrawShadow();

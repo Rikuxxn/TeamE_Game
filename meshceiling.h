@@ -9,8 +9,8 @@
 
 #include "main.h"
 
-#define MAX_WIDTH (2400.0f)			//横幅
-#define MAX_HEIGHT (2000.0f)		//縦幅
+#define MAX_WIDTH_CEILING (2400.0f)			//横幅
+#define MAX_HEIGHT_CEILING (2000.0f)		//縦幅
 
 #define MESHCEILING_X (20)			//X方向のブロック数
 #define MESHCEILING_Z (20)			//Z方向のブロック数

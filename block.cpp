@@ -14,6 +14,7 @@
 #include "ui.h"
 #include "camera.h"
 #include "game.h"
+#include "meshcylinder.h"
 
 //グローバル変数
 Block g_aBlock[MAX_BLOCK];		//ブロック情報
@@ -238,6 +239,8 @@ void UpdateBlock(void)
 
 		if (g_aBlock[nCntBlock].bUse == true)
 		{
+			MeshcylinderOnBlock(BLOCKTYPE_FUSE);
+
 			// 視錐台中央判定を実行
 			CheckBlocksInCenter();
 
@@ -793,6 +796,26 @@ void CheckBlocksInCenter(void)
 				break;
 
 			}
+		}
+	}
+}
+//================================================
+// メッシュシリンダーの対象ブロックを選択する処理
+//================================================
+void MeshcylinderOnBlock(int targetType)
+{
+	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
+	{
+		if (g_aBlock[nCntBlock].bUse == true && g_aBlock[nCntBlock].nType == targetType)
+		{
+			// ブロックの位置を取得
+			D3DXVECTOR3 meshPos = g_aBlock[nCntBlock].pos;
+			meshPos.y += 0.0f;
+
+			// メッシュシリンダーの位置を設定
+			SetMeshcylinder(meshPos);
+
+			break; // 1つ見つけたら終了（複数の場合は break を削除）
 		}
 	}
 }

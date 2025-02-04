@@ -7,6 +7,7 @@
 #include "main.h"
 #include "light.h"
 #include "player.h"
+#include "block.h"
 
 #define MAX_LIGHT (3)// ライトの最大数
 
@@ -40,6 +41,7 @@ void InitLight(void)
     }
 
     g_LightCount = 0; // 現在のライト数をリセット
+
 }
 //=============================
 // ライトの追加処理
@@ -223,4 +225,27 @@ void AddLightPlayer(D3DLIGHTTYPE type, D3DXCOLOR diffuse)
     // ライトを追加
     AddLight(type, diffuse, playerDir, lightPos);
 
+}
+//=============================
+// スポットライトの設定処理
+//=============================
+void AddSpotlightToBlock(void)
+{
+    D3DXVECTOR3 boardPosition;
+    if (!GetBlockPosition(&boardPosition))
+    {
+        return; // チュートリアルボードが見つからなければ何もしない
+    }
+
+    // スポットライトの向きを設定（上から照らす）
+    D3DXVECTOR3 lightDirection = D3DXVECTOR3(0, -1, 0);
+
+    // ライトの色を設定
+    D3DXCOLOR lightColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+
+    // スポットライトの位置（ボードの上に配置）
+    D3DXVECTOR3 lightPosition = boardPosition + D3DXVECTOR3(0, 200.0f, 0);
+
+    // スポットライトの追加
+    AddLight(D3DLIGHT_SPOT, lightColor, lightDirection, lightPosition);
 }

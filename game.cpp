@@ -132,6 +132,15 @@ void InitGame(void)
 	SetTask(D3DXVECTOR3(2350.0f, 200.0f, 0.0f), 160.0f, 25.0f, TASKTYPE_TWO);
 	SetTask(D3DXVECTOR3(2350.0f, 200.0f, 0.0f), 160.0f, 25.0f, TASKTYPE_THREE);
 
+	SetTask(D3DXVECTOR3(2350.0f, 230.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB1);
+	SetTask(D3DXVECTOR3(2350.0f, 260.0f, 0.0f), 130.0f, 20.0f, TASKTYPE_SUB2);
+
+	SetTask(D3DXVECTOR3(2350.0f, 230.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB3);
+	SetTask(D3DXVECTOR3(2350.0f, 260.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB4);
+	SetTask(D3DXVECTOR3(2350.0f, 290.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB5);
+
+	SetTask(D3DXVECTOR3(2350.0f, 230.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB6);
+
 	//ミニゲームの初期化
 	InitShootingGame();
 	InitCraneGame();
@@ -330,6 +339,18 @@ void UninitGame(void)
 //=========================================
 void UpdateGame(void)
 {
+	bool bFog = GetFog();
+
+	LPDIRECT3DDEVICE9 pDevice; // 事前に作成・初期化されているデバイス
+
+	//デバイスの取得
+	pDevice = GetDevice();
+
+	SetupVertexFog(pDevice, D3DCOLOR_XRGB(0, 0, 0), D3DFOG_LINEAR, TRUE, 0.0f);
+
+	// 霧の無効化
+	pDevice->SetRenderState(D3DRS_FOGENABLE, bFog);
+
 	//int nTime = GetTime();
 	bool bExit = GetExit();
 	STGSTATE pStgState = GetShootingGameState();
@@ -341,9 +362,7 @@ void UpdateGame(void)
 	bool bBall = GetBall();
 	bool bFuseCmp = GetFuseCmp();
 
-
 	bool bEnd = GetEnd();
-
 
 	// ミニゲーム中はポーズを開けないようにする
 	if (g_bMini == false && bMap == false && (KeyboardTrigger(DIK_P) == true || JoyPadTrigger(JOYKEY_START) == true))
@@ -562,7 +581,7 @@ void UpdateGame(void)
 	}
 
 
-	if ((pPlayer->bDisp == false || bExit == true /*|| nTime <= 0*/ || bEnd  == true) && g_gameState != GAMESTATE_NONE)
+	if ((pPlayer->bDisp == false || bExit == true || bEnd  == true) && g_gameState != GAMESTATE_NONE)
 	{
 
 		//モード設定(リザルト画面に移行)
@@ -573,8 +592,6 @@ void UpdateGame(void)
 		bMap = false;
 	}
 
-	int nResultScore;
-	//nResultScore = GetScore();
 	//nTime = GetTime();
 
 	switch (g_gameState)
@@ -598,10 +615,6 @@ void UpdateGame(void)
 			if (bExit == true)
 			{
 
-				////リザルトタイムの設定
-				//SetResultTime();
-
-
 				////ランキングのリセット
 				//ResetRanking();
 
@@ -623,9 +636,6 @@ void DrawGame(void)
 
 	//デバイスの取得
 	pDevice = GetDevice();
-
-	SetupVertexFog(pDevice, D3DCOLOR_XRGB(0, 0, 0), D3DFOG_LINEAR, TRUE, 0.0f);
-	//SetupVertexFog(pDevice, D3DCOLOR_XRGB(200, 200, 200), D3DFOG_EXP, TRUE, 0.01f);
 
 	Player* pPlayer = GetPlayer();	//プレイヤー取得
 
@@ -687,6 +697,7 @@ void DrawGame(void)
 		//UIの描画処理
 		DrawUI();
 	}
+
 	////タイムの描画処理
 	//DrawTime();
 
@@ -719,7 +730,6 @@ void DrawGame(void)
 
 	// 霧の有効化
 	pDevice->SetRenderState(D3DRS_FOGENABLE, TRUE);
-
 }
 //=============================================
 //ゲームの状態の設定

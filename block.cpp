@@ -15,10 +15,13 @@
 #include "camera.h"
 #include "game.h"
 #include "meshcylinder.h"
+#include "light.h"
 
 //グローバル変数
 Block g_aBlock[MAX_BLOCK];		//ブロック情報
 Block g_info[BLOCKTYPE_MAX];	//ブロックの素材情報
+
+bool g_bFog;				// 霧の有効・無効
 
 bool g_bExit;					//出口に入ったか
 
@@ -54,6 +57,7 @@ void InitBlock(void)
 		g_aBlock[nCntBlock].bInsight = false;
 		g_aBlock[nCntBlock].nType = BLOCKTYPE_WALL;
 	}
+	g_bFog = true;
 	g_bExit = false;
 
 	bArcade = false;
@@ -232,6 +236,11 @@ void UninitBlock(void)
 void UpdateBlock(void)
 {
 
+	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
+
+	//デバイスの取得
+	pDevice = GetDevice();
+
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
 		Player* pPlayer = GetPlayer(); // プレイヤー情報の取得
@@ -266,9 +275,12 @@ void UpdateBlock(void)
 				if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSEBOX)
 				{
 					bFuseCmp = true;
+					g_aBlock[nCntBlock].bUse = false;
+					SetBlock(D3DXVECTOR3(1140.0f, 80.0f, 250.0f), D3DXVECTOR3(0.0f, 1.57f, 0.0f), BLOCKTYPE_FUSEBOX_CMP);
+
+					g_bFog = false; // フラグを変更
 				}
 			}
-
 			////位置を更新
 			//g_aBlock[nCntBlock].pos.x += g_aBlock[nCntBlock].move.x;
 			//g_aBlock[nCntBlock].pos.y += g_aBlock[nCntBlock].move.y;
@@ -419,10 +431,6 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 						continue;
 					}
 
-					// 最後に全軸を停止
-					pMove->x = 0.0f;
-					pMove->y = 0.0f;
-					pMove->z = 0.0f;
 				}
 			}
 
@@ -468,10 +476,6 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 						continue;
 					}
 
-					// 最後に全軸を停止 
-					pMove->x = 0.0f;
-					pMove->y = 0.0f;
-					pMove->z = 0.0f;
 				}
 			}
 			else
@@ -512,10 +516,6 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 						continue;
 					}
 
-					// 最後に全軸を停止
-					pMove->x = 0.0f;
-					pMove->y = 0.0f;
-					pMove->z = 0.0f;
 				}
 
 			}
@@ -819,6 +819,22 @@ void MeshcylinderOnBlock(int targetType)
 		}
 	}
 }
+//================================================
+// 対象のブロックの位置取得処理
+//================================================
+bool GetBlockPosition(D3DXVECTOR3* outPosition)
+{
+	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
+	{
+		// 対象のブロックの位置を取得する
+		if (g_aBlock[nCntBlock].bUse && g_aBlock[nCntBlock].nType == BLOCKTYPE_TUTORIALBOARD)
+		{
+			*outPosition = g_aBlock[nCntBlock].pos;
+			return true; // 位置が取得できた
+		}
+	}
+	return false; // チュートリアルボードが見つからなかった
+}
 //============================================
 //ブロックの取得
 //============================================
@@ -888,5 +904,12 @@ bool GetFuseGet(void)
 bool GetFuseCmp(void)
 {
 	return bFuseCmp;
+}
+//======================================================
+// 霧の有効・無効判定
+//======================================================
+bool GetFog(void)
+{
+	return g_bFog;
 }
 

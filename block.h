@@ -56,6 +56,8 @@ typedef enum
 	BLOCKTYPE_TUTORIALBOARD,
 	BLOCKTYPE_FUSE,
 	BLOCKTYPE_FUSEBOX,
+	BLOCKTYPE_FUSEBOX_CMP,
+	BLOCKTYPE_TEST,
 
 	BLOCKTYPE_MAX
 }BLOCKTYPE;
@@ -128,6 +130,8 @@ static const char* BLOCK[BLOCKTYPE_MAX] =
 	"data/MODEL/tutorial_board.x",				// チュートリアル表示用ボード
 	"data/MODEL/huzu.x",						// ヒューズ
 	"data/MODEL/fusebox.x",						// ヒューズボックス
+	"data/MODEL/fusebox_cmp.x",					// ヒューズボックス完全体
+	"data/MODEL/test.x",						// テストブロック
 
 };
 
@@ -151,6 +155,7 @@ void HandleBlockInteraction(Block* pBlock);
 void CheckBlocksInCenter(void);
 
 void MeshcylinderOnBlock(int targetType);
+bool GetBlockPosition(D3DXVECTOR3* outPosition);
 
 Block* GetBlock(void);
 bool GetExit(void);
@@ -162,6 +167,7 @@ bool GetFuse(void);
 bool GetFusebox(void);
 bool GetFuseGet(void);
 bool GetFuseCmp(void);
+bool GetFog(void);
 
 #endif
 

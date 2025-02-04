@@ -19,33 +19,28 @@
 LPDIRECT3DTEXTURE9 g_pTextureCranePlayer = NULL;		//テクスチャへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffCranePlayer = NULL;	//頂点バッファへのポインタ
 CranePlayer g_player;									//レイヤーの情報
-int g_nCounterAnimPlayer;
-int g_nPatternAnimPlayer;
-int g_nMutekiCounter;
-bool g_bLandingParticle = false;//着地した際のパーティクル表示用関数
+//int g_nCounterAnimPlayer;
+//int g_nPatternAnimPlayer;
 
 //プレイヤーの初期化処理
 void InitCranePlayer(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;						//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();		//デバイスへのポインタ
 
 	//テクスチャ2の読み込み
 	D3DXCreateTextureFromFile(pDevice,
 		"data\\TEXTURE\\crane.png",					 //テクスチャのファイル名
 		&g_pTextureCranePlayer);
 
-	g_nMutekiCounter = 0;
 	g_player.pos = D3DXVECTOR3(FIELD_LEFT + 75.0f, 70.0f, 0.0f);	//位置を初期化する SCREEN_HEIGHT-TAKASA
 	g_player.move = D3DXVECTOR3(0.0f,0.0f,0.0f);					//移動量を初期化する
 	g_player.rot = D3DXVECTOR3(0.0f,0.0f,0.0f);						//向きを初期化する、今回はZ軸（3番目）
 	g_player.nCntAnimState = 0;
-	g_player.nLife = 5;
 	g_player.bUse = true;
 	g_player.bMove = true;
 	g_player.bLeft = false;
+	g_player.bDown = false;
 	g_player.bLanding = false;
 	g_player.bGetItem = false;
 	g_player.pBlock = NULL;
@@ -143,7 +138,7 @@ void UpdateCranePlayer(void)
 		if (g_player.bMove == true &&
 			(GetKeyboardPress(DIK_D) == true || GetJoypadPress(JOYKEY_RIGHT) == true))
 		{
-			g_nCounterAnimPlayer++;//カウンターを加算
+			//g_nCounterAnimPlayer++;//カウンターを加算
 			//移動量を更新（増加）
 			if (g_player.move.x <= MAX_SPEED_R)
 			{ 
@@ -154,10 +149,10 @@ void UpdateCranePlayer(void)
 				g_player.move.x = MAX_SPEED_R;
 			}
 		}
-		else
-		{
-			g_nCounterAnimPlayer = 0;//カウンターをリセット
-		}
+		//else
+		//{
+		//	g_nCounterAnimPlayer = 0;//カウンターをリセット
+		//}
 
 		if (g_player.bMove == true &&
 			(GetMouseButtonTrigger(0) /*|| JoypadTrigger(JOYKEY_A) == true*/))
@@ -165,16 +160,19 @@ void UpdateCranePlayer(void)
 			//PlaySound(SOUND_LABEL_JAMP_SHORT);
 			g_player.move.y = DOWN;
 			g_player.bMove = false;
+			g_player.bDown = true;
 			g_player.bLeft = false;
 		}
 	}
 
-	if (g_player.bLanding == true && g_player.bMove == false)
+	if (g_player.bLanding == true &&
+		g_player.bMove == false)
 	{//上に昇る
 		g_player.move.y = UP;
 	}
 
-	if (g_player.bLeft == true && g_player.bMove == false)
+	if (g_player.bLeft == true &&
+		g_player.bMove == false)
 	{
 		g_player.move.x = MAX_SPEED_L;
 	}
@@ -201,10 +199,10 @@ void UpdateCranePlayer(void)
 		g_player.pos.y = FIELD_UNDER;
 		g_player.bLanding = true;
 	}
-	else
-	{
-		g_player.bLanding = false;
-	}
+	//else
+	//{
+	//	g_player.bLanding = false;
+	//}
 	if (g_player.pos.y <= FIELD_TOP + TAKASA)//天井
 	{
 		g_player.pos.y = FIELD_TOP + TAKASA;
@@ -219,6 +217,7 @@ void UpdateCranePlayer(void)
 		g_player.pos.x = FIELD_LEFT + 75.0f + HABA;
 		g_player.bMove = true;
 		g_player.bLeft = false;
+		g_player.bFall = true;
 		g_player.bLanding = false;
 		g_player.move.x = 0;
 	}
@@ -402,8 +401,4 @@ CranePlayer* GetCranePlayer(void)
 D3DXVECTOR3 GetCranePos(void)
 {
 	return g_player.move;
-}
-int GetCraneLife(void)
-{
-	return g_player.nLife;
 }

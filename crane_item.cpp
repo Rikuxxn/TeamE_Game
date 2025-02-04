@@ -17,10 +17,8 @@ int g_nItem;
 
 void InitCraneItem(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -51,7 +49,6 @@ void InitCraneItem(void)
 		g_item[nCntItem].bUse = false;//使用していない状態にする
 		g_item[nCntItem].bGet = false;
 		g_item[nCntItem].bcatch = false;
-		g_item[nCntItem].bFall = false;
 	}
 	g_nItem = 0;
 
@@ -127,15 +124,16 @@ void UpdateCraneItem(void)
 	{
 		if (pPlayer->bMove == false &&
 			g_item[nCntItem].bcatch == true &&
-			g_item[nCntItem].bFall == false)
+			g_item[nCntItem].pos.x >= pPlayer->pos.x - ITEM_WIDTH
+			&& g_item[nCntItem].pos.x <= pPlayer->pos.x + ITEM_WIDTH)
 		{
 			g_item[nCntItem].pos = pPlayer->pos;
 		}
 		if (pPlayer->bLeft == false &&
+			pPlayer->bFall == true &&
 			g_item[nCntItem].bcatch == false)
 		{
 			g_item[nCntItem].move.y = 4.5f;
-			g_item[nCntItem].bFall = true;
 		}
 
 		g_item[nCntItem].pos += g_item[nCntItem].move;
@@ -143,16 +141,17 @@ void UpdateCraneItem(void)
 		if (g_item[nCntItem].pos.y >= FIELD_UNDER - g_item[nCntItem].fHeight)//地面
 		{
 			g_item[nCntItem].pos.y = FIELD_UNDER - g_item[nCntItem].fHeight;
-			g_item[nCntItem].bcatch = false;
-			g_item[nCntItem].bFall = false;
+			//g_item[nCntItem].bcatch = false;
 		}
-		if (g_item[nCntItem].pos.y >= ITEM_CLEARPOSY
-			&& g_item[nCntItem].pos.x - g_item[nCntItem].fWidth >= ITEM_CLEARPOSX - ITEM_CLEARZONE
-			&& g_item[nCntItem].pos.x + g_item[nCntItem].fWidth <= ITEM_CLEARPOSX + ITEM_CLEARZONE
-			&& g_item[nCntItem].bcatch == true)
+		if (g_item[nCntItem].pos.y >= ITEM_CLEARPOSY &&
+			g_item[nCntItem].pos.x - g_item[nCntItem].fWidth >= ITEM_CLEARPOSX - ITEM_CLEARZONE &&
+			g_item[nCntItem].pos.x + g_item[nCntItem].fWidth <= ITEM_CLEARPOSX + ITEM_CLEARZONE &&
+			g_item[nCntItem].bcatch == true &&
+			g_item[nCntItem].bUse == true &&
+			pPlayer->bFall == true)
 		{//アイテムゲット
 			g_item[nCntItem].bUse = false;
-			g_item[nCntItem].bFall = false;
+			pPlayer->bFall = false;
 			g_nItem--;
 		}
 	}
@@ -178,10 +177,8 @@ void UpdateCraneItem(void)
 //
 void DrawCraneItem(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffItem, 0, sizeof(VERTEX_2D));
@@ -207,7 +204,6 @@ void SetCraneItem(D3DXVECTOR3 pos, float fWidth, float fHeight,int nType)
 {
 	VERTEX_2D* pVtx=0;
 	
-	//ロック
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffItem->Lock(0, 0, (void**)&pVtx, 0);
 
@@ -239,7 +235,6 @@ void SetCraneItem(D3DXVECTOR3 pos, float fWidth, float fHeight,int nType)
 		}
 		pVtx += 4;//頂点データのポインタを４つ分進める
 	}
-	//アンロック
 	//頂点バッファをアンロック
 	g_pVtxBuffItem->Unlock();
 }
@@ -277,7 +272,6 @@ bool CollisionCraneItem(D3DXVECTOR3* pPos,		//現在の位置
 				&& pPlayer->pos.x >= FIELD_LEFT + 75.0f + HABA)
 			{
 				g_item[nCntItem].bcatch = true;
-				//g_item[nCntItem].pos = pPlayer->pos;
 			}
 		}
 	}

@@ -56,14 +56,11 @@ void InitResult(void)
 	pDevice = GetDevice();
 
 
-<<<<<<< HEAD
 	g_fAlphaGameover = 0.0f;		// フェードアルファ値をリセット
-=======
 	g_fAlphaGameover = 0.0f;	// フェードアルファ値をリセット
 	g_fAlphaTime = 0.0f;		// フェードアルファ値をリセット
 	g_fAlphaRank = 0.0f;		// フェードアルファ値をリセット
 	g_nRankCnt = 0;
->>>>>>> 97799c073ad1945917064f63dfbf381cc5e77387
 
 	Player* pPlayer = GetPlayer();	//プレイヤーの情報へのポインタ
 
@@ -626,13 +623,10 @@ void InitResultTime(void)
 	// コロンの頂点バッファをロック
 	g_pVtxBuffResultColon->Lock(0, 0, (void**)&pVtx, 0);
 
-<<<<<<< HEAD
-	float colonX = 920.0f;	// コロンのX座標
-	float colonY = 150.0f;	// コロンのY座標
-=======
+	//float colonX = 920.0f;	// コロンのX座標
+	//float colonY = 150.0f;	// コロンのY座標
 	float colonX = 960.0f; // コロンのX座標
 	float colonY = 190.0f;  // コロンのY座標
->>>>>>> 97799c073ad1945917064f63dfbf381cc5e77387
 
 	// コロンの頂点座標設定
 	pVtx[0].pos = D3DXVECTOR3(colonX, colonY, 0.0f);

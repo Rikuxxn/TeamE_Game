@@ -68,7 +68,6 @@ void UpdateCamera(void)
 	if (pMode == MODE_GAME && bExit == false)
 	{
 
-
 		//if (pStick != NULL) 
 		//{
 		//	// 右スティックの値を取得

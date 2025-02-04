@@ -66,12 +66,12 @@ int nBallCnt;
 void InitGame(void)
 {
 
-	// カーソルを画面中央に戻す
-	SetCursorPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	//// カーソルを画面中央に戻す
+	//SetCursorPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
 
-	// カーソルを非表示にする
-	SetCursorVisibility(false);
+	//// カーソルを非表示にする
+	//SetCursorVisibility(false);
 
 
 	//メッシュフィールドの初期化処理
@@ -687,8 +687,8 @@ void DrawGame(void)
 		//UIの描画処理
 		DrawUI();
 	}
-	//タイムの描画処理
-	DrawTime();
+	////タイムの描画処理
+	//DrawTime();
 
 	//影の描画処理
 	DrawShadow();

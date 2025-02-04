@@ -9,30 +9,21 @@
 #include "fade.h"
 #include "player.h"
 //#include "sound.h"
-//#include "score.h"
-#include "time.h"
 #include "time.h"
 #include "enemy.h"
 #include "block.h"
 
-typedef struct
-{
-	bool bUse;
-	float fAlpha;     // 透明度
-	float fPosY;      // Y座標
-	int nTimer;       // アニメーション用タイマー
-}ResultScore;
 
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureResult = NULL;					//テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureResultCrear = NULL;			//テクスチャへのポインタ
 LPDIRECT3DTEXTURE9 g_pTextureResultGameover = NULL;			//テクスチャへのポインタ
 
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResult = NULL;			//頂点バッファへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultCrear = NULL;		//頂点バッファへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultGameover = NULL;	//頂点バッファへのポインタ
 
 float g_fAlphaGameover = 0.0f;								// ゲームオーバー用のアルファ値
+float g_fAlphaTime = 0.0f;									// タイム用用のアルファ値
+
 int g_nRankCnt = 0;
 
 
@@ -78,7 +69,7 @@ void InitResult(void)
 
 		//テクスチャの読み込み(背景)
 		D3DXCreateTextureFromFile(pDevice,
-			"data\\TEXTURE\\exit.png",
+			"data\\TEXTURE\\resultBG.png",
 			&g_pTextureResult);
 
 	}
@@ -116,16 +107,6 @@ void InitResult(void)
 		D3DUSAGE_WRITEONLY,
 		FVF_VERTEX_2D,
 		D3DPOOL_MANAGED,
-		&g_pVtxBuffResultCrear,
-		NULL);
-
-
-
-	//頂点バッファの生成
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
-		D3DUSAGE_WRITEONLY,
-		FVF_VERTEX_2D,
-		D3DPOOL_MANAGED,
 		&g_pVtxBuffResultGameover,
 		NULL);
 
@@ -134,7 +115,6 @@ void InitResult(void)
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffResult->Lock(0, 0, (void**)&pVtx, 0);
-
 
 	//頂点座標の設定
 	pVtx[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -162,36 +142,6 @@ void InitResult(void)
 
 	//頂点バッファをアンロックする
 	g_pVtxBuffResult->Unlock();
-
-
-	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffResultCrear->Lock(0, 0, (void**)&pVtx, 0);
-
-	pVtx[0].pos = D3DXVECTOR3(380.0f, 640.0f, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(500.0f, 640.0f, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(380.0f, 710.0f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(500.0f, 710.0f, 0.0f);
-
-	//rhwの設定
-	pVtx[0].rhw = 1.0f;
-	pVtx[1].rhw = 1.0f;
-	pVtx[2].rhw = 1.0f;
-	pVtx[3].rhw = 1.0f;
-
-	//頂点カラーの設定
-	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-
-	//テクスチャ座標の設定
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-
-	//頂点バッファをアンロックする
-	g_pVtxBuffResultCrear->Unlock();
 
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
@@ -223,7 +173,6 @@ void InitResult(void)
 	//頂点バッファをアンロックする
 	g_pVtxBuffResultGameover->Unlock();
 
-
 }
 //=====================================================
 //リザルト画面の終了処理
@@ -244,13 +193,6 @@ void UninitResult(void)
 	}
 
 	//テクスチャの破棄
-	if (g_pTextureResultCrear != NULL)
-	{
-		g_pTextureResultCrear->Release();
-		g_pTextureResultCrear = NULL;
-	}
-
-	//テクスチャの破棄
 	if (g_pTextureResultGameover != NULL)
 	{
 		g_pTextureResultGameover->Release();
@@ -265,14 +207,6 @@ void UninitResult(void)
 		g_pVtxBuffResult->Release();
 		g_pVtxBuffResult = NULL;
 	}
-
-	//頂点バッファの破棄
-	if (g_pVtxBuffResultCrear != NULL)
-	{
-		g_pVtxBuffResultCrear->Release();
-		g_pVtxBuffResultCrear = NULL;
-	}
-
 
 	//頂点バッファの破棄
 	if (g_pVtxBuffResultGameover != NULL)
@@ -365,10 +299,6 @@ void DrawResult(void)
 	//ポリゴンの描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
-
-	//====================================
-    //お金の総額の描画
-    //====================================
 
 
 	if (bExit == false)
@@ -469,10 +399,10 @@ void InitResultTime(void)
 		g_aResultTime[nCnt].bUse = true;
 
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(610.0f + nCnt * 35.0f, 20.0f, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(610.0f + nCnt * 35.0f + 40.0f, 20.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(610.0f + nCnt * 35.0f, 80.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(610.0f + nCnt * 35.0f + 40.0f, 80.0f, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(810.0f + nCnt * 70.0f, 150.0f, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(810.0f + nCnt * 70.0f + 80.0f, 150.0f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(810.0f + nCnt * 70.0f, 240.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(810.0f + nCnt * 70.0f + 80.0f, 240.0f, 0.0f);
 
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
@@ -501,8 +431,8 @@ void InitResultTime(void)
 	// コロンの頂点バッファをロック
 	g_pVtxBuffResultColon->Lock(0, 0, (void**)&pVtx, 0);
 
-	float colonX = 680.0f; // コロンのX座標
-	float colonY = 20.0f;  // コロンのY座標
+	float colonX = 920.0f; // コロンのX座標
+	float colonY = 150.0f;  // コロンのY座標
 
 	// コロンの頂点座標設定
 	pVtx[0].pos = D3DXVECTOR3(colonX, colonY, 0.0f);
@@ -534,10 +464,10 @@ void InitResultTime(void)
 		g_aResultTime[nCnt].bUse = true;
 
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(710.0f + nCnt * 35.0f, 20.0f, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(710.0f + nCnt * 35.0f + 40.0f, 20.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(710.0f + nCnt * 35.0f, 80.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(710.0f + nCnt * 35.0f + 40.0f, 80.0f, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(1020.0f + nCnt * 70.0f, 150.0f, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(1020.0f + nCnt * 70.0f + 80.0f, 150.0f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(1020.0f + nCnt * 70.0f, 240.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(1020.0f + nCnt * 70.0f + 80.0f, 240.0f, 0.0f);
 
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
@@ -620,6 +550,16 @@ void UpdateResultTime(void)
 {
 
 
+	if (g_fAlphaTime < 255.0f)
+	{
+		g_fAlphaTime += 5.0f; // フェード速度調整
+
+		if (g_fAlphaTime > 255.0f)
+		{
+			g_fAlphaTime = 255.0f;
+		}
+	}
+
 	int nMinutes = GetTimeMinutes();
 	int nSeconds = GetTimeSeconds();
 
@@ -686,7 +626,7 @@ void UpdateResultTime(void)
 void DrawResultTime(void)
 {
 
-	//必要桁数分の描画
+	VERTEX_2D* pVtx;
 
 	int nCnt;
 
@@ -698,6 +638,18 @@ void DrawResultTime(void)
 	//=================
 	// 分
 	//=================
+
+	// 頂点バッファをロック
+	g_pVtxBuffResultTimeMinute->Lock(0, 0, (void**)&pVtx, 0);
+
+	// アルファ値を反映
+	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+
+	// 頂点バッファをアンロック
+	g_pVtxBuffResultTimeMinute->Unlock();
 
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, g_pVtxBuffResultTimeMinute, 0, sizeof(VERTEX_2D));
@@ -723,6 +675,18 @@ void DrawResultTime(void)
 	// コロン
 	//=================
 
+	// 頂点バッファをロック
+	g_pVtxBuffResultColon->Lock(0, 0, (void**)&pVtx, 0);
+
+	// アルファ値を反映
+	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+
+	// 頂点バッファをアンロック
+	g_pVtxBuffResultColon->Unlock();
+
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, g_pVtxBuffResultColon, 0, sizeof(VERTEX_2D));
 
@@ -738,6 +702,18 @@ void DrawResultTime(void)
 	//=================
 	// 秒
 	//=================
+
+	// 頂点バッファをロック
+	g_pVtxBuffResultTimeSecond->Lock(0, 0, (void**)&pVtx, 0);
+
+	// アルファ値を反映
+	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+
+	// 頂点バッファをアンロック
+	g_pVtxBuffResultTimeSecond->Unlock();
 
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, g_pVtxBuffResultTimeSecond, 0, sizeof(VERTEX_2D));

@@ -349,11 +349,10 @@ void UpdateGame(void)
 {
 	bool bFog = GetFog();
 
-	LPDIRECT3DDEVICE9 pDevice; // 事前に作成・初期化されているデバイス
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
+	// 霧の設定
 	SetupVertexFog(pDevice, D3DCOLOR_XRGB(0, 0, 0), D3DFOG_LINEAR, TRUE, 0.0f);
 
 	// 霧の無効化
@@ -421,7 +420,7 @@ void UpdateGame(void)
 
 		// キーパッドのトリガー
 		if (KeyboardTrigger(DIK_E) == true && pPassState != PASSWORDGAMESTATE_END && bKeypad == true && bMap == false &&
-			bFuseCmp == true)
+			bSTClear == true && bACClear == true && bBallClear == true)
 		{
 			g_bDraw4 = g_bDraw4 ? false : true;
 			g_bMini = g_bMini ? false : true;
@@ -745,8 +744,12 @@ void DrawGame(void)
 		DrawUI();
 	}
 
-	////タイムの描画処理
-	//DrawTime();
+#ifdef _DEBUG
+
+	//タイムの描画処理
+	DrawTime();
+
+#endif
 
 	//影の描画処理
 	DrawShadow();
@@ -824,6 +827,13 @@ bool GetACClear(void)
 bool GetBallClear(void)
 {
 	return bBallClear;
+}
+//============================================
+// キーパッドクリアの取得
+//============================================
+bool GetPassClear(void)
+{
+	return bPassClear;
 }
 
 

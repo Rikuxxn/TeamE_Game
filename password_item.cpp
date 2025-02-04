@@ -163,9 +163,8 @@ void UpdatePasswordItem(void)
 	GetClientRect(hwnd, &clientRect);
 
 	// ウィンドウスケールを計算
-	float screenWidth = 1920.0f; // ゲームの解像度
-	float screenHeight = 1080.0f;
-
+	float screenWidth = 1280.0f; // ゲームの解像度
+	float screenHeight = 720.0f;
 	float scaleX = screenWidth / (clientRect.right - clientRect.left);
 	float scaleY = screenHeight / (clientRect.bottom - clientRect.top);
 
@@ -175,16 +174,16 @@ void UpdatePasswordItem(void)
 
 	for (int nCntItem = 0; nCntItem < MAX_ITEM; nCntItem++)
 	{
-		float scale = passScales[nCntItem];
-		float centerX = 650.0f;						// 中心X座標
-		float centerY = 200.0f + nCntItem * 150.0f; // 中心Y座標
-
 		if (g_item[nCntItem].bUse == true)
 		{//使用しているアイテムを全てチェックする
-			if (g_item[nCntItem].pos.x >= cursorPos.x - ITEM_WIDTH
-				&& g_item[nCntItem].pos.x <= cursorPos.x + ITEM_WIDTH
-				&& g_item[nCntItem].pos.y >= cursorPos.y - ITEM_HEIGHT
-				&& g_item[nCntItem].pos.y <= cursorPos.y + ITEM_HEIGHT)
+
+			float itemLeft = g_item[nCntItem].pos.x - g_item[nCntItem].fWidth / 2;
+			float itemRight = g_item[nCntItem].pos.x + g_item[nCntItem].fWidth / 2;
+			float itemTop = g_item[nCntItem].pos.y - g_item[nCntItem].fHeight / 2;
+			float itemBottom = g_item[nCntItem].pos.y + g_item[nCntItem].fHeight / 2;
+
+			if (mouseX >= itemLeft && mouseX <= itemRight &&
+				mouseY >= itemTop && mouseY <= itemBottom)
 			{
 				if (GetMouseButtonTrigger(0) == true)
 				{

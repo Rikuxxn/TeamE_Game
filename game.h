@@ -32,5 +32,6 @@ GAMESTATE GetGameState(void);
 bool GetSTClear(void);
 bool GetACClear(void);
 bool GetBallClear(void);
+bool GetPassClear(void);
 
 #endif

@@ -730,6 +730,10 @@ void CheckBlocksInCenter(void)
 		{
 			maxDistance = 160.0f;
 		}
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_KEYPAD)
+		{
+			maxDistance = 80.0f;
+		}
 
 
 		// “Á’è‚Ìí—Ş‚Ì‚İ‘ÎÛ‚Æ‚·‚é

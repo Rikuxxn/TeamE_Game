@@ -28,6 +28,7 @@ float g_fAlphaTime = 0.0f;									// タイム用のアルファ値
 float g_fAlphaRank = 0.0f;									// ランク用のアルファ値
 
 int g_nRankCnt = 0;
+int g_nTimeCnt = 0;
 
 
 LPDIRECT3DTEXTURE9 g_pTextureResultTimeMinute = NULL;		//テクスチャへのポインタ
@@ -55,15 +56,9 @@ void InitResult(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-
-<<<<<<< HEAD
 	g_fAlphaGameover = 0.0f;		// フェードアルファ値をリセット
-=======
-	g_fAlphaGameover = 0.0f;	// フェードアルファ値をリセット
-	g_fAlphaTime = 0.0f;		// フェードアルファ値をリセット
-	g_fAlphaRank = 0.0f;		// フェードアルファ値をリセット
+	g_fAlphaRank = 0.0f;			// フェードアルファ値をリセット
 	g_nRankCnt = 0;
->>>>>>> 97799c073ad1945917064f63dfbf381cc5e77387
 
 	Player* pPlayer = GetPlayer();	//プレイヤーの情報へのポインタ
 
@@ -87,19 +82,30 @@ void InitResult(void)
 		if (nTimeMinutes < 2 && nTimeSeconds >= 0)
 		{// ランクA
 
+			//テクスチャの読み込み
+			D3DXCreateTextureFromFile(pDevice,
+				"data\\TEXTURE\\rankA.png",
+				&g_pTextureRank);
 
 		}
-		// 2分半
-		else if (nTimeMinutes >= 2 && nTimeMinutes < 3 && nTimeSeconds >= 30 && nTimeSeconds <= 59)
+		// 2分以上3分未満
+		else if (nTimeMinutes >= 2 && nTimeMinutes < 3 && nTimeSeconds >= 0 && nTimeSeconds <= 59)
 		{// ランクB
 
+			//テクスチャの読み込み
+			D3DXCreateTextureFromFile(pDevice,
+				"data\\TEXTURE\\rankB.png",
+				&g_pTextureRank);
 
 		}
 		// 3分以上
 		else if (nTimeMinutes >= 3 && nTimeSeconds >= 0)
 		{// ランクC
 
-
+			//テクスチャの読み込み
+			D3DXCreateTextureFromFile(pDevice,
+				"data\\TEXTURE\\rankC.png",
+				&g_pTextureRank);
 
 		}
 
@@ -437,7 +443,7 @@ void DrawResult(void)
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
 		}
-		else if (nTimeMinutes >= 2 && nTimeMinutes < 3 && nTimeSeconds >= 30 && nTimeSeconds <= 59)
+		else if (nTimeMinutes >= 2 && nTimeMinutes < 3 && nTimeSeconds >= 0 && nTimeSeconds <= 59)
 		{
 
 			// 頂点バッファをロック
@@ -557,6 +563,9 @@ void InitResultTime(void)
 	g_nResultMinutes = 0;
 	g_nResultSeconds = 0;
 
+	g_fAlphaTime = 0.0f;			// フェードアルファ値をリセット
+	g_nTimeCnt = 0;
+
 	nCnt = 0;
 
 	//頂点バッファの生成
@@ -626,13 +635,8 @@ void InitResultTime(void)
 	// コロンの頂点バッファをロック
 	g_pVtxBuffResultColon->Lock(0, 0, (void**)&pVtx, 0);
 
-<<<<<<< HEAD
-	float colonX = 920.0f;	// コロンのX座標
-	float colonY = 150.0f;	// コロンのY座標
-=======
-	float colonX = 960.0f; // コロンのX座標
-	float colonY = 190.0f;  // コロンのY座標
->>>>>>> 97799c073ad1945917064f63dfbf381cc5e77387
+	float colonX = 970.0f;	// コロンのX座標
+	float colonY = 190.0f;	// コロンのY座標
 
 	// コロンの頂点座標設定
 	pVtx[0].pos = D3DXVECTOR3(colonX, colonY, 0.0f);
@@ -748,16 +752,18 @@ void UninitResultTime(void)
 //=============================
 void UpdateResultTime(void)
 {
+	g_nTimeCnt++;
 
-	//g_fAlphaTime++;
-
-	if (g_fAlphaTime < 255.0f)
+	if (g_nTimeCnt >= 120)
 	{
-		g_fAlphaTime += 2.0f; // フェード速度調整
-
-		if (g_fAlphaTime > 255.0f)
+		if (g_fAlphaTime < 255.0f)
 		{
-			g_fAlphaTime = 255.0f;
+			g_fAlphaTime += 2.0f; // フェード速度調整
+
+			if (g_fAlphaTime > 255.0f)
+			{
+				g_fAlphaTime = 255.0f;
+			}
 		}
 	}
 

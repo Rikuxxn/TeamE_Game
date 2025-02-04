@@ -147,15 +147,13 @@ void UpdateUI(void)
 	bool bSTClear = GetSTClear();
 	bool bACClear = GetACClear();
 	bool bBallClear = GetBallClear();
+	bool bPassClear = GetPassClear();
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffUI->Lock(0, 0, (void**)&pVtx, 0);
 
 	for (nCntUI = 0; nCntUI < MAX_UI; nCntUI++)
 	{
-
-		//// UIを表示
-		//SetUI(D3DXVECTOR3(130.0f, 680.0f, 0.0f), 100.0f, 30.0f, UITYPE_MAP);
 
 		// アーケードゲームの範囲内
 		if (bArcade == true && bFuseCmp == true && bSTClear == false)
@@ -194,7 +192,8 @@ void UpdateUI(void)
 		}
 
 		// キーパッドの範囲内
-		if (bKeypad == true)
+		if (bKeypad == true && bSTClear == true && bACClear == true && bBallClear == true &&
+			bPassClear == false)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_INPUT);

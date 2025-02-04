@@ -23,7 +23,6 @@ typedef struct
 	bool bUse;			//使用しているかどうか
 	bool bGet;			//取得したかどうか
 	bool bcatch;		//キャッチしたか
-	bool bFall;			//落ちているか
 	//bool bDisp;			//表示するか
 }CRANEITEM;
 

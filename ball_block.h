@@ -6,8 +6,8 @@
 //弾の種類
 typedef enum
 {
-	BLOCKTYPE_PLAYER=0,//プレイヤーの弾
-	BLOCKTYPE_ENEMY,//敵の弾
+	BLOCKTYPE_PLAYER=0,	//プレイヤーの弾
+	BLOCKTYPE_ENEMY,	//敵の弾
 	BLOCKTYPE_MAX
 }BALLBLOCKTYPE;
 

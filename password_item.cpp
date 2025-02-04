@@ -13,7 +13,7 @@
 //グローバル
 LPDIRECT3DTEXTURE9 g_pTexturePassItem[NUM_ITEM] = {};	//テクスチャへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPassItem = NULL;		//頂点バッファへのポインタ
-PASSWORDITEM g_item[MAX_ITEM];						//アイテムの情報
+PASSWORDITEM g_item[MAX_ITEM];							//アイテムの情報
 //int g_nItem;
 bool g_bJudgment;
 

@@ -9,8 +9,8 @@
 
 #include "main.h"
 
-#define MAX_BLOCK (200)	// ブロックの使う数
-#define MAX_BLOCKTEXTURE (64)//ブロックの最大テクスチャ
+#define MAX_BLOCK (200)			// ブロックの使う数
+#define MAX_BLOCKTEXTURE (64)	//ブロックの最大テクスチャ
 
 // ブロックの種類
 typedef enum

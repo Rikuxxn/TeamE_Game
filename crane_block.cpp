@@ -56,11 +56,11 @@ void InitCraneBlock(void)
 
 	//頂点バッファの設定
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_BLOCK,
-														D3DUSAGE_WRITEONLY,
-														FVF_VERTEX_2D,
-														D3DPOOL_MANAGED,
-														&g_pVtxBuffBlock,
-														NULL);
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_2D,
+		D3DPOOL_MANAGED,
+		&g_pVtxBuffBlock,
+		NULL);
 
 	VERTEX_2D* pVtx;
 
@@ -237,11 +237,11 @@ void SetCraneBlock(D3DXVECTOR3 pos,D3DXVECTOR3 move,float fWidth,float fHeight,i
 	g_pVtxBuffBlock->Unlock();
 }
 //ブロックのあたりはんてぇ
-bool CollisionCraneBlock(D3DXVECTOR3* pPos,		 //現在の位置
-						D3DXVECTOR3* pPosOld,//前回の位置
-						D3DXVECTOR3* pMove,	 //移動量
-						float fWidth,		 //幅
-						float fHeight,		 //高さ
+bool CollisionCraneBlock(D3DXVECTOR3* pPos,		//現在の位置
+						D3DXVECTOR3* pPosOld,	//前回の位置
+						D3DXVECTOR3* pMove,		//移動量
+						float fWidth,			//幅
+						float fHeight,			//高さ
 						CRANEBLOCK**pBlock)
 {
 	bool bLanding = false;//着地しているかどうか

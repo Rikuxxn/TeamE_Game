@@ -87,8 +87,8 @@ void InitBlock(void)
 	{
 		g_info[nCnt].bUse = true;
 
-		g_info[nCnt].blockinfo[nCnt].vtxMin = D3DXVECTOR3(FLT_MAX, FLT_MAX, FLT_MAX); // 最小値を初期化
-		g_info[nCnt].blockinfo[nCnt].vtxMax = D3DXVECTOR3(-FLT_MAX, -FLT_MAX, -FLT_MAX); // 最大値を初期化
+		g_info[nCnt].blockinfo[nCnt].vtxMin = D3DXVECTOR3(FLT_MAX, FLT_MAX, FLT_MAX);		// 最小値を初期化
+		g_info[nCnt].blockinfo[nCnt].vtxMax = D3DXVECTOR3(-FLT_MAX, -FLT_MAX, -FLT_MAX);	// 最大値を初期化
 
 		//頂点数の取得
 		nNumVtx = g_info[nCnt].blockinfo[nCnt].pMesh->GetNumVertices();

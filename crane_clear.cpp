@@ -57,9 +57,9 @@ void InitCraneClear(void)
 
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)
-		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);//(u,v)
-		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);//(u,v)
-		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);//(u,v)
+		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
 		pVtx += 4;//頂点データのポインタを4つ分進める
 	}

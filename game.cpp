@@ -33,6 +33,7 @@
 //#include "sound.h"
 #include "guage.h"
 #include "shooting_game.h"
+#include "password_game.h"
 #include "crane_game.h"
 #include "ball_game.h"
 #include "ui.h"
@@ -49,9 +50,11 @@ bool g_bPause = false;	//ポーズ中かどうか
 bool g_bDraw = false;	//シューティングミニゲームの描画用
 bool g_bDraw2 = false;	//アクション
 bool g_bDraw3 = false;	//ボールプール
+bool g_bDraw4 = false;	//パスワード
 bool bSTClear;
 bool bACClear;
 bool bBallClear;
+bool bPassClear;
 
 bool bMap;
 bool g_bMini;
@@ -59,6 +62,7 @@ int nCounter;
 int nStgCnt;
 int nCraneCnt;
 int nBallCnt;
+int nPassCnt;
 
 //==============================================
 //ゲーム画面の初期化処理
@@ -136,6 +140,7 @@ void InitGame(void)
 	InitShootingGame();
 	InitCraneGame();
 	InitBallGame();
+	InitPasswordGame();
 
 	//// 天井の中央付近から特定エリアを照らすスポットライト
 	//AddLight(
@@ -214,10 +219,12 @@ void InitGame(void)
 	nCraneCnt = 0;
 	nStgCnt = 0;
 	nBallCnt = 0;
+	nPassCnt = 0;
 
 	bSTClear = false;
 	bACClear = false;
 	bBallClear = false;
+	bPassClear = false;
 
 	g_bMini = false;
 	bMap = false;
@@ -324,6 +331,7 @@ void UninitGame(void)
 	UninitShootingGame();
 	UninitCraneGame();
 	UninitBallGame();
+	UninitPasswordGame();
 }
 //=========================================
 //ゲーム画面の更新処理
@@ -335,11 +343,13 @@ void UpdateGame(void)
 	STGSTATE pStgState = GetShootingGameState();
 	CRANEGAMESTATE pCraneState = GetCraneGameState();
 	BALLGAMESTATE pBallState = GetBallGameState();
+	PASSWORDGAMESTATE pPassState = GetPasswordGameState();
 	Player* pPlayer = GetPlayer();//プレイヤーの情報へのポインタにプレイヤーの先頭アドレスが代入される
 	bool bArcade = GetArcade();
 	bool bCatcher = GetCatcher();
 	bool bBall = GetBall();
 	bool bFuseCmp = GetFuseCmp();
+	bool bKeypad = GetKeypad();
 
 
 	bool bEnd = GetEnd();
@@ -387,6 +397,14 @@ void UpdateGame(void)
 			bFuseCmp == true)
 		{
 			g_bDraw3 = g_bDraw3 ? false : true;
+			g_bMini = g_bMini ? false : true;
+		}
+
+		// キーパッドのトリガー
+		if (KeyboardTrigger(DIK_E) == true && pPassState != PASSWORDGAMESTATE_END && bKeypad == true && bMap == false &&
+			bFuseCmp == true)
+		{
+			g_bDraw4 = g_bDraw4 ? false : true;
 			g_bMini = g_bMini ? false : true;
 		}
 
@@ -459,6 +477,26 @@ void UpdateGame(void)
 			}
 		}
 
+		// キーパッド終了時の処理
+		if (pPassState == PASSWORDGAMESTATE_END)
+		{
+			if (nPassCnt <= 120)
+			{
+				nPassCnt++;
+			}
+
+			// 120(2秒)経ったら
+			if (nPassCnt >= 120)
+			{
+				g_bDraw4 = false;
+				bPassClear = true;
+				if (g_bDraw == false) // シューティングゲームが動いていないなら
+				{
+					g_bMini = false; // ミニゲーム全体を終了
+				}
+			}
+		}
+
 
 		// カーソルを非表示する
 		SetCursorVisibility(false);
@@ -488,6 +526,14 @@ void UpdateGame(void)
 			// カーソルを表示する
 			SetCursorVisibility(true);
 		}
+		if (g_bDraw4 == true)
+		{
+			//キーパッドの更新処理
+			UpdatePasswordGame();
+
+			// カーソルを表示する
+			SetCursorVisibility(true);
+		}
 
 
 		//敵の更新処理
@@ -505,7 +551,7 @@ void UpdateGame(void)
 		//メッシュシリンダーの更新処理
 		UpdateMeshcylinder();
 
-		if (g_bDraw == false && g_bDraw2 == false && g_bDraw3 == false)
+		if (g_bDraw == false && g_bDraw2 == false && g_bDraw3 == false && g_bDraw4 == false)
 		{
 			//カメラの更新処理
 			UpdateCamera();
@@ -570,6 +616,7 @@ void UpdateGame(void)
 		g_bDraw = false;
 		g_bDraw2 = false;
 		g_bDraw3 = false;
+		g_bDraw4 = false;
 		bMap = false;
 	}
 
@@ -715,6 +762,10 @@ void DrawGame(void)
 	else if (g_bDraw3 == true && nBallCnt <= 120)
 	{
 		DrawBallGame();
+	}
+	else if (g_bDraw4 == true && nPassCnt <= 120)
+	{
+		DrawPasswordGame();
 	}
 
 	// 霧の有効化

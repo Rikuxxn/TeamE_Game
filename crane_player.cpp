@@ -16,9 +16,9 @@
 #define MAX_MIN (10.0f)//最小ちいさい
 
 //グローバル
-LPDIRECT3DTEXTURE9 g_pTextureCranePlayer = NULL;     //テクスチャへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffCranePlayer = NULL;//頂点バッファへのポインタ
-CranePlayer g_player;                                 //レイヤーの情報
+LPDIRECT3DTEXTURE9 g_pTextureCranePlayer = NULL;		//テクスチャへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffCranePlayer = NULL;	//頂点バッファへのポインタ
+CranePlayer g_player;									//レイヤーの情報
 int g_nCounterAnimPlayer;
 int g_nPatternAnimPlayer;
 int g_nMutekiCounter;
@@ -135,11 +135,13 @@ void UninitCranePlayer(void)
 void UpdateCranePlayer(void)
 {
 	VERTEX_2D* pVtx;//頂点情報へのポインタ
+	CRANEITEM pItem = GetItem();
 	int nBulletCnt = 0;
 
 	if (g_player.bUse == true)
 	{
-		if (g_player.bMove == true && (GetKeyboardPress(DIK_D) == true || GetJoypadPress(JOYKEY_RIGHT) == true))
+		if (g_player.bMove == true &&
+			(GetKeyboardPress(DIK_D) == true || GetJoypadPress(JOYKEY_RIGHT) == true))
 		{
 			g_nCounterAnimPlayer++;//カウンターを加算
 			//移動量を更新（増加）
@@ -154,44 +156,31 @@ void UpdateCranePlayer(void)
 		}
 		else
 		{
-			g_nCounterAnimPlayer=0;//カウンターをリセット
+			g_nCounterAnimPlayer = 0;//カウンターをリセット
 		}
 
-		if (g_player.bMove == true && (GetMouseButtonTrigger(0) /*|| JoypadTrigger(JOYKEY_A) == true*/))//ジャンプ
-		{
+		if (g_player.bMove == true &&
+			(GetMouseButtonTrigger(0) /*|| JoypadTrigger(JOYKEY_A) == true*/))
+		{//クレーンを下す
 			//PlaySound(SOUND_LABEL_JAMP_SHORT);
 			g_player.move.y = DOWN;
 			g_player.bMove = false;
 			g_player.bLeft = false;
 		}
-	}//g_player.pos
+	}
+
+	if (g_player.bLanding == true && g_player.bMove == false)
+	{//上に昇る
+		g_player.move.y = UP;
+	}
 
 	if (g_player.bLeft == true && g_player.bMove == false)
 	{
 		g_player.move.x = MAX_SPEED_L;
 	}
 
-	if (g_player.bLanding == true)
-	{//上に昇る
-		g_player.move.y = UP;
-	}
-
 	//前回の位置を保存
 	g_player.posOld = g_player.pos;
-
-	if (g_player.pBlock != NULL)//ブロックに乗っている
-	{//ブロックが移動した分だけプレイヤーにプラスする
-		g_player.pBlock;
-	}
-
-	if (CollisionCraneBlock(&g_player.pos,
-						&g_player.posOld,
-						&g_player.move,
-						HABA,
-						TAKASA,&g_player.pBlock) == true)
-	{
-
-	}
 
 	//位置を更新
 	g_player.pos.x += g_player.move.x;//横移動
@@ -199,10 +188,10 @@ void UpdateCranePlayer(void)
 
 	//アイテムのあたりはんてぇ
 	g_player.bGetItem = !CollisionCraneItem(&g_player.pos,
-									&g_player.posOld,
-									&g_player.move,
-									ITEM_WIDTH,
-									ITEM_HEIGHT);
+		&g_player.posOld,
+		&g_player.move,
+		ITEM_WIDTH,
+		ITEM_HEIGHT);
 
 	//移動量を更新（減衰）
 	g_player.move.x += (0.0f - g_player.move.x) * 0.2f;/*0.13f;*/
@@ -211,6 +200,10 @@ void UpdateCranePlayer(void)
 	{
 		g_player.pos.y = FIELD_UNDER;
 		g_player.bLanding = true;
+	}
+	else
+	{
+		g_player.bLanding = false;
 	}
 	if (g_player.pos.y <= FIELD_TOP + TAKASA)//天井
 	{
@@ -253,8 +246,6 @@ void UpdateCranePlayer(void)
 		g_player.nCounterState--;
 		if (g_player.nCounterState <= 0)
 		{
-			////モードを設定（リザルト）
-			//SetMode(MODE_RESULT_LOSE);
 			return;
 		}
 		else

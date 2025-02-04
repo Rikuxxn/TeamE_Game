@@ -9,8 +9,8 @@
 
 //グローバル
 LPDIRECT3DTEXTURE9 g_pTextureCraneBG[NUM_BG] = { NULL };//テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureCraneBG3 = NULL;//テクスチャへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffCraneBG = NULL;//頂点バッファへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureCraneBG3 = NULL;			//テクスチャへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffCraneBG = NULL;		//頂点バッファへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffCraneBG2 = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffCraneBG3 = NULL;
 float g_aPosCraneTexU[NUM_BG];//テクスチャ座標の開始位置（U値）
@@ -75,9 +75,9 @@ void InitCraneBackGround(void)
 
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(g_aPosCraneTexU[nCntBG], 0.0f);//(u,v)
-		pVtx[1].tex = D3DXVECTOR2(g_aPosCraneTexU[nCntBG] + 1.0f, 0.0f);//(u,v)
-		pVtx[2].tex = D3DXVECTOR2(g_aPosCraneTexU[nCntBG], 1.0f);//(u,v)
-		pVtx[3].tex = D3DXVECTOR2(g_aPosCraneTexU[nCntBG] + 1.0f, 1.0f);//(u,v)
+		pVtx[1].tex = D3DXVECTOR2(g_aPosCraneTexU[nCntBG] + 1.0f, 0.0f);
+		pVtx[2].tex = D3DXVECTOR2(g_aPosCraneTexU[nCntBG], 1.0f);
+		pVtx[3].tex = D3DXVECTOR2(g_aPosCraneTexU[nCntBG] + 1.0f, 1.0f);
 
 		pVtx += 4;//頂点データのポインタを4つ分進める
 	}
@@ -152,9 +152,9 @@ void InitCraneBackGround(void)
 
 	//テクスチャ座標の設定
 	pVtx3[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)
-	pVtx3[1].tex = D3DXVECTOR2(1.0f, 0.0f);//(u,v)
-	pVtx3[2].tex = D3DXVECTOR2(0.0f, 1.0f);//(u,v)
-	pVtx3[3].tex = D3DXVECTOR2(1.0f, 1.0f);//(u,v)
+	pVtx3[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+	pVtx3[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+	pVtx3[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
 	//頂点バッファをアンロックする
 	g_pVtxBuffCraneBG3->Unlock();

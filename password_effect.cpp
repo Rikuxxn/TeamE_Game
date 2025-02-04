@@ -49,11 +49,11 @@ void InitPasswordEffect(void)
 	}
 	//頂点バッファの設定
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_EFFECT,
-														D3DUSAGE_WRITEONLY,
-														FVF_VERTEX_2D,
-														D3DPOOL_MANAGED,
-														&g_pVtxBuffPasswordEffect,
-														NULL);
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_2D,
+		D3DPOOL_MANAGED,
+		&g_pVtxBuffPasswordEffect,
+		NULL);
 
 	VERTEX_2D* pVtx;
 

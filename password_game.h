@@ -2,8 +2,8 @@
 //|パスワード			 |
 //|Author:Yoshida Atsushi|
 //========================
-#ifndef _GAME_H_
-#define _GAME_H_
+#ifndef _PASSWORDGAME_H_
+#define _PASSWORDGAME_H_
 
 #include "main.h"
 

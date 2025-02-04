@@ -2,9 +2,9 @@
 
 
 //グローバル
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffShootingFade = NULL;//頂点バッファへのポインタ
-SHOOTINGFADE g_fade;//フェードの状態
-D3DXCOLOR g_colorShootingFade;//ポリゴン(フェード)の色
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffShootingFade = NULL;	//頂点バッファへのポインタ
+SHOOTINGFADE g_fade;									//フェードの状態
+D3DXCOLOR g_colorShootingFade;							//ポリゴン(フェード)の色
 
 void InitShootingFade(MODE modeNext)
 {

@@ -30,7 +30,7 @@ void InitPasswordGame(void)
 	//各種オブジェクトの初期化処理
 	InitPasswordBackGround();	//背景の初期化処理
 	InitPasswordParticle();		//パーティクルの初期化
-	InitPassBlock();		//ブロックの初期化処理
+	InitPassBlock();			//ブロックの初期化処理
 	InitPasswordEffect();		//エフェクトの初期化
 	InitPasswordItem();			//アイテムの初期化
 	InitPasswordClear();		//クリア画面の初期化
@@ -73,7 +73,7 @@ void UninitPasswordGame(void)
 	//各種オブジェクトの終了処理
 	UninitPasswordBackGround();	//背景の終了処理
 	UninitPasswordParticle();	//パーティクルの終了処理
-	UninitPassBlock();		//ブロックの終了処理
+	UninitPassBlock();			//ブロックの終了処理
 	UninitPasswordEffect();		//エフェクトの終了処理
 	UninitPasswordItem();		//アイテムの終了処理
 	UninitPasswordClear();		//クリア画面の終了処理
@@ -141,13 +141,13 @@ void DrawPasswordGame(void)
 	DrawPasswordBackGround();	//背景の描画処理
 	DrawPasswordParticle();		//パーティクルの描画処理
 	DrawPasswordItem();			//アイテムの描画処理
-	DrawPassBlock();		//ブロックの描画処理
+	DrawPassBlock();			//ブロックの描画処理
 	DrawPasswordEffect();		//エフェクトの描画処理
 	DrawPassword();
 
 	if (g_nCounterPasswordGameState >= 45)
 	{
-		DrawPasswordClear();
+		//DrawPasswordClear();
 	}
 }
 void SetPasswordGameState(PASSWORDGAMESTATE state)

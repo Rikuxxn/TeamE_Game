@@ -3,8 +3,8 @@
 // Author:Yoshida Atsushi
 //---------------------------------------------------------
 
-#ifndef _PLAYER_H_//このマクロ定義がされてなかったら
-#define _PLAYER_H_//２重インクルード防止のマクロ定義
+#ifndef _CRANEPLAYER_H_//このマクロ定義がされてなかったら
+#define _CRANEPLAYER_H_//２重インクルード防止のマクロ定義
 
 #define HABA (25.0f)		//プレイヤー幅
 #define TAKASA (60.0f)		//プレイヤー高さ
@@ -33,8 +33,8 @@ typedef struct
 	D3DXVECTOR3 posOld;		//前回の位置
 	D3DXVECTOR3 rot;		//向き
 	D3DXVECTOR3 move;		//移動量
-	CRANEBLOCK* pBlock;	//ブロックへのポインタ
-	CRANEPLAYERSTATE state;//プレイヤーの状態
+	CRANEBLOCK* pBlock;		//ブロックへのポインタ
+	CRANEPLAYERSTATE state;	//プレイヤーの状態
 	int nCounterState;		//状態管理カウンター
 	int nCntAnimState;		//状態をカウント
 	int nLife;				//命

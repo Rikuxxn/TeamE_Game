@@ -14,9 +14,9 @@
 #define BLOCK_TAKASA (40.0f)
 
 //グローバル
-LPDIRECT3DTEXTURE9 g_pTextureBallBlock = NULL;     //テクスチャへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBallBlock = NULL;			//頂点バッファへのポインタ
-BALLBLOCK g_aBlock[MAX_BLOCK];							//ブロックの情報
+LPDIRECT3DTEXTURE9 g_pTextureBallBlock = NULL;		//テクスチャへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBallBlock = NULL;	//頂点バッファへのポインタ
+BALLBLOCK g_aBlock[MAX_BLOCK];						//ブロックの情報
 
 void InitBallBlock(void)
 {
@@ -44,11 +44,11 @@ void InitBallBlock(void)
 
 	//頂点バッファの設定
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_BLOCK,
-														D3DUSAGE_WRITEONLY,
-														FVF_VERTEX_2D,
-														D3DPOOL_MANAGED,
-														&g_pVtxBuffBallBlock,
-														NULL);
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_2D,
+		D3DPOOL_MANAGED,
+		&g_pVtxBuffBallBlock,
+		NULL);
 
 	VERTEX_2D* pVtx;
 

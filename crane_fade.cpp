@@ -6,9 +6,9 @@
 #include "crane_fade.h"
 
 //グローバル
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffCraneFade = NULL;//頂点バッファへのポインタ
-CRANEFADE g_fade;//フェードの状態
-D3DXCOLOR g_colorCraneFade;//ポリゴン(フェード)の色
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffCraneFade = NULL;	//頂点バッファへのポインタ
+CRANEFADE g_fade;									//フェードの状態
+D3DXCOLOR g_colorCraneFade;							//ポリゴン(フェード)の色
 
 void InitCraneFade(MODE modeNext)
 {

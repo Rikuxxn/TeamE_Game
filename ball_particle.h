@@ -9,11 +9,11 @@
 //構造体
 typedef struct
 {
-	D3DXVECTOR3 pos;//iti
-	D3DXVECTOR3 move;//idouryou6
-	int nLife;//jumyo(hyoujijikan)
-	bool bUse;//siyousiteiruka?
-	int nType;//パーティクルの種類
+	D3DXVECTOR3 pos;	//iti
+	D3DXVECTOR3 move;	//idouryou6
+	int nLife;			//jumyo(hyoujijikan)
+	bool bUse;			//siyousiteiruka?
+	int nType;			//パーティクルの種類
 }BallParticle;
 
 //プロト

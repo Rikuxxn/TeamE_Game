@@ -27,13 +27,13 @@ float g_fAlphaTime = 0.0f;									// タイム用用のアルファ値
 int g_nRankCnt = 0;
 
 
-LPDIRECT3DTEXTURE9 g_pTextureResultTimeMinute = NULL;//テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureResultTimeSecond = NULL;//テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureResultColon = NULL;				//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureResultTimeMinute = NULL;		//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureResultTimeSecond = NULL;		//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureResultColon = NULL;			//テクスチャへのポインタ
 
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultTimeMinute = NULL;//頂点バッファへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultTimeSecond = NULL;//頂点バッファへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultColon = NULL;			//頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultTimeMinute = NULL;	//頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultTimeSecond = NULL;	//頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultColon = NULL;		//頂点バッファへのポインタ
 
 
 D3DXVECTOR3 g_posResultTime;//タイムの位置
@@ -53,9 +53,9 @@ void InitResult(void)
 	pDevice = GetDevice();
 
 
-	g_fAlphaGameover = 0.0f;	// フェードアルファ値をリセット
+	g_fAlphaGameover = 0.0f;		// フェードアルファ値をリセット
 
-	Player* pPlayer = GetPlayer();//プレイヤーの情報へのポインタ
+	Player* pPlayer = GetPlayer();	//プレイヤーの情報へのポインタ
 
 	bool bEnd = GetEnd();
 	bool bExit = GetExit();
@@ -431,8 +431,8 @@ void InitResultTime(void)
 	// コロンの頂点バッファをロック
 	g_pVtxBuffResultColon->Lock(0, 0, (void**)&pVtx, 0);
 
-	float colonX = 920.0f; // コロンのX座標
-	float colonY = 150.0f;  // コロンのY座標
+	float colonX = 920.0f;	// コロンのX座標
+	float colonY = 150.0f;	// コロンのY座標
 
 	// コロンの頂点座標設定
 	pVtx[0].pos = D3DXVECTOR3(colonX, colonY, 0.0f);
@@ -569,11 +569,11 @@ void UpdateResultTime(void)
 	g_nResultSeconds = nSeconds;
 
 	int min10 = g_nResultMinutes / 10;	// 分の10の位
-	int min1 = g_nResultMinutes % 10;		// 分の1の位
+	int min1 = g_nResultMinutes % 10;	// 分の1の位
 	int sec10 = g_nResultSeconds / 10;	// 秒の10の位
-	int sec1 = g_nResultSeconds % 10;		// 秒の1の位
+	int sec1 = g_nResultSeconds % 10;	// 秒の1の位
 
-	float texOffset = 0.1f;			// 1桁分のテクスチャ範囲（0.0～1.0を10分割）
+	float texOffset = 0.1f;				// 1桁分のテクスチャ範囲（0.0～1.0を10分割）
 
 	//===============================
 	// 分のテクスチャ設定

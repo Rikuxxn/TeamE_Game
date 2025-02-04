@@ -23,6 +23,7 @@ typedef struct
 	bool bUse;			//使用しているかどうか
 	bool bGet;			//取得したかどうか
 	bool bcatch;		//キャッチしたか
+	bool bFall;			//落ちているか
 	//bool bDisp;			//表示するか
 }CRANEITEM;
 
@@ -33,7 +34,7 @@ void UpdateCraneItem(void);
 void DrawCraneItem(void);
 void SetCraneItem(D3DXVECTOR3 pos,float fWidth,float fHeight,int type);//ブロックの設置
 int GetNumItem(void);
+CRANEITEM GetItem(void);
 bool CollisionCraneItem(D3DXVECTOR3 *pPos,D3DXVECTOR3 *pPosOld,D3DXVECTOR3 *pMove,float fWidth,float fHeight);;
-bool GetCraneItem(void);
 
 #endif

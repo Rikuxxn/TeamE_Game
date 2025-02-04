@@ -15,8 +15,8 @@
 //#include "sound.h"
 
 //グローバル
-STGSTATE g_gameState = STGSTATE_NONE;	 //ゲームの状態
-int g_nCntShootingGameState = 0;						 //状態管理カウンター
+STGSTATE g_gameState = STGSTATE_NONE;	//ゲームの状態
+int g_nCntShootingGameState = 0;		//状態管理カウンター
 
 void InitShootingGame(void)
 {

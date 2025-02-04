@@ -25,7 +25,7 @@ PAUSE_MENU g_pauseMenu;										//ポーズメニュー
 float pauseScales[MAX_PAUSE] = { PAUSE_MIN_SCALE, PAUSE_MIN_SCALE, PAUSE_MIN_SCALE };
 
 // 項目ごとの透明度を保持する配列
-float pauseAlphas[MAX_PAUSE] = { 0.3f, 0.3f, 0.3f }; // 初期は全て半透明（範囲外状態）
+float pauseAlphas[MAX_PAUSE] = { 0.3f, 0.3f, 0.3f };		// 初期は全て半透明（範囲外状態）
 
 //===============================================================
 //ポーズの初期化処理
@@ -76,10 +76,10 @@ void InitPause(void)
 	g_pVtxBuffPauseBG->Lock(0, 0, (void**)&pVtx, 0);
 
 	//頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//1つ目の頂点情報
-	pVtx[1].pos = D3DXVECTOR3(1280.0f, 0.0f, 0.0f);//2つ目の頂点情報
-	pVtx[2].pos = D3DXVECTOR3(0.0f, 720.0f, 0.0f);//3つ目の頂点情報
-	pVtx[3].pos = D3DXVECTOR3(1280.0f, 720.0f, 0.0f);//4つ目の頂点情報
+	pVtx[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//1つ目の頂点情報
+	pVtx[1].pos = D3DXVECTOR3(1280.0f, 0.0f, 0.0f);		//2つ目の頂点情報
+	pVtx[2].pos = D3DXVECTOR3(0.0f, 720.0f, 0.0f);		//3つ目の頂点情報
+	pVtx[3].pos = D3DXVECTOR3(1280.0f, 720.0f, 0.0f);	//4つ目の頂点情報
 
 	//rhwの設定(1.0fで固定)
 	pVtx[0].rhw = 1.0f;
@@ -229,7 +229,7 @@ void UpdatePause(void)
 	for (int nCnt = 0; nCnt < MAX_PAUSE; nCnt++) 
 	{
 		float scale = pauseScales[nCnt];
-		float centerX = 650.0f; // 中心X座標
+		float centerX = 650.0f;					// 中心X座標
 		float centerY = 200.0f + nCnt * 150.0f; // 中心Y座標
 
 		// 領域の計算
@@ -242,8 +242,8 @@ void UpdatePause(void)
 		if (mouseX >= left && mouseX <= right &&
 			mouseY >= top && mouseY <= bottom) 
 		{
-			selectedByMouse = nCnt; // 項目のインデックスを記録
-			g_pauseMenu = static_cast<PAUSE_MENU>(nCnt); // 選択状態を更新
+			selectedByMouse = nCnt;							// 項目のインデックスを記録
+			g_pauseMenu = static_cast<PAUSE_MENU>(nCnt);	// 選択状態を更新
 		}
 	}
 

@@ -74,9 +74,9 @@ void InitPlayer(void)
 	for (int nCntVtx = 0; nCntVtx < MAX_PARTS; nCntVtx++)
 	{
 
-		int nNumVtx;//頂点数
-		DWORD sizeFVF;//頂点フォーマットのサイズ
-		BYTE* pVtxBuff;//頂点バッファへのポインタ
+		int nNumVtx;	//頂点数
+		DWORD sizeFVF;	//頂点フォーマットのサイズ
+		BYTE* pVtxBuff;	//頂点バッファへのポインタ
 
 		//頂点数の取得
 		nNumVtx = g_player.motion.aModel[nCntVtx].pMesh->GetNumVertices();

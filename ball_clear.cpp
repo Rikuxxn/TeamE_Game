@@ -5,7 +5,7 @@
 #include "ball_clear.h"
 
 //グローバル
-LPDIRECT3DTEXTURE9 g_apTextureBallClear = {};			//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_apTextureBallClear = {};		//テクスチャへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBallClear = NULL;	//頂点バッファへのポインタ
 
 //クリアの初期化処理

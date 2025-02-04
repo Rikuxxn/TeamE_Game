@@ -14,19 +14,19 @@
 //弾構造体の定義
 typedef struct
 {
-	D3DXVECTOR3 pos;//位置
-	D3DXVECTOR3 move;//移動量
-	D3DXCOLOR col;//移動量
+	D3DXVECTOR3 pos;	//位置
+	D3DXVECTOR3 move;	//移動量
+	D3DXCOLOR col;		//移動量
 	float fRadius;
-	int nLife;//寿命
-	bool bUse;//使用しているかどうか
-	int nType;//種類
+	int nLife;			//寿命
+	bool bUse;			//使用しているかどうか
+	int nType;			//種類
 }Effect;
 
 //グローバル
 LPDIRECT3DTEXTURE9 g_pTextureEffect = NULL;     //テクスチャへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffEffect = NULL;//頂点バッファへのポインタ
-Effect g_aEffect[MAX_EFFECT];//弾の情報
+Effect g_aEffect[MAX_EFFECT];					//弾の情報
 
 void InitEffect(void)
 {
@@ -53,7 +53,12 @@ void InitEffect(void)
 		g_aEffect[nCntEffect].nType = 0;
 	}
 	//頂点バッファの設定
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_EFFECT, D3DUSAGE_WRITEONLY, FVF_VERTEX_2D, D3DPOOL_MANAGED, &g_pVtxBuffEffect, NULL);
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_EFFECT,
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_2D,
+		D3DPOOL_MANAGED,
+		&g_pVtxBuffEffect,
+		NULL);
 
 	VERTEX_2D* pVtx;
 

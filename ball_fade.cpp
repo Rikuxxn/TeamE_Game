@@ -6,9 +6,9 @@
 #include "ball_fade.h"
 
 //グローバル
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBallFade = NULL;//頂点バッファへのポインタ
-BALLFADE g_fade;//フェードの状態
-D3DXCOLOR g_colorBallFade;//ポリゴン(フェード)の色
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBallFade = NULL;	//頂点バッファへのポインタ
+BALLFADE g_fade;									//フェードの状態
+D3DXCOLOR g_colorBallFade;							//ポリゴン(フェード)の色
 
 void InitBallFade(MODE modeNext)
 {

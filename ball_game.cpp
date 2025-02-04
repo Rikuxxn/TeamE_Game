@@ -16,17 +16,17 @@
 #include "ball_clear.h"
 
 //グローバル
-BALLGAMESTATE g_gameState = BALLGAMESTATE_NONE;		  //ゲームの状態
+BALLGAMESTATE g_gameState = BALLGAMESTATE_NONE;	  //ゲームの状態
 int g_nCounterBallGameState = 0;				  //状態管理カウンター
 
 void InitBallGame(void)
 {
 	//各種オブジェクトの初期化処理
 	InitBallBackGround();	//背景の初期化処理
-	InitBallParticle();	//パーティクルの初期化
+	InitBallParticle();		//パーティクルの初期化
 	InitBallBlock();		//ブロックの初期化処理
 	InitBallEffect();		//エフェクトの初期化
-	InitBallItem();		//アイテムの初期化
+	InitBallItem();			//アイテムの初期化
 	InitBallClear();		//クリア画面の初期化
 
 	SetBallBlock(D3DXVECTOR3(BALLFIELD_LEFT + 100.0f, BALLFIELD_UNDER - 30.0f, 0.0f), D3DXVECTOR3(), 50.0f, 30.0f, 0);	//ブロック
@@ -76,11 +76,11 @@ void UpdateBallGame(void)
 
 	//各種オブジェクトの更新処理
 	UpdateBallBackGround();	//背景の更新処理
-	UpdateBallParticle();		//パーティクルの更新処理
+	UpdateBallParticle();	//パーティクルの更新処理
 	UpdateBallEffect();		//エフェクトの更新処理
-	UpdateBallItem();			//アイテムの更新処理
+	UpdateBallItem();		//アイテムの更新処理
 
-	if (/*pPlayer->bUse == false ||*/ nNum==0)//終了条件
+	if (nNum==0)//終了条件
 	{
 		//画面(モード)の設定
 		g_gameState = BALLGAMESTATE_END;

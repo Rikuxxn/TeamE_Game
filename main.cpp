@@ -22,6 +22,7 @@
 #include "enemy.h"
 #include "light.h"
 #include "tutorial.h"
+#include "password_game.h"
 
 //プロトタイプ宣言
 void DrawFPS(void);
@@ -30,15 +31,15 @@ void DrawEditInfo(void);
 void DrawTitleInfo(void);
 
 //グローバル変数
-LPDIRECT3D9 g_pD3D = NULL;//DirectX3Dオブジェクトへのポインタ
-LPD3DXFONT g_pFont = NULL;//フォントへのポインタ
+LPDIRECT3D9 g_pD3D = NULL;				//DirectX3Dオブジェクトへのポインタ
+LPD3DXFONT g_pFont = NULL;				//フォントへのポインタ
 
 LPDIRECT3DDEVICE9 g_pD3DDevice = NULL;
-MODE g_mode = MODE_TITLE;//現在のモード
-int g_nCountFPS = 0;//FPSカウンター
+MODE g_mode = MODE_TITLE;				//現在のモード
+int g_nCountFPS = 0;					//FPSカウンター
 
-RECT g_windowRect;                        //ウィンドウを切り替えるための変数
-bool g_isFullscreen = false;            //ウィンドウを切り替えるためのフラグ
+RECT g_windowRect;						//ウィンドウを切り替えるための変数
+bool g_isFullscreen = false;			//ウィンドウを切り替えるためのフラグ
 
 //=======================================
 //メイン関数
@@ -48,8 +49,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hInstancePrev, _
 
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF);//メモリリーク検知
 
-	DWORD dwCurrentTime;//現在時刻
-	DWORD dwExecLastTime;//最後に処理した時刻
+	DWORD dwCurrentTime;	//現在時刻
+	DWORD dwExecLastTime;	//最後に処理した時刻
 
 
 	WNDCLASSEX wcex =
@@ -567,6 +568,11 @@ void Draw(void)
 		//FPSの表示
 		DrawFPS();
 
+		//パスワードの答え
+		DrawAPass(GetAnum());
+		DrawAPass2(GetAnum2());
+		DrawAPass3(GetAnum3());
+		DrawAPass4(GetAnum4());
 #endif
 		//描画終了
 		g_pD3DDevice->EndScene();
@@ -834,14 +840,14 @@ void SetupVertexFog(LPDIRECT3DDEVICE9 pDevice, DWORD Color, DWORD Mode, BOOL Use
 	if (pMode == MODE_TITLE)
 	{
 		// 霧の開始・終了距離を遠めに設定
-		Start = 100.0f;  // 霧の開始距離
-		End = 1000.0f;   // 霧の終了距離
+		Start = 100.0f;	// 霧の開始距離
+		End = 1000.0f;	// 霧の終了距離
 	}
 	else if (pMode == MODE_GAME)
 	{
 		// 霧の開始・終了距離を遠めに設定
-		Start = 100.0f;  // 霧の開始距離
-		End = 700.0f;   // 霧の終了距離
+		Start = 100.0f;	// 霧の開始距離
+		End = 700.0f;	// 霧の終了距離
 	}
 
     // 霧の有効化
@@ -879,4 +885,48 @@ void offWireFrame()
 bool GetFullScreen(void)
 {
 	return g_isFullscreen;
+}
+void DrawAPass(int Answer)
+{
+	RECT rect = { 0,60,SCREEN_WIDTH,SCREEN_HEIGHT };
+	char aStr[256];
+
+	//文字列に代入
+	wsprintf(&aStr[0], "一つ目の番号:%d", Answer);
+
+	//テキストの描画
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+}
+void DrawAPass2(int Answer2)
+{
+	RECT rect = { 0,80,SCREEN_WIDTH,SCREEN_HEIGHT };
+	char aStr[256];
+
+	//文字列に代入
+	wsprintf(&aStr[0], "二つ目の番号:%d", Answer2);
+
+	//テキストの描画
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+}
+void DrawAPass3(int Answer3)
+{
+	RECT rect = { 0,100,SCREEN_WIDTH,SCREEN_HEIGHT };
+	char aStr[256];
+
+	//文字列に代入
+	wsprintf(&aStr[0], "三つ目の番号:%d", Answer3);
+
+	//テキストの描画
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+}
+void DrawAPass4(int Answer4)
+{
+	RECT rect = { 0,120,SCREEN_WIDTH,SCREEN_HEIGHT };
+	char aStr[256];
+
+	//文字列に代入
+	wsprintf(&aStr[0], "四つ目の答え:%d", Answer4);
+
+	//テキストの描画
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 }

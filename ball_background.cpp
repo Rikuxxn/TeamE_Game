@@ -8,9 +8,9 @@
 #define NUM_BG (2)//背景の数
 
 //グローバル
-LPDIRECT3DTEXTURE9 g_pTextureBallBG[NUM_BG] = { NULL };//テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureBallBG3 = NULL;//テクスチャへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBallBG = NULL;//頂点バッファへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureBallBG[NUM_BG] = { NULL };	//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureBallBG3 = NULL;			//テクスチャへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBallBG = NULL;		//頂点バッファへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBallBG2 = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBallBG3 = NULL;
 float g_aBallPosTexU[NUM_BG];//テクスチャ座標の開始位置（U値）

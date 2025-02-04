@@ -48,39 +48,39 @@ void InitEdit(void)
     
     // ライトの設定
     AddLight(
-        D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-        D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),    // 暗めの白い光
-        D3DXVECTOR3(0.0f, -1.0f, 0.0f),       // 真下方向
-        D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
+        D3DLIGHT_DIRECTIONAL,              // ライトの種類
+        D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), // 暗めの白い光
+        D3DXVECTOR3(0.0f, -1.0f, 0.0f),    // 真下方向
+        D3DXVECTOR3(0.0f, 260.0f, 0.0f)    // 天井の位置（無視される）
     );
 
     AddLight(
-        D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-        D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),    // 暗めの白い光
-        D3DXVECTOR3(-1.0f, 0.0f, 0.0f),       // 左方向
-        D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
+        D3DLIGHT_DIRECTIONAL,               // ライトの種類
+        D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),  // 暗めの白い光
+        D3DXVECTOR3(-1.0f, 0.0f, 0.0f),     // 左方向
+        D3DXVECTOR3(0.0f, 260.0f, 0.0f)     // 天井の位置（無視される）
     );
 
     AddLight(
-        D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-        D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),    // 暗めの白い光
-        D3DXVECTOR3(0.0f, 0.0f, -1.0f),       // 手前方向
-        D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
+        D3DLIGHT_DIRECTIONAL,               // ライトの種類
+        D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),  // 暗めの白い光
+        D3DXVECTOR3(0.0f, 0.0f, -1.0f),     // 手前方向
+        D3DXVECTOR3(0.0f, 260.0f, 0.0f)     // 天井の位置（無視される）
     );
 
 
     AddLight(
-        D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-        D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),    // 暗めの白い光
+        D3DLIGHT_DIRECTIONAL,                // ライトの種類
+        D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),   // 暗めの白い光
         D3DXVECTOR3(1.0f, 0.0f, 0.0f),       // 右方向
-        D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
+        D3DXVECTOR3(0.0f, 260.0f, 0.0f)      // 天井の位置（無視される）
     );
 
     AddLight(
-        D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-        D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),    // 暗めの白い光
+        D3DLIGHT_DIRECTIONAL,                // ライトの種類
+        D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),   // 暗めの白い光
         D3DXVECTOR3(0.0f, 0.0f, 1.0f),       // 奥方向
-        D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
+        D3DXVECTOR3(0.0f, 260.0f, 0.0f)      // 天井の位置（無視される）
     );
 
     LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
@@ -91,9 +91,9 @@ void InitEdit(void)
     for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
     {
         //初期化
-        g_Editinfo[nCntBlock].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//位置
-        g_Editinfo[nCntBlock].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//向き
-        g_Editinfo[nCntBlock].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//移動量
+        g_Editinfo[nCntBlock].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);  //位置
+        g_Editinfo[nCntBlock].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);  //向き
+        g_Editinfo[nCntBlock].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f); //移動量
         g_Editinfo[nCntBlock].bUse = false;
         g_Editinfo[nCntBlock].nType = BLOCKTYPE_WALL;
     }

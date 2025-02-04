@@ -370,19 +370,19 @@ void SetCamera(void)
 	{
 		//プロジェクションマトリックスの作成
 		D3DXMatrixPerspectiveFovLH(&g_camera.mtxProjection,
-			D3DXToRadian(60.0f),                  // 視野角
+			D3DXToRadian(60.0f),						// 視野角
 			(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, // アスペクト比
-			1.0f,                                // 近クリップ面
-			2500.0f);                            // 遠クリップ面
+			1.0f,										// 近クリップ面
+			2500.0f);									// 遠クリップ面
 	}
 	else
 	{
 		//プロジェクションマトリックスの作成
 		D3DXMatrixPerspectiveFovLH(&g_camera.mtxProjection,
-			D3DXToRadian(45.0f),                  // 視野角
+			D3DXToRadian(45.0f),						// 視野角
 			(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, // アスペクト比
-			1.0f,                                // 近クリップ面
-			1300.0f);                            // 遠クリップ面
+			1.0f,										// 近クリップ面
+			1300.0f);									// 遠クリップ面
 	}
 
 	//プロジェクションマトリックスの設定

@@ -5,8 +5,8 @@
 #include "shooting_clear.h"
 
 //グローバル
-LPDIRECT3DTEXTURE9 g_apTextureClear = {};//テクスチャへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffClear = NULL;	  //頂点バッファへのポインタ
+LPDIRECT3DTEXTURE9 g_apTextureClear = {};		//テクスチャへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffClear = NULL;	//頂点バッファへのポインタ
 
 //クリアの初期化処理
 void InitClear(void)

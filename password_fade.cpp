@@ -79,8 +79,6 @@ void UpdatePasswordFade(void)
 		else if (g_fade == FADE_OUT)
 		{//フェードアウト状態
 			g_colorPasswordFade.a += 0.04f;//ポリゴンを不透明にしていく
-			//g_colorPasswordFade.r += 0.01f;
-			//g_colorPasswordFade.b += 0.02f;
 			
 			g_colorPasswordFade.r += 0.04f;
 			g_colorPasswordFade.g += 0.04f;
@@ -92,15 +90,29 @@ void UpdatePasswordFade(void)
 				g_fade = FADE_IN;//フェードイン状態に
 			}
 		}
-		else if (g_fade == FADE_DAMAGE)
+		else if (g_fade == FADE_FAIL)
 		{//フェードアウト状態
 			g_colorPasswordFade.a += 0.04f;//ポリゴンを不透明にしていく
 
 			g_colorPasswordFade.r += 0.04f;
-			g_colorPasswordFade.g += 0.04f;
-			g_colorPasswordFade.b += 0.04f;
+			//g_colorPasswordFade.g += 0.04f;
+			//g_colorPasswordFade.b += 0.04f;
 
-			if (g_colorPasswordFade.a >= 1.0f)
+			if (g_colorPasswordFade.a >= 0.5f)
+			{
+				g_colorPasswordFade.a = 1.0f;
+				g_fade = FADE_IN;//フェードイン状態に
+			}
+		}
+		else if (g_fade == FADE_SUCCESS)
+		{
+			g_colorPasswordFade.a += 0.04f;//ポリゴンを不透明にしていく
+
+			//g_colorPasswordFade.r += 0.04f;
+			g_colorPasswordFade.g += 0.04f;
+			//g_colorPasswordFade.b += 0.04f;
+
+			if (g_colorPasswordFade.a >= 0.5f)
 			{
 				g_colorPasswordFade.a = 1.0f;
 				g_fade = FADE_IN;//フェードイン状態に
@@ -145,7 +157,7 @@ void DrawPasswordFade(void)
 }
 void SetPasswordFade(PASSWORDFADE fade)
 {
-	g_fade = FADE_OUT;										//フェードアウト状態に
+	g_fade = fade;											//フェードアウト状態に
 	g_colorPasswordFade = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);//黒いポリゴン(透明)にしておく
 }
 PASSWORDFADE GetPasswordFade(void)

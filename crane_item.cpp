@@ -51,16 +51,17 @@ void InitCraneItem(void)
 		g_item[nCntItem].bUse = false;//使用していない状態にする
 		g_item[nCntItem].bGet = false;
 		g_item[nCntItem].bcatch = false;
+		g_item[nCntItem].bFall = false;
 	}
 	g_nItem = 0;
 
 	//頂点バッファの設定
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_ITEM,
-														D3DUSAGE_WRITEONLY,
-														FVF_VERTEX_2D,
-														D3DPOOL_MANAGED,
-														&g_pVtxBuffItem,
-														NULL);
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_2D,
+		D3DPOOL_MANAGED,
+		&g_pVtxBuffItem,
+		NULL);
 
 	VERTEX_2D* pVtx;
 
@@ -124,16 +125,17 @@ void UpdateCraneItem(void)
 
 	for (int nCntItem = 0; nCntItem < MAX_ITEM; nCntItem++)
 	{
-		if (g_item[nCntItem].bcatch == true && pPlayer->bMove == false)
+		if (pPlayer->bMove == false &&
+			g_item[nCntItem].bcatch == true &&
+			g_item[nCntItem].bFall == false)
 		{
 			g_item[nCntItem].pos = pPlayer->pos;
-
 		}
-		if (pPlayer->bLeft == false
-			&& pPlayer->bMove == true
-			&& g_item[nCntItem].bcatch == false)
+		if (pPlayer->bLeft == false &&
+			g_item[nCntItem].bcatch == false)
 		{
 			g_item[nCntItem].move.y = 4.5f;
+			g_item[nCntItem].bFall = true;
 		}
 
 		g_item[nCntItem].pos += g_item[nCntItem].move;
@@ -142,13 +144,15 @@ void UpdateCraneItem(void)
 		{
 			g_item[nCntItem].pos.y = FIELD_UNDER - g_item[nCntItem].fHeight;
 			g_item[nCntItem].bcatch = false;
+			g_item[nCntItem].bFall = false;
 		}
 		if (g_item[nCntItem].pos.y >= ITEM_CLEARPOSY
 			&& g_item[nCntItem].pos.x - g_item[nCntItem].fWidth >= ITEM_CLEARPOSX - ITEM_CLEARZONE
 			&& g_item[nCntItem].pos.x + g_item[nCntItem].fWidth <= ITEM_CLEARPOSX + ITEM_CLEARZONE
 			&& g_item[nCntItem].bcatch == true)
-		{
+		{//アイテムゲット
 			g_item[nCntItem].bUse = false;
+			g_item[nCntItem].bFall = false;
 			g_nItem--;
 		}
 	}
@@ -171,6 +175,7 @@ void UpdateCraneItem(void)
 	//頂点バッファをアンロック
 	g_pVtxBuffItem->Unlock();
 }
+//
 void DrawCraneItem(void)
 {
 	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
@@ -243,6 +248,13 @@ int GetNumItem(void)
 {
 	return g_nItem;
 }
+CRANEITEM GetItem(void)
+{
+	for (int nCntItem = 0; nCntItem < MAX_ITEM; nCntItem++)
+	{
+		return g_item[nCntItem];
+	}
+}
 //アイテムのあたりはんてぇ
 bool CollisionCraneItem(D3DXVECTOR3* pPos,		//現在の位置
 						 D3DXVECTOR3* pPosOld,	//前回の位置
@@ -261,20 +273,13 @@ bool CollisionCraneItem(D3DXVECTOR3* pPos,		//現在の位置
 			if (g_item[nCntItem].pos.x >= pPlayer->pos.x - ITEM_WIDTH
 				&& g_item[nCntItem].pos.x <= pPlayer->pos.x + ITEM_WIDTH
 				&& g_item[nCntItem].pos.y >= pPlayer->pos.y - ITEM_HEIGHT
-				&& g_item[nCntItem].pos.y <= pPlayer->pos.y + ITEM_HEIGHT)
+				&& g_item[nCntItem].pos.y <= pPlayer->pos.y + ITEM_HEIGHT
+				&& pPlayer->pos.x >= FIELD_LEFT + 75.0f + HABA)
 			{
-				//g_item.bDisp = false;
-				//g_item.bGet = true;
 				g_item[nCntItem].bcatch = true;
+				//g_item[nCntItem].pos = pPlayer->pos;
 			}
 		}
 	}
 	return bUse;
-}
-bool GetCraneItem(void)
-{
-	for (int nCntItem = 0; nCntItem < MAX_ITEM; nCntItem++)
-	{
-		return g_item[nCntItem].bUse;
-	}
 }

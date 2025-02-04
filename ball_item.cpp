@@ -62,11 +62,11 @@ void InitBallItem(void)
 
 	//頂点バッファの設定
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_ITEM,
-														D3DUSAGE_WRITEONLY,
-														FVF_VERTEX_2D,
-														D3DPOOL_MANAGED,
-														&g_pVtxBuffBallItem,
-														NULL);
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_2D,
+		D3DPOOL_MANAGED,
+		&g_pVtxBuffBallItem,
+		NULL);
 
 	VERTEX_2D* pVtx;
 

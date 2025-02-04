@@ -96,5 +96,9 @@ void ToggleFullscreen(HWND hWnd);// ウィンドウをフルスクリーン
 MODE GetMode(void);
 bool GetFullScreen(void);
 void SetupVertexFog(LPDIRECT3DDEVICE9 pDevice, DWORD Color, DWORD Mode, BOOL UseRange, FLOAT Density);
+void DrawAPass(int Answer);
+void DrawAPass2(int Answer2);
+void DrawAPass3(int Answer3);
+void DrawAPass4(int Answer4);
 
 #endif

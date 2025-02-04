@@ -8,7 +8,7 @@
 
 #define HABA (25.0f)		//幅
 #define TAKASA (50.0f)		//高さ
-#define BULLETINTERVAL (5)	//発射間隔
+#define BULLETINTERVAL (10)	//発射間隔
 #define BULLETCOOL (20)		//クールタイム
 #define BULLETMAX (3)		//1度の射撃数
 

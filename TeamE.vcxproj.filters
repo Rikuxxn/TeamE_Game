@@ -52,6 +52,15 @@
     <ClCompile Include="ball_block.cpp" />
     <ClCompile Include="task.cpp" />
     <ClCompile Include="time.cpp" />
+    <ClCompile Include="password_background.cpp" />
+    <ClCompile Include="password_block.cpp" />
+    <ClCompile Include="password_clear.cpp" />
+    <ClCompile Include="password_effect.cpp" />
+    <ClCompile Include="password_fade.cpp" />
+    <ClCompile Include="password_game.cpp" />
+    <ClCompile Include="password_item.cpp" />
+    <ClCompile Include="password_particle.cpp" />
+    <ClCompile Include="password_score.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
@@ -104,5 +113,14 @@
     <ClInclude Include="ball_block.h" />
     <ClInclude Include="task.h" />
     <ClInclude Include="time.h" />
+    <ClInclude Include="password_background.h" />
+    <ClInclude Include="password_block.h" />
+    <ClInclude Include="password_clear.h" />
+    <ClInclude Include="password_effect.h" />
+    <ClInclude Include="password_fade.h" />
+    <ClInclude Include="password_game.h" />
+    <ClInclude Include="password_item.h" />
+    <ClInclude Include="password_particle.h" />
+    <ClInclude Include="password_score.h" />
   </ItemGroup>
 </Project>

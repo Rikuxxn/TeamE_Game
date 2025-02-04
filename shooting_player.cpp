@@ -228,7 +228,7 @@ void UpdateShootingPlayer(void)
 			if (GetKeyboardPress(DIK_SPACE) == true || GetMouseButtonPress(0)/*|| GetJoypadPress(JOYKEY_A) == true*/)
 			{//SPACE
 				g_player.nBulletCnt++;
-				if (g_player.nBulletCnt >= BULLETINTERVAL && g_player.nBulletMax < BULLETMAX)
+				if (g_player.nBulletCnt >= BULLETINTERVAL/* && g_player.nBulletMax < BULLETMAX*/)
 				{
 					//’e‚ÌÝ’è
 					//PlaySound(SOUND_LABEL_SHOT01);

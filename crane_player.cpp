@@ -1,5 +1,5 @@
 //---------------------------------------------------------
-// 2Dアクション
+// クレーンゲーム
 // Author:Yoshida Atsushi
 //---------------------------------------------------------
 
@@ -145,7 +145,7 @@ void UpdateCranePlayer(void)
 			//移動量を更新（増加）
 			if (g_player.move.x <= MAX_SPEED_R)
 			{ 
-				g_player.move.x += 0.4f;
+				g_player.move.x += 0.8f;
 			}
 			else if (g_player.move.x >= MAX_SPEED_R)
 			{
@@ -205,7 +205,7 @@ void UpdateCranePlayer(void)
 									ITEM_HEIGHT);
 
 	//移動量を更新（減衰）
-	g_player.move.x += (0.0f - g_player.move.x) * 0.04f;/*0.13f;*/
+	g_player.move.x += (0.0f - g_player.move.x) * 0.2f;/*0.13f;*/
 
 	if (g_player.pos.y >= FIELD_UNDER)//地面
 	{

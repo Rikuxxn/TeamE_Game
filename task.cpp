@@ -8,13 +8,12 @@
 #include "block.h"
 #include "game.h"
 
-
-
 // グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureTask[TASKTYPE_MAX] = {};	//テクスチャへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTask = NULL;			//頂点バッファへのポインタ
 TASK g_aTask[MAX_TASK];
 
+int g_nCntTask;
 
 //============================================
 //タスクUI表示の初期化処理
@@ -31,12 +30,10 @@ void InitTask(void)
 
 	for (int nCnt = 0; nCnt < TASKTYPE_MAX; nCnt++)
 	{
-
 		//テクスチャの読み込み
 		D3DXCreateTextureFromFile(pDevice,
 			TASK_TEXTURE[nCnt],
 			&g_pTextureTask[nCnt]);
-
 	}
 
 	//タスク完了UIの情報の初期化
@@ -50,6 +47,7 @@ void InitTask(void)
 		g_aTask[nCntTask].bUse = false;
 
 	}
+	g_nCntTask = 0;
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_TASK,
@@ -66,7 +64,6 @@ void InitTask(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffTask->Lock(0, 0, (void**)&pVtx, 0);
 
-
 	for (nCntTask = 0; nCntTask < MAX_TASK; nCntTask++)
 	{
 
@@ -82,13 +79,11 @@ void InitTask(void)
 		pVtx[2].rhw = 1.0f;
 		pVtx[3].rhw = 1.0f;
 
-
 		//頂点カラーの設定
 		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
 
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -96,11 +91,9 @@ void InitTask(void)
 		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
 		pVtx[3].tex = D3DXVECTOR2(4.0f, 1.0f);
 
-
 		pVtx += 4;//頂点データのポインタを4つ分進める
 
 	}
-
 
 	//頂点バッファをアンロックする
 	g_pVtxBuffTask->Unlock();
@@ -135,6 +128,7 @@ void UninitTask(void)
 void UpdateTask(void)
 {
 
+	bool bFuseGet = GetFuseGet();
 	bool bFuseCmp = GetFuseCmp();
 	bool bSTClear = GetSTClear();
 	bool bACClear = GetACClear();
@@ -161,10 +155,68 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
+		else if (bFuseCmp == false && g_aTask[nCntTask].nType == TASKTYPE_SUB1)
+		{
+			if (g_aTask[nCntTask].pos.x <= 1170.0f)
+			{
+				g_aTask[nCntTask].pos.x -= 0.0f;
+			}
+			else if (g_aTask[nCntTask].pos.x <= 2350.0f)
+			{
+				g_aTask[nCntTask].pos.x -= 15.0f;
+			}
+		}
+		else if (bFuseCmp == false && g_aTask[nCntTask].nType == TASKTYPE_SUB2)
+		{
+			if (g_aTask[nCntTask].pos.x <= 1160.0f)
+			{
+				g_aTask[nCntTask].pos.x -= 0.0f;
+			}
+			else if (g_aTask[nCntTask].pos.x <= 2350.0f)
+			{
+				g_aTask[nCntTask].pos.x -= 15.0f;
+			}
+		}
 		else if (bFuseCmp == true && bSTClear == false && bACClear == false && bBallClear == false &&
 			g_aTask[nCntTask].nType == TASKTYPE_TWO)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1120.0f)
+			{
+				g_aTask[nCntTask].pos.x -= 0.0f;
+			}
+			else if (g_aTask[nCntTask].pos.x <= 2350.0f)
+			{
+				g_aTask[nCntTask].pos.x -= 15.0f;
+			}
+		}
+		else if (bFuseCmp == true && bSTClear == false && bACClear == false && bBallClear == false &&
+			g_aTask[nCntTask].nType == TASKTYPE_SUB3)
+		{
+			if (g_aTask[nCntTask].pos.x <= 1160.0f)
+			{
+				g_aTask[nCntTask].pos.x -= 0.0f;
+			}
+			else if (g_aTask[nCntTask].pos.x <= 2350.0f)
+			{
+				g_aTask[nCntTask].pos.x -= 15.0f;
+			}
+		}
+		else if (bFuseCmp == true && bSTClear == false && bACClear == false && bBallClear == false &&
+			g_aTask[nCntTask].nType == TASKTYPE_SUB4)
+		{
+			if (g_aTask[nCntTask].pos.x <= 1150.0f)
+			{
+				g_aTask[nCntTask].pos.x -= 0.0f;
+			}
+			else if (g_aTask[nCntTask].pos.x <= 2350.0f)
+			{
+				g_aTask[nCntTask].pos.x -= 15.0f;
+			}
+		}
+		else if (bFuseCmp == true && bSTClear == false && bACClear == false && bBallClear == false &&
+			g_aTask[nCntTask].nType == TASKTYPE_SUB5)
+		{
+			if (g_aTask[nCntTask].pos.x <= 1150.0f)
 			{
 				g_aTask[nCntTask].pos.x -= 0.0f;
 			}
@@ -184,6 +236,27 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
+		else if (bSTClear == true && bACClear == true && bBallClear == true && g_aTask[nCntTask].nType == TASKTYPE_SUB6)
+		{
+			if (g_aTask[nCntTask].pos.x <= 1150.0f)
+			{
+				g_aTask[nCntTask].pos.x -= 0.0f;
+			}
+			else if (g_aTask[nCntTask].pos.x <= 2350.0f)
+			{
+				g_aTask[nCntTask].pos.x -= 15.0f;
+			}
+		}
+
+		// ヒューズを見つけたら
+		if (bFuseGet == true)
+		{
+			if (g_aTask[nCntTask].nType == TASKTYPE_SUB1)
+			{
+				g_aTask[nCntTask].bUse = false;
+				SetTask(D3DXVECTOR3(1165.0f, 230.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB1_CMP);
+			}
+		}
 
 		// ヒューズを付けたら
 		if (bFuseCmp == true)
@@ -197,6 +270,61 @@ void UpdateTask(void)
 					g_aTask[nCntTask].pos.x += 0.0f;
 					g_aTask[nCntTask].bUse = false;
 				}
+			}
+
+			if (g_aTask[nCntTask].nType == TASKTYPE_SUB1_CMP)
+			{
+				g_aTask[nCntTask].pos.x += 15.0f;
+
+				if (g_aTask[nCntTask].pos.x >= 2350.0f)
+				{
+					g_aTask[nCntTask].pos.x += 0.0f;
+					g_aTask[nCntTask].bUse = false;
+				}
+			}
+			if (g_aTask[nCntTask].nType == TASKTYPE_SUB2_CMP)
+			{
+				g_aTask[nCntTask].pos.x += 15.0f;
+
+				if (g_aTask[nCntTask].pos.x >= 2350.0f)
+				{
+					g_aTask[nCntTask].pos.x += 0.0f;
+					g_aTask[nCntTask].bUse = false;
+				}
+			}
+
+			if (g_aTask[nCntTask].nType == TASKTYPE_SUB2)
+			{
+				g_aTask[nCntTask].bUse = false;
+				SetTask(D3DXVECTOR3(1155.0f, 260.0f, 0.0f), 130.0f, 20.0f, TASKTYPE_SUB2_CMP);
+			}
+		}
+
+		// クレーンゲームクリアしたら
+		if (bACClear == true)
+		{
+			if (g_aTask[nCntTask].nType == TASKTYPE_SUB3)
+			{
+				g_aTask[nCntTask].bUse = false;
+				SetTask(D3DXVECTOR3(1150.0f, 230.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB3_CMP);
+			}
+		}
+		// シューティングクリアしたら
+		if (bSTClear == true)
+		{
+			if (g_aTask[nCntTask].nType == TASKTYPE_SUB4)
+			{
+				g_aTask[nCntTask].bUse = false;
+				SetTask(D3DXVECTOR3(1145.0f, 260.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB4_CMP);
+			}
+		}
+		// ボールプールクリアしたら
+		if (bBallClear == true)
+		{
+			if (g_aTask[nCntTask].nType == TASKTYPE_SUB5)
+			{
+				g_aTask[nCntTask].bUse = false;
+				SetTask(D3DXVECTOR3(1145.0f, 290.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB5_CMP);
 			}
 		}
 
@@ -212,14 +340,46 @@ void UpdateTask(void)
 					g_aTask[nCntTask].pos.x += 0.0f;
 					g_aTask[nCntTask].bUse = false;
 				}
-
 			}
+
+			if (g_aTask[nCntTask].nType == TASKTYPE_SUB3_CMP)
+			{
+				g_aTask[nCntTask].pos.x += 15.0f;
+
+				if (g_aTask[nCntTask].pos.x >= 2350.0f)
+				{
+					g_aTask[nCntTask].pos.x += 0.0f;
+					g_aTask[nCntTask].bUse = false;
+				}
+			}
+
+			if (g_aTask[nCntTask].nType == TASKTYPE_SUB4_CMP)
+			{
+				g_aTask[nCntTask].pos.x += 15.0f;
+
+				if (g_aTask[nCntTask].pos.x >= 2350.0f)
+				{
+					g_aTask[nCntTask].pos.x += 0.0f;
+					g_aTask[nCntTask].bUse = false;
+				}
+			}
+
+			if (g_aTask[nCntTask].nType == TASKTYPE_SUB5_CMP)
+			{
+				g_aTask[nCntTask].pos.x += 15.0f;
+
+				if (g_aTask[nCntTask].pos.x >= 2350.0f)
+				{
+					g_aTask[nCntTask].pos.x += 0.0f;
+					g_aTask[nCntTask].bUse = false;
+				}
+			}
+
 		}
 
 		//位置を更新
 		g_aTask[nCntTask].pos.x += g_aTask[nCntTask].move.x;
 		g_aTask[nCntTask].pos.y += g_aTask[nCntTask].move.y;
-
 
 		//頂点座標の更新
 		pVtx[1].pos = D3DXVECTOR3(g_aTask[nCntTask].pos.x + g_aTask[nCntTask].fWidth, g_aTask[nCntTask].pos.y - g_aTask[nCntTask].fHeight, 0.0f);
@@ -258,7 +418,6 @@ void DrawTask(void)
 		if (g_aTask[nCntTask].bUse == true)
 		{//ブロックが使用されている
 
-
 			int nType = g_aTask[nCntTask].nType;
 
 			//テクスチャの設定
@@ -294,7 +453,6 @@ void SetTask(D3DXVECTOR3 pos, float fWidth, float fHeight, int nType)
 			g_aTask[nCntTask].fWidth = fWidth;
 			g_aTask[nCntTask].fHeight = fHeight;
 			g_aTask[nCntTask].bUse = true;
-
 
 			//テクスチャ座標の設定
 			pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);

@@ -66,7 +66,6 @@ void InitEnemy(void)
     //デバイスの取得
     pDevice = GetDevice();
 
-
     //初期化
     g_aEnemy.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//位置を初期化する
     g_aEnemy.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	//前の位置を初期化する

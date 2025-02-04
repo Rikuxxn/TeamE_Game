@@ -832,6 +832,7 @@ void ToggleFullscreen(HWND hWnd)
 //============================================================
 void SetupVertexFog(LPDIRECT3DDEVICE9 pDevice, DWORD Color, DWORD Mode, BOOL UseRange, FLOAT Density)
 {
+
 	MODE pMode = GetMode();
 
 	float Start = 0.0f;			// 霧の開始距離

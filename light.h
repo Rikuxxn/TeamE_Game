@@ -16,6 +16,7 @@ void RemoveLight(int index);
 void UninitLight(void);
 void UpdateLight(int index, D3DXVECTOR3 newPosition, D3DXVECTOR3 newDirection);
 void AddLightPlayer(D3DLIGHTTYPE type, D3DXCOLOR diffuse);
+void AddSpotlightToBlock(void);
 
 #endif
 

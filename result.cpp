@@ -321,7 +321,7 @@ void UpdateResult(void)
 	g_nRankCnt++;
 
 	// ランク表示フェード
-	if (g_nRankCnt >= 210)
+	if (g_nRankCnt >= 300)
 	{
 		if (g_fAlphaRank < 255.0f)
 		{
@@ -604,10 +604,10 @@ void InitResultTime(void)
 		g_aResultTime[nCnt].bUse = true;
 
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(800.0f + nCnt * 70.0f, 190.0f, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(800.0f + nCnt * 70.0f + 80.0f, 190.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(800.0f + nCnt * 70.0f, 280.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(800.0f + nCnt * 70.0f + 80.0f, 280.0f, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(1010.0f + nCnt * 30.0f, 195.0f, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(1010.0f + nCnt * 30.0f + 40.0f, 195.0f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(1010.0f + nCnt * 30.0f, 255.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(1010.0f + nCnt * 30.0f + 40.0f, 255.0f, 0.0f);
 
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
@@ -636,14 +636,14 @@ void InitResultTime(void)
 	// コロンの頂点バッファをロック
 	g_pVtxBuffResultColon->Lock(0, 0, (void**)&pVtx, 0);
 
-	float colonX = 960.0f; // コロンのX座標
+	float colonX = 1080.0f; // コロンのX座標
 	float colonY = 190.0f;  // コロンのY座標
 
 	// コロンの頂点座標設定
 	pVtx[0].pos = D3DXVECTOR3(colonX, colonY, 0.0f);
 	pVtx[1].pos = D3DXVECTOR3(colonX + 40.0f, colonY, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(colonX, colonY + 90.0f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(colonX + 40.0f, colonY + 90.0f, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(colonX, colonY + 70.0f, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(colonX + 40.0f, colonY + 70.0f, 0.0f);
 
 	for (int nCntColon = 0; nCntColon < 4; nCntColon++)
 	{
@@ -669,10 +669,10 @@ void InitResultTime(void)
 		g_aResultTime[nCnt].bUse = true;
 
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(1020.0f + nCnt * 70.0f, 190.0f, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(1020.0f + nCnt * 70.0f + 80.0f, 190.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(1020.0f + nCnt * 70.0f, 280.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(1020.0f + nCnt * 70.0f + 80.0f, 280.0f, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(1120.0f + nCnt * 30.0f, 195.0f, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(1120.0f + nCnt * 30.0f + 40.0f, 195.0f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(1120.0f + nCnt * 30.0f, 255.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(1120.0f + nCnt * 30.0f + 40.0f, 255.0f, 0.0f);
 
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
@@ -856,6 +856,12 @@ void DrawResultTime(void)
 	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
 	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
 
+	// アルファ値を反映
+	pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+	pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+	pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+	pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+
 	// 頂点バッファをアンロック
 	g_pVtxBuffResultTimeMinute->Unlock();
 
@@ -919,6 +925,12 @@ void DrawResultTime(void)
 	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
 	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
 	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+
+	// アルファ値を反映
+	pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+	pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+	pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
+	pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaTime);
 
 	// 頂点バッファをアンロック
 	g_pVtxBuffResultTimeSecond->Unlock();

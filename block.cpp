@@ -380,9 +380,7 @@ void SetBlock(D3DXVECTOR3 pos, D3DXVECTOR3 rot,int nType)
 void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove, D3DXVECTOR3* pSize)
 {
 
-	bool bSTClear = GetSTClear();
-	bool bACClear = GetACClear();
-	bool bBallClear = GetBallClear();
+	bool bPassClear = GetPassClear();
 
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
@@ -395,44 +393,6 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 			// プレイヤー OBB の情報を取得
 			D3DXMATRIX playerWorld;
 			D3DXMatrixTranslation(&playerWorld, pPos->x, pPos->y, pPos->z);
-
-			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_UFOCATCHER1)
-			{
-				// OBB 衝突判定
-				if (CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
-				{
-					// Z軸の衝突補正
-					pPos->z = pPosOld->z;
-					playerWorld._43 = pPos->z;
-					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
-					{
-						// Z軸方向の移動量を滑らかに減衰
-						pMove->z *= 0.5f;
-						continue;
-					}
-
-					// X軸の衝突補正
-					pPos->x = pPosOld->x;
-					playerWorld._41 = pPos->x;
-					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
-					{
-						// X軸方向の移動量を滑らかに減衰
-						pMove->x *= 0.5f;
-						continue;
-					}
-
-					// Y軸の衝突補正
-					pPos->y = pPosOld->y;
-					playerWorld._42 = pPos->y;
-					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
-					{
-						// Y軸方向の移動量を滑らかに減衰
-						pMove->y *= 0.5f;
-						continue;
-					}
-
-				}
-			}
 
 			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_EXIT)
 			{
@@ -448,7 +408,7 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 						pMove->z *= 0.5f;
 
 						// ミニゲームをすべてクリアしていたら
-						if (bSTClear == true && bACClear == true && bBallClear == true)
+						if (bPassClear == true)
 						{
 							g_bExit = true;
 						}

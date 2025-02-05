@@ -133,6 +133,7 @@ void UpdateTask(void)
 	bool bSTClear = GetSTClear();
 	bool bACClear = GetACClear();
 	bool bBallClear = GetBallClear();
+	bool bPassClear = GetPassClear();
 
 
 	VERTEX_2D* pVtx;
@@ -325,6 +326,16 @@ void UpdateTask(void)
 			{
 				g_aTask[nCntTask].bUse = false;
 				SetTask(D3DXVECTOR3(1145.0f, 290.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB5_CMP);
+			}
+		}
+
+		// à√èÿî‘çÜÇì¸óÕäÆóπ
+		if (bPassClear == true)
+		{
+			if (g_aTask[nCntTask].nType == TASKTYPE_SUB6)
+			{
+				g_aTask[nCntTask].bUse = false;
+				SetTask(D3DXVECTOR3(1145.0f, 230.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB6_CMP);
 			}
 		}
 

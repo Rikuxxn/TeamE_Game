@@ -15,17 +15,25 @@
 
 
 //グローバル変数
-LPDIRECT3DTEXTURE9 g_pTextureResult = NULL;					//テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureRank = NULL;					//テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureResultGameover = NULL;			//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureResult = NULL;						//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureRank = NULL;						//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureGameoverSelect[MAX_GAMEOVER] = {};	//テクスチャへのポインタ
 
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResult = NULL;			//頂点バッファへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffRank = NULL;			//頂点バッファへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultGameover = NULL;	//頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResult = NULL;				//頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffRank = NULL;					//頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffGameoverSelect = NULL;		//頂点バッファへのポインタ
 
-float g_fAlphaGameover = 0.0f;								// ゲームオーバー用のアルファ値
-float g_fAlphaTime = 0.0f;									// タイム用のアルファ値
-float g_fAlphaRank = 0.0f;									// ランク用のアルファ値
+GAMEOVER_MENU g_gameoverMenu;									//ゲームオーバーメニュー
+
+// ゲームオーバー項目の拡大率を管理する配列
+float gameoverScales[MAX_GAMEOVER] = { GAMEOVER_MIN_SCALE, GAMEOVER_MIN_SCALE };
+
+// 項目ごとの透明度を保持する配列
+float gameoverAlphas[MAX_GAMEOVER] = { 0.3f, 0.3f };				// 初期は全て半透明（範囲外状態）
+
+
+float g_fAlphaTime = 0.0f;										// タイム用のアルファ値
+float g_fAlphaRank = 0.0f;										// ランク用のアルファ値
 
 int g_nRankCnt = 0;
 int g_nTimeCnt = 0;
@@ -56,9 +64,7 @@ void InitResult(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-
-	g_fAlphaGameover = 0.0f;		// フェードアルファ値をリセット
-	g_fAlphaRank = 0.0f;		// フェードアルファ値をリセット
+	g_fAlphaRank = 0.0f;			// フェードアルファ値をリセット
 	g_nRankCnt = 0;
 
 	Player* pPlayer = GetPlayer();	//プレイヤーの情報へのポインタ
@@ -117,16 +123,18 @@ void InitResult(void)
 		////リザルト(ゲームオーバー)画面に遷移
 		//PlaySound(SOUND_LABEL_GAMEOVER);
 
-		//テクスチャの読み込み
+		//テクスチャの読み込み(背景)
 		D3DXCreateTextureFromFile(pDevice,
-			"data\\TEXTURE\\wall001.jpg",
+			"data\\TEXTURE\\gameoverBG.png",
 			&g_pTextureResult);
 
 
-		//テクスチャの読み込み
-		D3DXCreateTextureFromFile(pDevice,
-			"data\\TEXTURE\\gameover.png",
-			&g_pTextureResultGameover);
+		for (int gameover = 0; gameover < MAX_GAMEOVER; gameover++)
+		{
+			D3DXCreateTextureFromFile(pDevice,
+				GAMEOVER_TEXTURE[gameover],
+				&g_pTextureGameoverSelect[gameover]);
+		}
 
 	}
 	
@@ -149,13 +157,12 @@ void InitResult(void)
 		NULL);
 
 	//頂点バッファの生成
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_GAMEOVER,
 		D3DUSAGE_WRITEONLY,
 		FVF_VERTEX_2D,
 		D3DPOOL_MANAGED,
-		&g_pVtxBuffResultGameover,
+		&g_pVtxBuffGameoverSelect,
 		NULL);
-
 
 	VERTEX_2D* pVtx;
 
@@ -193,10 +200,14 @@ void InitResult(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffRank->Lock(0, 0, (void**)&pVtx, 0);
 
-	pVtx[0].pos = D3DXVECTOR3(500.0f, 640.0f, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(630.0f, 640.0f, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(500.0f, 710.0f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(630.0f, 710.0f, 0.0f);
+	float rankX = 1110.0f; // ランクのX座標
+	float rankY = 370.0f;  // ランクのY座標
+
+	// ランクの頂点座標設定
+	pVtx[0].pos = D3DXVECTOR3(rankX, rankY, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(rankX + 50.0f, rankY, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(rankX, rankY + 70.0f, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(rankX + 50.0f, rankY + 70.0f, 0.0f);
 
 	//rhwの設定
 	pVtx[0].rhw = 1.0f;
@@ -220,34 +231,45 @@ void InitResult(void)
 	g_pVtxBuffRank->Unlock();
 
 
+	int nCntGameover;
+
 	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffResultGameover->Lock(0, 0, (void**)&pVtx, 0);
+	g_pVtxBuffGameoverSelect->Lock(0, 0, (void**)&pVtx, 0);
 
-	pVtx[0].pos = D3DXVECTOR3(320.0f, 300.0f, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(960.0f, 300.0f, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(320.0f, 470.0f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(960.0f, 470.0f, 0.0f);
+	for (nCntGameover = 0; nCntGameover < MAX_GAMEOVER; nCntGameover++)
+	{
 
-	//rhwの設定
-	pVtx[0].rhw = 1.0f;
-	pVtx[1].rhw = 1.0f;
-	pVtx[2].rhw = 1.0f;
-	pVtx[3].rhw = 1.0f;
+		//頂点座標の設定
+		pVtx[0].pos = D3DXVECTOR3(500.0f, (110.0f + nCntGameover * 150), 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(800.0f, (110.0f + nCntGameover * 150), 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(500.0f, (210.0f + nCntGameover * 150), 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(800.0f, (210.0f + nCntGameover * 150), 0.0f);
 
-	//頂点カラーの設定
-	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		//rhwの設定
+		pVtx[0].rhw = 1.0f;
+		pVtx[1].rhw = 1.0f;
+		pVtx[2].rhw = 1.0f;
+		pVtx[3].rhw = 1.0f;
 
-	//テクスチャ座標の設定
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+		//頂点カラーの設定
+		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+
+		//テクスチャ座標の設定
+		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+
+		pVtx += 4;//頂点データのポインタを4つ分進める
+	}
 
 	//頂点バッファをアンロックする
-	g_pVtxBuffResultGameover->Unlock();
+	g_pVtxBuffGameoverSelect->Unlock();
+
+	g_gameoverMenu = GAMEOVER_MENU_RETRY;
 
 }
 //=====================================================
@@ -275,13 +297,15 @@ void UninitResult(void)
 		g_pTextureRank = NULL;
 	}
 
-	//テクスチャの破棄
-	if (g_pTextureResultGameover != NULL)
+	for (int nCnt = 0; nCnt < MAX_GAMEOVER; nCnt++)
 	{
-		g_pTextureResultGameover->Release();
-		g_pTextureResultGameover = NULL;
+		//テクスチャの破棄
+		if (g_pTextureGameoverSelect[nCnt] != NULL)
+		{
+			g_pTextureGameoverSelect[nCnt]->Release();
+			g_pTextureGameoverSelect[nCnt] = NULL;
+		}
 	}
-
 
 
 	//頂点バッファの破棄
@@ -299,10 +323,10 @@ void UninitResult(void)
 	}
 
 	//頂点バッファの破棄
-	if (g_pVtxBuffResultGameover != NULL)
+	if (g_pVtxBuffGameoverSelect != NULL)
 	{
-		g_pVtxBuffResultGameover->Release();
-		g_pVtxBuffResultGameover = NULL;
+		g_pVtxBuffGameoverSelect->Release();
+		g_pVtxBuffGameoverSelect = NULL;
 	}
 
 }
@@ -312,6 +336,22 @@ void UninitResult(void)
 void UpdateResult(void)
 {
 	FADE g_fade = GetFade(); // 現在の状態
+
+	VERTEX_2D* pVtx;
+
+	// マウスカーソルの位置を取得
+	POINT cursorPos;
+	GetCursorPos(&cursorPos);
+
+	// ウィンドウハンドルを取得
+	HWND hwnd = GetActiveWindow();
+
+	// スクリーン座標をクライアント座標に変換
+	ScreenToClient(hwnd, &cursorPos);
+
+	// クライアントサイズを取得
+	RECT clientRect;
+	GetClientRect(hwnd, &clientRect);
 
 	bool bExit = GetExit();
 	//nTime = GetTime();
@@ -333,44 +373,144 @@ void UpdateResult(void)
 			}
 		}
 	}
-	if (g_nRankCnt <= 210 && bExit == true)
+	if (g_nRankCnt <= 300 && bExit == true)
 	{
 		//PlaySound(SOUND_LABEL_RANK);
 	}
-
-	// ゲームオーバーテキストのフェード
-	if (g_nRankCnt >= 30)
+	
+	if (g_nRankCnt >= 360)
 	{
-		if (g_fAlphaGameover < 255.0f)
-		{
-			g_fAlphaGameover += 5.0f; // フェード速度調整
+		if (pPlayer->bDisp == true && bExit == true &&
+			(g_fade == FADE_NONE && (GetMouseButtonTrigger(0) || JoyPadTrigger(JOYKEY_A) == true)))
+		{// マウス左クリック時
 
-			if (g_fAlphaGameover > 255.0f)
+			//モード設定(タイトル画面に移行)
+			SetFade(MODE_TITLE);
+
+		}
+	}
+
+
+	// ウィンドウスケールを計算
+	float screenWidth = 1280.0f; // ゲームの解像度
+	float screenHeight = 720.0f;
+	float scaleX = screenWidth / (clientRect.right - clientRect.left);
+	float scaleY = screenHeight / (clientRect.bottom - clientRect.top);
+
+	// マウス座標をスケール
+	float mouseX = cursorPos.x * scaleX;
+	float mouseY = cursorPos.y * scaleY;
+
+	// マウスカーソルが当たっている項目を探す
+	int selectedByMouse = -1; // -1は未選択
+
+	for (int nCnt = 0; nCnt < MAX_GAMEOVER; nCnt++)
+	{
+		float scale = gameoverScales[nCnt];
+		float centerX = 1010.0f; // 中心X座標
+		float centerY = 300.0f + nCnt * 150.0f; // 中心Y座標
+
+		// 領域の計算
+		float left = centerX - 150.0f * scale;
+		float right = centerX + 150.0f * scale;
+		float top = centerY - 20.0f * scale;
+		float bottom = centerY + 20.0f * scale;
+
+		// 範囲内判定
+		if (mouseX >= left && mouseX <= right &&
+			mouseY >= top && mouseY <= bottom)
+		{
+			selectedByMouse = nCnt; // 項目のインデックスを記録
+			g_gameoverMenu = static_cast<GAMEOVER_MENU>(nCnt); // 選択状態を更新
+		}
+	}
+
+	// 項目の透明度を更新
+	for (int nCnt = 0; nCnt < MAX_GAMEOVER; nCnt++)
+	{
+		if (selectedByMouse == -1)
+		{
+			// 範囲外ならすべて半透明
+			gameoverAlphas[nCnt] -= 0.1f; // 徐々に薄く
+			if (gameoverAlphas[nCnt] < 0.3f) gameoverAlphas[nCnt] = 0.3f;
+		}
+		else if (nCnt == g_gameoverMenu)
+		{
+			// 選択中の項目は濃くする
+			gameoverAlphas[nCnt] += 0.1f; // 徐々に濃く
+			if (gameoverAlphas[nCnt] > 1.0f)
 			{
-				g_fAlphaGameover = 255.0f;
+				gameoverAlphas[nCnt] = 1.0f;
+			}
+		}
+		else
+		{
+			// 非選択の項目は薄く
+			gameoverAlphas[nCnt] -= 0.1f; // 徐々に薄く
+
+			if (gameoverAlphas[nCnt] < 0.5f)
+			{
+				gameoverAlphas[nCnt] = 0.5f;
 			}
 		}
 	}
-	
 
-	if (g_nRankCnt >= 180)
+	// 頂点バッファのロック
+	g_pVtxBuffGameoverSelect->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 項目の描画設定
+	for (int nCntGameover = 0; nCntGameover < MAX_GAMEOVER; nCntGameover++)
 	{
-		if (pPlayer->bDisp == true && bExit == true &&
-			(g_fade == FADE_NONE && GetMouseButtonTrigger(0) /*|| JoyPadTrigger(JOYKEY_A) == true)*/))
-		{//決定キー(ENTERキー)が押された
+		float scale = gameoverScales[nCntGameover];
+		float centerX = 1010.0f;
+		float centerY = 300.0f + nCntGameover * 150.0f;
 
-			//モード設定(タイトル画面に移行)
-			SetFade(MODE_TITLE);
+		// 頂点座標を設定
+		pVtx[0].pos = D3DXVECTOR3(centerX - 150.0f * scale, centerY - 20.0f * scale, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(centerX + 150.0f * scale, centerY - 20.0f * scale, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(centerX - 150.0f * scale, centerY + 20.0f * scale, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(centerX + 150.0f * scale, centerY + 20.0f * scale, 0.0f);
 
-		}
-		else if ((pPlayer->bDisp == false || bExit == false) &&
-			(g_fade == FADE_NONE && GetMouseButtonTrigger(0) /*|| JoyPadTrigger(JOYKEY_A) == true)*/))
+		// カラー設定
+		D3DXCOLOR color = D3DXCOLOR(1.0f, 1.0f, 1.0f, gameoverAlphas[nCntGameover]);
+
+		// 頂点カラーを設定
+		for (int nCntTitle2 = 0; nCntTitle2 < 3; nCntTitle2++)
 		{
-
-			//モード設定(タイトル画面に移行)
-			SetFade(MODE_TITLE);
-
+			pVtx[nCntTitle2].col = color;
 		}
+
+		// 頂点ポインタを次の項目に進める
+		pVtx += 4;
+	}
+
+	// 頂点バッファのアンロック
+	g_pVtxBuffGameoverSelect->Unlock();
+
+	// 範囲内クリックの場合のみ処理を実行
+	if (g_fade == FADE_NONE && GetMouseButtonTrigger(0))
+	{
+		if (selectedByMouse != -1)
+		{
+			// 範囲内の項目がクリックされた場合
+			switch (g_gameoverMenu)
+			{
+			case GAMEOVER_MENU_RETRY:
+
+				// ゲーム画面に移行
+				SetFade(MODE_GAME);
+
+				break;
+
+			case GAMEOVER_MENU_TITLE:
+
+				// タイトル画面に移行
+				SetFade(MODE_TITLE);
+
+				break;
+			}
+		}
+		// 範囲外をクリックした場合は何もしない
 	}
 }
 //=====================================================
@@ -409,11 +549,11 @@ void DrawResult(void)
 	//ポリゴンの描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
-
+	// ゲームクリアの時
 	if (bExit == true)
 	{
 		//====================================
-		//ランク描画
+		// ランク描画
 		//====================================
 
 		if (nTimeMinutes < 2 && nTimeSeconds >= 0)
@@ -503,31 +643,30 @@ void DrawResult(void)
 
 	}
 
+
+	// ゲームオーバーの時
 	if (bExit == false)
 	{
-		// 頂点バッファをロック
-		g_pVtxBuffResultGameover->Lock(0, 0, (void**)&pVtx, 0);
 
-		// アルファ値を反映
-		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaGameover);
-		pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaGameover);
-		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaGameover);
-		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, (int)g_fAlphaGameover);
-
-		// 頂点バッファをアンロック
-		g_pVtxBuffResultGameover->Unlock();
+		//====================================
+		// 選択項目の描画
+		//====================================
 
 		//頂点バッファをデータストリームに設定
-		pDevice->SetStreamSource(0, g_pVtxBuffResultGameover, 0, sizeof(VERTEX_2D));
+		pDevice->SetStreamSource(0, g_pVtxBuffGameoverSelect, 0, sizeof(VERTEX_2D));
 
 		//頂点フォーマットの設定
 		pDevice->SetFVF(FVF_VERTEX_2D);
 
-		//テクスチャの設定
-		pDevice->SetTexture(0, g_pTextureResultGameover);
+		for (int nCntGameover = 0; nCntGameover < MAX_GAMEOVER; nCntGameover++)
+		{
+			//テクスチャの設定
+			pDevice->SetTexture(0, g_pTextureGameoverSelect[nCntGameover]);
 
-		//ポリゴンの描画
-		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+			//ポリゴンの描画
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCntGameover * 4, 2);
+
+		}
 	}
 
 }
@@ -636,7 +775,7 @@ void InitResultTime(void)
 	// コロンの頂点バッファをロック
 	g_pVtxBuffResultColon->Lock(0, 0, (void**)&pVtx, 0);
 
-	float colonX = 1080.0f; // コロンのX座標
+	float colonX = 1085.0f; // コロンのX座標
 	float colonY = 190.0f;  // コロンのY座標
 
 	// コロンの頂点座標設定

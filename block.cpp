@@ -402,6 +402,7 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 					// Z軸の衝突補正
 					pPos->z = pPosOld->z;
 					playerWorld._43 = pPos->z;
+
 					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
 						// Z軸方向の移動量を滑らかに減衰
@@ -419,6 +420,7 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 					// X軸の衝突補正
 					pPos->x = pPosOld->x;
 					playerWorld._41 = pPos->x;
+
 					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
 						// X軸方向の移動量を滑らかに減衰
@@ -429,6 +431,7 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 					// Y軸の衝突補正
 					pPos->y = pPosOld->y;
 					playerWorld._42 = pPos->y;
+
 					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 					{
 						// Y軸方向の移動量を滑らかに減衰
@@ -508,7 +511,7 @@ bool CheckOBBCollision(const D3DXMATRIX& world1, const D3DXVECTOR3& size1,
 		{world2._31, world2._32, world2._33}  // Z軸
 	};
 
-	// 分離軸定理 (Separating Axis Theorem) を用いて判定
+	// 分離軸定理 (Separating Axis Theorem) を使って判定
 	for (int nCnt = 0; nCnt < 3; nCnt++)
 	{
 		if (!OverlapOnAxis(center1, axes1, size1, center2, axes2, size2, axes1[nCnt]))
@@ -531,6 +534,7 @@ bool CheckOBBCollision(const D3DXMATRIX& world1, const D3DXVECTOR3& size1,
 
 			if (D3DXVec3Length(&crossAxis) > 0.001f) 
 			{ // ゼロベクトルのチェック
+
 				if (!OverlapOnAxis(center1, axes1, size1, center2, axes2, size2, crossAxis)) 
 				{
 					return false; // 分離軸が見つかったら衝突していない

@@ -177,10 +177,10 @@ void UpdatePasswordItem(void)
 		if (g_item[nCntItem].bUse == true)
 		{//使用しているアイテムを全てチェックする
 
-			float itemLeft = g_item[nCntItem].pos.x - g_item[nCntItem].fWidth / 2;
-			float itemRight = g_item[nCntItem].pos.x + g_item[nCntItem].fWidth / 2;
-			float itemTop = g_item[nCntItem].pos.y - g_item[nCntItem].fHeight / 2;
-			float itemBottom = g_item[nCntItem].pos.y + g_item[nCntItem].fHeight / 2;
+			float itemLeft = g_item[nCntItem].pos.x - g_item[nCntItem].fWidth / 1.5;
+			float itemRight = g_item[nCntItem].pos.x + g_item[nCntItem].fWidth / 1.5;
+			float itemTop = g_item[nCntItem].pos.y - g_item[nCntItem].fHeight / 1.5;
+			float itemBottom = g_item[nCntItem].pos.y + g_item[nCntItem].fHeight / 1.5;
 
 			if (mouseX >= itemLeft && mouseX <= itemRight &&
 				mouseY >= itemTop && mouseY <= itemBottom)

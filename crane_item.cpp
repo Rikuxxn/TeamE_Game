@@ -133,7 +133,7 @@ void UpdateCraneItem(void)
 			pPlayer->bFall == true &&
 			g_item[nCntItem].bcatch == false)
 		{
-			g_item[nCntItem].move.y = 4.5f;
+			g_item[nCntItem].move.y = 6.5f;
 		}
 
 		g_item[nCntItem].pos += g_item[nCntItem].move;
@@ -269,7 +269,7 @@ bool CollisionCraneItem(D3DXVECTOR3* pPos,		//åªç›ÇÃà íu
 				&& g_item[nCntItem].pos.x <= pPlayer->pos.x + ITEM_WIDTH
 				&& g_item[nCntItem].pos.y >= pPlayer->pos.y - ITEM_HEIGHT
 				&& g_item[nCntItem].pos.y <= pPlayer->pos.y + ITEM_HEIGHT
-				&& pPlayer->pos.x >= FIELD_LEFT + 75.0f + HABA)
+				&& pPlayer->pos.x >= FIELD_LEFT + 75.0f + WIDTH)
 			{
 				g_item[nCntItem].bcatch = true;
 			}

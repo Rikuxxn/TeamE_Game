@@ -48,7 +48,7 @@ int g_nCounterGameState = 0;//状態管理カウンター
 
 bool g_bPause = false;	//ポーズ中かどうか
 bool g_bDraw = false;	//シューティングミニゲームの描画用
-bool g_bDraw2 = false;	//アクション
+bool g_bDraw2 = false;	//クレーン
 bool g_bDraw3 = false;	//ボールプール
 bool g_bDraw4 = false;	//パスワード
 bool bSTClear;
@@ -395,7 +395,10 @@ void UpdateGame(void)
 	{//ポーズ中ではない
 
 		// ミニゲーム（シューティング）のトリガー
-		if (KeyboardTrigger(DIK_E) == true && pStgState != STGSTATE_END && bArcade == true && bMap == false && 
+		if (KeyboardTrigger(DIK_E) == true && 
+			pStgState != STGSTATE_END && 
+			bArcade == true && 
+			bMap == false && 
 			bFuseCmp == true)
 		{
 			g_bDraw = g_bDraw ? false : true;
@@ -403,7 +406,10 @@ void UpdateGame(void)
 		}
 
 		// ミニゲーム（アクション）のトリガー
-		if (KeyboardTrigger(DIK_E) == true && pCraneState != CRANEGAMESTATE_END && bCatcher == true && bMap == false &&
+		if (KeyboardTrigger(DIK_E) == true &&
+			pCraneState != CRANEGAMESTATE_END &&
+			bCatcher == true && 
+			bMap == false &&
 			bFuseCmp == true)
 		{
 			g_bDraw2 = g_bDraw2 ? false : true;
@@ -411,7 +417,10 @@ void UpdateGame(void)
 		}
 
 		// ボールプールのトリガー
-		if (KeyboardTrigger(DIK_E) == true && pBallState != BALLGAMESTATE_END && bBall == true && bMap == false &&
+		if (KeyboardTrigger(DIK_E) == true && 
+			pBallState != BALLGAMESTATE_END && 
+			bBall == true && 
+			bMap == false &&
 			bFuseCmp == true)
 		{
 			g_bDraw3 = g_bDraw3 ? false : true;
@@ -419,7 +428,11 @@ void UpdateGame(void)
 		}
 
 		// キーパッドのトリガー
-		if (KeyboardTrigger(DIK_E) == true && pPassState != PASSWORDGAMESTATE_END && bKeypad == true && bMap == false &&
+		if (KeyboardTrigger(DIK_E) == true && 
+			pPassState != PASSWORDGAMESTATE_END &&
+			bKeypad == true && 
+			bMap == false && 
+			bFuseCmp == true &&
 			bSTClear == true && bACClear == true && bBallClear == true)
 		{
 			g_bDraw4 = g_bDraw4 ? false : true;
@@ -428,7 +441,7 @@ void UpdateGame(void)
 
 
 		// マップを開けるのはミニゲームがどちらも動いていない場合のみ
-		if (g_bMini == false && g_bDraw == false && g_bDraw2 == false && g_bDraw3 == false &&
+		if (g_bMini == false && g_bDraw == false && g_bDraw2 == false && g_bDraw3 == false && g_bDraw4 &&
 			(KeyboardTrigger(DIK_C) == true || JoyPadTrigger(JOYKEY_BACK) == true))
 		{
 			bMap = bMap ? false : true;
@@ -448,7 +461,9 @@ void UpdateGame(void)
 			{
 				g_bDraw = false;
 				bSTClear = true;
-				if (g_bDraw2 == false) // クレーンゲームが動いていないなら
+				if (g_bDraw2 == false &&
+					g_bDraw3 == false &&
+					g_bDraw4 == false) // 他のゲームがクリア済みなら
 				{
 					g_bMini = false; // ミニゲーム全体を終了
 				}
@@ -468,14 +483,16 @@ void UpdateGame(void)
 			{
 				g_bDraw2 = false;
 				bACClear = true;
-				if (g_bDraw == false) // シューティングゲームが動いていないなら
+				if (g_bDraw == false &&
+					g_bDraw3 == false &&
+					g_bDraw4 == false) // シューティングゲームが動いていないなら
 				{
 					g_bMini = false; // ミニゲーム全体を終了
 				}
 			}
 		}
 
-		// クレーンゲーム終了時の処理
+		// ボールプール終了時の処理
 		if (pBallState == BALLGAMESTATE_END)
 		{
 			if (nBallCnt <= 120)
@@ -488,7 +505,9 @@ void UpdateGame(void)
 			{
 				g_bDraw3 = false;
 				bBallClear = true;
-				if (g_bDraw == false) // シューティングゲームが動いていないなら
+				if (g_bDraw == false &&
+					g_bDraw2 == false &&
+					g_bDraw4 == false) // シューティングゲームが動いていないなら
 				{
 					g_bMini = false; // ミニゲーム全体を終了
 				}
@@ -504,11 +523,13 @@ void UpdateGame(void)
 			}
 
 			// 120(2秒)経ったら
-			if (nPassCnt >= 120)
+			if (nPassCnt >= 60)
 			{
 				g_bDraw4 = false;
 				bPassClear = true;
-				if (g_bDraw == false) // シューティングゲームが動いていないなら
+				if (g_bDraw == false &&
+					g_bDraw2 == false &&
+					g_bDraw3 == false) // シューティングゲームが動いていないなら
 				{
 					g_bMini = false; // ミニゲーム全体を終了
 				}

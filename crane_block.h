@@ -29,8 +29,6 @@ void UninitCraneBlock(void);
 void UpdateCraneBlock(void);
 void DrawCraneBlock(void);
 void SetCraneBlock(D3DXVECTOR3 pos,D3DXVECTOR3 move,float fWidth,float fHeight,int type);//ブロックの設置
-bool CollisionCraneBlock(D3DXVECTOR3 *pPos,D3DXVECTOR3 *pPosOld,D3DXVECTOR3 *pMove,float fWidth,float fHeight, CRANEBLOCK**pBlock);
-bool CollisionCraneBlock2(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove, float fWidth, float fHeight);
 CRANEBLOCK* GetBlock(void);
 
 #endif

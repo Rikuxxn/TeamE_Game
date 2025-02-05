@@ -33,7 +33,7 @@ void InitCranePlayer(void)
 		"data\\TEXTURE\\crane.png",					 //テクスチャのファイル名
 		&g_pTextureCranePlayer);
 
-	g_player.pos = D3DXVECTOR3(FIELD_LEFT + 75.0f, 70.0f, 0.0f);	//位置を初期化する SCREEN_HEIGHT-TAKASA
+	g_player.pos = D3DXVECTOR3(FIELD_LEFT + 75.0f, 70.0f, 0.0f);	//位置を初期化する SCREEN_HEIGHT-HEIGHT
 	g_player.move = D3DXVECTOR3(0.0f,0.0f,0.0f);					//移動量を初期化する
 	g_player.rot = D3DXVECTOR3(0.0f,0.0f,0.0f);						//向きを初期化する、今回はZ軸（3番目）
 	g_player.nCntAnimState = 0;
@@ -49,7 +49,7 @@ void InitCranePlayer(void)
 	g_player.Length = sqrtf(50.0f * 50.0f + 100.0f * 100.0f) / 2.0f;
 
 	//対角線の角度を算出する
-	g_player.Angle = atan2f(HABA ,TAKASA);
+	g_player.Angle = atan2f(WIDTH ,HEIGHT);
 
 	//頂点バッファ2の生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
@@ -66,19 +66,19 @@ void InitCranePlayer(void)
 
 	//頂点座標の設定
 
-	pVtx[0].pos.x = -HABA;
-	pVtx[0].pos.y = g_player.pos.y-TAKASA;
+	pVtx[0].pos.x = -WIDTH;
+	pVtx[0].pos.y = g_player.pos.y-HEIGHT;
 	pVtx[0].pos.z = 0.0f;
 
-	pVtx[1].pos.x = HABA;;
-	pVtx[1].pos.y = g_player.pos.y-TAKASA;
+	pVtx[1].pos.x = WIDTH;;
+	pVtx[1].pos.y = g_player.pos.y-HEIGHT;
 	pVtx[1].pos.z = 0.0f;
 
-	pVtx[2].pos.x = -HABA;
+	pVtx[2].pos.x = -WIDTH;
 	pVtx[2].pos.y = g_player.pos.y;;
 	pVtx[2].pos.z = 0.0f;
 
-	pVtx[3].pos.x = HABA;
+	pVtx[3].pos.x = WIDTH;
 	pVtx[3].pos.y = g_player.pos.y;
 	pVtx[3].pos.z = 0.0f;
 
@@ -149,12 +149,9 @@ void UpdateCranePlayer(void)
 				g_player.move.x = MAX_SPEED_R;
 			}
 		}
-		//else
-		//{
-		//	g_nCounterAnimPlayer = 0;//カウンターをリセット
-		//}
 
 		if (g_player.bMove == true &&
+			g_player.pos.x > FIELD_LEFT + 75.0f + WIDTH &&
 			(GetMouseButtonTrigger(0) /*|| JoypadTrigger(JOYKEY_A) == true*/))
 		{//クレーンを下す
 			//PlaySound(SOUND_LABEL_JAMP_SHORT);
@@ -199,22 +196,18 @@ void UpdateCranePlayer(void)
 		g_player.pos.y = FIELD_UNDER;
 		g_player.bLanding = true;
 	}
-	//else
-	//{
-	//	g_player.bLanding = false;
-	//}
-	if (g_player.pos.y <= FIELD_TOP + TAKASA)//天井
+	if (g_player.pos.y <= FIELD_TOP + HEIGHT)//天井
 	{
-		g_player.pos.y = FIELD_TOP + TAKASA;
+		g_player.pos.y = FIELD_TOP + HEIGHT;
 		g_player.bLeft = true;
 	}
-	if (g_player.pos.x >= FIELD_RIGHT - HABA)//右
+	if (g_player.pos.x >= FIELD_RIGHT - WIDTH)//右
 	{
-		g_player.pos.x = FIELD_RIGHT - HABA;
+		g_player.pos.x = FIELD_RIGHT - WIDTH;
 	}
-	if (g_player.pos.x <= FIELD_LEFT + 75.0f + HABA)//左
+	if (g_player.pos.x <= FIELD_LEFT + 75.0f + WIDTH)//左
 	{
-		g_player.pos.x = FIELD_LEFT + 75.0f + HABA;
+		g_player.pos.x = FIELD_LEFT + 75.0f + WIDTH;
 		g_player.bMove = true;
 		g_player.bLeft = false;
 		g_player.bFall = true;
@@ -261,19 +254,19 @@ void UpdateCranePlayer(void)
 	}
 
 	//位置座標の設定
-	pVtx[0].pos.x = g_player.pos.x-HABA;
-	pVtx[0].pos.y = g_player.pos.y-TAKASA;
+	pVtx[0].pos.x = g_player.pos.x - WIDTH;
+	pVtx[0].pos.y = g_player.pos.y - HEIGHT;
 	pVtx[0].pos.z = 0.0f;
 
-	pVtx[1].pos.x = g_player.pos.x+HABA;
-	pVtx[1].pos.y = g_player.pos.y-TAKASA;
+	pVtx[1].pos.x = g_player.pos.x + WIDTH;
+	pVtx[1].pos.y = g_player.pos.y - HEIGHT;
 	pVtx[1].pos.z = 0.0f;
 
-	pVtx[2].pos.x = g_player.pos.x-HABA;
+	pVtx[2].pos.x = g_player.pos.x - WIDTH;
 	pVtx[2].pos.y = g_player.pos.y;
 	pVtx[2].pos.z = 0.0f;
 
-	pVtx[3].pos.x = g_player.pos.x+HABA;
+	pVtx[3].pos.x = g_player.pos.x + WIDTH;
 	pVtx[3].pos.y = g_player.pos.y;
 	pVtx[3].pos.z = 0.0f;
 

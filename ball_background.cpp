@@ -180,22 +180,14 @@ void UninitBallBackGround(void)
 	}
 
 	//頂点バッファの破棄
-	if (g_pVtxBuffBallBG != NULL)
+	if (g_pVtxBuffBallBG != NULL &&
+		g_pVtxBuffBallBG2 != NULL &&
+		g_pVtxBuffBallBG3 != NULL)
 	{
 		g_pVtxBuffBallBG->Release();
 		g_pVtxBuffBallBG = NULL;
-	}
-
-	//頂点バッファの破棄
-	if (g_pVtxBuffBallBG2 != NULL)
-	{
 		g_pVtxBuffBallBG2->Release();
 		g_pVtxBuffBallBG2 = NULL;
-	}
-
-	//頂点バッファの破棄
-	if (g_pVtxBuffBallBG3 != NULL)
-	{
 		g_pVtxBuffBallBG3->Release();
 		g_pVtxBuffBallBG3 = NULL;
 	}

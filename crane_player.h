@@ -5,8 +5,8 @@
 #ifndef _CRANEPLAYER_H_//このマクロ定義がされてなかったら
 #define _CRANEPLAYER_H_//２重インクルード防止のマクロ定義
 
-#define HABA (25.0f)		//プレイヤー幅
-#define TAKASA (60.0f)		//プレイヤー高さ
+#define WIDTH (25.0f)		//プレイヤー幅
+#define HEIGHT (60.0f)		//プレイヤー高さ
 #define DOWN (3.0f)			//降りる速さ
 #define UP (-3.0f)			//上る速さ
 #define MAX_SPEED_L (-3.0f)	//最速左

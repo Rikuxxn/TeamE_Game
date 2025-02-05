@@ -158,10 +158,10 @@ void UpdateBallItem(void)
 	{
 		if (g_ballitem[nCntItem].bUse)
 		{
-			float itemLeft = g_ballitem[nCntItem].pos.x - g_ballitem[nCntItem].fWidth / 2;
-			float itemRight = g_ballitem[nCntItem].pos.x + g_ballitem[nCntItem].fWidth / 2;
-			float itemTop = g_ballitem[nCntItem].pos.y - g_ballitem[nCntItem].fHeight / 2;
-			float itemBottom = g_ballitem[nCntItem].pos.y + g_ballitem[nCntItem].fHeight / 2;
+			float itemLeft = g_ballitem[nCntItem].pos.x - g_ballitem[nCntItem].fWidth / 1.5;
+			float itemRight = g_ballitem[nCntItem].pos.x + g_ballitem[nCntItem].fWidth / 1.5;
+			float itemTop = g_ballitem[nCntItem].pos.y - g_ballitem[nCntItem].fHeight / 1.5;
+			float itemBottom = g_ballitem[nCntItem].pos.y + g_ballitem[nCntItem].fHeight / 1.5;
 
 			if (mouseX >= itemLeft && mouseX <= itemRight &&
 				mouseY >= itemTop && mouseY <= itemBottom)

@@ -10,6 +10,28 @@
 //マクロ定義
 #define MAX_RESULT_TIMEDIGIT (2)	//桁の最大数
 
+//マクロ定義
+#define MAX_GAMEOVER (2)//選択項目数
+
+#define GAMEOVER_MIN_SCALE (1.0f)
+#define GAMEOVER_MAX_SCALE (1.2f)
+#define GAMEOVER_SCALE_SPEED (0.02f)
+#define GAMEOVER_ALPHA_SPEED (0.05f)
+
+// gameoverの選択項目の種類
+typedef enum
+{
+	GAMEOVER_MENU_RETRY = 0,        //リトライ
+	GAMEOVER_MENU_TITLE,			//タイトルに戻る
+	GAMEOVER_MENU_MAX
+}GAMEOVER_MENU;
+
+static const char* GAMEOVER_TEXTURE[MAX_GAMEOVER] =
+{
+	"data\\TEXTURE\\retry1.png",
+	"data\\TEXTURE\\titleback.png",
+};
+
 //プロトタイプ宣言
 void InitResult(void);
 void UninitResult(void);

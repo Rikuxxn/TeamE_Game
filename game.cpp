@@ -7,7 +7,6 @@
 #include "game.h"
 #include "player.h"
 #include "input.h"
-//#include "score.h"
 //#include "ranking.h"
 #include "title.h"
 #include "game.h"
@@ -18,10 +17,7 @@
 //#include "effect.h"
 #include "camera.h"
 #include "warning.h"
-//#include "billboard.h"
 #include "light.h"
-//#include "meshwall.h"
-//#include "shadow.h"
 #include "meshfield.h"
 //#include "rankingscore.h"
 #include "model.h"
@@ -45,6 +41,8 @@
 //グローバル変数
 GAMESTATE g_gameState = GAMESTATE_NONE;//ゲームの状態
 int g_nCounterGameState = 0;//状態管理カウンター
+
+
 
 bool g_bPause = false;	//ポーズ中かどうか
 bool g_bDraw = false;	//シューティングミニゲームの描画用
@@ -100,6 +98,9 @@ void InitGame(void)
 
 	//ブロックの初期化処理
 	InitBlock();
+
+
+	//SetBlock(D3DXVECTOR3(200.0f, 0.0f, -120.0f), D3DXVECTOR3(0.0f, D3DX_PI *0.75f, 0.0f), BLOCKTYPE_TEST);
 
 
 	//影の初期化

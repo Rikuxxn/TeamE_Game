@@ -617,8 +617,8 @@ void DrawOption(void)
 	char aStr2[128];
 
 	//文字列に代入
-	sprintf(&aStr[0], "プレイヤーの位置 (%f, %f, %f)\n",pPlayer->pos.x, pPlayer->pos.y, pPlayer->pos.z);
-	sprintf(&aStr2[0], "カメラの向き (%f, %f, %f)\n", pCamera->rot.x, pCamera->rot.y, pCamera->rot.z);
+	sprintf(&aStr[0], "プレイヤーの位置 (%.1f, %.1f, %.1f)\n",pPlayer->pos.x, pPlayer->pos.y, pPlayer->pos.z);
+	sprintf(&aStr2[0], "カメラの向き (%.2f, %.2f, %.2f)\n", pCamera->rot.x, pCamera->rot.y, pCamera->rot.z);
 
 	//テキストの描画
 	g_pFont->DrawTextA(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
@@ -875,6 +875,9 @@ void SetupVertexFog(LPDIRECT3DDEVICE9 pDevice, DWORD Color, DWORD Mode, BOOL Use
     pDevice->SetRenderState(D3DRS_RANGEFOGENABLE, UseRange ? TRUE : FALSE);
 
 }
+//============================================================
+// ワイヤーフレームの設定処理
+//============================================================
 void onWireFrame()
 {
 	g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
@@ -926,7 +929,7 @@ void DrawAPass4(int Answer4)
 	char aStr[256];
 
 	//文字列に代入
-	wsprintf(&aStr[0], "四つ目の答え:%d", Answer4);
+	wsprintf(&aStr[0], "四つ目の番号:%d", Answer4);
 
 	//テキストの描画
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));

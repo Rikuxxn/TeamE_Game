@@ -286,14 +286,14 @@ void UpdateTitle(void)
 	for (int nCnt = 0; nCnt < MAX_TITLE; nCnt++)
 	{
 		float scale = titleScales[nCnt];
-		float centerX = 750.0f; // 中心X座標
+		float centerX = 780.0f; // 中心X座標
 		float centerY = 300.0f + nCnt * 150.0f; // 中心Y座標
 
 		// 領域の計算
 		float left = centerX - 150.0f * scale;
 		float right = centerX + 150.0f * scale;
-		float top = centerY - 50.0f * scale;
-		float bottom = centerY + 50.0f * scale;
+		float top = centerY - 30.0f * scale;
+		float bottom = centerY + 30.0f * scale;
 
 		// 範囲内判定
 		if (mouseX >= left && mouseX <= right &&
@@ -341,14 +341,14 @@ void UpdateTitle(void)
 	for (int nCntTitle = 0; nCntTitle < MAX_TITLE; nCntTitle++)
 	{
 		float scale = titleScales[nCntTitle];
-		float centerX = 750.0f;
+		float centerX = 780.0f;
 		float centerY = 300.0f + nCntTitle * 150.0f;
 
 		// 頂点座標を設定
-		pVtx[0].pos = D3DXVECTOR3(centerX - 150.0f * scale, centerY - 50.0f * scale, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(centerX + 150.0f * scale, centerY - 50.0f * scale, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(centerX - 150.0f * scale, centerY + 50.0f * scale, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(centerX + 150.0f * scale, centerY + 50.0f * scale, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(centerX - 150.0f * scale, centerY - 30.0f * scale, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(centerX + 150.0f * scale, centerY - 30.0f * scale, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(centerX - 150.0f * scale, centerY + 30.0f * scale, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(centerX + 150.0f * scale, centerY + 30.0f * scale, 0.0f);
 
 		// カラー設定
 		D3DXCOLOR color = D3DXCOLOR(1.0f, 1.0f, 1.0f, titleAlphas[nCntTitle]);

@@ -9,7 +9,7 @@
 
 //マクロ
 #define MAX_NUM_SCORE (4)
-#define PASSWORDPOS (459.0f)
+#define PASSWORDPOS (505.0f)
 
 //パスワードの構造体
 typedef struct
@@ -24,15 +24,15 @@ void UninitPassword(void);		//終了
 void UpdatePassword(void);		//更新
 void DrawPassword(void);		//描画
 
-void SetPassword(int nPass);	//設置
+void SetPassword(int nPass,int nA, bool bAnswer);	//設置
 void AddPassword(int nValue);	//追加
 
 int PasswordCounter(int nPass);	//カウンター
 int GetPassword(void);			//取得
-int GetPassword2(void);			
-int GetPassword3(void);			
-int GetPassword4(void);			
-int GetCntCounter(void);		
+int GetPassword2(void);
+int GetPassword3(void);
+int GetPassword4(void);
+int GetCntCounter(void);
 bool GetJudge(void);			//判定
 
 #endif // !_SCORE_H_

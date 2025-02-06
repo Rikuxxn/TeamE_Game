@@ -13,6 +13,7 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPassword = NULL;			//頂点バッファへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPassword2 = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPassword3 = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPassword4 = NULL;
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPassword5 = NULL;
 int g_nPassword, g_nPassword2, g_nPassword3, g_nPassword4;	//パスワードの値
 int g_nCnt;
 bool g_bJudge;
@@ -62,11 +63,19 @@ void InitPassword(void)
 		D3DPOOL_MANAGED,
 		&g_pVtxBuffPassword4,
 		NULL);
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_NUM_SCORE,
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_2D,
+		D3DPOOL_MANAGED,
+		&g_pVtxBuffPassword5,
+		NULL);
+
 	//頂点情報へのポインタ
 	VERTEX_2D* pVtx;
 	VERTEX_2D* pVtx2;
 	VERTEX_2D* pVtx3;
 	VERTEX_2D* pVtx4;
+	VERTEX_2D* pVtx5;
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffPassword->Lock(0, 0, (void**)&pVtx, 0);
@@ -182,9 +191,38 @@ void InitPassword(void)
 		pVtx4 += 4;
 	}
 	//頂点バッファをアンロックする
-	g_pVtxBuffPassword3->Unlock();
+	g_pVtxBuffPassword4->Unlock();
 
-	SetPassword(0);
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_pVtxBuffPassword5->Lock(0, 0, (void**)&pVtx5, 0);
+	for (nCntPassword = 0; nCntPassword < MAX_NUM_SCORE; nCntPassword++)
+	{
+		//頂点座標の設定
+		pVtx5[0].pos = D3DXVECTOR3(970.0f + nCntPassword * 62.0f, PASSWORDFIELD_TOP + 110.0f, 0.0f);
+		pVtx5[1].pos = D3DXVECTOR3(970.0f + nCntPassword * 62.0f + 40.0f, PASSWORDFIELD_TOP + 110.0f, 0.0f);
+		pVtx5[2].pos = D3DXVECTOR3(970.0f + nCntPassword * 62.0f, PASSWORDFIELD_TOP + 155.0f, 0.0f);
+		pVtx5[3].pos = D3DXVECTOR3(970.0f + nCntPassword * 62.0f + 40.0f, PASSWORDFIELD_TOP + 155.0f, 0.0f);
+		//rhwの設定
+		pVtx5[0].rhw = 1.0f;
+		pVtx5[1].rhw = 1.0f;
+		pVtx5[2].rhw = 1.0f;
+		pVtx5[3].rhw = 1.0f;
+		//頂点カラーの設定
+		pVtx5[0].col = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+		pVtx5[1].col = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+		pVtx5[2].col = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+		pVtx5[3].col = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+		//テクスチャ座標の設定
+		pVtx5[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)
+		pVtx5[1].tex = D3DXVECTOR2(0.1f, 0.0f);
+		pVtx5[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+		pVtx5[3].tex = D3DXVECTOR2(0.1f, 1.0f);
+		pVtx5 += 4;
+	}
+	//頂点バッファをアンロックする
+	g_pVtxBuffPassword5->Unlock();
+
+	SetPassword(0,0,false);
 }
 //=========================
 //|| パスワードの終了処理||
@@ -199,19 +237,30 @@ void UninitPassword(void)
 	}
 
 	//頂点バッファの破棄
-	if (g_pVtxBuffPassword != NULL &&
-		g_pVtxBuffPassword2 != NULL &&
-		g_pVtxBuffPassword3 != NULL &&
-		g_pVtxBuffPassword4 != NULL)
+	if (g_pVtxBuffPassword != NULL)
 	{
 		g_pVtxBuffPassword->Release();
 		g_pVtxBuffPassword = NULL;
+	}
+	if (g_pVtxBuffPassword2 != NULL)
+	{
 		g_pVtxBuffPassword2->Release();
 		g_pVtxBuffPassword2 = NULL;
+	}
+	if (g_pVtxBuffPassword3 != NULL)
+	{
 		g_pVtxBuffPassword3->Release();
 		g_pVtxBuffPassword3 = NULL;
+	}
+	if (g_pVtxBuffPassword4 != NULL)
+	{
 		g_pVtxBuffPassword4->Release();
 		g_pVtxBuffPassword4 = NULL;
+	}
+	if (g_pVtxBuffPassword5 != NULL)
+	{
+		g_pVtxBuffPassword5->Release();
+		g_pVtxBuffPassword5 = NULL;
 	}
 }
 //=========================
@@ -337,11 +386,32 @@ void DrawPassword(void)
 	}
 	//頂点バッファをアンロックする
 	g_pVtxBuffPassword4->Unlock();
+
+	//頂点バッファをデータストリーム
+	pDevice->SetStreamSource(0, g_pVtxBuffPassword5, 0, sizeof(VERTEX_2D));
+	//頂点フォーマットの設定
+	pDevice->SetFVF(FVF_VERTEX_2D);
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_pVtxBuffPassword5->Lock(0, 0, (void**)&pVtx, 0);
+	for (nCntPassword = 0; nCntPassword < MAX_NUM_SCORE; nCntPassword++)
+	{
+		if (g_aPassword[nCntPassword].buse == true)
+		{
+			//テクスチャの設定
+			pDevice->SetTexture(0, g_pTexturePassword);
+			//ポリゴンの描画
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,	//プリミティブの種類
+				nCntPassword * 4,						//描画する最初の頂点インデックス
+				2);										//描画するプリミティブ数
+		}
+	}
+	//頂点バッファをアンロックする
+	g_pVtxBuffPassword5->Unlock();
 }
 //=========================
 //|| パスワードの設定処理||
 //=========================
-void SetPassword(int nPass)
+void SetPassword(int nPass, int nA, bool bAnswer)
 {
 	VERTEX_2D* pVtx = 0;//頂点情報へのポインタ
 	int aPosTexU[MAX_NUM_SCORE] = {};//各桁の数字を格納
@@ -351,15 +421,24 @@ void SetPassword(int nPass)
 	int nCntPassword;
 	int n = 1000;
 	int n1 = 100;
+	int nAnum = 0;
 	g_bJudge = false;
 	aPosTexU[0] = 0;
 	aPosTexU2[0] = 0;
 	aPosTexU3[0] = 0;
 	aPosTexU4[0] = 0;
-	g_nPassword = nPass;
-	g_nPassword2 = nPass;
-	g_nPassword3 = nPass;
-	g_nPassword4 = nPass;
+	bool bA = bAnswer;
+	if (bA == true)
+	{
+		nAnum = nA;
+	}
+	else if (bA == false)
+	{
+		g_nPassword = nPass;
+		g_nPassword2 = nPass;
+		g_nPassword3 = nPass;
+		g_nPassword4 = nPass;
+	}
 	g_nCnt = 0;
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
@@ -463,6 +542,32 @@ void SetPassword(int nPass)
 	}
 	//頂点バッファをアンロックする
 	g_pVtxBuffPassword4->Unlock();
+
+	n = 1000;
+	n1 = 100;
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_pVtxBuffPassword5->Lock(0, 0, (void**)&pVtx, 0);
+	for (nCntPassword = 0; nCntPassword < MAX_NUM_SCORE; nCntPassword++)
+	{
+		if (nCntPassword == 0)
+		{
+			aPosTexU4[0] = nAnum / n;
+		}
+		else
+		{
+			aPosTexU4[nCntPassword] = nAnum % n / n1;
+			n = n / 10;
+			n1 = n1 / 10;
+		}
+		//テクスチャ座標の設定
+		pVtx[0].tex = D3DXVECTOR2(0.0f + (0.1f * aPosTexU4[nCntPassword]), 0.0f);//(u,v)
+		pVtx[1].tex = D3DXVECTOR2(0.1f + (0.1f * aPosTexU4[nCntPassword]), 0.0f);//(u,v)
+		pVtx[2].tex = D3DXVECTOR2(0.0f + (0.1f * aPosTexU4[nCntPassword]), 1.0f);//(u,v)
+		pVtx[3].tex = D3DXVECTOR2(0.1f + (0.1f * aPosTexU4[nCntPassword]), 1.0f);//(u,v)
+		pVtx += 4;
+	}
+	//頂点バッファをアンロックする
+	g_pVtxBuffPassword5->Unlock();
 }
 //=========================
 //|| パスワードの加算処理||

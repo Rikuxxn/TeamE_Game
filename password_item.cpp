@@ -223,7 +223,7 @@ void UpdatePasswordItem(void)
 						g_bJudgment = true;
 						break;
 					case NUMTYPE_DELETE:// ‘SÁ‹ˆ—
-						SetPassword(0);
+						SetPassword(0,0,false);
 						g_bJudgment = false;
 						break;
 					}

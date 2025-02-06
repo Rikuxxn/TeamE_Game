@@ -123,40 +123,6 @@ void UpdateBullet(void)
 				//敵の取得
 				pEnemy = GetShootingEnemy();
 
-				//if (g_aBullet[nCntBullet].type == BULLETTYPE_PLAYER)//ホーミング
-				//{
-				//	float fRotMove, fRotDest, fRotDiff;
-
-				//	fRotMove = atan2f(g_aBullet[nCntBullet].pos.x,g_aBullet[nCntBullet].pos.y);		 //現在の移動方向（角度）
-				//	fRotDest = atan2f(pEnemy[MAX_ENEMY].pos.x - pPlayer->pos.x, pEnemy[MAX_ENEMY].pos.y - pPlayer->pos.y);//目標の移動方向（角度）
-				//	fRotDiff = fRotDest - fRotMove ;//角度の値を修正する							 //目標の移動方向までの差分
-
-				//	if (fRotDiff >= 3.14)
-				//	{
-				//		fRotDiff = fRotDiff - 6.28f;
-				//	}
-				//	else if(fRotDiff <= -3.14)
-				//	{
-				//		fRotDiff =fRotDiff + 6.28f;
-				//	}
-
-				//	//移動量の補正
-
-				//	fRotMove += fRotDiff * 0.5f;//移動方向（角度）の補正 角度の値を修正する 補正係数は0.0f～1.0f
-
-				//	if (fRotMove >= 3.14)
-				//	{
-				//		fRotMove = fRotMove - 6.28f;
-				//	}
-				//	else if (fRotMove <= -3.14)
-				//	{
-				//		fRotMove = fRotMove + 6.28f;
-				//	}
-
-				//	g_aBullet[nCntBullet].move.x = sinf(fRotMove) * 10.0f;
-				//	g_aBullet[nCntBullet].move.y = cosf(fRotMove) * 10.0f;
-				//}
-
 				//寿命のカウントダウン
 				g_aBullet[nCntBullet].nLife -= 1;
 
@@ -205,7 +171,6 @@ void UpdateBullet(void)
 				//寿命のカウントダウン
 				g_aBullet[nCntBullet].nLife -= 2;
 
-				//SetEffect(g_aBullet[nCntBullet].pos, g_aBullet[nCntBullet].move, D3DXCOLOR(200, 100, 0, 1.0f), 9.5f, 10,0);
 				SetEffect(g_aBullet[nCntBullet].pos, g_aBullet[nCntBullet].move, D3DXCOLOR(255, 0, 0, 1.0f), 20.0f, 10, 0);
 				SetEffect(g_aBullet[nCntBullet].pos, g_aBullet[nCntBullet].move, D3DXCOLOR(255, 0, 0, 1.0f), 20.0f, 10, 0);
 				SetEffect(g_aBullet[nCntBullet].pos, g_aBullet[nCntBullet].move, D3DXCOLOR(255, 255, 255, 1.0f), 10.0f, 10, 0);

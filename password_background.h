@@ -7,10 +7,10 @@
 
 #include "main.h"
 
-#define PASSWORDFIELD_LEFT (500.0f)		//ïù200.0f
-#define PASSWORDFIELD_RIGHT (700.0f)	//çÇÇ≥320.0f
+#define PASSWORDFIELD_LEFT (540.0f)							//ïù1280.0f
+#define PASSWORDFIELD_RIGHT (PASSWORDFIELD_LEFT + 200.0f)	//çÇÇ≥720.0f
 #define PASSWORDFIELD_TOP (180.0f)
-#define PASSWORDFIELD_UNDER (500.0f)
+#define PASSWORDFIELD_UNDER (PASSWORDFIELD_TOP + 320.0f)
 
 //ÉvÉçÉg
 void InitPasswordBackGround(void);

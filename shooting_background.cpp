@@ -15,7 +15,7 @@ LPDIRECT3DTEXTURE9 g_pTextureBG4 = { NULL };		//テクスチャへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBG = NULL;		//頂点バッファへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBG2 = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBG3 = NULL;
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBG4 = NULL;		//操作説明
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBG4 = NULL;
 float g_aPosTexU[NUM_BG];//テクスチャ座標の開始位置（U値）
 
 //背景の初期化処理
@@ -29,19 +29,19 @@ void InitBackGround(void)
 
 	//テクスチャ1の読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\bg100.png",//テクスチャのファイル名
+		"data\\TEXTURE\\bg100.png",						//テクスチャのファイル名
 		&g_pTextureBG[0]);
 	//テクスチャ2の読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\bg101.png",//テクスチャのファイル名
+		"data\\TEXTURE\\bg101.png",						//テクスチャのファイル名
 		&g_pTextureBG[1]);
 	//テクスチャ3の読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\bg102.png",//テクスチャのファイル名
+		"data\\TEXTURE\\bg102.png",						//テクスチャのファイル名
 		&g_pTextureBG[2]);
-	//テクスチャ4の読み込み
+	//チュートリアルテクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\Mini_Shooting_Tutorial.png",//テクスチャのファイル名
+		"data\\TEXTURE\\Mini_Shooting_Tutorial.png",	//テクスチャのファイル名
 		&g_pTextureBG4);
 
 	//
@@ -253,9 +253,9 @@ void UpdateBackGround(void)
 
 		//テクスチャ座標の設定(縦)
 		pVtx[0].tex = D3DXVECTOR2(0.0f, g_aPosTexU[nCntBG] + 1.0f);//(u,v)
-		pVtx[1].tex = D3DXVECTOR2(1.0f, g_aPosTexU[nCntBG] + 1.0f);//(u,v)
-		pVtx[2].tex = D3DXVECTOR2(0.0f, g_aPosTexU[nCntBG]);//(u,v)
-		pVtx[3].tex = D3DXVECTOR2(1.0f, g_aPosTexU[nCntBG]);//(u,v)
+		pVtx[1].tex = D3DXVECTOR2(1.0f, g_aPosTexU[nCntBG] + 1.0f);
+		pVtx[2].tex = D3DXVECTOR2(0.0f, g_aPosTexU[nCntBG]);
+		pVtx[3].tex = D3DXVECTOR2(1.0f, g_aPosTexU[nCntBG]);
 	}
 	//頂点バッファをアンロックする
 	g_pVtxBuffBG->Unlock();

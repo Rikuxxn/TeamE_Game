@@ -41,11 +41,6 @@ void InitBallGame(void)
 	SetBallItem(D3DXVECTOR3(792.0f, BALLFIELD_UNDER - 207.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 0);
 	SetBallItem(D3DXVECTOR3(284.0f, BALLFIELD_UNDER - 94.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 2);
 
-	//SetBallItem(D3DXVECTOR3(313.0f, BALLFIELD_UNDER - 571.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 1);
-	//SetBallItem(D3DXVECTOR3(207.0f, BALLFIELD_UNDER - 432.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 3);
-	//SetBallItem(D3DXVECTOR3(580.0f, BALLFIELD_UNDER - 389.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 2);
-	//SetBallItem(D3DXVECTOR3(703.0f, BALLFIELD_UNDER - 249.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 0);
-
 	SetBallItem(D3DXVECTOR3(452.0f, BALLFIELD_UNDER - 571.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 1);
 	SetBallItem(D3DXVECTOR3(513.0f, BALLFIELD_UNDER - 432.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 3);
 	SetBallItem(D3DXVECTOR3(637.0f, BALLFIELD_UNDER - 389.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 2);
@@ -64,11 +59,11 @@ void UninitBallGame(void)
 
 	//各種オブジェクトの終了処理
 	UninitBallBackGround();	//背景の終了処理
-	UninitBallParticle();		//パーティクルの終了処理
-	UninitBallBlock();			//ブロックの終了処理
+	UninitBallParticle();	//パーティクルの終了処理
+	UninitBallBlock();		//ブロックの終了処理
 	UninitBallEffect();		//エフェクトの終了処理
-	UninitBallItem();			//アイテムの終了処理
-	UninitBallClear();			//クリア画面の終了処理
+	UninitBallItem();		//アイテムの終了処理
+	UninitBallClear();		//クリア画面の終了処理
 }
 void UpdateBallGame(void)
 {

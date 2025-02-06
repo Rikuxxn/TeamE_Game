@@ -36,7 +36,7 @@ void InitPasswordGame(void)
 	InitPasswordClear();		//クリア画面の初期化
 	InitPassword();				//パスワードの初期化
 
-	SetPassword(0);
+	SetPassword(0,0,false);
 	//アイテム
 	SetPasswordItem(D3DXVECTOR3(ITEM_POSX_LEFT, ITEM_POSY_TOP, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 1, NUMTYPE_1);
 	SetPasswordItem(D3DXVECTOR3(ITEM_POSX_CENTER, ITEM_POSY_TOP, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 2, NUMTYPE_2);
@@ -58,6 +58,7 @@ void InitPasswordGame(void)
 	g_nA2 = rand() % 9 + 0;
 	g_nA3 = rand() % 9 + 0;
 	g_nA4 = rand() % 9 + 0;
+	SetPassword(0, GetAnum4(), true);
 
 	////サウンドの再生
 	//PlaySound(SOUND_LABEL_GAMEBGM);
@@ -112,7 +113,7 @@ void UpdatePasswordGame(void)
 		(nPass4 == g_nA4 || nPass4 != g_nA4) &&
 		bJudge == true)//暗証番号の不一致
 	{
-		SetPassword(0);
+		SetPassword(0,0,false);
 	}
 
 	switch (g_gameState)

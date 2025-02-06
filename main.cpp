@@ -569,10 +569,7 @@ void Draw(void)
 		DrawFPS();
 
 		//パスワードの答え
-		DrawAPass(GetAnum());
-		DrawAPass2(GetAnum2());
-		DrawAPass3(GetAnum3());
-		DrawAPass4(GetAnum4());
+		DrawAPass(GetAnum(), GetAnum2(), GetAnum3(), GetAnum4());
 #endif
 		//描画終了
 		g_pD3DDevice->EndScene();
@@ -890,47 +887,31 @@ bool GetFullScreen(void)
 {
 	return g_isFullscreen;
 }
-void DrawAPass(int Answer)
+//============================================================
+// 暗証番号の表示処理
+//============================================================
+void DrawAPass(int Answer, int Answer2, int Answer3, int Answer4)
 {
 	RECT rect = { 0,60,SCREEN_WIDTH,SCREEN_HEIGHT };
+	RECT rect2 = { 0,80,SCREEN_WIDTH,SCREEN_HEIGHT };
+	RECT rect3 = { 0,100,SCREEN_WIDTH,SCREEN_HEIGHT };
+	RECT rect4 = { 0,120,SCREEN_WIDTH,SCREEN_HEIGHT };
+
 	char aStr[256];
+	char aStr2[256];
+	char aStr3[256];
+	char aStr4[256];
 
 	//文字列に代入
-	wsprintf(&aStr[0], "一つ目の番号:%d", Answer);
+	wsprintf(&aStr[0], "1つ目[クレーン]の番号:%d", Answer);
+	wsprintf(&aStr2[0], "2つ目[シューティング]の番号:%d", Answer2);
+	wsprintf(&aStr3[0], "3つ目[ボールプール]の番号:%d", Answer3);
+	wsprintf(&aStr4[0], "4つ目の番号:%d", Answer4);
 
 	//テキストの描画
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
-}
-void DrawAPass2(int Answer2)
-{
-	RECT rect = { 0,80,SCREEN_WIDTH,SCREEN_HEIGHT };
-	char aStr[256];
+	g_pFont->DrawText(NULL, &aStr2[0], -1, &rect2, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+	g_pFont->DrawText(NULL, &aStr3[0], -1, &rect3, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+	g_pFont->DrawText(NULL, &aStr4[0], -1, &rect4, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 
-	//文字列に代入
-	wsprintf(&aStr[0], "二つ目の番号:%d", Answer2);
-
-	//テキストの描画
-	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
-}
-void DrawAPass3(int Answer3)
-{
-	RECT rect = { 0,100,SCREEN_WIDTH,SCREEN_HEIGHT };
-	char aStr[256];
-
-	//文字列に代入
-	wsprintf(&aStr[0], "三つ目の番号:%d", Answer3);
-
-	//テキストの描画
-	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
-}
-void DrawAPass4(int Answer4)
-{
-	RECT rect = { 0,120,SCREEN_WIDTH,SCREEN_HEIGHT };
-	char aStr[256];
-
-	//文字列に代入
-	wsprintf(&aStr[0], "四つ目の番号:%d", Answer4);
-
-	//テキストの描画
-	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 }

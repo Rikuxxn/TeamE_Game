@@ -79,8 +79,6 @@ void UpdateBallFade(void)
 		else if (g_fade == FADE_OUT)
 		{//フェードアウト状態
 			g_colorBallFade.a += 0.04f;//ポリゴンを不透明にしていく
-			//g_colorBallFade.r += 0.01f;
-			//g_colorBallFade.b += 0.02f;
 			
 			g_colorBallFade.r += 0.04f;
 			g_colorBallFade.g += 0.04f;

@@ -26,11 +26,6 @@ void InitPassBlock(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-	////テクスチャの読み込み
-	//D3DXCreateTextureFromFile(pDevice,
-	//"data\\TEXTURE\\block2.png",		//テクスチャのファイル名
-	//	&g_pTexturePassBlock[0]);
-
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
 		"data\\TEXTURE\\sand.jpg",		//テクスチャのファイル名

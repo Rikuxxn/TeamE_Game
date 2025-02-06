@@ -380,7 +380,7 @@ void SetBlock(D3DXVECTOR3 pos, D3DXVECTOR3 rot,int nType)
 void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove, D3DXVECTOR3* pSize)
 {
 
-	bool bPassClear = GetPassClear();
+	GAME* pGame = GetGame();
 
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
@@ -409,7 +409,7 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 						pMove->z *= 0.5f;
 
 						// ミニゲームをすべてクリアしていたら
-						if (bPassClear == true)
+						if (pGame->bPassClear == true)
 						{
 							g_bExit = true;
 						}

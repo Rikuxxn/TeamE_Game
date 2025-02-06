@@ -127,14 +127,10 @@ void UninitTask(void)
 //============================================
 void UpdateTask(void)
 {
+	GAME* pGame = GetGame();
 
 	bool bFuseGet = GetFuseGet();
 	bool bFuseCmp = GetFuseCmp();
-	bool bSTClear = GetSTClear();
-	bool bACClear = GetACClear();
-	bool bBallClear = GetBallClear();
-	bool bPassClear = GetPassClear();
-
 
 	VERTEX_2D* pVtx;
 
@@ -178,7 +174,7 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bFuseCmp == true && bSTClear == false && bACClear == false && bBallClear == false &&
+		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && pGame->bBallClear == false &&
 			g_aTask[nCntTask].nType == TASKTYPE_TWO)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1120.0f)
@@ -190,7 +186,7 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bFuseCmp == true && bSTClear == false && bACClear == false && bBallClear == false &&
+		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && pGame->bBallClear == false &&
 			g_aTask[nCntTask].nType == TASKTYPE_SUB3)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1160.0f)
@@ -202,7 +198,7 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bFuseCmp == true && bSTClear == false && bACClear == false && bBallClear == false &&
+		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && pGame->bBallClear == false &&
 			g_aTask[nCntTask].nType == TASKTYPE_SUB4)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1150.0f)
@@ -214,7 +210,7 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bFuseCmp == true && bSTClear == false && bACClear == false && bBallClear == false &&
+		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && pGame->bBallClear == false &&
 			g_aTask[nCntTask].nType == TASKTYPE_SUB5)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1150.0f)
@@ -226,7 +222,7 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bSTClear == true && bACClear == true && bBallClear == true && g_aTask[nCntTask].nType == TASKTYPE_THREE)
+		else if (pGame->bSTClear == true && pGame->bACClear == true && pGame->bBallClear == true && g_aTask[nCntTask].nType == TASKTYPE_THREE)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1120.0f)
 			{
@@ -237,7 +233,7 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bSTClear == true && bACClear == true && bBallClear == true && g_aTask[nCntTask].nType == TASKTYPE_SUB6)
+		else if (pGame->bSTClear == true && pGame->bACClear == true && pGame->bBallClear == true && g_aTask[nCntTask].nType == TASKTYPE_SUB6)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1150.0f)
 			{
@@ -302,7 +298,7 @@ void UpdateTask(void)
 		}
 
 		// クレーンゲームクリアしたら
-		if (bACClear == true)
+		if (pGame->bACClear == true)
 		{
 			if (g_aTask[nCntTask].nType == TASKTYPE_SUB3)
 			{
@@ -311,7 +307,7 @@ void UpdateTask(void)
 			}
 		}
 		// シューティングクリアしたら
-		if (bSTClear == true)
+		if (pGame->bSTClear == true)
 		{
 			if (g_aTask[nCntTask].nType == TASKTYPE_SUB4)
 			{
@@ -320,7 +316,7 @@ void UpdateTask(void)
 			}
 		}
 		// ボールプールクリアしたら
-		if (bBallClear == true)
+		if (pGame->bBallClear == true)
 		{
 			if (g_aTask[nCntTask].nType == TASKTYPE_SUB5)
 			{
@@ -330,7 +326,7 @@ void UpdateTask(void)
 		}
 
 		// 暗証番号を入力完了
-		if (bPassClear == true)
+		if (pGame->bPassClear == true)
 		{
 			if (g_aTask[nCntTask].nType == TASKTYPE_SUB6)
 			{
@@ -340,7 +336,7 @@ void UpdateTask(void)
 		}
 
 		// ミニゲームをすべてクリアしたら
-		if (bSTClear == true && bACClear == true && bBallClear == true)
+		if (pGame->bSTClear == true && pGame->bACClear == true && pGame->bBallClear == true)
 		{
 			if (g_aTask[nCntTask].nType == TASKTYPE_TWO)
 			{

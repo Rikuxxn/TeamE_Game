@@ -45,22 +45,6 @@ int g_nCounterGameState = 0;				// 状態管理カウンター
 GAME g_Game;								// ゲームの情報
 
 bool g_bPause = false;	//ポーズ中かどうか
-//bool bDraw = false;	//シューティングミニゲームの描画用
-//bool bDraw2 = false;	//クレーン
-//bool bDraw3 = false;	//ボールプール
-//bool bDraw4 = false;	//パスワード
-//bool bSTClear;
-//bool bACClear;
-//bool bBallClear;
-//bool bPassClear;
-//
-//bool bMap;
-//bool bMini;
-//int nCounter;
-//int nStgCnt;
-//int nCraneCnt;
-//int nBallCnt;
-//int nPassCnt;
 
 //==============================================
 //ゲーム画面の初期化処理
@@ -834,31 +818,3 @@ void SetEnablePause(bool bPause)
 {
 	g_bPause = bPause;
 }
-////============================================
-//// シューティングクリアの取得
-////============================================
-//bool GetSTClear(void)
-//{
-//	return bSTClear;
-//}
-////============================================
-//// UFOキャッチャークリアの取得
-////============================================
-//bool GetACClear(void)
-//{
-//	return bACClear;
-//}
-////============================================
-//// ボールプールクリアの取得
-////============================================
-//bool GetBallClear(void)
-//{
-//	return bBallClear;
-//}
-////============================================
-//// キーパッドクリアの取得
-////============================================
-//bool GetPassClear(void)
-//{
-//	return bPassClear;
-//}

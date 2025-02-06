@@ -181,7 +181,7 @@ void InitTitle(void)
 //==================
 void UninitTitle(void)
 {
-	LPDIRECT3DDEVICE9 pDevice; // 事前に作成・初期化されているデバイス
+	LPDIRECT3DDEVICE9 pDevice;
 
 	//デバイスの取得
 	pDevice = GetDevice();
@@ -354,7 +354,7 @@ void UpdateTitle(void)
 		D3DXCOLOR color = D3DXCOLOR(1.0f, 1.0f, 1.0f, titleAlphas[nCntTitle]);
 
 		// 頂点カラーを設定
-		for (int nCntTitle2 = 0; nCntTitle2 < 3; nCntTitle2++)
+		for (int nCntTitle2 = 0; nCntTitle2 < 4; nCntTitle2++)
 		{
 			pVtx[nCntTitle2].col = color;
 		}

@@ -61,6 +61,7 @@
     <ClCompile Include="password_item.cpp" />
     <ClCompile Include="password_particle.cpp" />
     <ClCompile Include="password_score.cpp" />
+    <ClCompile Include="sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
@@ -122,5 +123,6 @@
     <ClInclude Include="password_item.h" />
     <ClInclude Include="password_particle.h" />
     <ClInclude Include="password_score.h" />
+    <ClInclude Include="sound.h" />
   </ItemGroup>
 </Project>

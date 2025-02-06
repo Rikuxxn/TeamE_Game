@@ -16,7 +16,7 @@
 D3DXVECTOR3 patrolPoints[] =
 {//左回りのポイント
 
-	D3DXVECTOR3(1000.0f, 0.0f, 160.0f),
+	D3DXVECTOR3(1000.0f, 0.0f, 110.0f),
 	D3DXVECTOR3(850.0f, 0.0f, 475.0f),
 	D3DXVECTOR3(520.0f, 0.0f, 490.0f),
 	D3DXVECTOR3(220.0f, 0.0f, 675.0f),
@@ -29,19 +29,33 @@ D3DXVECTOR3 patrolPoints[] =
 	D3DXVECTOR3(600.0f, 0.0f, 830.0f),
 	D3DXVECTOR3(650.0f, 0.0f, 830.0f),
 	D3DXVECTOR3(700.0f, 0.0f, 830.0f),
-	D3DXVECTOR3(750.0f, 0.0f, 830.0f),
+
+	D3DXVECTOR3(815.0f, 0.0f, 865.0f),
+
 	D3DXVECTOR3(800.0f, 0.0f, 830.0f),
 	D3DXVECTOR3(850.0f, 0.0f, 830.0f),
 	D3DXVECTOR3(900.0f, 0.0f, 830.0f),
 	D3DXVECTOR3(-975.0f, 0.0f, 860.0f),
 	D3DXVECTOR3(-1000.0f, 0.0f, 530.0f),
 	D3DXVECTOR3(-1015.0f, 0.0f, 260.0f),
+	D3DXVECTOR3(-1060.0f, 0.0f, 135.0f),
+	D3DXVECTOR3(-1055.0f, 0.0f, -25.0f),
+	D3DXVECTOR3(-1025.0f, 0.0f, -225.0f),
+	D3DXVECTOR3(-1025.0f, 0.0f, -420.0f),
+	D3DXVECTOR3(-710.0f, 0.0f, -420.0f),
+	D3DXVECTOR3(-455.0f, 0.0f, -425.0f),
+	D3DXVECTOR3(-225.0f, 0.0f, -425.0f),
+	D3DXVECTOR3(-225.0f, 0.0f, -35.0f),
+	D3DXVECTOR3(-455.0f, 0.0f, -35.0f),
+	D3DXVECTOR3(-705.0f, 0.0f, -35.0f),
+	D3DXVECTOR3(-1055.0f, 0.0f, -25.0f),
 	D3DXVECTOR3(-700.0f, 0.0f, 300.0f),
 	D3DXVECTOR3(-695.0f, 0.0f, 510.0f),
 	D3DXVECTOR3(-415.0f, 0.0f, 510.0f),
 	D3DXVECTOR3(-410.0f, 0.0f, 295.0f),
 	D3DXVECTOR3(30.0f, 0.0f, 270.0f),
 	D3DXVECTOR3(465.0f, 0.0f, 204.0f),
+	D3DXVECTOR3(680.0f, 0.0f, 115.0f),
 
 };
 
@@ -412,7 +426,7 @@ void UpdateEnemy(void)
 			// 現在の巡回ポイントに向かう
 			target = patrolPoints[currentPatrolPoint];
 
-			distanceToTarget = sqrt
+			distanceToTarget = (float)sqrt
 			(
 				(target.x - g_aEnemy.pos.x) * (target.x - g_aEnemy.pos.x) +
 				(target.y - g_aEnemy.pos.y) * (target.y - g_aEnemy.pos.y) +
@@ -703,7 +717,8 @@ int GetNearestPatrolPoint(D3DXVECTOR3 currentPos)
 
 	for (int i = 0; i < sizeof(patrolPoints) / sizeof(patrolPoints[0]); i++) 
 	{
-		float distance = sqrt(
+		float distance = (float)sqrt
+		(
 			(patrolPoints[i].x - currentPos.x) * (patrolPoints[i].x - currentPos.x) +
 			(patrolPoints[i].y - currentPos.y) * (patrolPoints[i].y - currentPos.y) +
 			(patrolPoints[i].z - currentPos.z) * (patrolPoints[i].z - currentPos.z)

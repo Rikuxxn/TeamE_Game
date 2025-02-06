@@ -362,7 +362,7 @@ void SetBlock(D3DXVECTOR3 pos, D3DXVECTOR3 rot,int nType)
 			// 現在の g_info[nType] をコピー
 			g_aBlock[nCntBlock] = g_info[nType];
 
-			// 明示的に回転情報をリセットして設定
+			// 回転情報をリセットして設定
 			g_aBlock[nCntBlock].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 			g_aBlock[nCntBlock].pos = pos;
@@ -557,7 +557,7 @@ bool OverlapOnAxis(const D3DXVECTOR3& center1, const D3DXVECTOR3 axes1[3], const
 
 	// OBB の中心の距離を指定された軸に投影
 	D3DXVECTOR3 centerDiff = center2 - center1;
-	float distance = (float)fabs(D3DXVec3Dot(&centerDiff, &axis));
+	float distance = fabs(D3DXVec3Dot(&centerDiff, &axis));
 
 	// 投影の重なりを判定
 	return distance <= (radius1 + radius2);
@@ -568,9 +568,9 @@ bool OverlapOnAxis(const D3DXVECTOR3& center1, const D3DXVECTOR3 axes1[3], const
 float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], const D3DXVECTOR3& axis)
 {
 	// 各軸を指定された軸に投影し、その絶対値を足し合わせる
-	return fabs(D3DXVec3Dot(&axes[0], &axis)) * size.x / 2 +
-		fabs(D3DXVec3Dot(&axes[1], &axis)) * size.y / 2 +
-		fabs(D3DXVec3Dot(&axes[2], &axis)) * size.z / 2;
+	return fabs(D3DXVec3Dot(&axes[0], &axis)) * size.x / 2.0f +
+		fabs(D3DXVec3Dot(&axes[1], &axis)) * size.y / 2.0f +
+		fabs(D3DXVec3Dot(&axes[2], &axis)) * size.z / 2.0f;
 }
 //=================================
 // ブロックインタラクト種類判定処理

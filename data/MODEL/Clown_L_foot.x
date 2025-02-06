@@ -394,7 +394,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\メタセコ制作物\\Team3D\\TEXTURE山田\\AngryMuncieye.png";
+    "data\\TEXTURE\\AngryMuncieye.png";
    }
   }
   Material {

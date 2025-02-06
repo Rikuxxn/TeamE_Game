@@ -229,8 +229,8 @@ void UpdatePause(void)
 	for (int nCnt = 0; nCnt < MAX_PAUSE; nCnt++) 
 	{
 		float scale = pauseScales[nCnt];
-		float centerX = 650.0f;					// 中心X座標
-		float centerY = 200.0f + nCnt * 150.0f; // 中心Y座標
+		float centerX = 660.0f;					// 中心X座標
+		float centerY = 230.0f + nCnt * 150.0f; // 中心Y座標
 
 		// 領域の計算
 		float left = centerX - 150.0f * scale;
@@ -284,8 +284,8 @@ void UpdatePause(void)
 	for (int nCntPause = 0; nCntPause < MAX_PAUSE; nCntPause++) 
 	{
 		float scale = pauseScales[nCntPause];
-		float centerX = 650.0f;
-		float centerY = 200.0f + nCntPause * 150.0f;
+		float centerX = 660.0f;
+		float centerY = 230.0f + nCntPause * 150.0f;
 
 		// 頂点座標を設定
 		pVtx[0].pos = D3DXVECTOR3(centerX - 150.0f * scale, centerY - 50.0f * scale, 0.0f);

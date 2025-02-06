@@ -52,10 +52,4 @@ void SetEnablePause(bool bPause);
 GAMESTATE GetGameState(void);
 GAME* GetGame(void);
 
-bool GetSTClear(void);
-bool GetACClear(void);
-bool GetBallClear(void);
-bool GetPassClear(void);
-
-
 #endif

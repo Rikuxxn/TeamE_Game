@@ -64,6 +64,9 @@
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="crane_score.cpp" />
     <ClCompile Include="shooting_score.cpp" />
+    <ClCompile Include="ball_hint_bg.cpp" />
+    <ClCompile Include="ball_score.cpp" />
+    <ClCompile Include="ball_hint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
@@ -128,5 +131,8 @@
     <ClInclude Include="sound.h" />
     <ClInclude Include="crane_score.h" />
     <ClInclude Include="shooting_score.h" />
+    <ClInclude Include="ball_hint_bg.h" />
+    <ClInclude Include="ball_score.h" />
+    <ClInclude Include="ball_hint.h" />
   </ItemGroup>
 </Project>

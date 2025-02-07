@@ -141,7 +141,7 @@ void DrawPasswordFade(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-	//頂点バッファをデータストリーム
+	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, g_pVtxBuffPasswordFade, 0, sizeof(VERTEX_2D));
 
 	//頂点フォーマットの設定

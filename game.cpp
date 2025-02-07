@@ -32,6 +32,7 @@
 #include "password_game.h"
 #include "crane_game.h"
 #include "ball_game.h"
+#include "ball_hint.h"
 #include "ui.h"
 #include "shadow.h"
 #include "map.h"
@@ -136,6 +137,7 @@ void InitGame(void)
 	InitShootingGame();
 	InitCraneGame();
 	InitBallGame();
+	InitBallHint();
 
 	//// 天井の中央付近から特定エリアを照らすスポットライト
 	//AddLight(
@@ -218,6 +220,7 @@ void InitGame(void)
 	g_Game.bSTClear = false;
 	g_Game.bACClear = false;
 	g_Game.bBallClear = false;
+	g_Game.bBallHint = false;
 	g_Game.bPassClear = false;
 	g_Game.bMini = false;
 	g_Game.bMap = false;
@@ -321,10 +324,11 @@ void UninitGame(void)
 
 
 	//ミニゲームの終了処理
+	UninitPasswordGame();
 	UninitShootingGame();
 	UninitCraneGame();
 	UninitBallGame();
-	UninitPasswordGame();
+	UninitBallHint();
 }
 //=========================================
 //ゲーム画面の更新処理
@@ -356,7 +360,7 @@ void UpdateGame(void)
 	bool bBall = GetBall();
 	bool bFuseCmp = GetFuseCmp();
 	bool bKeypad = GetKeypad();
-
+	bool bHint = GetHintBall();
 	bool bEnd = GetEnd();
 
 	// ミニゲーム中はポーズを開けないようにする
@@ -410,6 +414,15 @@ void UpdateGame(void)
 		{
 			g_Game.bDraw3 = g_Game.bDraw3 ? false : true;
 			g_Game.bMini = g_Game.bMini ? false : true;
+		}
+
+		// パスワードのヒント
+		if (KeyboardTrigger(DIK_E) == true &&
+			bHint == true &&
+			g_Game.bMap == false &&
+			bFuseCmp == true)
+		{
+			g_Game.bBallHint = g_Game.bBallHint ? false : true;
 		}
 
 		// キーパッドのトリガー
@@ -520,12 +533,13 @@ void UpdateGame(void)
 		SetCursorVisibility(false);
 
 
-		if (g_Game.bDraw == false && g_Game.bDraw2 == false && g_Game.bDraw3 == false)
-		{
+		//if (g_Game.bDraw == false && g_Game.bDraw2 == false && g_Game.bDraw3 == false &&
+		//	g_Game.bBallHint == false)
+		//{
 			//プレイヤーの更新処理
 			UpdatePlayer();
 
-		}
+		//}
 		if (g_Game.bDraw == true)
 		{
 			//ミニゲーム(シューティング)の更新処理
@@ -552,7 +566,11 @@ void UpdateGame(void)
 			// カーソルを表示する
 			SetCursorVisibility(true);
 		}
-
+		if (g_Game.bBallHint == true)
+		{
+			// ボールのヒントの更新処理
+			UpdateBallHint();
+		}
 
 		//敵の更新処理
 		UpdateEnemy();
@@ -569,7 +587,8 @@ void UpdateGame(void)
 		//メッシュシリンダーの更新処理
 		UpdateMeshcylinder();
 
-		if (g_Game.bDraw == false && g_Game.bDraw2 == false && g_Game.bDraw3 == false && g_Game.bDraw4 == false)
+		if (g_Game.bDraw == false && g_Game.bDraw2 == false && g_Game.bDraw3 == false && g_Game.bDraw4 == false &&
+			g_Game.bBallHint == false)
 		{
 			//カメラの更新処理
 			UpdateCamera();
@@ -635,6 +654,7 @@ void UpdateGame(void)
 		g_Game.bDraw3 = false;
 		g_Game.bDraw4 = false;
 		g_Game.bMap = false;
+		g_Game.bBallHint = false;
 	}
 
 	//nTime = GetTime();
@@ -761,6 +781,10 @@ void DrawGame(void)
 	{//ポーズ中
 		//ポーズの描画処理
 		DrawPause();
+	}
+	if (g_Game.bBallHint == true)
+	{//パスワードのヒント
+		DrawBallHint();
 	}
 
 	//ミニゲームの描画処理

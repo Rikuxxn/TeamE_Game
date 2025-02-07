@@ -150,8 +150,11 @@
     <ClCompile Include="ball_effect.cpp" />
     <ClCompile Include="ball_fade.cpp" />
     <ClCompile Include="ball_game.cpp" />
+    <ClCompile Include="ball_hint.cpp" />
+    <ClCompile Include="ball_hint_bg.cpp" />
     <ClCompile Include="ball_item.cpp" />
     <ClCompile Include="ball_particle.cpp" />
+    <ClCompile Include="ball_score.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="crane_background.cpp" />
@@ -215,8 +218,11 @@
     <ClInclude Include="ball_effect.h" />
     <ClInclude Include="ball_fade.h" />
     <ClInclude Include="ball_game.h" />
+    <ClInclude Include="ball_hint.h" />
+    <ClInclude Include="ball_hint_bg.h" />
     <ClInclude Include="ball_item.h" />
     <ClInclude Include="ball_particle.h" />
+    <ClInclude Include="ball_score.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="crane_background.h" />

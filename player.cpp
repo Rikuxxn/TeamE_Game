@@ -19,6 +19,7 @@
 #include "block.h"
 #include "light.h"
 #include "sound.h"
+#include "game.h"
 
 //グローバル変数
 Player g_player;			//プレイヤーの情報
@@ -194,8 +195,9 @@ void UpdatePlayer(void)
 	pStick = GetJoyStickAngle();
 
 	Block* pBlock = GetBlock();
-
 	Camera* pCamera = GetCamera();
+	GAME* pGame = GetGame();
+
 	bool bExit = GetExit();
 	bool bEnd = GetEnd();
 	bool bFirstPerson = GetFirstPerson();
@@ -207,7 +209,8 @@ void UpdatePlayer(void)
 		g_player.motion.motionType = MOTIONTYPE_NEUTRAL;
 	}
 
-	if (bExit == false && g_player.bDisp == true && bEnd == false)
+	if (bExit == false && g_player.bDisp == true && bEnd == false && pGame->bDraw == false &&
+		pGame->bDraw2 == false && pGame->bDraw3 == false && pGame->bBallHint == false)
 	{
 		////左スティック移動処理
 		//if (GetJoyStick() == true)
@@ -451,18 +454,18 @@ void UpdatePlayer(void)
 			g_player.bDush = false;
 		}
 
-		if (g_player.bDush == false || GetKeyboardPress(DIK_W) == false)
-		{//スタミナ回復
-			if (g_player.fDush <= PLAYER_STAMINA)
-			{
-				g_player.fDush += STAMINA_RECOVERY;
-			}
-			else if (g_player.fDush >= PLAYER_STAMINA)
-			{
-				g_player.fDush += 0;
-				g_player.bEmpty = false;
-			}
-		}
+		//if (g_player.bDush == false || GetKeyboardPress(DIK_W) == false)
+		//{//スタミナ回復
+		//	if (g_player.fDush <= PLAYER_STAMINA)
+		//	{
+		//		g_player.fDush += STAMINA_RECOVERY;
+		//	}
+		//	else if (g_player.fDush >= PLAYER_STAMINA)
+		//	{
+		//		g_player.fDush += 0;
+		//		g_player.bEmpty = false;
+		//	}
+		//}
 
 		if (g_player.fDush >= PLAYER_STAMINA &&
 			GetKeyboardPress(DIK_LSHIFT) == false)
@@ -512,6 +515,20 @@ void UpdatePlayer(void)
 		//CollisionModel();
 
 	}
+
+	if (g_player.bDush == false || GetKeyboardPress(DIK_W) == false)
+	{//スタミナ回復
+		if (g_player.fDush <= PLAYER_STAMINA)
+		{
+			g_player.fDush += STAMINA_RECOVERY;
+		}
+		else if (g_player.fDush >= PLAYER_STAMINA)
+		{
+			g_player.fDush += 0;
+			g_player.bEmpty = false;
+		}
+	}
+
 
 	// カメラの回転角（Yaw, Pitch）を取得
 	float yaw = pCamera->rot.y;   // 水平回転

@@ -30,6 +30,7 @@ typedef struct
 	bool bSTClear;			//　シューティング
 	bool bACClear;			//　クレーン
 	bool bBallClear;		//　ボールプール
+	bool bBallHint;			//	ボールプールのヒント
 	bool bPassClear;		//　パスワード
 	bool bMap;				//　マップ
 	bool bMini;				//　ミニゲーム全体

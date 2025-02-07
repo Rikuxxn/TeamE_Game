@@ -163,6 +163,8 @@
     <ClCompile Include="crane_effect.cpp" />
     <ClCompile Include="crane_fade.cpp" />
     <ClCompile Include="crane_game.cpp" />
+    <ClCompile Include="crane_hint.cpp" />
+    <ClCompile Include="crane_hint_bg.cpp" />
     <ClCompile Include="crane_item.cpp" />
     <ClCompile Include="crane_particle.cpp" />
     <ClCompile Include="crane_player.cpp" />
@@ -231,6 +233,8 @@
     <ClInclude Include="crane_effect.h" />
     <ClInclude Include="crane_fade.h" />
     <ClInclude Include="crane_game.h" />
+    <ClInclude Include="crane_hint.h" />
+    <ClInclude Include="crane_hint_bg.h" />
     <ClInclude Include="crane_item.h" />
     <ClInclude Include="crane_particle.h" />
     <ClInclude Include="crane_player.h" />

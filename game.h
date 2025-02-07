@@ -29,6 +29,7 @@ typedef struct
 	bool bDraw4;			//　パスワード
 	bool bSTClear;			//　シューティング
 	bool bACClear;			//　クレーン
+	bool bCraneHint;		//	クレーンのヒント
 	bool bBallClear;		//　ボールプール
 	bool bBallHint;			//	ボールプールのヒント
 	bool bPassClear;		//　パスワード

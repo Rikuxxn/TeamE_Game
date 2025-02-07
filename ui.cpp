@@ -11,8 +11,8 @@
 #include "game.h"
 
 //グローバル変数
-LPDIRECT3DTEXTURE9 g_pTextureUI[UITYPE_MAX] = {};//テクスチャへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffUI = NULL;//頂点バッファへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureUI[UITYPE_MAX] = {};	// テクスチャへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffUI = NULL;		// 頂点バッファへのポインタ
 UI g_aUI[MAX_UI];
 
 //=========================================================
@@ -144,7 +144,7 @@ void UpdateUI(void)
 
 	bool bFuseGet = GetFuseGet();
 	bool bFuseCmp = GetFuseCmp();
-
+	bool bHintBall = GetHintBall();
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffUI->Lock(0, 0, (void**)&pVtx, 0);
@@ -218,6 +218,18 @@ void UpdateUI(void)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_USE);
+		}
+		else// 範囲外
+		{
+			// falseにする
+			g_aUI[nCntUI].bUse = false;
+		}
+
+		// ヒントボールの範囲内
+		if (bHintBall == true)
+		{
+			// UIを表示
+			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
 		}
 		else// 範囲外
 		{

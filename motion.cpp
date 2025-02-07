@@ -12,15 +12,13 @@
 #include "enemy.h"
 
 //=============================================
-//プレイヤーのパーツ・モーション読み込み処理
+// プレイヤーのパーツ・モーション読み込み処理
 //=============================================
 void LoadPlayerTEXT(void)
 {
 
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//ファイルを開く
 	FILE* pFile = NULL;
@@ -332,15 +330,13 @@ void LoadPlayerTEXT(void)
 
 }
 //=============================================
-//敵のパーツ・モーション読み込み処理
+// 敵のパーツ・モーション読み込み処理
 //=============================================
 void LoadEnemyTEXT(void)
 {
 
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//ファイルを開く
 	FILE* pFile = NULL;

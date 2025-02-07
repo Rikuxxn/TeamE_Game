@@ -16,17 +16,15 @@ TASK g_aTask[MAX_TASK];
 int g_nCntTask;
 
 //============================================
-//タスクUI表示の初期化処理
+// タスクUI表示の初期化処理
 //============================================
 void InitTask(void)
 {
 
-	LPDIRECT3DDEVICE9 pDevice;
+	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	int nCntTask;
-
-	//デバイスの取得
-	pDevice = GetDevice();
 
 	for (int nCnt = 0; nCnt < TASKTYPE_MAX; nCnt++)
 	{
@@ -57,9 +55,7 @@ void InitTask(void)
 		&g_pVtxBuffTask,
 		NULL);
 
-
 	VERTEX_2D* pVtx;
-
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffTask->Lock(0, 0, (void**)&pVtx, 0);
@@ -123,7 +119,7 @@ void UninitTask(void)
 	}
 }
 //============================================
-//タスクUI表示の更新処理
+// タスクUI表示の更新処理
 //============================================
 void UpdateTask(void)
 {
@@ -402,17 +398,15 @@ void UpdateTask(void)
 
 }
 //============================================
-//タスクUI表示の描画処理
+// タスクUI表示の描画処理
 //============================================
 void DrawTask(void)
 {
 
 	int nCntTask;
 
-	LPDIRECT3DDEVICE9 pDevice;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, g_pVtxBuffTask, 0, sizeof(VERTEX_2D));
@@ -437,7 +431,7 @@ void DrawTask(void)
 	}
 }
 //============================================
-//タスクUI表示の設定処理
+// タスクUI表示の設定処理
 //============================================
 void SetTask(D3DXVECTOR3 pos, float fWidth, float fHeight, int nType)
 {

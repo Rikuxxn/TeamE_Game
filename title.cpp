@@ -16,9 +16,7 @@
 #include "player.h"
 #include "main.h"
 #include "ui.h"
-
-//#include "sound.h"
-
+#include "sound.h"
 
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_apTextureTitle[MAX_TITLE] = {};		//テクスチャへのポインタ
@@ -33,13 +31,13 @@ TITLE_MENU g_titleMenu;										//ポーズメニュー
 float titleScales[MAX_TITLE] = { TITLE_MIN_SCALE, TITLE_MIN_SCALE };
 
 // 項目ごとの透明度を保持する配列
-float titleAlphas[MAX_TITLE] = { 0.3f, 0.3f }; // 初期は全て半透明（範囲外状態）
+float titleAlphas[MAX_TITLE] = { 0.3f, 0.3f };				// 初期は全て半透明（範囲外状態）
 
 HWND hWnd;
 
-//==================
-//タイトルの初期化
-//==================
+//========================
+// タイトルの初期化
+//========================
 void InitTitle(void)
 {
 	Player* pPlayer = GetPlayer();
@@ -176,9 +174,9 @@ void InitTitle(void)
 	g_titleMenu = TITLE_MENU_START;
 
 }
-//==================
-//タイトルの終了
-//==================
+//========================
+// タイトルの終了
+//========================
 void UninitTitle(void)
 {
 	LPDIRECT3DDEVICE9 pDevice;
@@ -231,9 +229,9 @@ void UninitTitle(void)
 	}
 
 }
-//==================
-//タイトルの更新
-//==================
+//========================
+// タイトルの更新
+//========================
 void UpdateTitle(void)
 {
 
@@ -404,9 +402,9 @@ void UpdateTitle(void)
 	}
 #endif
 }
-//==================
-//タイトルの描画
-//==================
+//========================
+// タイトルの描画
+//========================
 void DrawTitle(void)
 {
 	LPDIRECT3DDEVICE9 pDevice; // 事前に作成・初期化されているデバイス

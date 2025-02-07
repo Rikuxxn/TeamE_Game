@@ -35,9 +35,8 @@ DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// オーディオデータサイズ
 SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 {
 
-	{"data/BGM/titleBGM.wav", -1},		//BGM1
-	{"data/BGM/gameBGM.wav", -1},		//ゲームBGM
-	{"data/SE/arrested.wav", 0},		//ゲームオーバーSE
+	{"data/BGM/gameBGM.wav", -1},		// ゲームBGM
+	//{"data/SE/arrested.wav", 0},		// SE
 
 };
 

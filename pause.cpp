@@ -9,8 +9,7 @@
 #include "game.h"
 #include "input.h"
 #include "fade.h"
-//#include "sound.h"
-
+#include "sound.h"
 
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_apTexturePause[MAX_PAUSE] = {};		//テクスチャへのポインタ
@@ -28,16 +27,15 @@ float pauseScales[MAX_PAUSE] = { PAUSE_MIN_SCALE, PAUSE_MIN_SCALE, PAUSE_MIN_SCA
 float pauseAlphas[MAX_PAUSE] = { 0.3f, 0.3f, 0.3f };		// 初期は全て半透明（範囲外状態）
 
 //===============================================================
-//ポーズの初期化処理
+// ポーズの初期化処理
 //===============================================================
 void InitPause(void)
 {
 
-	LPDIRECT3DDEVICE9 pDevice;
-	int nCntPause;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+	int nCntPause;
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -148,7 +146,7 @@ void InitPause(void)
 
 }
 //===============================================================
-//ポーズの終了処理
+// ポーズの終了処理
 //===============================================================
 void UninitPause(void)
 {
@@ -191,7 +189,7 @@ void UninitPause(void)
 
 }
 //===============================================================
-//ポーズの更新処理
+// ポーズの更新処理
 //===============================================================
 void UpdatePause(void)
 {
@@ -332,16 +330,18 @@ void UpdatePause(void)
 	}
 }
 //===============================================================
-//ポーズの描画処理
+// ポーズの描画処理
 //===============================================================
 void DrawPause(void)
 {
 	int nCntPause;
 
-	LPDIRECT3DDEVICE9 pDevice;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+	//===============
+	// 背景
+	//===============
 
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, g_pVtxBuffPauseBG, 0, sizeof(VERTEX_2D));
@@ -349,10 +349,14 @@ void DrawPause(void)
 	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
-	pDevice->SetTexture(0, /*g_apTexturePauseBG*/NULL);
+	pDevice->SetTexture(0, NULL);
 
 	//ポリゴンの描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+
+	//===============
+	// ポーズ項目
+	//===============
 
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, g_pVtxBuffPause, 0, sizeof(VERTEX_2D));
@@ -369,5 +373,4 @@ void DrawPause(void)
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCntPause*4, 2);
 
 	}
-
 }

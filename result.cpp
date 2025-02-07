@@ -8,25 +8,24 @@
 #include "input.h"
 #include "fade.h"
 #include "player.h"
-//#include "sound.h"
+#include "sound.h"
 #include "time.h"
 #include "enemy.h"
 #include "block.h"
 
-
 //グローバル変数
-LPDIRECT3DTEXTURE9 g_pTextureResult = NULL;						//テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureRank = NULL;						//テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureClearSelect[MAX_GAMEOVER] = {};	//テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureGameoverSelect[MAX_GAMEOVER] = {};	//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureResult = NULL;						// テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureRank = NULL;						// テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureClearSelect[MAX_GAMEOVER] = {};	// テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureGameoverSelect[MAX_GAMEOVER] = {};	// テクスチャへのポインタ
 
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResult = NULL;				//頂点バッファへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffRank = NULL;					//頂点バッファへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffClearSelect = NULL;			//頂点バッファへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffGameoverSelect = NULL;		//頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResult = NULL;				// 頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffRank = NULL;					// 頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffClearSelect = NULL;			// 頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffGameoverSelect = NULL;		// 頂点バッファへのポインタ
 
-CLEAR_MENU g_clearMenu;											//クリアメニュー
-GAMEOVER_MENU g_gameoverMenu;									//ゲームオーバーメニュー
+CLEAR_MENU g_clearMenu;											// クリアメニュー
+GAMEOVER_MENU g_gameoverMenu;									// ゲームオーバーメニュー
 
 // 項目の拡大率を管理する配列
 float gameoverScales[MAX_GAMEOVER] = { GAMEOVER_MIN_SCALE, GAMEOVER_MIN_SCALE };
@@ -36,28 +35,25 @@ float clearScales[MAX_CLEAR] = { CLEAR_MIN_SCALE };
 float clearAlphas[MAX_CLEAR] = { 0.3f };						// 初期は全て半透明（範囲外状態）
 float gameoverAlphas[MAX_GAMEOVER] = { 0.3f, 0.3f };			// 初期は全て半透明（範囲外状態）
 
-
 float g_fAlphaTime = 0.0f;										// タイム用のアルファ値
 float g_fAlphaRank = 0.0f;										// ランク用のアルファ値
 
 int g_nRankCnt = 0;
 int g_nTimeCnt = 0;
 
+LPDIRECT3DTEXTURE9 g_pTextureResultTimeMinute = NULL;			// テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureResultTimeSecond = NULL;			// テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureResultColon = NULL;				// テクスチャへのポインタ
 
-LPDIRECT3DTEXTURE9 g_pTextureResultTimeMinute = NULL;		//テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureResultTimeSecond = NULL;		//テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureResultColon = NULL;			//テクスチャへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultTimeMinute = NULL;		// 頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultTimeSecond = NULL;		// 頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultColon = NULL;			// 頂点バッファへのポインタ
 
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultTimeMinute = NULL;	//頂点バッファへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultTimeSecond = NULL;	//頂点バッファへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultColon = NULL;		//頂点バッファへのポインタ
-
-
-D3DXVECTOR3 g_posResultTime;//タイムの位置
+D3DXVECTOR3 g_posResultTime;									// タイムの位置
 Time g_aResultTime[MAX_RESULT_TIMEDIGIT];
 
-int g_nResultMinutes;		// 分
-int g_nResultSeconds;		// 秒
+int g_nResultMinutes;											// 分
+int g_nResultSeconds;											// 秒
 
 //================================================
 //リザルト画面の初期化処理
@@ -471,8 +467,8 @@ void UpdateResult(void)
 			float centerY = 600.0f + nCnt * 150.0f; // 中心Y座標
 
 			// 領域の計算
-			float left = centerX - 80.0f * scale;
-			float right = centerX + 80.0f * scale;
+			float left = centerX - 78.0f * scale;
+			float right = centerX + 78.0f * scale;
 			float top = centerY - 10.0f * scale;
 			float bottom = centerY + 10.0f * scale;
 
@@ -526,10 +522,10 @@ void UpdateResult(void)
 			float centerY = 600.0f + nCntClear * 150.0f;
 
 			// 頂点座標を設定
-			pVtx[0].pos = D3DXVECTOR3(centerX - 80.0f * scale, centerY - 10.0f * scale, 0.0f);
-			pVtx[1].pos = D3DXVECTOR3(centerX + 80.0f * scale, centerY - 10.0f * scale, 0.0f);
-			pVtx[2].pos = D3DXVECTOR3(centerX - 80.0f * scale, centerY + 10.0f * scale, 0.0f);
-			pVtx[3].pos = D3DXVECTOR3(centerX + 80.0f * scale, centerY + 10.0f * scale, 0.0f);
+			pVtx[0].pos = D3DXVECTOR3(centerX - 78.0f * scale, centerY - 10.0f * scale, 0.0f);
+			pVtx[1].pos = D3DXVECTOR3(centerX + 78.0f * scale, centerY - 10.0f * scale, 0.0f);
+			pVtx[2].pos = D3DXVECTOR3(centerX - 78.0f * scale, centerY + 10.0f * scale, 0.0f);
+			pVtx[3].pos = D3DXVECTOR3(centerX + 78.0f * scale, centerY + 10.0f * scale, 0.0f);
 
 			// カラー設定
 			D3DXCOLOR color = D3DXCOLOR(1.0f, 1.0f, 1.0f, clearAlphas[nCntClear]);
@@ -819,6 +815,7 @@ void DrawResult(void)
 
 		for (int nCntClear = 0; nCntClear < MAX_CLEAR; nCntClear++)
 		{
+
 			//テクスチャの設定
 			pDevice->SetTexture(0, g_pTextureClearSelect[nCntClear]);
 
@@ -846,6 +843,7 @@ void DrawResult(void)
 
 		for (int nCntGameover = 0; nCntGameover < MAX_GAMEOVER; nCntGameover++)
 		{
+
 			//テクスチャの設定
 			pDevice->SetTexture(0, g_pTextureGameoverSelect[nCntGameover]);
 

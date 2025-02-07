@@ -23,6 +23,7 @@
 #include "light.h"
 #include "tutorial.h"
 #include "password_game.h"
+#include "sound.h"
 
 //プロトタイプ宣言
 void DrawFPS(void);
@@ -354,8 +355,8 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	}
 
 
-	////サウンドの初期化処理
-	//InitSound(hWnd);
+	//サウンドの初期化処理
+	InitSound(hWnd);
 
 
 	//モードの設定
@@ -375,8 +376,8 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 void Uninit(void)
 {
 
-	////サウンドの初期化処理
-	//UninitSound();
+	//サウンドの初期化処理
+	UninitSound();
 
 
 	//ジョイパッドの終了処理

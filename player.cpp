@@ -18,7 +18,7 @@
 #include "enemy.h"
 #include "block.h"
 #include "light.h"
-//#include "sound.h"
+#include "sound.h"
 
 //グローバル変数
 Player g_player;			//プレイヤーの情報
@@ -28,17 +28,15 @@ int g_nMotion;				//モーションセットを管理
 bool g_bFinishMotion;		//モーションセットが終わったか
 
 //=============================
-//プレイヤーの初期化処理
+// プレイヤーの初期化処理
 //=============================
 void InitPlayer(void)
 {
 
 	MODE pMode = GetMode();
 
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//初期化
 	g_player.pos = D3DXVECTOR3(120.0f, 0.0f, -540.0f);			// 位置を初期化する
@@ -150,7 +148,7 @@ void InitPlayer(void)
 	}
 }
 //=============================
-//プレイヤーの終了処理
+// プレイヤーの終了処理
 //=============================
 void UninitPlayer(void)
 {
@@ -187,7 +185,7 @@ void UninitPlayer(void)
 
 }
 //=============================
-//プレイヤーの更新処理
+// プレイヤーの更新処理
 //=============================
 void UpdatePlayer(void)
 {
@@ -605,15 +603,13 @@ void UpdatePlayer(void)
 
 }
 //=============================
-//プレイヤーの描画処理
+// プレイヤーの描画処理
 //=============================
 void DrawPlayer(void)
 {
 
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//計算用マトリックス
 	D3DXMATRIX mtxRot, mtxTrans, mtxSize;

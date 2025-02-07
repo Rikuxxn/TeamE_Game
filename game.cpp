@@ -37,6 +37,7 @@
 #include "map.h"
 #include "task.h"
 #include "time.h"
+#include "sound.h"
 
 //グローバル変数
 GAMESTATE g_gameState = GAMESTATE_NONE;		// ゲームの状態
@@ -198,8 +199,8 @@ void InitGame(void)
 	//InitParticle();
 
 
-	////サウンドの再生
-	//PlaySound(SOUND_LABEL_GAMEBGM);
+	//サウンドの再生
+	PlaySound(SOUND_LABEL_GAMEBGM);
 
 
 	////サウンドの停止
@@ -241,7 +242,7 @@ void UninitGame(void)
 	// 霧の無効化
 	pDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
 
-	//StopSound(SOUND_LABEL_GAMEBGM);
+	StopSound(SOUND_LABEL_GAMEBGM);
 	//StopSound();
 
 	// カーソルを表示する

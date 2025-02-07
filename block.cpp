@@ -18,12 +18,12 @@
 #include "light.h"
 
 //グローバル変数
-Block g_aBlock[MAX_BLOCK];		//ブロック情報
-Block g_info[BLOCKTYPE_MAX];	//ブロックの素材情報
+Block g_aBlock[MAX_BLOCK];		// ブロック情報
+Block g_info[BLOCKTYPE_MAX];	// ブロックの素材情報
 
-bool g_bFog;				// 霧の有効・無効
+bool g_bFog;					// 霧の有効・無効
 
-bool g_bExit;					//出口に入ったか
+bool g_bExit;					// 出口に入ったか
 
 bool bArcade;					// アーケードゲームの判定
 bool bCatcher;					// UFOキャッチャーの判定
@@ -31,19 +31,19 @@ bool bBall;						// ボールプールの判定
 bool bKeypad;					// キーパッドの判定
 bool bFuse;						// ヒューズの判定
 bool bFusebox;					// ヒューズボックスの判定
-bool bFuseGet;
-bool bFuseCmp;
+bool bFuseGet;					// ヒューズ獲得判定
+bool bFuseCmp;					// ヒューズをつけた
+bool bHintBall;					// ヒントボール
+
 
 //=============================
-//ブロックの初期化処理
+// ブロックの初期化処理
 //=============================
 void InitBlock(void)
 {
 
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
@@ -68,6 +68,7 @@ void InitBlock(void)
 	bFusebox = false;
 	bFuseGet = false;
 	bFuseCmp = false;
+	bHintBall = false;
 
 	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
 	{
@@ -83,9 +84,9 @@ void InitBlock(void)
 
 	}
 
-	int nNumVtx;					//頂点数
-	DWORD sizeFVF;					//頂点フォーマットのサイズ
-	BYTE* pVtxBuff;					//頂点バッファへのポインタ
+	int nNumVtx;					// 頂点数
+	DWORD sizeFVF;					// 頂点フォーマットのサイズ
+	BYTE* pVtxBuff;					// 頂点バッファへのポインタ
 
 	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
 	{
@@ -167,7 +168,7 @@ void InitBlock(void)
 
 }
 //=============================
-//ブロックの終了処理
+// ブロックの終了処理
 //=============================
 void UninitBlock(void)
 {
@@ -231,15 +232,13 @@ void UninitBlock(void)
 
 }
 //=============================
-//ブロックの更新処理
+// ブロックの更新処理
 //=============================
 void UpdateBlock(void)
 {
 
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
@@ -289,15 +288,13 @@ void UpdateBlock(void)
 	}
 }
 //=============================
-//ブロックの描画処理
+// ブロックの描画処理
 //=============================
 void DrawBlock(void)
 {
 
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//計算用マトリックス
 	D3DXMATRIX mtxRot, mtxTrans;
@@ -351,7 +348,7 @@ void DrawBlock(void)
 	
 }
 //=============================
-//ブロックの設定処理
+// ブロックの設定処理
 //=============================
 void SetBlock(D3DXVECTOR3 pos, D3DXVECTOR3 rot,int nType)
 {
@@ -375,7 +372,7 @@ void SetBlock(D3DXVECTOR3 pos, D3DXVECTOR3 rot,int nType)
 	}
 }
 //=============================
-//ブロックの当たり判定
+// ブロックの当たり判定
 //=============================
 void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove, D3DXVECTOR3* pSize)
 {
@@ -486,9 +483,9 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 		}
 	}
 }
-//==============================================
-//ブロックの当たり判定(OBBを使用して回転を考慮)
-//==============================================
+//==================================================
+// ブロックの当たり判定(OBBを使用して回転を考慮)
+//==================================================
 bool CheckOBBCollision(const D3DXMATRIX& world1, const D3DXVECTOR3& size1,
 	const D3DXMATRIX& world2, const D3DXVECTOR3& size2)
 {
@@ -546,7 +543,7 @@ bool CheckOBBCollision(const D3DXMATRIX& world1, const D3DXVECTOR3& size1,
 	return true; // 衝突している
 }
 //=================================
-//OBB投影範囲計算処理
+// OBB投影範囲計算処理
 //=================================
 bool OverlapOnAxis(const D3DXVECTOR3& center1, const D3DXVECTOR3 axes1[3], const D3DXVECTOR3& size1,
 	const D3DXVECTOR3& center2, const D3DXVECTOR3 axes2[3], const D3DXVECTOR3& size2, const D3DXVECTOR3& axis)
@@ -563,7 +560,7 @@ bool OverlapOnAxis(const D3DXVECTOR3& center1, const D3DXVECTOR3 axes1[3], const
 	return distance <= (radius1 + radius2);
 }
 //=================================
-//OBBに必要な範囲計算処理
+// OBBに必要な範囲計算処理
 //=================================
 float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], const D3DXVECTOR3& axis)
 {
@@ -572,9 +569,9 @@ float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], co
 		fabs(D3DXVec3Dot(&axes[1], &axis)) * size.y / 2.0f +
 		fabs(D3DXVec3Dot(&axes[2], &axis)) * size.z / 2.0f;
 }
-//=================================
+//====================================
 // ブロックインタラクト種類判定処理
-//=================================
+//====================================
 void HandleBlockInteraction(Block* pBlock)
 {
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
@@ -662,6 +659,10 @@ void CheckBlocksInCenter(void)
 			bFusebox = false;
 			break;
 
+		case BLOCKTYPE_BALL:
+			bHintBall = false;
+			break;
+
 		}
 
 	}
@@ -698,12 +699,17 @@ void CheckBlocksInCenter(void)
 		{
 			maxDistance = 80.0f;
 		}
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BALL)
+		{
+			maxDistance = 80.0f;
+		}
 
 
 		// 特定の種類のみ対象とする
 		if (g_aBlock[nCntBlock].nType != BLOCKTYPE_ARCADE1 && g_aBlock[nCntBlock].nType != BLOCKTYPE_UFOCATCHER1 &&
 			g_aBlock[nCntBlock].nType != BLOCKTYPE_BALLPOOL && g_aBlock[nCntBlock].nType != BLOCKTYPE_KEYPAD &&
-			g_aBlock[nCntBlock].nType != BLOCKTYPE_FUSE && g_aBlock[nCntBlock].nType != BLOCKTYPE_FUSEBOX)
+			g_aBlock[nCntBlock].nType != BLOCKTYPE_FUSE && g_aBlock[nCntBlock].nType != BLOCKTYPE_FUSEBOX &&
+			g_aBlock[nCntBlock].nType != BLOCKTYPE_BALL)
 		{
 			continue; // 対象外の種類はスキップ
 		}
@@ -761,6 +767,10 @@ void CheckBlocksInCenter(void)
 
 			case BLOCKTYPE_FUSEBOX:     
 				bFusebox = true; 
+				break;
+
+			case BLOCKTYPE_BALL:
+				bHintBall = true;
 				break;
 
 			}
@@ -872,6 +882,13 @@ bool GetFuseGet(void)
 bool GetFuseCmp(void)
 {
 	return bFuseCmp;
+}
+//======================================================
+// ヒントボール判定
+//======================================================
+bool GetHintBall(void)
+{
+	return bHintBall;
 }
 //======================================================
 // 霧の有効・無効判定

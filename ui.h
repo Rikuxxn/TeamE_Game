@@ -9,7 +9,7 @@
 
 #include "main.h"
 
-#define MAX_UI (28)      // UIの最大数
+#define MAX_UI (28)								// UIの最大数
 
 // UIの種類
 typedef enum
@@ -27,20 +27,20 @@ typedef enum
 // UI構造体
 typedef struct
 {
-	D3DXVECTOR3 pos;		// 位置
-	float fWidth;			// UIの幅
-	float fHeight;			// UIの高さ
-	int nType;				// UIの種類
-	bool bUse;				// 使用しているかどうか
+	D3DXVECTOR3 pos;							// 位置
+	float fWidth;								// UIの幅
+	float fHeight;								// UIの高さ
+	int nType;									// UIの種類
+	bool bUse;									// 使用しているかどうか
 }UI;
 
-static const char* UI_TEXTURE[UITYPE_MAX] =	// UIのテクスチャの設定
+static const char* UI_TEXTURE[UITYPE_MAX] =		// UIのテクスチャの設定
 {
-	"data/TEXTURE/UI3.png",// ミニゲーム
-	"data/TEXTURE/UI2.png",// 拾う
-	"data/TEXTURE/UI1.png",// 入力する
-	"data/TEXTURE/UI4.png",// マップ
-	"data/TEXTURE/UI5.png",// 使う
+	"data/TEXTURE/UI3.png",						// ミニゲーム
+	"data/TEXTURE/UI2.png",						// 拾う
+	"data/TEXTURE/UI1.png",						// 入力する
+	"data/TEXTURE/UI4.png",						// マップ
+	"data/TEXTURE/UI5.png",						// 使う
 
 };
 

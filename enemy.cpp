@@ -1,7 +1,7 @@
 //=======================================
 //
-//敵の処理[enemy.cpp]
-//Author : TANEKAWA RIKU
+// 敵の処理[enemy.cpp]
+// Author : TANEKAWA RIKU
 //
 //=======================================
 #include "main.h"
@@ -9,7 +9,7 @@
 #include "player.h"
 #include "fade.h"
 #include "block.h"
-//#include "sound.h"
+#include "sound.h"
 #include "shadow.h"
 
 // 巡回ポイント配列
@@ -75,10 +75,8 @@ int g_nIdxShadowEnemy;
 void InitEnemy(void)
 {
 
-    LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
-    //デバイスの取得
-    pDevice = GetDevice();
+	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
     //初期化
     g_aEnemy.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//位置を初期化する
@@ -548,14 +546,11 @@ void UpdateEnemy(void)
 void DrawEnemy(void)
 {
 
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	if (g_aEnemy.bUse == true)
 	{
-
 		//計算用マトリックス
 		D3DXMATRIX mtxRot, mtxTrans, mtxSize;
 
@@ -715,19 +710,19 @@ int GetNearestPatrolPoint(D3DXVECTOR3 currentPos)
 	float minDistance = FLT_MAX; // 非常に大きな値で初期化
 	int nearestPoint = 0;
 
-	for (int i = 0; i < sizeof(patrolPoints) / sizeof(patrolPoints[0]); i++) 
+	for (int nCnt = 0; nCnt < sizeof(patrolPoints) / sizeof(patrolPoints[0]); nCnt++)
 	{
-		float distance = (float)sqrt
+		float distance = sqrt
 		(
-			(patrolPoints[i].x - currentPos.x) * (patrolPoints[i].x - currentPos.x) +
-			(patrolPoints[i].y - currentPos.y) * (patrolPoints[i].y - currentPos.y) +
-			(patrolPoints[i].z - currentPos.z) * (patrolPoints[i].z - currentPos.z)
+			(patrolPoints[nCnt].x - currentPos.x) * (patrolPoints[nCnt].x - currentPos.x) +
+			(patrolPoints[nCnt].y - currentPos.y) * (patrolPoints[nCnt].y - currentPos.y) +
+			(patrolPoints[nCnt].z - currentPos.z) * (patrolPoints[nCnt].z - currentPos.z)
 		);
 
 		if (distance < minDistance) 
 		{
 			minDistance = distance;
-			nearestPoint = i;
+			nearestPoint = nCnt;
 		}
 	}
 

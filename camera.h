@@ -1,7 +1,7 @@
 //=======================================
 //
-//カメラ処理[camera.h]
-//Author : TANEKAWA RIKU
+// カメラ処理[camera.h]
+// Author : TANEKAWA RIKU
 //
 //=======================================
 #ifndef _CAMERA_H_//このマクロ定義がされていなかったら
@@ -9,15 +9,15 @@
 
 #include "main.h"
 
-#define MAX_CAMERA (2)	//カメラの個数
+#define MAX_CAMERA (2)			// カメラの個数
 
 //カメラモードの種類
 typedef enum
 {
-	CAMERAMODE_NORMAL = 0,		//ノーマルカメラ
-	CAMERAMODE_AUTO,			//カメラ追従
-	CAMERAMODE_AUTOTURN,		//視点自動回転
-	CAMERAMODE_FIRSTPERSON,		//一人称モード
+	CAMERAMODE_NORMAL = 0,		// ノーマルカメラ
+	CAMERAMODE_AUTO,			// カメラ追従
+	CAMERAMODE_AUTOTURN,		// 視点自動回転
+	CAMERAMODE_FIRSTPERSON,		// 一人称モード
 	CAMERAMODE_MAX
 }CAMERAMODE;
 

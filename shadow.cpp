@@ -1,6 +1,6 @@
 //=======================================
 //
-// 影処理[shadow.cpp]
+// 影の処理[shadow.cpp]
 // Author : TANEKAWA RIKU
 //
 //=======================================
@@ -8,30 +8,27 @@
 #include "shadow.h"
 #include "player.h"
 
-#define MAX_SHADOW (10)//影の最大数
-#define SHADOW_WIDTH (25.0f)//影の横幅
-#define SHADOW_HEGIHT (0.1f)//影の縦幅
-#define SHADOW_DEPTH (25.0f)//影の奥行
+#define MAX_SHADOW (10)								// 影の最大数
+#define SHADOW_WIDTH (25.0f)						// 影の横幅
+#define SHADOW_HEGIHT (0.1f)						// 影の縦幅
+#define SHADOW_DEPTH (25.0f)						// 影の奥行
 
 //グローバル変数
-LPDIRECT3DTEXTURE9 g_pTextureShadow = NULL;//テクスチャへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffShadow = NULL;//頂点バッファへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureShadow = NULL;			// テクスチャへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffShadow = NULL;	// 頂点バッファへのポインタ
 
-Shadow g_aShadow[MAX_SHADOW];//影情報
+Shadow g_aShadow[MAX_SHADOW];						// 影情報
 
 //=============================
-//影の初期化処理
+// 影の初期化処理
 //=============================
 void InitShadow(void)
 {
 
 	int nCntShadow;
 
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
-
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -56,9 +53,7 @@ void InitShadow(void)
 		&g_pVtxBuffShadow,
 		NULL);
 
-
 	VERTEX_3D* pVtx = NULL;//頂点情報へのポインタ
-
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffShadow->Lock(0, 0, (void**)&pVtx, 0);
@@ -104,7 +99,7 @@ void InitShadow(void)
 
 }
 //=============================
-//影の終了処理
+// 影の終了処理
 //=============================
 void UninitShadow(void)
 {
@@ -125,7 +120,7 @@ void UninitShadow(void)
 
 }
 //=============================
-//影の更新処理
+// 影の更新処理
 //=============================
 void UpdateShadow(void)
 {
@@ -135,15 +130,13 @@ void UpdateShadow(void)
 
 }
 //=============================
-//影の描画処理
+// 影の描画処理
 //=============================
 void DrawShadow(void)
 {
 
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//αブレンディングを減算合成に設定
 	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
@@ -194,7 +187,7 @@ void DrawShadow(void)
 
 }
 //=============================
-//影の設定
+// 影の設定
 //=============================
 int SetShadow(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
 {
@@ -220,11 +213,10 @@ int SetShadow(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
 	return nCntShadow;//影の番号(index)を返す
 }
 //=============================
-//影の位置の更新処理
+// 影の位置の更新処理
 //=============================
 void SetPositionShadow(int nIdxShadow, D3DXVECTOR3 pos)
 {
-
 	for (int nCntShadow = 0; nCntShadow < MAX_SHADOW; nCntShadow++)
 	{
 
@@ -234,12 +226,15 @@ void SetPositionShadow(int nIdxShadow, D3DXVECTOR3 pos)
 	}
 }
 //=============================
-//影情報の取得
+// 影情報の取得
 //=============================
 Shadow* GetShadow(void)
 {
 	return g_aShadow;
 }
+//=============================
+// 影の削除処理
+//=============================
 void ShadowFalse(int nIdxShadow)
 {//消したいオブジェクトの影
 	g_aShadow[nIdxShadow].bUse = false;

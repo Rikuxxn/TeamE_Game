@@ -9,9 +9,6 @@
 #include "player.h"
 #include "input.h"
 #include "enemy.h"
-//#include "score.h"
-//#include "particle.h"
-//#include "sound.h"
 
 //グローバル変数
 Model g_aModel[MAX_MODEL];//モデル情報
@@ -30,11 +27,11 @@ void InitModel(void)
 	for (int nCntModel = 0; nCntModel < MAX_MODEL; nCntModel++)
 	{
 		//初期化
-		g_aModel[nCntModel].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//位置
-		g_aModel[nCntModel].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//向き
-		g_aModel[nCntModel].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//移動量
-		g_aModel[nCntModel].vtxMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//最小値
-		g_aModel[nCntModel].vtxMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//最大値
+		g_aModel[nCntModel].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// 位置
+		g_aModel[nCntModel].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// 向き
+		g_aModel[nCntModel].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// 移動量
+		g_aModel[nCntModel].vtxMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// 最小値
+		g_aModel[nCntModel].vtxMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// 最大値
 		g_aModel[nCntModel].bUse = false;
 		g_aModel[nCntModel].bScoreAdded = false;
 		g_aModel[nCntModel].bSoundPlayed = false;
@@ -174,109 +171,14 @@ void UninitModel(void)
 void UpdateModel(void)
 {
 
-	//for (int nCntModel = 0; nCntModel < MAX_MODEL; nCntModel++)
-	//{
-	//	bool bTaskAllCmp = GetTaskAllCmp();
-	//	bool bTaskCmp0 = GetTaskCmp0();
-	//	bool bTaskCmp = GetTaskCmp();
-	//	bool bTaskCmp2 = GetTaskCmp2();
-	//	bool bTaskCmp3 = GetTaskCmp3();
-	//	bool bTaskCmp4 = GetTaskCmp4();
-	//	bool bTaskCmp5 = GetTaskCmp5();
+	for (int nCntModel = 0; nCntModel < MAX_MODEL; nCntModel++)
+	{
 
-	//	TASKBAR* pTask = GetTaskbar();
-
-	//	if (bTaskAllCmp == true)
-	//	{
-	//		if (g_aModel[nCntModel].nType == WALLTYPE_DOOR)
-	//		{
-	//			if (g_aModel[nCntModel].pos.y >= 80)
-	//			{
-	//				g_aModel[nCntModel].move.y = 0.0f;
-	//			}
-	//			else
-	//			{
-	//				g_aModel[nCntModel].move.y += 0.2f;
-	//			}
-	//		}
-	//	}
-
-	//	if (bTaskCmp == true && bTaskCmp2 == true && bTaskCmp3)
-	//	{
-	//		if (g_aModel[nCntModel].nType == WALLTYPE_ROOM)
-	//		{
-	//			if (g_aModel[nCntModel].pos.y >= 80)
-	//			{
-	//				g_aModel[nCntModel].move.y = 0.0f;
-	//			}
-	//			else
-	//			{
-	//				g_aModel[nCntModel].move.y += 0.2f;
-	//			}
-	//		}
-	//	}
-
-	//	if (bTaskCmp4 == true)
-	//	{
-	//		if (g_aModel[nCntModel].bUse == true && g_aModel[nCntModel].nType == WALLTYPE_BOXTOP1)
-	//		{
-	//			// 音を一度だけ鳴らす
-	//			if (!g_aModel[nCntModel].bSoundPlayed)
-	//			{
-	//				PlaySound(SOUND_LABEL_MONEY);
-	//				g_aModel[nCntModel].bSoundPlayed = true; // 音再生済みフラグを立てる
-	//			}
-
-	//			if (g_aModel[nCntModel].rot.z <= -1.49f)
-	//			{
-	//				g_aModel[nCntModel].rot.z -= 0.0f;
-
-	//				if (!g_aModel[nCntModel].bScoreAdded)
-	//				{
-	//					AddScore(100000);
-	//					g_aModel[nCntModel].bScoreAdded = true;
-	//				}
-	//			}
-	//			else if (g_aModel[nCntModel].rot.z < 1.5f)
-	//			{
-	//				g_aModel[nCntModel].rot.z -= 0.08f;
-	//			}
-	//		}
-	//	}
-
-	//	if (bTaskCmp5 == true)
-	//	{
-	//		if (g_aModel[nCntModel].bUse == true && g_aModel[nCntModel].nType == WALLTYPE_BOXTOP2)
-	//		{
-	//			// 音を一度だけ鳴らす
-	//			if (!g_aModel[nCntModel].bSoundPlayed)
-	//			{
-	//				PlaySound(SOUND_LABEL_MONEY);
-	//				g_aModel[nCntModel].bSoundPlayed = true;
-	//			}
-
-	//			if (g_aModel[nCntModel].rot.z >= 1.49f)
-	//			{
-	//				g_aModel[nCntModel].rot.z -= 0.0f;
-
-	//				if (!g_aModel[nCntModel].bScoreAdded)
-	//				{
-	//					AddScore(100000);
-	//					g_aModel[nCntModel].bScoreAdded = true;
-	//				}
-	//			}
-	//			else if (g_aModel[nCntModel].rot.z < 1.5f)
-	//			{
-	//				g_aModel[nCntModel].rot.z += 0.08f;
-	//			}
-	//		}
-	//	}
-
-	//	//位置を更新
-	//	g_aModel[nCntModel].pos.x += g_aModel[nCntModel].move.x;
-	//	g_aModel[nCntModel].pos.y += g_aModel[nCntModel].move.y;
-	//	g_aModel[nCntModel].pos.z += g_aModel[nCntModel].move.z;
-	//}
+		//位置を更新
+		g_aModel[nCntModel].pos.x += g_aModel[nCntModel].move.x;
+		g_aModel[nCntModel].pos.y += g_aModel[nCntModel].move.y;
+		g_aModel[nCntModel].pos.z += g_aModel[nCntModel].move.z;
+	}
 }
 //=============================
 //モデルの描画処理

@@ -14,9 +14,8 @@
 //*****************************************************************************
 typedef enum
 {
-	SOUND_LABEL_BGM = 0,
-	SOUND_LABEL_GAMEBGM,
-	SOUND_LABEL_GAMEOVER,
+	SOUND_LABEL_GAMEBGM = 0,
+	//SOUND_LABEL_GAMEOVER,
 
 	SOUND_LABEL_MAX,
 } SOUND_LABEL;

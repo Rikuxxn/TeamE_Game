@@ -8,7 +8,7 @@
 #include "input.h"
 #include "fade.h"
 #include "ui.h"
-//#include "sound.h"
+#include "sound.h"
 
 
 //ƒOƒ[ƒoƒ‹•Ï”
@@ -18,22 +18,18 @@ LPDIRECT3DTEXTURE9 g_pTextureTutorial = NULL;        //ƒ^ƒCƒgƒ‹”wŒiƒeƒNƒXƒ`ƒƒ‚Ìƒ
 int nCnt;
 
 //=================================
-//ƒ`ƒ…[ƒgƒŠƒAƒ‹‰æ–Ê‚Ì‰Šú‰»
+// ƒ`ƒ…[ƒgƒŠƒAƒ‹‰æ–Ê‚Ì‰Šú‰»
 //=================================
 void InitTutorial(void)
 {
 
-	LPDIRECT3DDEVICE9 pDevice;
-
 	//ƒfƒoƒCƒX‚ÌŽæ“¾
-	pDevice = GetDevice();
-
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚Ýž‚Ý
 	D3DXCreateTextureFromFile(pDevice,
 		"data\\TEXTURE\\tutorial.png",
 		&g_pTextureTutorial);
-
 
 	//’¸“_ƒoƒbƒtƒ@‚Ì¶¬
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
@@ -46,7 +42,6 @@ void InitTutorial(void)
 	nCnt = 0;
 
 	VERTEX_2D* pVtx;
-
 
 	//’¸“_ƒoƒbƒtƒ@‚ðƒƒbƒN‚µA’¸“_î•ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ðŽæ“¾
 	g_pVtxBuffTutorial->Lock(0, 0, (void**)&pVtx, 0);
@@ -80,7 +75,7 @@ void InitTutorial(void)
 
 }
 //=================================
-//ƒ`ƒ…[ƒgƒŠƒAƒ‹‰æ–Ê‚ÌI—¹ˆ—
+// ƒ`ƒ…[ƒgƒŠƒAƒ‹‰æ–Ê‚ÌI—¹ˆ—
 //=================================
 void UninitTutorial(void)
 {
@@ -102,7 +97,7 @@ void UninitTutorial(void)
 
 }
 //=================================
-//ƒ`ƒ…[ƒgƒŠƒAƒ‹‰æ–Ê‚ÌXVˆ—
+// ƒ`ƒ…[ƒgƒŠƒAƒ‹‰æ–Ê‚ÌXVˆ—
 //=================================
 void UpdateTutorial(void)
 {
@@ -124,15 +119,13 @@ void UpdateTutorial(void)
 	//}
 }
 //=================================
-//ƒ`ƒ…[ƒgƒŠƒAƒ‹‰æ–Ê‚ÌXVˆ—
+// ƒ`ƒ…[ƒgƒŠƒAƒ‹‰æ–Ê‚ÌXVˆ—
 //=================================
 void DrawTutorial(void)
 {
 
-	LPDIRECT3DDEVICE9 pDevice;
-
 	//ƒfƒoƒCƒX‚ÌŽæ“¾
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//’¸“_ƒoƒbƒtƒ@‚ðƒf[ƒ^ƒXƒgƒŠ[ƒ€‚ÉÝ’è
 	pDevice->SetStreamSource(0, g_pVtxBuffTutorial, 0, sizeof(VERTEX_2D));

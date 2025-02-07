@@ -9,13 +9,13 @@
 #include "player.h"
 #include "block.h"
 
-#define MAX_LIGHT (3)// ライトの最大数
+#define MAX_LIGHT (3)              // ライトの最大数
 
 typedef struct 
 {
-    D3DLIGHT9 light;        // ライト情報
-    D3DXVECTOR3 direction;  // ライトの方向ベクトル
-    D3DXVECTOR3 position;   // ライトの位置
+    D3DLIGHT9 light;               // ライト情報
+    D3DXVECTOR3 direction;         // ライトの方向ベクトル
+    D3DXVECTOR3 position;          // ライトの位置
 } LightInfo;
 
 //グローバル変数
@@ -24,7 +24,7 @@ static int g_LightCount = 0;       // 現在のライト数
 static int g_LightCapacity = 0;    // ライトリストの容量
 
 //=============================
-//ライトの初期化処理
+// ライトの初期化処理
 //=============================
 void InitLight(void)
 {
@@ -126,7 +126,7 @@ void RemoveLight(int index)
     g_LightCount--;
 }
 //=============================
-//ライトの終了処理
+// ライトの終了処理
 //=============================
 void UninitLight(void)
 {
@@ -148,7 +148,7 @@ void UninitLight(void)
 
 }
 //=============================
-//ライトの更新処理
+// ライトの更新処理
 //=============================
 void UpdateLight(int index, D3DXVECTOR3 newPosition, D3DXVECTOR3 newDirection) 
 {

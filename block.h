@@ -1,7 +1,7 @@
 //=======================================
 //
-//ブロック配置処理[block.h]
-//Author : TANEKAWA RIKU
+// ブロック配置処理[block.h]
+// Author : TANEKAWA RIKU
 //
 //=======================================
 #ifndef _BLOCK_H_//このマクロ定義がされていなかったら
@@ -9,8 +9,8 @@
 
 #include "main.h"
 
-#define MAX_BLOCK (200)			// ブロックの使う数
-#define MAX_BLOCKTEXTURE (64)	//ブロックの最大テクスチャ
+#define MAX_BLOCK (200)									// ブロックの使う数
+#define MAX_BLOCKTEXTURE (64)							// ブロックの最大テクスチャ
 
 // ブロックの種類
 typedef enum
@@ -57,7 +57,7 @@ typedef enum
 	BLOCKTYPE_FUSE,
 	BLOCKTYPE_FUSEBOX,
 	BLOCKTYPE_FUSEBOX_CMP,
-	BLOCKTYPE_TEST,
+	BLOCKTYPE_BALL,
 
 	BLOCKTYPE_MAX
 }BLOCKTYPE;
@@ -65,10 +65,10 @@ typedef enum
 //ブロックの情報
 typedef struct
 {
-	LPDIRECT3DTEXTURE9 apTexture[MAX_BLOCKTEXTURE];	//	テクスチャへのポインタ
+	LPDIRECT3DTEXTURE9 apTexture[MAX_BLOCKTEXTURE];		// テクスチャへのポインタ
 	LPD3DXMESH pMesh;
-	LPD3DXBUFFER pBuffMat;				// マテリアルへのポインタ
-	DWORD dwNumMat;						// マテリアル数
+	LPD3DXBUFFER pBuffMat;								// マテリアルへのポインタ
+	DWORD dwNumMat;										// マテリアル数
 	D3DXVECTOR3 vtxMin;
 	D3DXVECTOR3 vtxMax;
 }Blockinfo;
@@ -76,62 +76,63 @@ typedef struct
 // ブロック構造体
 typedef struct
 {
-	D3DXVECTOR3 pos;					// 位置(オフセット)
-	D3DXVECTOR3 move;					// 移動量
-	D3DXVECTOR3 rot;					// 向き
-	D3DXVECTOR3 size;					// サイズ
-	int nType;							// タイプ 
-	bool bUse;							// 使用しているかどうか
-	D3DXMATRIX mtxWorld;				// ワールドマトリックス
-	bool bScoreAdded;					// スコア加算済みかどうか
-	bool bSoundPlayed;					// 音を再生済みかどうか
-	bool bInsight;						//	範囲に入ったかどうか
+	D3DXVECTOR3 pos;									// 位置(オフセット)
+	D3DXVECTOR3 move;									// 移動量
+	D3DXVECTOR3 rot;									// 向き
+	D3DXVECTOR3 size;									// サイズ
+	int nType;											// タイプ 
+	bool bUse;											// 使用しているかどうか
+	D3DXMATRIX mtxWorld;								// ワールドマトリックス
+	bool bScoreAdded;									// スコア加算済みかどうか
+	bool bSoundPlayed;									// 音を再生済みかどうか
+	bool bInsight;										// 範囲に入ったかどうか
 	Blockinfo blockinfo[BLOCKTYPE_MAX];
+
 }Block;
 
 static const char* BLOCK[BLOCKTYPE_MAX] =
 {
-	"data/MODEL/wall.x",						// 縦壁
-	"data/MODEL/wall_tate.x",					// 横壁
-	"data/MODEL/wall_exittop.x",				// 出口上壁
-	"data/MODEL/Crane_game000.x",				// クレーンゲーム1
-	"data/MODEL/UFO.x",							// クレーンゲーム2
-	"data/MODEL/Ball_pool.x",					// ボールプール
-	"data/MODEL/arcade.x",						// アーケード1
-	"data/MODEL/Fightng_game000.x",				// アーケード2
-	"data/MODEL/sweetland_000.x",				// スイートランド本体
-	"data/MODEL/sweetland_001.x",				// スイートランドパネル1
-	"data/MODEL/sweetland_002.x",				// スイートランドパネル2
-	"data/MODEL/gasyapon00.x",					// ガシャポン
-	"data/MODEL/Racing_game.x",					// レースゲーム
-	"data/MODEL/ExChange.x",					// 両替機
-	"data/MODEL/Kids_park_Entrance_roof.x",		// キッズパーク入口の屋根
-	"data/MODEL/Kids_park_Entrance_R.x",		// キッズパーク入口右
-	"data/MODEL/Kids_park_Entrance_L.x",		// キッズパーク入口左
-	"data/MODEL/Kids_park_wall000.x",			// キッズパーク壁
-	"data/MODEL/suberidai_hasira.x",			// 滑り台の柱
-	"data/MODEL/suberidai_suberidai.x",			// 滑り台本体
-	"data/MODEL/suberidai_hasigo.x",			// 滑り台のはしご
-	"data/MODEL/suberidai_uenokai.x",			// 滑り台の上
-	"data/MODEL/suberidai_kaidan.x",			// 滑り台の階段
-	"data/MODEL/tablebench.x",					// ベンチ
-	"data/MODEL/Kids_ride_Roket.x",				// ロケット
-	"data/MODEL/Slot.x",						// スロット
-	"data/MODEL/Chair.x",						// スロットのいす
-	"data/MODEL/Purikura.x",					// プリクラ
-	"data/MODEL/Airhockey.x",					// エアホッケー
-	"data/MODEL/Shootinggame.x",				// シューティングゲーム
-	"data/MODEL/Vending.x",						// 自販機
-	"data/MODEL/UFO_mini.x",					// UFOキャッチャーミニ
-	"data/MODEL/title_board.x",					// タイトルロゴ表示用ボード
-	"data/MODEL/exit.x",						// 出口ドア
-	"data/MODEL/exit_sign.x",					// 非常口看板
-	"data/MODEL/keypad.x",						// キーパッド
-	"data/MODEL/tutorial_board.x",				// チュートリアル表示用ボード
-	"data/MODEL/huzu.x",						// ヒューズ
-	"data/MODEL/fusebox.x",						// ヒューズボックス
-	"data/MODEL/fusebox_cmp.x",					// ヒューズボックス完全体
-	"data/MODEL/test.x",						// テストブロック
+	"data/MODEL/wall.x",								// 縦壁
+	"data/MODEL/wall_tate.x",							// 横壁
+	"data/MODEL/wall_exittop.x",						// 出口上壁
+	"data/MODEL/Crane_game000.x",						// クレーンゲーム1
+	"data/MODEL/UFO.x",									// クレーンゲーム2
+	"data/MODEL/Ball_pool.x",							// ボールプール
+	"data/MODEL/arcade.x",								// アーケード1
+	"data/MODEL/Fightng_game000.x",						// アーケード2
+	"data/MODEL/sweetland_000.x",						// スイートランド本体
+	"data/MODEL/sweetland_001.x",						// スイートランドパネル1
+	"data/MODEL/sweetland_002.x",						// スイートランドパネル2
+	"data/MODEL/gasyapon00.x",							// ガシャポン
+	"data/MODEL/Racing_game.x",							// レースゲーム
+	"data/MODEL/ExChange.x",							// 両替機
+	"data/MODEL/Kids_park_Entrance_roof.x",				// キッズパーク入口の屋根
+	"data/MODEL/Kids_park_Entrance_R.x",				// キッズパーク入口右
+	"data/MODEL/Kids_park_Entrance_L.x",				// キッズパーク入口左
+	"data/MODEL/Kids_park_wall000.x",					// キッズパーク壁
+	"data/MODEL/suberidai_hasira.x",					// 滑り台の柱
+	"data/MODEL/suberidai_suberidai.x",					// 滑り台本体
+	"data/MODEL/suberidai_hasigo.x",					// 滑り台のはしご
+	"data/MODEL/suberidai_uenokai.x",					// 滑り台の上
+	"data/MODEL/suberidai_kaidan.x",					// 滑り台の階段
+	"data/MODEL/tablebench.x",							// ベンチ
+	"data/MODEL/Kids_ride_Roket.x",						// ロケット
+	"data/MODEL/Slot.x",								// スロット
+	"data/MODEL/Chair.x",								// スロットのいす
+	"data/MODEL/Purikura.x",							// プリクラ
+	"data/MODEL/Airhockey.x",							// エアホッケー
+	"data/MODEL/Shootinggame.x",						// シューティングゲーム
+	"data/MODEL/Vending.x",								// 自販機
+	"data/MODEL/UFO_mini.x",							// UFOキャッチャーミニ
+	"data/MODEL/title_board.x",							// タイトルロゴ表示用ボード
+	"data/MODEL/exit.x",								// 出口ドア
+	"data/MODEL/exit_sign.x",							// 非常口看板
+	"data/MODEL/keypad.x",								// キーパッド
+	"data/MODEL/tutorial_board.x",						// チュートリアル表示用ボード
+	"data/MODEL/huzu.x",								// ヒューズ
+	"data/MODEL/fusebox.x",								// ヒューズボックス
+	"data/MODEL/fusebox_cmp.x",							// ヒューズボックス完全体
+	"data/MODEL/ball.x",								// ボール
 
 };
 
@@ -167,6 +168,7 @@ bool GetFuse(void);
 bool GetFusebox(void);
 bool GetFuseGet(void);
 bool GetFuseCmp(void);
+bool GetHintBall(void);
 bool GetFog(void);
 
 #endif

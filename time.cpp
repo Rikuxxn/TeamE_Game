@@ -9,22 +9,22 @@
 #include "warning.h"
 #include "block.h"
 #include "enemy.h"
-//#include "sound.h"
+#include "sound.h"
 
 //グローバル変数
-LPDIRECT3DTEXTURE9 g_pTextureTimeMinute = NULL;			//テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureTimeSecond = NULL;			//テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureColon = NULL;				//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureTimeMinute = NULL;			// テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureTimeSecond = NULL;			// テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureColon = NULL;				// テクスチャへのポインタ
 
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTimeMinute = NULL;	//頂点バッファへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTimeSecond = NULL;	//頂点バッファへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffColon = NULL;			//頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTimeMinute = NULL;	// 頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTimeSecond = NULL;	// 頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffColon = NULL;			// 頂点バッファへのポインタ
 
-D3DXVECTOR3 g_posTime;//タイムの位置
+D3DXVECTOR3 g_posTime;									// タイムの位置
 Time g_aTime[MAX_TIMEDIGIT];
 
-int g_nMinutes;		// 分
-int g_nSeconds;		// 秒
+int g_nMinutes;											// 分
+int g_nSeconds;											// 秒
 
 //=============================
 //タイムの初期化処理

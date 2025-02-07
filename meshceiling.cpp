@@ -1,23 +1,23 @@
-//=======================================
+//============================================
 //
 // メッシュシーリング処理[meshceiling.cpp]
 // Author : TANEKAWA RIKU
 //
-//=======================================
+//============================================
 #include "main.h"
 #include "meshceiling.h"
 
 //グローバル変数
-LPDIRECT3DTEXTURE9 g_pTextureMeshCeiling = NULL;//テクスチャへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffMeshCeiling = NULL;//頂点バッファへのポインタ
-LPDIRECT3DINDEXBUFFER9 g_pIdxBuffMeshCeiling = NULL;//インデックスバッファへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureMeshCeiling = NULL;			// テクスチャへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffMeshCeiling = NULL;		// 頂点バッファへのポインタ
+LPDIRECT3DINDEXBUFFER9 g_pIdxBuffMeshCeiling = NULL;		// インデックスバッファへのポインタ
 
-D3DXVECTOR3 g_posMeshCeiling;//位置
-D3DXVECTOR3 g_rotMeshCeiling;//向き
-D3DXMATRIX g_mtxWorldMeshCeiling;//ワールドマトリックス
+D3DXVECTOR3 g_posMeshCeiling;								// 位置
+D3DXVECTOR3 g_rotMeshCeiling;								// 向き
+D3DXMATRIX g_mtxWorldMeshCeiling;							// ワールドマトリックス
 
 //==================================
-//メッシュフィールドの初期化処理
+// メッシュシーリングの初期化処理
 //==================================
 void InitMeshCeiling(void)
 {
@@ -128,7 +128,7 @@ void InitMeshCeiling(void)
 
 }
 //==================================
-//メッシュフィールドの終了処理
+// メッシュシーリングの終了処理
 //==================================
 void UninitMeshCeiling(void)
 {
@@ -156,7 +156,7 @@ void UninitMeshCeiling(void)
 
 }
 //==================================
-//メッシュフィールドの更新処理
+// メッシュシーリングの更新処理
 //==================================
 void UpdateMeshCeiling(void)
 {
@@ -165,7 +165,7 @@ void UpdateMeshCeiling(void)
 
 }
 //==================================
-//メッシュフィールドの描画処理
+// メッシュシーリングの描画処理
 //==================================
 void DrawMeshCeiling(void)
 {

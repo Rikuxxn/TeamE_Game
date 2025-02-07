@@ -7,29 +7,28 @@
 #include "input.h"
 
 //マクロ定義
-#define NUM_KEY_MAX (256)//キーの最大数
+#define NUM_KEY_MAX (256)						// キーの最大数
 
 //グローバル変数
-XINPUT_STATE g_joyKeyState;						//ジョイパッドのプレス情報
-XINPUT_STATE g_joyKeyStateTrigger;				//ジョイパッドのトリガー情報
-XINPUT_STATE g_joyKeyStateRelease;				//ジョイパッドのトリガー情報
+XINPUT_STATE g_joyKeyState;						// ジョイパッドのプレス情報
+XINPUT_STATE g_joyKeyStateTrigger;				// ジョイパッドのトリガー情報
+XINPUT_STATE g_joyKeyStateRelease;				// ジョイパッドのトリガー情報
 
 XINPUT_STATE g_aOldJoyKeyState;
 
-LPDIRECTINPUT8 g_pInput = NULL;					//DirectInputオブジェクトへのポインタ
-LPDIRECTINPUTDEVICE8 g_pDevKeyboard = NULL;		//入力デバイスへのポインタ
-BYTE g_aKeyState[NUM_KEY_MAX];					//キーボードプレス情報
+LPDIRECTINPUT8 g_pInput = NULL;					// DirectInputオブジェクトへのポインタ
+LPDIRECTINPUTDEVICE8 g_pDevKeyboard = NULL;		// 入力デバイスへのポインタ
+BYTE g_aKeyState[NUM_KEY_MAX];					// キーボードプレス情報
 BYTE g_aOldState[NUM_KEY_MAX];
 
-//XINPUT_STATE g_joyKeyStateTrigger;			//ジョイパッドのプレス情報
 bool g_joyKeyFlag[JOYKEY_MAX];
 
-//LPDIRECTINPUT8 g_pMouse = NULL;				//DirectInputオブジェクトへのポインタ
-LPDIRECTINPUTDEVICE8 g_pDevMouse = NULL;		//入力デバイスへのポインタ
+//LPDIRECTINPUT8 g_pMouse = NULL;				// DirectInputオブジェクトへのポインタ
+LPDIRECTINPUTDEVICE8 g_pDevMouse = NULL;		// 入力デバイスへのポインタ
 DIMOUSESTATE g_mouseState;
 
 //=============================
-//キーボードの初期化処理
+// キーボードの初期化処理
 //=============================
 HRESULT InitKeyboard(HINSTANCE hInstance, HWND hWnd)
 {
@@ -61,7 +60,7 @@ HRESULT InitKeyboard(HINSTANCE hInstance, HWND hWnd)
 
 }
 //=====================================================
-//ジョイパッドの初期化処理
+// ジョイパッドの初期化処理
 //=====================================================
 HRESULT InitJoypad(void)
 {
@@ -83,7 +82,7 @@ HRESULT InitJoypad(void)
 	return S_OK;
 }
 //=============================================
-//キーボードの終了処理
+// キーボードの終了処理
 //=============================================
 void UninitKeyboard(void)
 {
@@ -104,7 +103,7 @@ void UninitKeyboard(void)
 
 }
 //================================================
-//キーボードの更新処理
+// キーボードの更新処理
 //================================================
 void UpdateKeyboard(void)
 {
@@ -130,7 +129,7 @@ void UpdateKeyboard(void)
 	}
 }
 //=======================================
-//キーボードのプレス情報を取得
+// キーボードのプレス情報を取得
 //=======================================
 bool GetKeyboardPress(int nKey)
 {
@@ -167,7 +166,7 @@ bool KeyboardRepeat(int nKey)
 	return Trigger;
 }
 //=====================================================
-//ジョイパッドの終了処理
+// ジョイパッドの終了処理
 //=====================================================
 void UninitJoypad(void)
 {
@@ -177,7 +176,7 @@ void UninitJoypad(void)
 
 }
 //=====================================================
-//ジョイパッドの更新処理
+// ジョイパッドの更新処理
 //=====================================================
 void UpdateJoypad(void)
 {
@@ -207,7 +206,7 @@ void UpdateJoypad(void)
 	}
 }
 //=====================================================
-//ジョイパッドのプレス情報を取得
+// ジョイパッドのプレス情報を取得
 //=====================================================
 bool GetJoypadPress(JOYKEY Key)
 {
@@ -228,7 +227,7 @@ bool JoyPadRelease(JOYKEY Key)
 
 }
 //====================================================
-//L2,R2の処理
+// L2,R2の処理
 //====================================================
 bool GetJoyTrigger(JOYKEY key)
 {
@@ -285,7 +284,7 @@ bool GetJoyTriggerRelease(JOYKEY key)
 
 }
 //====================================================
-//スティック処理
+// スティック処理
 //====================================================
 bool GetJoyStick()
 {
@@ -301,37 +300,7 @@ bool GetJoyStick()
 	return joykey;
 }
 //====================================================
-//ゲームパッドのトリガー処理
-//====================================================
-//bool JoyPadTrigger(JOYKEY Key)
-//{
-//
-//	//bool Trigger = false;
-//	//if (g_joyKeyState.Gamepad.wButtons == (0x01 << Key))
-//	//{
-//
-//	//	if (g_joyKeyState.Gamepad.wButtons != g_aOldJoyKeyState.Gamepad.wButtons)
-//	//	{
-//	//		Trigger = true;
-//	//	}
-//
-//	//}
-//
-//	//return Trigger;
-//
-//
-//	bool joykey = false;
-//	if (g_joyKeyState.Gamepad.wButtons & (0x01 << Key) && !(g_aOldJoyKeyState.Gamepad.wButtons & (0x01 << Key)))
-//	{
-//
-//		joykey = true;
-//
-//	}
-//	return joykey;
-//
-//}
-//====================================================
-//スティック情報の取得処理
+// スティック情報の取得処理
 //====================================================
 XINPUT_STATE* GetJoyStickAngle(void)
 {
@@ -340,7 +309,7 @@ XINPUT_STATE* GetJoyStickAngle(void)
 
 }
 ////====================================================
-////トリガー情報の取得処理
+//// トリガー情報の取得処理
 ////====================================================
 //bool GetJoyTrigger(JOYKEY Key)
 //{
@@ -349,7 +318,7 @@ XINPUT_STATE* GetJoyStickAngle(void)
 //
 //}
 //=====================================================
-//マウス操作の初期化処理
+// マウス操作の初期化処理
 //=====================================================
 HRESULT InitMouse(HINSTANCE hInstance, HWND hWnd)
 {
@@ -398,7 +367,7 @@ HRESULT InitMouse(HINSTANCE hInstance, HWND hWnd)
 	return S_OK; // 初期化成功
 }
 //=====================================================
-//マウス操作の終了処理
+// マウス操作の終了処理
 //=====================================================
 void UninitMouse(void)
 {
@@ -418,7 +387,7 @@ void UninitMouse(void)
 	//}
 }
 //=====================================================
-//マウス操作の更新処理
+// マウス操作の更新処理
 //=====================================================
 void UpdateMouse(void)
 {
@@ -435,7 +404,7 @@ void UpdateMouse(void)
 	}
 }
 //=====================================================
-//マウスの状態
+// マウスの状態
 //=====================================================
 bool GetMouseState(DIMOUSESTATE* mouseState)
 {
@@ -473,14 +442,14 @@ bool GetMouseState(DIMOUSESTATE* mouseState)
 	return true; // 正常に取得できた場合
 }
 //=====================================================
-//マウスのプレス情報
+// マウスのプレス情報
 //=====================================================
 bool GetMouseButtonPress(int button)
 {
 	return (g_mouseState.rgbButtons[button] & 0x80) != 0;
 }
 //=====================================================
-//マウスのトリガー情報
+// マウスのトリガー情報
 //=====================================================
 bool GetMouseButtonTrigger(int button)
 {
@@ -493,7 +462,7 @@ bool GetMouseButtonTrigger(int button)
 	return trigger;
 }
 //=====================================================
-//マウスのリリース情報
+// マウスのリリース情報
 //=====================================================
 bool GetMouseButtonRelease(int button)
 {
@@ -549,7 +518,7 @@ void SetCursorVisibility(bool visible)
 	}
 }
 //=====================================================
-//マウス情報の取得
+// マウス情報の取得
 //=====================================================
 LPDIRECTINPUTDEVICE8 GetMouseDevice(void)
 {

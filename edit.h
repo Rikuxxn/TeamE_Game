@@ -15,26 +15,26 @@
 #define TITLEPATH_1 ("data/title.txt")
 
 #define MAX_EDITWORD (4096)
-#define MAX_SPEED (10.0f)       // エディター上のブロックの移動量
+#define MAX_SPEED (10.0f)                               // エディター上のブロックの移動量
 
 //テクスチャ構造体
 typedef struct
 {
-    LPDIRECT3DTEXTURE9 apTexture[MAX_BLOCKTEXTURE]; //テクスチャへのポインタ
-    LPD3DXMESH pMesh;
-    LPD3DXBUFFER pBuffMat;				//	マテリアルへのポインタ
-    DWORD dwNumMat;						//	マテリアル数
+    LPDIRECT3DTEXTURE9 apTexture[MAX_BLOCKTEXTURE];     // テクスチャへのポインタ
+    LPD3DXMESH pMesh;                                   // メッシュへのポインタ
+    LPD3DXBUFFER pBuffMat;				                // マテリアルへのポインタ
+    DWORD dwNumMat;						                // マテリアル数
 }BlockTex;
 
 //構造体
 typedef struct
 {
-    D3DXVECTOR3 pos;					// 位置(オフセット)
-    D3DXVECTOR3 move;					// 移動量
-    D3DXVECTOR3 rot;					// 向き
-    int nType;
-    bool bUse;
-    D3DXMATRIX mtxWorld;				// ワールドマトリックス
+    D3DXVECTOR3 pos;					                // 位置(オフセット)
+    D3DXVECTOR3 move;					                // 移動量
+    D3DXVECTOR3 rot;					                // 向き
+    int nType;                                          // 種類
+    bool bUse;                                          // 使用されているかどうか
+    D3DXMATRIX mtxWorld;				                // ワールドマトリックス
     BlockTex blockTex[BLOCKTYPE_MAX];
 }Editinfo;
 

@@ -1,20 +1,20 @@
-//=======================================
+//==============================================
 //
 // メッシュフィールド処理[meshfield.cpp]
 // Author : TANEKAWA RIKU
 //
-//=======================================
+//==============================================
 #include "main.h"
 #include "meshfield.h"
 
 //グローバル変数
-LPDIRECT3DTEXTURE9 g_pTextureMeshfield = NULL;//テクスチャへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffMeshfield = NULL;//頂点バッファへのポインタ
-LPDIRECT3DINDEXBUFFER9 g_pIdxBuffMeshfield = NULL;//インデックスバッファへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureMeshfield = NULL;			// テクスチャへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffMeshfield = NULL;		// 頂点バッファへのポインタ
+LPDIRECT3DINDEXBUFFER9 g_pIdxBuffMeshfield = NULL;		// インデックスバッファへのポインタ
 
-D3DXVECTOR3 g_posMeshfield;//位置
-D3DXVECTOR3 g_rotMeshfield;//向き
-D3DXMATRIX g_mtxWorldMeshfield;//ワールドマトリックス
+D3DXVECTOR3 g_posMeshfield;								// 位置
+D3DXVECTOR3 g_rotMeshfield;								// 向き
+D3DXMATRIX g_mtxWorldMeshfield;							// ワールドマトリックス
 
 //==================================
 //メッシュフィールドの初期化処理

@@ -4,7 +4,6 @@
 //========================
 
 // インクルードファイル宣言
-#include <time.h>
 #include "input.h"
 #include "password_background.h"
 #include "password_block.h"
@@ -114,6 +113,7 @@ void UpdatePasswordGame(void)
 		bJudge == true)//暗証番号の不一致
 	{
 		SetPassword(0,0,false);
+		SetPassword(0, GetAnum4(), true);
 	}
 
 	switch (g_gameState)

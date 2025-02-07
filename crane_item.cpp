@@ -22,12 +22,12 @@ void InitCraneItem(void)
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\item.png",		//テクスチャのファイル名
+		"data\\TEXTURE\\bear.png",		//テクスチャのファイル名
 		&g_pTextureItem[0]);
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\item2.png",		//テクスチャのファイル名
+		"data\\TEXTURE\\bear.png",		//テクスチャのファイル名
 		&g_pTextureItem[1]);
 
 	//テクスチャの読み込み

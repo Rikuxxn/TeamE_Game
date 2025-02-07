@@ -132,10 +132,10 @@ void InitGame(void)
 	SetTask(D3DXVECTOR3(2350.0f, 230.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB6);
 
 	//ミニゲームの初期化
+	InitPasswordGame();
 	InitShootingGame();
 	InitCraneGame();
 	InitBallGame();
-	InitPasswordGame();
 
 	//// 天井の中央付近から特定エリアを照らすスポットライト
 	//AddLight(
@@ -379,17 +379,17 @@ void UpdateGame(void)
 	{//ポーズ中ではない
 
 		// ミニゲーム（シューティング）のトリガー
-		if (KeyboardTrigger(DIK_E) == true && 
+		if (KeyboardTrigger(DIK_E) == true/* && 
 			pStgState != STGSTATE_END && 
 			bArcade == true && 
 			g_Game.bMap == false &&
-			bFuseCmp == true)
+			bFuseCmp == true*/)
 		{
 			g_Game.bDraw = g_Game.bDraw ? false : true;
 			g_Game.bMini = g_Game.bMini ? false : true;
 		}
 
-		// ミニゲーム（アクション）のトリガー
+		// ミニゲーム（クレーン）のトリガー
 		if (KeyboardTrigger(DIK_E) == true &&
 			pCraneState != CRANEGAMESTATE_END &&
 			bCatcher == true && 
@@ -412,12 +412,12 @@ void UpdateGame(void)
 		}
 
 		// キーパッドのトリガー
-		if (KeyboardTrigger(DIK_E) == true/* && 
+		if (KeyboardTrigger(DIK_E) == true && 
 			pPassState != PASSWORDGAMESTATE_END &&
 			bKeypad == true && 
 			g_Game.bMap == false &&
 			bFuseCmp == true &&
-			g_Game.bSTClear == true && g_Game.bACClear == true && g_Game.bBallClear == true*/)
+			g_Game.bSTClear == true && g_Game.bACClear == true && g_Game.bBallClear == true)
 		{
 			g_Game.bDraw4 = g_Game.bDraw4 ? false : true;
 			g_Game.bMini = g_Game.bMini ? false : true;

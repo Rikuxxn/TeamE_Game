@@ -9,6 +9,7 @@
 #include "password_item.h"
 #include "password_particle.h"
 #include "password_score.h"
+#include "password_game.h"
 
 //グローバル
 LPDIRECT3DTEXTURE9 g_pTexturePassItem[NUM_ITEM] = {};	//テクスチャへのポインタ
@@ -224,6 +225,7 @@ void UpdatePasswordItem(void)
 						break;
 					case NUMTYPE_DELETE:// 全消去処理
 						SetPassword(0,0,false);
+						SetPassword(0, GetAnum4(), true);
 						g_bJudgment = false;
 						break;
 					}

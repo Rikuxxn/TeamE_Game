@@ -5,6 +5,7 @@
 #ifndef _PASSWORDGAME_H_
 #define _PASSWORDGAME_H_
 
+#include <time.h>
 #include "main.h"
 
 typedef enum

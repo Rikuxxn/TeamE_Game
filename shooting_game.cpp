@@ -104,10 +104,10 @@ void DrawShootingGame(void)
 	DrawShootingEnemy();	//敵の描画処理
 	DrawEffect();			//エフェクトの描画処理
 	DrawParticle();			//パーティクルの描画処理
-	DrawSTPass();			//パスワードの描画処理
 
 	if (g_nCntShootingGameState >= 60)
 	{
+		DrawSTPass();		//パスワードの描画処理
 		DrawClear();		//クリア表示の描画処理
 	}
 }

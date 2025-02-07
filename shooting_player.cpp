@@ -12,6 +12,7 @@
 #include "shooting_fade.h"
 //#include "sound.h"
 #include "shooting_particle.h"
+#include "game.h"
 
 //マクロ
 #define MAX_MAX (400.0f)//最大でかい
@@ -128,8 +129,9 @@ void UninitShootingPlayer(void)
 void UpdateShootingPlayer(void)
 {
 	VERTEX_2D* pVtx;//頂点情報へのポインタ
+	GAME* pGame = GetGame();
 
-	if (g_player.bUse == true)
+	if (g_player.bUse == true && pGame->bSTClear == false)
 	{
 		//if (GetJoypadPress(JOYKEY_UP) == true)
 		//{//上キー
@@ -261,6 +263,7 @@ void UpdateShootingPlayer(void)
 		SetParticle(D3DXVECTOR3(g_player.pos.x + 7.0f, g_player.pos.y + 20.0f, g_player.pos.z), 1);//アフターバーナー
 		SetParticle(D3DXVECTOR3(g_player.pos.x - 7.0f, g_player.pos.y + 20.0f, g_player.pos.z), 1);
 	}
+
 	if (g_player.nBulletMax < BULLETMAX)
 	{
 		g_player.nBulletCool = BULLETCOOL;

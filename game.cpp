@@ -39,6 +39,7 @@
 #include "task.h"
 #include "time.h"
 #include "sound.h"
+#include "crane_hint.h"
 
 //グローバル変数
 GAMESTATE g_gameState = GAMESTATE_NONE;		// ゲームの状態
@@ -136,6 +137,7 @@ void InitGame(void)
 	InitPasswordGame();
 	InitShootingGame();
 	InitCraneGame();
+	InitCraneHint();
 	InitBallGame();
 	InitBallHint();
 
@@ -219,6 +221,7 @@ void InitGame(void)
 	g_Game.nPassCnt = 0;
 	g_Game.bSTClear = false;
 	g_Game.bACClear = false;
+	g_Game.bCraneHint = false;
 	g_Game.bBallClear = false;
 	g_Game.bBallHint = false;
 	g_Game.bPassClear = false;
@@ -327,6 +330,7 @@ void UninitGame(void)
 	UninitPasswordGame();
 	UninitShootingGame();
 	UninitCraneGame();
+	UninitCraneGame();
 	UninitBallGame();
 	UninitBallHint();
 }
@@ -361,6 +365,7 @@ void UpdateGame(void)
 	bool bFuseCmp = GetFuseCmp();
 	bool bKeypad = GetKeypad();
 	bool bHint = GetHintBall();
+	bool bBear = GetHintBear();
 	bool bEnd = GetEnd();
 
 	// ミニゲーム中はポーズを開けないようにする
@@ -405,6 +410,15 @@ void UpdateGame(void)
 			g_Game.bMini = g_Game.bMini ? false : true;
 		}
 
+		// パスワード(クレーン)のヒント
+		if (KeyboardTrigger(DIK_E) == true &&
+			bBear == true &&
+			g_Game.bMap == false &&
+			bFuseCmp == true)
+		{
+			g_Game.bCraneHint = g_Game.bCraneHint ? false : true;
+		}
+
 		// ボールプールのトリガー
 		if (KeyboardTrigger(DIK_E) == true && 
 			pBallState != BALLGAMESTATE_END && 
@@ -416,7 +430,7 @@ void UpdateGame(void)
 			g_Game.bMini = g_Game.bMini ? false : true;
 		}
 
-		// パスワードのヒント
+		// パスワード(ball)のヒント
 		if (KeyboardTrigger(DIK_E) == true &&
 			bHint == true &&
 			g_Game.bMap == false &&
@@ -571,6 +585,12 @@ void UpdateGame(void)
 			// ボールのヒントの更新処理
 			UpdateBallHint();
 		}
+		if (g_Game.bCraneHint == true)
+		{
+			// クレーンのヒントの更新処理
+			UpdateCraneHint();
+		}
+
 
 		//敵の更新処理
 		UpdateEnemy();
@@ -655,6 +675,7 @@ void UpdateGame(void)
 		g_Game.bDraw4 = false;
 		g_Game.bMap = false;
 		g_Game.bBallHint = false;
+		g_Game.bCraneHint = false;
 	}
 
 	//nTime = GetTime();
@@ -785,6 +806,10 @@ void DrawGame(void)
 	if (g_Game.bBallHint == true)
 	{//パスワードのヒント
 		DrawBallHint();
+	}
+	if (g_Game.bCraneHint == true)
+	{//パスワードのヒント
+		DrawCraneHint();
 	}
 
 	//ミニゲームの描画処理

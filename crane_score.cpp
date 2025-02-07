@@ -56,10 +56,10 @@ void InitCranePass(void)
 		pVtx[2].rhw = 1.0f;
 		pVtx[3].rhw = 1.0f;
 		//頂点カラーの設定
-		pVtx[0].col = D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[1].col = D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[2].col = D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[3].col = D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)
 		pVtx[1].tex = D3DXVECTOR2(0.1f, 0.0f);
@@ -165,6 +165,7 @@ void SetCranePass(int nCraneAPass)
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffCranePass->Lock(0, 0, (void**)&pVtx, 0);
+
 	for (int nCntCranePass = 0; nCntCranePass < MAX_NUM_SCORE; nCntCranePass++)
 	{
 		if (nCntCranePass == 0)

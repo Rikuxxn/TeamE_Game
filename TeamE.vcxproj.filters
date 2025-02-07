@@ -67,6 +67,8 @@
     <ClCompile Include="ball_hint_bg.cpp" />
     <ClCompile Include="ball_score.cpp" />
     <ClCompile Include="ball_hint.cpp" />
+    <ClCompile Include="crane_hint.cpp" />
+    <ClCompile Include="crane_hint_bg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
@@ -134,5 +136,7 @@
     <ClInclude Include="ball_hint_bg.h" />
     <ClInclude Include="ball_score.h" />
     <ClInclude Include="ball_hint.h" />
+    <ClInclude Include="crane_hint.h" />
+    <ClInclude Include="crane_hint_bg.h" />
   </ItemGroup>
 </Project>

@@ -16,6 +16,8 @@
 #include "game.h"
 //#include "sound.h"
 #include "crane_clear.h"
+#include "crane_score.h"
+#include "password_game.h"
 
 //グローバル
 CRANEGAMESTATE g_gameState = CRANEGAMESTATE_NONE;	//ゲームの状態
@@ -31,16 +33,18 @@ void InitCraneGame(void)
 	InitCraneEffect();		//エフェクトの初期化
 	InitCraneItem();		//アイテムの初期化
 	InitCraneClear();		//クリア画面の初期化
+	InitCranePass();		//パスワードの初期化
 
-	//SetCraneBlock(D3DXVECTOR3(640.0f, 700.0f, 0.0f),D3DXVECTOR3(0.0f,0.0f,0.0f), 240.0f, 20.0f, 1);			//地面
-	SetCraneBlock(D3DXVECTOR3(FIELD_LEFT + 100.0f, FIELD_UNDER - 20.0f, 0.0f), D3DXVECTOR3(), 30.0f, 20.0f, 0);	//ブロック
-	SetCraneItem(D3DXVECTOR3(540.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 1);
+	SetCranePass(GetAnum());
+	SetCraneBlock(D3DXVECTOR3(FIELD_LEFT + 100.0f, FIELD_UNDER - 30.0f, 0.0f), D3DXVECTOR3(), 40.0f, 30.0f, 0);	//ブロック
+	SetCraneItem(D3DXVECTOR3(540.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH + 20.0f, ITEM_HEIGHT + 20.0f, 1);
 	SetCraneItem(D3DXVECTOR3(640.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 2);
 	SetCraneItem(D3DXVECTOR3(740.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 3);					//アイテム
-	//SetCraneItem(D3DXVECTOR3(840.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 0);
 
 	g_gameState = CRANEGAMESTATE_NORMAL;//通常状態に設定
 	g_nCounterCraneGameState = 0;
+
+	SetCranePass(GetAnum());
 
 	////サウンドの再生
 	//PlaySound(SOUND_LABEL_CRANEGAMEBGM);
@@ -58,6 +62,7 @@ void UninitCraneGame(void)
 	UninitCraneEffect();		//エフェクトの終了処理
 	UninitCraneItem();			//アイテムの終了処理
 	UninitCraneClear();			//クリア画面の終了処理
+	UninitCranePass();
 }
 void UpdateCraneGame(void)
 {
@@ -70,6 +75,7 @@ void UpdateCraneGame(void)
 	UpdateCranePlayer();		//プレイヤーの更新処理
 	UpdateCraneEffect();		//エフェクトの更新処理
 	UpdateCraneItem();			//アイテムの更新処理
+	UpdateCranePass();
 
 	if (pPlayer->bUse == false || nNum <= 0)//終了条件
 	{
@@ -103,10 +109,12 @@ void DrawCraneGame(void)
 	DrawCraneItem();		//アイテムの描画処理
 	DrawCraneBlock();		//ブロックの描画処理
 	DrawCraneEffect();		//エフェクトの描画処理
+	//DrawCranePass();		//パスワードの描画処理
 
 	if (g_nCounterCraneGameState >= 45)
 	{
-		DrawCraneClear();
+		//DrawCraneClear();
+		DrawCranePass();		//パスワードの描画処理
 	}
 }
 void SetCraneGameState(CRANEGAMESTATE state)

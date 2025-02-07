@@ -11,7 +11,8 @@
 #include "shooting_effect.h"
 #include "shooting_particle.h"
 #include "shooting_clear.h"
-#include "game.h"
+#include "shooting_score.h"
+#include "password_game.h"
 //#include "sound.h"
 
 //グローバル
@@ -29,7 +30,9 @@ void InitShootingGame(void)
 	InitShootingEnemy();	//敵の初期化
 	InitClear();			//クリア表示の初期化
 	InitParticle();			//パーティクルの初期化
+	InitSTPass();			//パスワードの初期化
 
+	SetSTPass(GetAnum2());
 	SetEnemy(D3DXVECTOR3(470.0f, 200.0f, 0.0f), D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1);
 	SetEnemy(D3DXVECTOR3(750.0f, 200.0f, 0.0f), D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1);
 	SetEnemy(D3DXVECTOR3(610.0f, 260.0f, 0.0f), D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1);
@@ -53,6 +56,7 @@ void UninitShootingGame(void)
 	UninitShootingEnemy();	//敵の終了処理
 	UninitParticle();		//パーティクルの終了処理
 	UninitClear();			//クリア表示の終了処理
+	UninitSTPass();			//パスワードの終了処理
 }
 void UpdateShootingGame(void)
 {
@@ -67,6 +71,7 @@ void UpdateShootingGame(void)
 	UpdateShootingEnemy();	//敵の更新処理
 	UpdateBullet();			//弾の更新処理
 	UpdateEffect();			//エフェクトの更新処理
+	UpdateSTPass();			//パスワードの更新処理
 
 	if (pPlayer->bUse == false || nNum <= 0)
 	{
@@ -99,6 +104,7 @@ void DrawShootingGame(void)
 	DrawShootingEnemy();	//敵の描画処理
 	DrawEffect();			//エフェクトの描画処理
 	DrawParticle();			//パーティクルの描画処理
+	DrawSTPass();			//パスワードの描画処理
 
 	if (g_nCntShootingGameState >= 60)
 	{

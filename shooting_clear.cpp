@@ -19,7 +19,7 @@ void InitClear(void)
 
 	//テクスチャ1の読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\CLEAR.png",//テクスチャのファイル名
+		"data\\TEXTURE\\score.png",//テクスチャのファイル名
 		&g_apTextureClear);
 
 	//頂点バッファの生成
@@ -38,10 +38,10 @@ void InitClear(void)
 	for (nCntBG = 0; nCntBG < 3; nCntBG++)
 	{
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(440.0f, 310.0f, 0.0f);//1280*720
-		pVtx[1].pos = D3DXVECTOR3(840.0f, 310.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(440.0f, 460.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(840.0f, 460.0f, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(440.0f, 210.0f, 0.0f);//幅400.0f
+		pVtx[1].pos = D3DXVECTOR3(840.0f, 210.0f, 0.0f);//高さ100.0f
+		pVtx[2].pos = D3DXVECTOR3(440.0f, 310.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(840.0f, 310.0f, 0.0f);
 
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
@@ -53,7 +53,7 @@ void InitClear(void)
 		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);//Hint
 
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)

@@ -381,11 +381,10 @@ void UpdateGame(void)
 	{//ポーズ中ではない
 
 		// ミニゲーム（シューティング）のトリガー
-		if (KeyboardTrigger(DIK_E) == true/* && 
-			pStgState != STGSTATE_END && 
+		if (KeyboardTrigger(DIK_E) == true && 
 			bArcade == true && 
 			g_Game.bMap == false &&
-			bFuseCmp == true*/)
+			bFuseCmp == true)
 		{
 			g_Game.bDraw = g_Game.bDraw ? false : true;
 			g_Game.bMini = g_Game.bMini ? false : true;
@@ -446,14 +445,7 @@ void UpdateGame(void)
 			// 120(2秒)経ったら
 			if (g_Game.nStgCnt >= 120)
 			{
-				g_Game.bDraw = false;
 				g_Game.bSTClear = true;
-				if (g_Game.bDraw2 == false &&
-					g_Game.bDraw3 == false &&
-					g_Game.bDraw4 == false) // 他のゲームがクリア済みなら
-				{
-					g_Game.bMini = false; // ミニゲーム全体を終了
-				}
 			}
 		}
 
@@ -771,21 +763,21 @@ void DrawGame(void)
 		DrawPause();
 	}
 
-	if (g_Game.bDraw == true && g_Game.nStgCnt <= 120)
-	{
-		//ミニゲームの描画処理
+	//ミニゲームの描画処理
+	if (g_Game.bDraw == true/* && g_Game.nStgCnt <= 120*/)
+	{//シューティング
 		DrawShootingGame();
 	}
 	else if (g_Game.bDraw2 == true && g_Game.nCraneCnt <= 120)
-	{
+	{//クレーン
 		DrawCraneGame();
 	}
 	else if (g_Game.bDraw3 == true && g_Game.nBallCnt <= 120)
-	{
+	{//ボールプール
 		DrawBallGame();
 	}
 	else if (g_Game.bDraw4 == true && g_Game.nPassCnt <= 120)
-	{
+	{//パスワード
 		DrawPasswordGame();
 	}
 

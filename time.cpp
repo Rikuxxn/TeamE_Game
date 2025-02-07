@@ -244,6 +244,8 @@ void UninitTime(void)
 //=============================
 void UpdateTime(void)
 {
+	Block* pBlock = GetBlock();
+
 	bool bExit = GetExit();
 	bool bEnd = GetEnd();
 

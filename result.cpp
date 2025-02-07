@@ -69,6 +69,7 @@ void InitResult(void)
 	g_nRankCnt = 0;
 
 	Player* pPlayer = GetPlayer();	//プレイヤーの情報へのポインタ
+	Block* pBlock = GetBlock();
 
 	bool bEnd = GetEnd();
 	bool bExit = GetExit();
@@ -403,7 +404,7 @@ void UninitResult(void)
 void UpdateResult(void)
 {
 	FADE g_fade = GetFade(); // 現在の状態
-
+	Block* pBlock = GetBlock();
 	VERTEX_2D* pVtx;
 
 	// マウスカーソルの位置を取得
@@ -687,7 +688,7 @@ void DrawResult(void)
 	pDevice = GetDevice();
 
 	Player* pPlayer = GetPlayer();//プレイヤーの情報へのポインタ
-
+	Block* pBlock = GetBlock();
 
 	bool bExit = GetExit();
 	int nTimeMinutes = GetTimeMinutes();

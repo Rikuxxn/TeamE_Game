@@ -87,7 +87,6 @@ typedef struct
 	bool bSoundPlayed;									// ‰¹‚ğÄ¶Ï‚İ‚©‚Ç‚¤‚©
 	bool bInsight;										// ”ÍˆÍ‚É“ü‚Á‚½‚©‚Ç‚¤‚©
 	Blockinfo blockinfo[BLOCKTYPE_MAX];
-
 }Block;
 
 static const char* BLOCK[BLOCKTYPE_MAX] =

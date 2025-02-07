@@ -22,7 +22,6 @@ Block g_aBlock[MAX_BLOCK];		// ブロック情報
 Block g_info[BLOCKTYPE_MAX];	// ブロックの素材情報
 
 bool g_bFog;					// 霧の有効・無効
-
 bool g_bExit;					// 出口に入ったか
 
 bool bArcade;					// アーケードゲームの判定
@@ -244,10 +243,12 @@ void UpdateBlock(void)
 	{
 		Player* pPlayer = GetPlayer(); // プレイヤー情報の取得
 		Camera* pCamera = GetCamera();
+		GAME* pGame = GetGame();
 
 		if (g_aBlock[nCntBlock].bUse == true)
 		{
 			MeshcylinderOnBlock(BLOCKTYPE_FUSE);
+			MeshcylinderOnBlock(BLOCKTYPE_BALL);
 
 			// 視錐台中央判定を実行
 			CheckBlocksInCenter();
@@ -280,6 +281,13 @@ void UpdateBlock(void)
 					g_bFog = false; // フラグを変更
 				}
 			}
+
+			// ボールプールをクリアしたら
+			if (pGame->bBallClear == true)
+			{
+				SetBlock(D3DXVECTOR3(805.0f, 0.0f, -165.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), BLOCKTYPE_BALL);
+			}
+
 			////位置を更新
 			//g_aBlock[nCntBlock].pos.x += g_aBlock[nCntBlock].move.x;
 			//g_aBlock[nCntBlock].pos.y += g_aBlock[nCntBlock].move.y;
@@ -701,7 +709,7 @@ void CheckBlocksInCenter(void)
 		}
 		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BALL)
 		{
-			maxDistance = 80.0f;
+			maxDistance = 100.0f;
 		}
 
 

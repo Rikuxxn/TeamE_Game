@@ -153,7 +153,7 @@ void UpdateUI(void)
 	{
 
 		// アーケードゲームの範囲内
-		if (bArcade == true && bFuseCmp == true && pGame->bSTClear == false)
+		if (bArcade == true && bFuseCmp == true)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);

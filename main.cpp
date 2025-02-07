@@ -427,7 +427,7 @@ void Uninit(void)
 void Update(void)
 {
 	bool bExit = GetExit();
-
+	Block* pBlock = GetBlock();
 
 	//ジョイパッドの更新処理
 	UpdateJoypad();
@@ -491,7 +491,7 @@ void Draw(void)
 	bool bExit = GetExit();
 
 	Camera* pCamera = GetCamera();
-
+	Block* pBlock = GetBlock();
 	//LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
 
 	////デバイスの取得

@@ -145,6 +145,7 @@ void UpdateUI(void)
 	bool bFuseGet = GetFuseGet();
 	bool bFuseCmp = GetFuseCmp();
 	bool bHintBall = GetHintBall();
+	bool bHintBear = GetHintBear();
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffUI->Lock(0, 0, (void**)&pVtx, 0);
@@ -227,6 +228,18 @@ void UpdateUI(void)
 
 		// ヒントボールの範囲内
 		if (bHintBall == true)
+		{
+			// UIを表示
+			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
+		}
+		else// 範囲外
+		{
+			// falseにする
+			g_aUI[nCntUI].bUse = false;
+		}
+
+		// ヒントくまさんの範囲内
+		if (bHintBear == true)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);

@@ -58,11 +58,12 @@ typedef enum
 	BLOCKTYPE_FUSEBOX,
 	BLOCKTYPE_FUSEBOX_CMP,
 	BLOCKTYPE_BALL,
+	BLOCKTYPE_BEAR,
 
 	BLOCKTYPE_MAX
 }BLOCKTYPE;
 
-//ブロックの情報
+// ブロックの情報
 typedef struct
 {
 	LPDIRECT3DTEXTURE9 apTexture[MAX_BLOCKTEXTURE];		// テクスチャへのポインタ
@@ -132,6 +133,7 @@ static const char* BLOCK[BLOCKTYPE_MAX] =
 	"data/MODEL/fusebox.x",								// ヒューズボックス
 	"data/MODEL/fusebox_cmp.x",							// ヒューズボックス完全体
 	"data/MODEL/ball.x",								// ボール
+	"data/MODEL/bear.x",								// くまさん
 
 };
 
@@ -168,6 +170,7 @@ bool GetFusebox(void);
 bool GetFuseGet(void);
 bool GetFuseCmp(void);
 bool GetHintBall(void);
+bool GetHintBear(void);
 bool GetFog(void);
 
 #endif

@@ -32,6 +32,8 @@
 #define SCREEN_HEIGHT (720)													//ウィンドウの高さ
 #define FVF_VERTEX_2D (D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX1)
 #define FVF_VERTEX_3D (D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_DIFFUSE|D3DFVF_TEX1)	//座標・法線・カラー・テクスチャ
+#define FVF_VERTEX_3D_MULTI (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX2)	// マルチテクスチャ
+
 
 #define FIELD_LEFT (280.0f)//幅720.0f
 #define FIELD_RIGHT (1000.0f)
@@ -79,6 +81,15 @@ typedef struct
 	D3DXVECTOR2 tex;		//テクスチャ座標
 }VERTEX_3D;
 
+////頂点情報[3D_MULTI]の構造体を定義
+//typedef struct
+//{
+//	D3DXVECTOR3 pos;		//頂点座標
+//	D3DXVECTOR3 nor;		//法線ベクトル
+//	D3DCOLOR col;			//座標カラー
+//	D3DXVECTOR2 tex;		//テクスチャ座標0
+//	D3DXVECTOR2 texM;		//テクスチャ座標1
+//}VERTEX_3D_MULTI;
 
 //プロトタイプ宣言
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

@@ -173,7 +173,8 @@ void UpdateMeshcylinder(void)
 
 	for (int nCnt = 0; nCnt < MAX_BLOCK; nCnt++)
 	{
-		if (pBlock[nCnt].bUse == true && (pBlock[nCnt].nType == BLOCKTYPE_FUSE || pBlock[nCnt].nType == BLOCKTYPE_BALL))
+		if (pBlock[nCnt].bUse == true && (pBlock[nCnt].nType == BLOCKTYPE_FUSE || pBlock[nCnt].nType == BLOCKTYPE_BALL || 
+			pBlock[nCnt].nType == BLOCKTYPE_BEAR))
 		{
 			// ブロックが使われている → メッシュシリンダーを設置
 			SetMeshcylinder(pBlock[nCnt].pos);

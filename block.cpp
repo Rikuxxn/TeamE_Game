@@ -33,7 +33,10 @@ bool bFusebox;					// ヒューズボックスの判定
 bool bFuseGet;					// ヒューズ獲得判定
 bool bFuseCmp;					// ヒューズをつけた
 bool bHintBall;					// ヒントボール
+bool bHintBear;					// ヒントくまさん
 
+bool bSet;
+bool bSet2;
 
 //=============================
 // ブロックの初期化処理
@@ -68,6 +71,9 @@ void InitBlock(void)
 	bFuseGet = false;
 	bFuseCmp = false;
 	bHintBall = false;
+	bHintBear = false;
+	bSet = false;
+	bSet2 = false;
 
 	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
 	{
@@ -248,7 +254,8 @@ void UpdateBlock(void)
 		if (g_aBlock[nCntBlock].bUse == true)
 		{
 			MeshcylinderOnBlock(BLOCKTYPE_FUSE);
-			MeshcylinderOnBlock(BLOCKTYPE_BALL);
+			//MeshcylinderOnBlock(BLOCKTYPE_BALL);
+			//MeshcylinderOnBlock(BLOCKTYPE_BEAR);
 
 			// 視錐台中央判定を実行
 			CheckBlocksInCenter();
@@ -283,9 +290,19 @@ void UpdateBlock(void)
 			}
 
 			// ボールプールをクリアしたら
-			if (pGame->bBallClear == true)
+			if (pGame->bBallClear == true && bSet == false)
 			{
 				SetBlock(D3DXVECTOR3(805.0f, 0.0f, -165.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), BLOCKTYPE_BALL);
+
+				bSet = true;
+			}
+
+			// クレーンゲームをクリアしたら
+			if (pGame->bACClear == true && bSet2 == false)
+			{
+				SetBlock(D3DXVECTOR3(-520.0f, 0.0f, -785.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), BLOCKTYPE_BEAR);
+
+				bSet2 = true;
 			}
 
 			////位置を更新
@@ -621,15 +638,15 @@ void CheckBlocksInCenter(void)
 	Player* pPlayer = GetPlayer();
 	Camera* pCamera = GetCamera();
 
-	const float fov = D3DX_PI / 4.0f;  // 視野角 (45度)
-	const float centerFovRatio = 0.4f; // 中央範囲の幅
+	const float fov = D3DX_PI / 4.0f;				// 視野角
+	const float centerFovRatio = 0.4f;				// 中央範囲の幅
 	const float maxAngle = fov * centerFovRatio;
-	const float heightTolerance = 1.0f; // 高さの許容範囲（例: ±1.0）
+	const float heightTolerance = 1.0f;				// 高さの許容範囲
 
-	float maxDistance = 0.0f;    // インタラクト可能な最大距離
+	float maxDistance = 0.0f;						// インタラクト可能な最大距離
 
 	// プレイヤーの目線を基準にする
-	D3DXVECTOR3 eyePos = pCamera->posV; // カメラ位置を基準に
+	D3DXVECTOR3 eyePos = pCamera->posV;				// カメラ位置を基準
 
 	// プレイヤーの視線方向を正規化
 	D3DXVECTOR3 forward = pPlayer->forward;
@@ -669,6 +686,10 @@ void CheckBlocksInCenter(void)
 
 		case BLOCKTYPE_BALL:
 			bHintBall = false;
+			break;
+
+		case BLOCKTYPE_BEAR:
+			bHintBear = false;
 			break;
 
 		}
@@ -711,13 +732,17 @@ void CheckBlocksInCenter(void)
 		{
 			maxDistance = 100.0f;
 		}
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BEAR)
+		{
+			maxDistance = 100.0f;
+		}
 
 
 		// 特定の種類のみ対象とする
 		if (g_aBlock[nCntBlock].nType != BLOCKTYPE_ARCADE1 && g_aBlock[nCntBlock].nType != BLOCKTYPE_UFOCATCHER1 &&
 			g_aBlock[nCntBlock].nType != BLOCKTYPE_BALLPOOL && g_aBlock[nCntBlock].nType != BLOCKTYPE_KEYPAD &&
 			g_aBlock[nCntBlock].nType != BLOCKTYPE_FUSE && g_aBlock[nCntBlock].nType != BLOCKTYPE_FUSEBOX &&
-			g_aBlock[nCntBlock].nType != BLOCKTYPE_BALL)
+			g_aBlock[nCntBlock].nType != BLOCKTYPE_BALL && g_aBlock[nCntBlock].nType != BLOCKTYPE_BEAR)
 		{
 			continue; // 対象外の種類はスキップ
 		}
@@ -779,6 +804,10 @@ void CheckBlocksInCenter(void)
 
 			case BLOCKTYPE_BALL:
 				bHintBall = true;
+				break;
+
+			case BLOCKTYPE_BEAR:
+				bHintBear = true;
 				break;
 
 			}
@@ -897,6 +926,13 @@ bool GetFuseCmp(void)
 bool GetHintBall(void)
 {
 	return bHintBall;
+}
+//======================================================
+// ヒントくまさん判定
+//======================================================
+bool GetHintBear(void)
+{
+	return bHintBear;
 }
 //======================================================
 // 霧の有効・無効判定

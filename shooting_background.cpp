@@ -10,9 +10,10 @@
 #define NUM_BG (3)//背景の数
 
 //グローバル
-LPDIRECT3DTEXTURE9 g_pTextureBG = { NULL };		//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureBG[NUM_BG] = { NULL };	//テクスチャへのポインタ
+//LPDIRECT3DTEXTURE9 g_pTextureBG = { NULL };		//テクスチャへのポインタ
 LPDIRECT3DTEXTURE9 g_pTextureBG4 = { NULL };
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBG = NULL;	//頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBG = NULL;		//頂点バッファへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBG2 = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBG3 = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBG4 = NULL;
@@ -26,22 +27,22 @@ void InitBackGround(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-	////テクスチャ1の読み込み
-	//D3DXCreateTextureFromFile(pDevice,
-	//	"data\\TEXTURE\\bg100.png",						//テクスチャのファイル名
-	//	&g_pTextureBG[0]);
-	////テクスチャ2の読み込み
-	//D3DXCreateTextureFromFile(pDevice,
-	//	"data\\TEXTURE\\bg101.png",						//テクスチャのファイル名
-	//	&g_pTextureBG[1]);
-	////テクスチャ3の読み込み
-	//D3DXCreateTextureFromFile(pDevice,
-	//	"data\\TEXTURE\\bg102.png",						//テクスチャのファイル名
-	//	&g_pTextureBG[2]);
-		//テクスチャ1の読み込み
+	//テクスチャ1の読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\space_bg.png",						//テクスチャのファイル名
-		&g_pTextureBG);
+		"data\\TEXTURE\\bg100.png",						//テクスチャのファイル名
+		&g_pTextureBG[0]);
+	//テクスチャ2の読み込み
+	D3DXCreateTextureFromFile(pDevice,
+		"data\\TEXTURE\\bg101.png",						//テクスチャのファイル名
+		&g_pTextureBG[1]);
+	//テクスチャ3の読み込み
+	D3DXCreateTextureFromFile(pDevice,
+		"data\\TEXTURE\\bg102.png",						//テクスチャのファイル名
+		&g_pTextureBG[2]);
+		//テクスチャ1の読み込み
+	//D3DXCreateTextureFromFile(pDevice,
+	//	"data\\TEXTURE\\space_bg.png",						//テクスチャのファイル名
+	//	&g_pTextureBG);
 	//チュートリアルテクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
 		"data\\TEXTURE\\Mini_Shooting_Tutorial.png",	//テクスチャのファイル名
@@ -76,10 +77,10 @@ void InitBackGround(void)
 		pVtx[2].rhw = 1.0f;
 		pVtx[3].rhw = 1.0f;
 		//頂点カラーの設定
-		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(g_aPosTexU[nCntBG], 0.0f);//(u,v)
 		pVtx[1].tex = D3DXVECTOR2(g_aPosTexU[nCntBG] + 1.0f, 0.0f);
@@ -112,10 +113,10 @@ void InitBackGround(void)
 	pVtx2[2].rhw = 1.0f;
 	pVtx2[3].rhw = 1.0f;
 	//頂点カラーの設定
-	pVtx2[0].col = D3DCOLOR_RGBA(255, 255, 255, 100);
-	pVtx2[1].col = D3DCOLOR_RGBA(255, 255, 255, 100);
-	pVtx2[2].col = D3DCOLOR_RGBA(255, 255, 255, 100);
-	pVtx2[3].col = D3DCOLOR_RGBA(255, 255, 255, 100);
+	pVtx2[0].col = D3DXCOLOR(0.3f, 0.3f, 0.3f, 0.3f);
+	pVtx2[1].col = D3DXCOLOR(0.3f, 0.3f, 0.3f, 0.3f);
+	pVtx2[2].col = D3DXCOLOR(0.3f, 0.3f, 0.3f, 0.3f);
+	pVtx2[3].col = D3DXCOLOR(0.3f, 0.3f, 0.3f, 0.3f);
 	//頂点バッファをアンロックする
 	g_pVtxBuffBG2->Unlock();
 
@@ -141,10 +142,10 @@ void InitBackGround(void)
 	pVtx3[2].rhw = 1.0f;
 	pVtx3[3].rhw = 1.0f;
 	//頂点カラーの設定
-	pVtx3[0].col = D3DCOLOR_RGBA(0, 0, 0, 255);
-	pVtx3[1].col = D3DCOLOR_RGBA(0, 0, 0, 255);
-	pVtx3[2].col = D3DCOLOR_RGBA(0, 0, 0, 255);
-	pVtx3[3].col = D3DCOLOR_RGBA(0, 0, 0, 255);
+	pVtx3[0].col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
+	pVtx3[1].col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
+	pVtx3[2].col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
+	pVtx3[3].col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
 	//頂点バッファをアンロックする
 	g_pVtxBuffBG3->Unlock();
 
@@ -185,20 +186,20 @@ void InitBackGround(void)
 //背景の終了処理
 void UninitBackGround(void)
 {
-	//for (int nCntBG = 0; nCntBG < NUM_BG; nCntBG++)
-	//{
-	//	//テクスチャの破棄
-	//	if (g_pTextureBG[nCntBG] != NULL)
-	//	{
-	//		g_pTextureBG[nCntBG]->Release();
-	//		g_pTextureBG[nCntBG] = NULL;
-	//	}
-	//}
-	if (g_pTextureBG != NULL)
+	for (int nCntBG = 0; nCntBG < NUM_BG; nCntBG++)
 	{
-		g_pTextureBG->Release();
-		g_pTextureBG = NULL;
+		//テクスチャの破棄
+		if (g_pTextureBG[nCntBG] != NULL)
+		{
+			g_pTextureBG[nCntBG]->Release();
+			g_pTextureBG[nCntBG] = NULL;
+		}
 	}
+	//if (g_pTextureBG != NULL)
+	//{
+	//	g_pTextureBG->Release();
+	//	g_pTextureBG = NULL;
+	//}
 	if (g_pTextureBG4 != NULL)
 	{
 		g_pTextureBG4->Release();
@@ -262,6 +263,8 @@ void DrawBackGround(void)
 	pDevice->SetStreamSource(0, g_pVtxBuffBG2, 0, sizeof(VERTEX_2D));
 	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
+	//テクスチャの設定
+	pDevice->SetTexture(0, NULL);
 	//描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,//プリミティブの種類
 		0,									   //描画する最初の頂点インデックス
@@ -273,6 +276,8 @@ void DrawBackGround(void)
 	pDevice->SetStreamSource(0, g_pVtxBuffBG3, 0, sizeof(VERTEX_2D));
 	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
+	//テクスチャの設定
+	pDevice->SetTexture(0, NULL);
 	//描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,//プリミティブの種類
 		0,									   //描画する最初の頂点インデックス
@@ -297,21 +302,21 @@ void DrawBackGround(void)
 	pDevice->SetStreamSource(0, g_pVtxBuffBG, 0, sizeof(VERTEX_2D));
 	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
-	//テクスチャの設定
-	pDevice->SetTexture(0, g_pTextureBG);
-	//背景の描画
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,//プリミティブの種類
-		0,									   //描画する最初の頂点インデックス
-		2);                                    //描画するプリミティブ数
-	//for (int nCntBG = 0; nCntBG < NUM_BG; nCntBG++)
-	//{
-	//	//テクスチャの設定
-	//	pDevice->SetTexture(0, g_pTextureBG[0]);
-	//	pDevice->SetTexture(0, g_pTextureBG[1]);
-	//	pDevice->SetTexture(0, g_pTextureBG[2]);
-	//	//背景の描画
-	//	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,//プリミティブの種類
-	//		0,									   //描画する最初の頂点インデックス
-	//		2);                                    //描画するプリミティブ数
-	//}
+	////テクスチャの設定
+	//pDevice->SetTexture(0, g_pTextureBG);
+	////背景の描画
+	//pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,//プリミティブの種類
+	//	0,									   //描画する最初の頂点インデックス
+	//	2);                                    //描画するプリミティブ数
+	for (int nCntBG = 0; nCntBG < NUM_BG; nCntBG++)
+	{
+		//テクスチャの設定
+		pDevice->SetTexture(0, g_pTextureBG[0]);
+		pDevice->SetTexture(0, g_pTextureBG[1]);
+		pDevice->SetTexture(0, g_pTextureBG[2]);
+		//背景の描画
+		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,//プリミティブの種類
+			0,									   //描画する最初の頂点インデックス
+			2);                                    //描画するプリミティブ数
+	}
 }

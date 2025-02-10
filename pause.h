@@ -27,7 +27,7 @@ typedef enum
 static const char* PAUSE_TEXTURE[MAX_PAUSE] =
 {
 	"data\\TEXTURE\\continue.png",				// ‘±‚¯‚é
-	"data\\TEXTURE\\retry.png",					// ‚â‚è’¼‚·
+	"data\\TEXTURE\\retry2.png",					// ‚â‚è’¼‚·
 	"data\\TEXTURE\\quit.png",					// ‚â‚ß‚é
 };
 

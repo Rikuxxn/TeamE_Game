@@ -60,10 +60,9 @@ int g_nResultSeconds;											// 秒
 //================================================
 void InitResult(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
 
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	g_fAlphaRank = 0.0f;			// フェードアルファ値をリセット
 	g_nRankCnt = 0;
@@ -685,11 +684,8 @@ void UpdateResult(void)
 //=====================================================
 void DrawResult(void)
 {
-
-	LPDIRECT3DDEVICE9 pDevice;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	Player* pPlayer = GetPlayer();//プレイヤーの情報へのポインタ
 	Block* pBlock = GetBlock();

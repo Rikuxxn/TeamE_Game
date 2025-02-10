@@ -50,6 +50,7 @@ static const char* GAMEOVER_TEXTURE[MAX_GAMEOVER] =
 	"data\\TEXTURE\\titleback.png",
 };
 
+
 //プロトタイプ宣言
 void InitResult(void);
 void UninitResult(void);

@@ -49,7 +49,6 @@ void InitPause(void)
 			&g_apTexturePause[i]);
 	}
 
-
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
 		D3DUSAGE_WRITEONLY,

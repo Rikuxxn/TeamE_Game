@@ -17,18 +17,13 @@ CranePass g_aCranePass[MAX_NUM_SCORE] = {};
 //=========================
 void InitCranePass(void)
 {
-	int nCntCranePass;
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	//テクスチャ1の読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\ballnum.png",//テクスチャのファイル名
+		"data\\TEXTURE\\ballnumber.png",//テクスチャのファイル名
 		&g_pTextureCranePass);
-
-	//g_nCranePass = 0;
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_NUM_SCORE,
@@ -43,7 +38,7 @@ void InitCranePass(void)
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffCranePass->Lock(0, 0, (void**)&pVtx, 0);
-	for (nCntCranePass = 0; nCntCranePass < MAX_NUM_SCORE; nCntCranePass++)
+	for (int nCntCranePass = 0; nCntCranePass < MAX_NUM_SCORE; nCntCranePass++)
 	{
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(PASSPOSX + nCntCranePass * 20.0f, PASSWORDFIELD_TOP + 10.0f, 0.0f);
@@ -119,12 +114,8 @@ void UpdateCranePass(void)
 void DrawCranePass(void)
 {
 
-	VERTEX_2D* pVtx = 0;//頂点情報へのポインタ
-	int nCntCranePass;
-	LPDIRECT3DDEVICE9 pDevice;
-	
-	//デバイスの取得
-	pDevice = GetDevice();
+	VERTEX_2D* pVtx = 0;						//頂点情報へのポインタ
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();	//デバイスの取得
 
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffCranePass, 0, sizeof(VERTEX_2D));
@@ -135,7 +126,7 @@ void DrawCranePass(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffCranePass->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (nCntCranePass = 0; nCntCranePass < MAX_NUM_SCORE; nCntCranePass++)
+	for (int nCntCranePass = 0; nCntCranePass < MAX_NUM_SCORE; nCntCranePass++)
 	{
 		if (g_aCranePass[nCntCranePass].buse == true)
 		{

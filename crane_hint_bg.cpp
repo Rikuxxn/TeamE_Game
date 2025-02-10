@@ -131,10 +131,10 @@ void DrawCraneHintBG(void)
 	//背景
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffCraneHint2, 0, sizeof(VERTEX_2D));
-
 	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
-
+	//テクスチャの設定
+	pDevice->SetTexture(0, NULL);
 	//背景の描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,//プリミティブの種類
 		0,									   //描画する最初の頂点インデックス
@@ -143,13 +143,10 @@ void DrawCraneHintBG(void)
 	//チュートリアル
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffCraneHint, 0, sizeof(VERTEX_2D));
-
 	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
-
 	//テクスチャの設定
 	pDevice->SetTexture(0, g_pTextureCraneHint);
-
 	//背景の描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,//プリミティブの種類
 		0,									   //描画する最初の頂点インデックス

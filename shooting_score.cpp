@@ -17,15 +17,12 @@ STPass g_aSTPass[MAX_NUM_SCORE] = {};
 //=========================
 void InitSTPass(void)
 {
-	int nCntSTPass;
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	//テクスチャ1の読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\ballnum.png",//テクスチャのファイル名
+		"data\\TEXTURE\\ballnumber.png",//テクスチャのファイル名
 		&g_pTextureSTPass);
 
 	//g_nSTPass = 0;
@@ -43,7 +40,7 @@ void InitSTPass(void)
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffSTPass->Lock(0, 0, (void**)&pVtx, 0);
-	for (nCntSTPass = 0; nCntSTPass < MAX_NUM_SCORE; nCntSTPass++)
+	for (int nCntSTPass = 0; nCntSTPass < MAX_NUM_SCORE; nCntSTPass++)
 	{
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(PASSPOSX + nCntSTPass * 20.0f, PASSPOSY, 0.0f);

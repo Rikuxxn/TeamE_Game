@@ -70,7 +70,7 @@ void InitResult(void)
 
 	Player* pPlayer = GetPlayer();	//プレイヤーの情報へのポインタ
 	Block* pBlock = GetBlock();
-
+	//Flags* pFlag = GetFlag();
 	bool bEnd = GetEnd();
 	bool bExit = GetExit();
 	int nTimeMinutes = GetTimeMinutes();
@@ -405,6 +405,7 @@ void UpdateResult(void)
 {
 	FADE g_fade = GetFade(); // 現在の状態
 	Block* pBlock = GetBlock();
+	//Flags* pFlag = GetFlag();
 	VERTEX_2D* pVtx;
 
 	// マウスカーソルの位置を取得
@@ -489,7 +490,10 @@ void UpdateResult(void)
 			{
 				// 範囲外ならすべて半透明
 				clearAlphas[nCnt] -= 0.2f; // 徐々に薄く
-				if (clearAlphas[nCnt] < 0.3f) clearAlphas[nCnt] = 0.3f;
+				if (clearAlphas[nCnt] < 0.3f)
+				{
+					clearAlphas[nCnt] = 0.3f;
+				}
 			}
 			else if (nCnt == g_clearMenu)
 			{
@@ -505,9 +509,9 @@ void UpdateResult(void)
 				// 非選択の項目は薄く
 				clearAlphas[nCnt] -= 0.1f; // 徐々に薄く
 
-				if (clearAlphas[nCnt] < 0.5f)
+				if (clearAlphas[nCnt] < 0.3f)
 				{
-					clearAlphas[nCnt] = 0.5f;
+					clearAlphas[nCnt] = 0.3f;
 				}
 			}
 		}
@@ -610,9 +614,9 @@ void UpdateResult(void)
 				// 非選択の項目は薄く
 				gameoverAlphas[nCnt] -= 0.1f; // 徐々に薄く
 
-				if (gameoverAlphas[nCnt] < 0.5f)
+				if (gameoverAlphas[nCnt] < 0.3f)
 				{
-					gameoverAlphas[nCnt] = 0.5f;
+					gameoverAlphas[nCnt] = 0.3f;
 				}
 			}
 		}
@@ -689,7 +693,7 @@ void DrawResult(void)
 
 	Player* pPlayer = GetPlayer();//プレイヤーの情報へのポインタ
 	Block* pBlock = GetBlock();
-
+	//Flags* pFlag = GetFlag();
 	bool bExit = GetExit();
 	int nTimeMinutes = GetTimeMinutes();
 	int nTimeSeconds = GetTimeSeconds();

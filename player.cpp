@@ -55,12 +55,13 @@ void InitPlayer(void)
 	g_player.motion.bLoopMotion = true;							// モーションをループさせるか
 	g_player.motion.nCounterMotion = 0;							// モーション用のカウンター
 	g_player.motion.aMotionInfo[MOTIONTYPE_MOVE].startKey = 1;	// モーションの最初のキー
+	//g_player.pos = D3DXVECTOR3(120.0f, 0.0f, 540.0f);			// デバッグ用
 
 	// プレイヤーの読み込み
 	LoadPlayerTEXT();
 
-	// 影の設定
-	g_nIdxShadow = SetShadow(D3DXVECTOR3(g_player.pos.x, g_player.pos.y, g_player.pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	//// 影の設定
+	//g_nIdxShadow = SetShadow(D3DXVECTOR3(g_player.pos.x, g_player.pos.y, g_player.pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 
 	//オフセット考慮
@@ -197,7 +198,7 @@ void UpdatePlayer(void)
 	Block* pBlock = GetBlock();
 	Camera* pCamera = GetCamera();
 	GAME* pGame = GetGame();
-
+	//Flags* pFlag = GetFlag();
 	bool bExit = GetExit();
 	bool bEnd = GetEnd();
 	bool bFirstPerson = GetFirstPerson();
@@ -210,7 +211,7 @@ void UpdatePlayer(void)
 	}
 
 	if (bExit == false && g_player.bDisp == true && bEnd == false && pGame->bDraw == false &&
-		pGame->bDraw2 == false && pGame->bDraw3 == false && pGame->bBallHint == false)
+		pGame->bDraw2 == false && pGame->bDraw3 == false && pGame->bBallHint == false && pGame->bCraneHint == false)
 	{
 		////左スティック移動処理
 		//if (GetJoyStick() == true)
@@ -561,8 +562,8 @@ void UpdatePlayer(void)
 		//PlaySound(SOUND_LABEL_STEP2);
 	}
 
-	// 影のpos設定
-	SetPositionShadow(g_nIdxShadow, D3DXVECTOR3(g_player.pos.x, 0.0f, g_player.pos.z));
+	//// 影のpos設定
+	//SetPositionShadow(g_nIdxShadow, D3DXVECTOR3(g_player.pos.x, 0.0f, g_player.pos.z));
 
 
 	//全モデルの更新

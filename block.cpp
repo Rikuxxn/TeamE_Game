@@ -20,10 +20,10 @@
 //グローバル変数
 Block g_aBlock[MAX_BLOCK];		// ブロック情報
 Block g_info[BLOCKTYPE_MAX];	// ブロックの素材情報
+//Flags g_flag;					// フラグ情報
 
-bool g_bFog;					// 霧の有効・無効
-bool g_bExit;					// 出口に入ったか
-
+bool bFog;						// 霧の有効・無効
+bool bExit;						// 出口に入ったか
 bool bArcade;					// アーケードゲームの判定
 bool bCatcher;					// UFOキャッチャーの判定
 bool bBall;						// ボールプールの判定
@@ -34,9 +34,8 @@ bool bFuseGet;					// ヒューズ獲得判定
 bool bFuseCmp;					// ヒューズをつけた
 bool bHintBall;					// ヒントボール
 bool bHintBear;					// ヒントくまさん
-
-bool bSet;
-bool bSet2;
+bool bSet;						// ブロック設置したかどうか1
+bool bSet2;						// ブロック設置したかどうか2
 
 //=============================
 // ブロックの初期化処理
@@ -59,9 +58,9 @@ void InitBlock(void)
 		g_aBlock[nCntBlock].bInsight = false;
 		g_aBlock[nCntBlock].nType = BLOCKTYPE_WALL;
 	}
-	g_bFog = true;
-	g_bExit = false;
 
+	bFog = true;
+	bExit = false;
 	bArcade = false;
 	bCatcher = false;
 	bBall = false;
@@ -285,7 +284,7 @@ void UpdateBlock(void)
 					g_aBlock[nCntBlock].bUse = false;
 					SetBlock(D3DXVECTOR3(1140.0f, 80.0f, 250.0f), D3DXVECTOR3(0.0f, 1.57f, 0.0f), BLOCKTYPE_FUSEBOX_CMP);
 
-					g_bFog = false; // フラグを変更
+					bFog = false; // フラグを変更
 				}
 			}
 
@@ -433,7 +432,7 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 						// ミニゲームをすべてクリアしていたら
 						if (pGame->bPassClear == true)
 						{
-							g_bExit = true;
+							bExit = true;
 						}
 
 						continue;
@@ -783,23 +782,23 @@ void CheckBlocksInCenter(void)
 				break;
 
 			case BLOCKTYPE_ARCADE1:     
-				bArcade = true; 
+				bArcade = true;
 				break;
 
 			case BLOCKTYPE_BALLPOOL:    
-				bBall = true; 
+				bBall = true;
 				break;
 
 			case BLOCKTYPE_KEYPAD:      
-				bKeypad = true; 
+				bKeypad = true;
 				break;
 
 			case BLOCKTYPE_UFOCATCHER1: 
-				bCatcher = true; 
+				bCatcher = true;
 				break;
 
 			case BLOCKTYPE_FUSEBOX:     
-				bFusebox = true; 
+				bFusebox = true;
 				break;
 
 			case BLOCKTYPE_BALL:
@@ -851,18 +850,26 @@ bool GetBlockPosition(D3DXVECTOR3* outPosition)
 	return false; // チュートリアルボードが見つからなかった
 }
 //============================================
-//ブロックの取得
+// ブロックの取得
 //============================================
 Block* GetBlock(void)
 {
 	return &g_aBlock[0];
 }
+////============================================
+//// フラグの取得
+////============================================
+//Flags* GetFlag (void)
+//{
+//	return &g_flag;
+//}
+
 //======================================================
 // 出口判定
 //======================================================
 bool GetExit(void)
 {
-	return g_bExit;
+	return bExit;
 }
 //======================================================
 // アーケードゲーム判定
@@ -939,6 +946,6 @@ bool GetHintBear(void)
 //======================================================
 bool GetFog(void)
 {
-	return g_bFog;
+	return bFog;
 }
 

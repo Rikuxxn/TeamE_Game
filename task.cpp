@@ -124,6 +124,7 @@ void UninitTask(void)
 void UpdateTask(void)
 {
 	GAME* pGame = GetGame();
+	//Flags* pFlag = GetFlag();
 
 	bool bFuseGet = GetFuseGet();
 	bool bFuseCmp = GetFuseCmp();
@@ -170,8 +171,8 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && pGame->bBallClear == false &&
-			g_aTask[nCntTask].nType == TASKTYPE_TWO)
+		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && 
+			pGame->bBallClear == false && g_aTask[nCntTask].nType == TASKTYPE_TWO)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1120.0f)
 			{
@@ -182,8 +183,8 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && pGame->bBallClear == false &&
-			g_aTask[nCntTask].nType == TASKTYPE_SUB3)
+		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && 
+			pGame->bBallClear == false && g_aTask[nCntTask].nType == TASKTYPE_SUB3)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1160.0f)
 			{
@@ -194,8 +195,8 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && pGame->bBallClear == false &&
-			g_aTask[nCntTask].nType == TASKTYPE_SUB4)
+		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && 
+			pGame->bBallClear == false && g_aTask[nCntTask].nType == TASKTYPE_SUB4)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1150.0f)
 			{
@@ -206,8 +207,8 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && pGame->bBallClear == false &&
-			g_aTask[nCntTask].nType == TASKTYPE_SUB5)
+		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && 
+			pGame->bBallClear == false && g_aTask[nCntTask].nType == TASKTYPE_SUB5)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1150.0f)
 			{

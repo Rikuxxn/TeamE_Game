@@ -60,6 +60,7 @@ void UpdateCamera(void)
 
 	Player* pPlayer = GetPlayer();
 	Block* pBlock = GetBlock();
+	//Flags* pFlag = GetFlag();
 
 	float fAngleA = sqrtf(((g_camera.posR.x - pPlayer->pos.x) * (g_camera.posR.x - pPlayer->pos.x)) + ((g_camera.posR.y - pPlayer->pos.y) * (g_camera.posR.y - pPlayer->pos.y)) + ((g_camera.posR.z - pPlayer->pos.z) * (g_camera.posR.z - pPlayer->pos.z)));
 

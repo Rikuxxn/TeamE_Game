@@ -428,6 +428,7 @@ void Update(void)
 {
 	bool bExit = GetExit();
 	Block* pBlock = GetBlock();
+	//Flags* pFlag = GetFlag();
 
 	//ジョイパッドの更新処理
 	UpdateJoypad();
@@ -492,6 +493,8 @@ void Draw(void)
 
 	Camera* pCamera = GetCamera();
 	Block* pBlock = GetBlock();
+	//Flags* pFlag = GetFlag();
+
 	//LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
 
 	////デバイスの取得

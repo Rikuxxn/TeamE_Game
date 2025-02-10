@@ -340,6 +340,7 @@ void UninitGame(void)
 void UpdateGame(void)
 {
 	bool bFog = GetFog();
+	//Flags* pFlag = GetFlag();
 
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -402,7 +403,7 @@ void UpdateGame(void)
 		// ミニゲーム（クレーン）のトリガー
 		if (KeyboardTrigger(DIK_E) == true &&
 			pCraneState != CRANEGAMESTATE_END &&
-			bCatcher == true && 
+			bCatcher == true &&
 			g_Game.bMap == false &&
 			bFuseCmp == true)
 		{
@@ -422,7 +423,7 @@ void UpdateGame(void)
 		// ボールプールのトリガー
 		if (KeyboardTrigger(DIK_E) == true && 
 			pBallState != BALLGAMESTATE_END && 
-			bBall == true && 
+			bBall == true &&
 			g_Game.bMap == false &&
 			bFuseCmp == true)
 		{
@@ -442,7 +443,7 @@ void UpdateGame(void)
 		// キーパッドのトリガー
 		if (KeyboardTrigger(DIK_E) == true && 
 			pPassState != PASSWORDGAMESTATE_END &&
-			bKeypad == true && 
+			bKeypad == true &&
 			g_Game.bMap == false &&
 			bFuseCmp == true &&
 			g_Game.bSTClear == true && g_Game.bACClear == true && g_Game.bBallClear == true)
@@ -608,7 +609,7 @@ void UpdateGame(void)
 		UpdateMeshcylinder();
 
 		if (g_Game.bDraw == false && g_Game.bDraw2 == false && g_Game.bDraw3 == false && g_Game.bDraw4 == false &&
-			g_Game.bBallHint == false)
+			g_Game.bBallHint == false && g_Game.bCraneHint == false)
 		{
 			//カメラの更新処理
 			UpdateCamera();

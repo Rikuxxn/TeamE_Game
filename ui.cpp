@@ -132,6 +132,7 @@ void UpdateUI(void)
 	Block* pBlock = GetBlock();
 	Player* pPlayer = GetPlayer();
 	GAME* pGame = GetGame();
+	//Flags* pFlag = GetFlag();
 
 	int nCntUI;
 
@@ -190,7 +191,7 @@ void UpdateUI(void)
 		}
 
 		// キーパッドの範囲内
-		if (bKeypad == true && pGame->bSTClear == true && pGame->bACClear == true && 
+		if (bKeypad == true && pGame->bSTClear == true && pGame->bACClear == true &&
 			pGame->bBallClear == true && pGame->bPassClear == false)
 		{
 			// UIを表示

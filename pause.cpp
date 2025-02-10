@@ -268,9 +268,9 @@ void UpdatePause(void)
 			// ”ñ‘I‘ğ‚Ì€–Ú‚Í”–‚­
 			pauseAlphas[nCnt] -= 0.1f; // ™X‚É”–‚­
 
-			if (pauseAlphas[nCnt] < 0.5f)
+			if (pauseAlphas[nCnt] < 0.3f)
 			{
-				pauseAlphas[nCnt] = 0.5f;
+				pauseAlphas[nCnt] = 0.3f;
 			}
 		}
 	}

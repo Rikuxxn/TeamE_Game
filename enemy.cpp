@@ -63,8 +63,8 @@ D3DXVECTOR3 patrolPoints[] =
 Enemy g_aEnemy;						//敵情報
 bool g_bEnd;						//捕まった判定
 bool Inside;						//視界に入ったか
-bool isPlayerInSightPrev = false;
-bool isReversePatrol = false;		// 巡回の方向（false: 順回り, true: 逆回り）
+bool isPlayerInSightPrev;
+bool isReversePatrol;				// 巡回の方向（false: 順回り, true: 逆回り）
 
 int currentPatrolPoint = 0;			// 現在の巡回ポイント
 int g_nIdxShadowEnemy;
@@ -93,11 +93,13 @@ void InitEnemy(void)
 	g_aEnemy.sightAngle = D3DXToRadian(100.0f);				//視界範囲
 	g_bEnd = false;
 	Inside = false;
+	isPlayerInSightPrev = false;
+	isReversePatrol = false;
 	currentPatrolPoint = 0;
 
 	LoadEnemyTEXT();
 
-	g_nIdxShadowEnemy = SetShadow(D3DXVECTOR3(g_aEnemy.pos.x, g_aEnemy.pos.y, g_aEnemy.pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	//g_nIdxShadowEnemy = SetShadow(D3DXVECTOR3(g_aEnemy.pos.x, g_aEnemy.pos.y, g_aEnemy.pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	//オフセット考慮
 	for (int nCntOff = 0; nCntOff < g_aEnemy.enemymotion.nNumModel; nCntOff++)
@@ -320,7 +322,7 @@ void UpdateEnemy(void)
 		}
 
 
-		SetPositionShadow(g_nIdxShadowEnemy, D3DXVECTOR3(g_aEnemy.pos.x, 0.0f, g_aEnemy.pos.z));
+		//SetPositionShadow(g_nIdxShadowEnemy, D3DXVECTOR3(g_aEnemy.pos.x, 0.0f, g_aEnemy.pos.z));
 
 
 		//敵の足音

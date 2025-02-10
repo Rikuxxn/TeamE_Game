@@ -325,9 +325,9 @@ void UpdateTitle(void)
 			// ”ñ‘I‘ğ‚Ì€–Ú‚Í”–‚­
 			titleAlphas[nCnt] -= 0.1f; // ™X‚É”–‚­
 
-			if (titleAlphas[nCnt] < 0.5f)
+			if (titleAlphas[nCnt] < 0.3f)
 			{
-				titleAlphas[nCnt] = 0.5f;
+				titleAlphas[nCnt] = 0.3f;
 			}
 		}
 	}

@@ -74,6 +74,25 @@ typedef struct
 	D3DXVECTOR3 vtxMax;
 }Blockinfo;
 
+//// フラグメント構造体
+//typedef struct
+//{
+//	bool bFog;						// 霧の有効・無効
+//	bool bExit;						// 出口に入ったか
+//	bool bArcade;					// アーケードゲームの判定
+//	bool bCatcher;					// UFOキャッチャーの判定
+//	bool bBall;						// ボールプールの判定
+//	bool bKeypad;					// キーパッドの判定
+//	bool bFuse;						// ヒューズの判定
+//	bool bFusebox;					// ヒューズボックスの判定
+//	bool bFuseGet;					// ヒューズ獲得判定
+//	bool bFuseCmp;					// ヒューズをつけた
+//	bool bHintBall;					// ヒントボール
+//	bool bHintBear;					// ヒントくまさん
+//	bool bSet;						// ブロック設置したかどうか1
+//	bool bSet2;						// ブロック設置したかどうか2
+//}Flags;
+
 // ブロック構造体
 typedef struct
 {

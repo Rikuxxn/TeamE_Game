@@ -56,18 +56,16 @@ void UpdateCamera(void)
 {
 	MODE pMode = GetMode();
 	FADE g_fade = GetFade(); // Œ»Ý‚Ìó‘Ô
-	bool bExit = GetExit();
-
 	Player* pPlayer = GetPlayer();
 	Block* pBlock = GetBlock();
-	//Flags* pFlag = GetFlag();
+	Flags* pFlag = GetFlag();
 
 	float fAngleA = sqrtf(((g_camera.posR.x - pPlayer->pos.x) * (g_camera.posR.x - pPlayer->pos.x)) + ((g_camera.posR.y - pPlayer->pos.y) * (g_camera.posR.y - pPlayer->pos.y)) + ((g_camera.posR.z - pPlayer->pos.z) * (g_camera.posR.z - pPlayer->pos.z)));
 
 	XINPUT_STATE* pStick;
 	pStick = GetJoyStickAngle();
 
-	if (pMode == MODE_GAME && bExit == false)
+	if (pMode == MODE_GAME && pFlag->bExit == false)
 	{
 
 		//if (pStick != NULL) 

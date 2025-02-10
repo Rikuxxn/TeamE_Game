@@ -20,22 +20,7 @@
 //グローバル変数
 Block g_aBlock[MAX_BLOCK];		// ブロック情報
 Block g_info[BLOCKTYPE_MAX];	// ブロックの素材情報
-//Flags g_flag;					// フラグ情報
-
-bool bFog;						// 霧の有効・無効
-bool bExit;						// 出口に入ったか
-bool bArcade;					// アーケードゲームの判定
-bool bCatcher;					// UFOキャッチャーの判定
-bool bBall;						// ボールプールの判定
-bool bKeypad;					// キーパッドの判定
-bool bFuse;						// ヒューズの判定
-bool bFusebox;					// ヒューズボックスの判定
-bool bFuseGet;					// ヒューズ獲得判定
-bool bFuseCmp;					// ヒューズをつけた
-bool bHintBall;					// ヒントボール
-bool bHintBear;					// ヒントくまさん
-bool bSet;						// ブロック設置したかどうか1
-bool bSet2;						// ブロック設置したかどうか2
+Flags g_flag;					// フラグ情報
 
 //=============================
 // ブロックの初期化処理
@@ -59,20 +44,21 @@ void InitBlock(void)
 		g_aBlock[nCntBlock].nType = BLOCKTYPE_WALL;
 	}
 
-	bFog = true;
-	bExit = false;
-	bArcade = false;
-	bCatcher = false;
-	bBall = false;
-	bKeypad = false;
-	bFuse = false;
-	bFusebox = false;
-	bFuseGet = false;
-	bFuseCmp = false;
-	bHintBall = false;
-	bHintBear = false;
-	bSet = false;
-	bSet2 = false;
+	// フラグメント構造体の初期化
+	g_flag.bFog = true;
+	g_flag.bExit = false;
+	g_flag.bArcade = false;
+	g_flag.bCatcher = false;
+	g_flag.bBall = false;
+	g_flag.bKeypad = false;
+	g_flag.bFuse = false;
+	g_flag.bFusebox = false;
+	g_flag.bFuseGet = false;
+	g_flag.bFuseCmp = false;
+	g_flag.bHintBall = false;
+	g_flag.bHintBear = false;
+	g_flag.bSet = false;
+	g_flag.bSet2 = false;
 
 	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
 	{
@@ -266,42 +252,42 @@ void UpdateBlock(void)
 			}
 
 			// ヒューズを手に入れた
-			if (bFuse == true && KeyboardTrigger(DIK_E) == true && g_aBlock[nCntBlock].bInsight == true)
+			if (g_flag.bFuse == true && KeyboardTrigger(DIK_E) == true && g_aBlock[nCntBlock].bInsight == true)
 			{
 				if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE)
 				{
 					g_aBlock[nCntBlock].bUse = false;
-					bFuseGet = true;
+					g_flag.bFuseGet = true;
 				}
 			}
 
 			// ヒューズボックスにヒューズをはめた
-			if (bFuseGet == true && KeyboardTrigger(DIK_E) == true && g_aBlock[nCntBlock].bInsight == true)
+			if (g_flag.bFuseGet == true && KeyboardTrigger(DIK_E) == true && g_aBlock[nCntBlock].bInsight == true)
 			{
 				if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSEBOX)
 				{
-					bFuseCmp = true;
+					g_flag.bFuseCmp = true;
 					g_aBlock[nCntBlock].bUse = false;
 					SetBlock(D3DXVECTOR3(1140.0f, 80.0f, 250.0f), D3DXVECTOR3(0.0f, 1.57f, 0.0f), BLOCKTYPE_FUSEBOX_CMP);
 
-					bFog = false; // フラグを変更
+					g_flag.bFog = false; // フラグを変更
 				}
 			}
 
 			// ボールプールをクリアしたら
-			if (pGame->bBallClear == true && bSet == false)
+			if (pGame->bBallClear == true && g_flag.bSet == false)
 			{
 				SetBlock(D3DXVECTOR3(805.0f, 0.0f, -165.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), BLOCKTYPE_BALL);
 
-				bSet = true;
+				g_flag.bSet = true;
 			}
 
 			// クレーンゲームをクリアしたら
-			if (pGame->bACClear == true && bSet2 == false)
+			if (pGame->bACClear == true && g_flag.bSet2 == false)
 			{
 				SetBlock(D3DXVECTOR3(-520.0f, 0.0f, -785.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), BLOCKTYPE_BEAR);
 
-				bSet2 = true;
+				g_flag.bSet2 = true;
 			}
 
 			////位置を更新
@@ -432,7 +418,7 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 						// ミニゲームをすべてクリアしていたら
 						if (pGame->bPassClear == true)
 						{
-							bExit = true;
+							g_flag.bExit = true;
 						}
 
 						continue;
@@ -660,35 +646,35 @@ void CheckBlocksInCenter(void)
 		switch (g_aBlock[nCntBlock].nType)
 		{
 		case BLOCKTYPE_FUSE:
-			bFuse = false;
+			g_flag.bFuse = false;
 			break;
 
 		case BLOCKTYPE_ARCADE1:
-			bArcade = false;
+			g_flag.bArcade = false;
 			break;
 
 		case BLOCKTYPE_BALLPOOL:
-			bBall = false;
+			g_flag.bBall = false;
 			break;
 
 		case BLOCKTYPE_KEYPAD:
-			bKeypad = false;
+			g_flag.bKeypad = false;
 			break;
 
 		case BLOCKTYPE_UFOCATCHER1:
-			bCatcher = false;
+			g_flag.bCatcher = false;
 			break;
 
 		case BLOCKTYPE_FUSEBOX:
-			bFusebox = false;
+			g_flag.bFusebox = false;
 			break;
 
 		case BLOCKTYPE_BALL:
-			bHintBall = false;
+			g_flag.bHintBall = false;
 			break;
 
 		case BLOCKTYPE_BEAR:
-			bHintBear = false;
+			g_flag.bHintBear = false;
 			break;
 
 		}
@@ -778,35 +764,35 @@ void CheckBlocksInCenter(void)
 			switch (g_aBlock[nCntBlock].nType)
 			{
 			case BLOCKTYPE_FUSE:        
-				bFuse = true;
+				g_flag.bFuse = true;
 				break;
 
 			case BLOCKTYPE_ARCADE1:     
-				bArcade = true;
+				g_flag.bArcade = true;
 				break;
 
 			case BLOCKTYPE_BALLPOOL:    
-				bBall = true;
+				g_flag.bBall = true;
 				break;
 
 			case BLOCKTYPE_KEYPAD:      
-				bKeypad = true;
+				g_flag.bKeypad = true;
 				break;
 
 			case BLOCKTYPE_UFOCATCHER1: 
-				bCatcher = true;
+				g_flag.bCatcher = true;
 				break;
 
 			case BLOCKTYPE_FUSEBOX:     
-				bFusebox = true;
+				g_flag.bFusebox = true;
 				break;
 
 			case BLOCKTYPE_BALL:
-				bHintBall = true;
+				g_flag.bHintBall = true;
 				break;
 
 			case BLOCKTYPE_BEAR:
-				bHintBear = true;
+				g_flag.bHintBear = true;
 				break;
 
 			}
@@ -856,96 +842,10 @@ Block* GetBlock(void)
 {
 	return &g_aBlock[0];
 }
-////============================================
-//// フラグの取得
-////============================================
-//Flags* GetFlag (void)
-//{
-//	return &g_flag;
-//}
-
-//======================================================
-// 出口判定
-//======================================================
-bool GetExit(void)
+//============================================
+// フラグの取得
+//============================================
+Flags* GetFlag (void)
 {
-	return bExit;
+	return &g_flag;
 }
-//======================================================
-// アーケードゲーム判定
-//======================================================
-bool GetArcade(void)
-{
-	return bArcade;
-}
-//======================================================
-// UFOキャッチャー判定
-//======================================================
-bool GetCatcher(void)
-{
-	return bCatcher;
-}
-//======================================================
-// ボールプール判定
-//======================================================
-bool GetBall(void)
-{
-	return bBall;
-}
-//======================================================
-// キーパッド判定
-//======================================================
-bool GetKeypad(void)
-{
-	return bKeypad;
-}
-//======================================================
-// ヒューズ判定
-//======================================================
-bool GetFuse(void)
-{
-	return bFuse;
-}
-//======================================================
-// ヒューズボックス判定
-//======================================================
-bool GetFusebox(void)
-{
-	return bFusebox;
-}
-//======================================================
-// ヒューズゲット判定
-//======================================================
-bool GetFuseGet(void)
-{
-	return bFuseGet;
-}
-//======================================================
-// ヒューズコンプリート判定
-//======================================================
-bool GetFuseCmp(void)
-{
-	return bFuseCmp;
-}
-//======================================================
-// ヒントボール判定
-//======================================================
-bool GetHintBall(void)
-{
-	return bHintBall;
-}
-//======================================================
-// ヒントくまさん判定
-//======================================================
-bool GetHintBear(void)
-{
-	return bHintBear;
-}
-//======================================================
-// 霧の有効・無効判定
-//======================================================
-bool GetFog(void)
-{
-	return bFog;
-}
-

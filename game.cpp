@@ -339,8 +339,7 @@ void UninitGame(void)
 //=========================================
 void UpdateGame(void)
 {
-	bool bFog = GetFog();
-	//Flags* pFlag = GetFlag();
+	Flags* pFlag = GetFlag();
 
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -349,10 +348,9 @@ void UpdateGame(void)
 	SetupVertexFog(pDevice, D3DCOLOR_XRGB(0, 0, 0), D3DFOG_LINEAR, TRUE, 0.0f);
 
 	// 霧の無効化
-	pDevice->SetRenderState(D3DRS_FOGENABLE, bFog);
+	pDevice->SetRenderState(D3DRS_FOGENABLE, pFlag->bFog);
 
 	//int nTime = GetTime();
-	bool bExit = GetExit();
 	STGSTATE pStgState = GetShootingGameState();
 	CRANEGAMESTATE pCraneState = GetCraneGameState();
 	BALLGAMESTATE pBallState = GetBallGameState();
@@ -360,13 +358,6 @@ void UpdateGame(void)
 	Player* pPlayer = GetPlayer();//プレイヤーの情報へのポインタにプレイヤーの先頭アドレスが代入される
 	Block* pBlock = GetBlock();
 
-	bool bArcade = GetArcade();
-	bool bCatcher = GetCatcher();
-	bool bBall = GetBall();
-	bool bFuseCmp = GetFuseCmp();
-	bool bKeypad = GetKeypad();
-	bool bHint = GetHintBall();
-	bool bBear = GetHintBear();
 	bool bEnd = GetEnd();
 
 	// ミニゲーム中はポーズを開けないようにする
@@ -392,9 +383,9 @@ void UpdateGame(void)
 
 		// ミニゲーム（シューティング）のトリガー
 		if (KeyboardTrigger(DIK_E) == true && 
-			bArcade == true && 
+			pFlag->bArcade == true &&
 			g_Game.bMap == false &&
-			bFuseCmp == true)
+			pFlag->bFuseCmp == true)
 		{
 			g_Game.bDraw = g_Game.bDraw ? false : true;
 			g_Game.bMini = g_Game.bMini ? false : true;
@@ -403,9 +394,9 @@ void UpdateGame(void)
 		// ミニゲーム（クレーン）のトリガー
 		if (KeyboardTrigger(DIK_E) == true &&
 			pCraneState != CRANEGAMESTATE_END &&
-			bCatcher == true &&
+			pFlag->bCatcher == true &&
 			g_Game.bMap == false &&
-			bFuseCmp == true)
+			pFlag->bFuseCmp == true)
 		{
 			g_Game.bDraw2 = g_Game.bDraw2 ? false : true;
 			g_Game.bMini = g_Game.bMini ? false : true;
@@ -413,9 +404,9 @@ void UpdateGame(void)
 
 		// パスワード(クレーン)のヒント
 		if (KeyboardTrigger(DIK_E) == true &&
-			bBear == true &&
+			pFlag->bHintBear == true &&
 			g_Game.bMap == false &&
-			bFuseCmp == true)
+			pFlag->bFuseCmp == true)
 		{
 			g_Game.bCraneHint = g_Game.bCraneHint ? false : true;
 		}
@@ -423,9 +414,9 @@ void UpdateGame(void)
 		// ボールプールのトリガー
 		if (KeyboardTrigger(DIK_E) == true && 
 			pBallState != BALLGAMESTATE_END && 
-			bBall == true &&
+			pFlag->bBall == true &&
 			g_Game.bMap == false &&
-			bFuseCmp == true)
+			pFlag->bFuseCmp == true)
 		{
 			g_Game.bDraw3 = g_Game.bDraw3 ? false : true;
 			g_Game.bMini = g_Game.bMini ? false : true;
@@ -433,9 +424,9 @@ void UpdateGame(void)
 
 		// パスワード(ball)のヒント
 		if (KeyboardTrigger(DIK_E) == true &&
-			bHint == true &&
+			pFlag->bHintBall == true &&
 			g_Game.bMap == false &&
-			bFuseCmp == true)
+			pFlag->bFuseCmp == true)
 		{
 			g_Game.bBallHint = g_Game.bBallHint ? false : true;
 		}
@@ -443,9 +434,9 @@ void UpdateGame(void)
 		// キーパッドのトリガー
 		if (KeyboardTrigger(DIK_E) == true && 
 			pPassState != PASSWORDGAMESTATE_END &&
-			bKeypad == true &&
+			pFlag->bKeypad == true &&
 			g_Game.bMap == false &&
-			bFuseCmp == true &&
+			pFlag->bFuseCmp == true &&
 			g_Game.bSTClear == true && g_Game.bACClear == true && g_Game.bBallClear == true)
 		{
 			g_Game.bDraw4 = g_Game.bDraw4 ? false : true;
@@ -666,7 +657,7 @@ void UpdateGame(void)
 	}
 
 
-	if ((pPlayer->bDisp == false || bExit == true || bEnd  == true) && g_gameState != GAMESTATE_NONE)
+	if ((pPlayer->bDisp == false || pFlag->bExit == true || bEnd  == true) && g_gameState != GAMESTATE_NONE)
 	{
 		//モード設定(リザルト画面に移行)
  		g_gameState = GAMESTATE_END;
@@ -699,7 +690,7 @@ void UpdateGame(void)
 			//モード設定(リザルト画面に移行)
 			SetFade(MODE_RESULT);
 
-			if (bExit == true)
+			if (pFlag->bExit == true)
 			{
 
 				////ランキングのリセット

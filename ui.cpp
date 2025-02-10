@@ -132,21 +132,9 @@ void UpdateUI(void)
 	Block* pBlock = GetBlock();
 	Player* pPlayer = GetPlayer();
 	GAME* pGame = GetGame();
-	//Flags* pFlag = GetFlag();
+	Flags* pFlag = GetFlag();
 
 	int nCntUI;
-
-	bool bArcade = GetArcade();
-	bool bCatcher = GetCatcher();
-	bool bBall = GetBall();
-	bool bKeypad = GetKeypad();
-	bool bFuse = GetFuse();
-	bool bFusebox = GetFusebox();
-
-	bool bFuseGet = GetFuseGet();
-	bool bFuseCmp = GetFuseCmp();
-	bool bHintBall = GetHintBall();
-	bool bHintBear = GetHintBear();
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffUI->Lock(0, 0, (void**)&pVtx, 0);
@@ -155,7 +143,7 @@ void UpdateUI(void)
 	{
 
 		// アーケードゲームの範囲内
-		if (bArcade == true && bFuseCmp == true)
+		if (pFlag->bArcade == true && pFlag->bFuseCmp == true)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
@@ -167,7 +155,7 @@ void UpdateUI(void)
 		}
 
 		// UFOキャッチャーの範囲内
-		if (bCatcher == true && bFuseCmp == true && pGame->bACClear == false)
+		if (pFlag->bCatcher == true && pFlag->bFuseCmp == true && pGame->bACClear == false)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
@@ -179,7 +167,7 @@ void UpdateUI(void)
 		}
 
 		// ボールプールの範囲内
-		if (bBall == true && bFuseCmp == true && pGame->bBallClear == false)
+		if (pFlag->bBall == true && pFlag->bFuseCmp == true && pGame->bBallClear == false)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
@@ -191,7 +179,7 @@ void UpdateUI(void)
 		}
 
 		// キーパッドの範囲内
-		if (bKeypad == true && pGame->bSTClear == true && pGame->bACClear == true &&
+		if (pFlag->bKeypad == true && pGame->bSTClear == true && pGame->bACClear == true &&
 			pGame->bBallClear == true && pGame->bPassClear == false)
 		{
 			// UIを表示
@@ -204,7 +192,7 @@ void UpdateUI(void)
 		}
 
 		// ヒューズの範囲内
-		if (bFuse == true)
+		if (pFlag->bFuse == true)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_INTERACT);
@@ -216,7 +204,7 @@ void UpdateUI(void)
 		}
 
 		// ヒューズボックスの範囲内
-		if (bFusebox == true && bFuseGet == true && bFuseCmp == false)
+		if (pFlag->bFusebox == true && pFlag->bFuseGet == true && pFlag->bFuseCmp == false)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_USE);
@@ -228,7 +216,7 @@ void UpdateUI(void)
 		}
 
 		// ヒントボールの範囲内
-		if (bHintBall == true)
+		if (pFlag->bHintBall == true)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);
@@ -240,7 +228,7 @@ void UpdateUI(void)
 		}
 
 		// ヒントくまさんの範囲内
-		if (bHintBear == true)
+		if (pFlag->bHintBear == true)
 		{
 			// UIを表示
 			SetUI(D3DXVECTOR3(660.0f, 590.0f, 0.0f), 150.0f, 40.0f, UITYPE_GAME);

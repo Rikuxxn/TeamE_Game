@@ -70,13 +70,13 @@ void InitResult(void)
 
 	Player* pPlayer = GetPlayer();	//プレイヤーの情報へのポインタ
 	Block* pBlock = GetBlock();
-	//Flags* pFlag = GetFlag();
+	Flags* pFlag = GetFlag();
+
 	bool bEnd = GetEnd();
-	bool bExit = GetExit();
 	int nTimeMinutes = GetTimeMinutes();
 	int nTimeSeconds = GetTimeSeconds();
 
-	if (bExit == true)
+	if (pFlag->bExit == true)
 	{//脱出したら
 
 		////リザルト(ゲームクリア)画面に遷移
@@ -405,7 +405,8 @@ void UpdateResult(void)
 {
 	FADE g_fade = GetFade(); // 現在の状態
 	Block* pBlock = GetBlock();
-	//Flags* pFlag = GetFlag();
+	Flags* pFlag = GetFlag();
+
 	VERTEX_2D* pVtx;
 
 	// マウスカーソルの位置を取得
@@ -422,7 +423,6 @@ void UpdateResult(void)
 	RECT clientRect;
 	GetClientRect(hwnd, &clientRect);
 
-	bool bExit = GetExit();
 	//nTime = GetTime();
 
 	Player* pPlayer = GetPlayer();
@@ -442,7 +442,7 @@ void UpdateResult(void)
 			}
 		}
 	}
-	if (g_nRankCnt <= 300 && bExit == true)
+	if (g_nRankCnt <= 300 && pFlag->bExit == true)
 	{
 		//PlaySound(SOUND_LABEL_RANK);
 	}
@@ -460,7 +460,7 @@ void UpdateResult(void)
 	// マウスカーソルが当たっている項目を探す
 	int selectedByMouse = -1; // -1は未選択
 
-	if (bExit == true)
+	if (pFlag->bExit == true)
 	{
 		for (int nCnt = 0; nCnt < MAX_CLEAR; nCnt++)
 		{
@@ -568,7 +568,7 @@ void UpdateResult(void)
 		}
 
 	}
-	else if (bExit == false)
+	else if (pFlag->bExit == false)
 	{
 		for (int nCnt = 0; nCnt < MAX_GAMEOVER; nCnt++)
 		{
@@ -693,8 +693,8 @@ void DrawResult(void)
 
 	Player* pPlayer = GetPlayer();//プレイヤーの情報へのポインタ
 	Block* pBlock = GetBlock();
-	//Flags* pFlag = GetFlag();
-	bool bExit = GetExit();
+	Flags* pFlag = GetFlag();
+
 	int nTimeMinutes = GetTimeMinutes();
 	int nTimeSeconds = GetTimeSeconds();
 
@@ -717,7 +717,7 @@ void DrawResult(void)
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// ゲームクリアの時
-	if (bExit == true)
+	if (pFlag->bExit == true)
 	{
 		//====================================
 		// ランク描画
@@ -833,7 +833,7 @@ void DrawResult(void)
 
 
 	// ゲームオーバーの時
-	if (bExit == false)
+	if (pFlag->bExit == false)
 	{
 
 		//====================================

@@ -426,9 +426,8 @@ void Uninit(void)
 //=============================================
 void Update(void)
 {
-	bool bExit = GetExit();
 	Block* pBlock = GetBlock();
-	//Flags* pFlag = GetFlag();
+	Flags* pFlag = GetFlag();
 
 	//ジョイパッドの更新処理
 	UpdateJoypad();
@@ -459,7 +458,7 @@ void Update(void)
 	case MODE_RESULT://リザルト画面
 		UpdateResult();
 
-		if (bExit == true)
+		if (pFlag->bExit == true)
 		{
 			UpdateResultTime();
 		}
@@ -489,11 +488,9 @@ void Draw(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-	bool bExit = GetExit();
-
 	Camera* pCamera = GetCamera();
 	Block* pBlock = GetBlock();
-	//Flags* pFlag = GetFlag();
+	Flags* pFlag = GetFlag();
 
 	//LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
 
@@ -540,7 +537,7 @@ void Draw(void)
 		case MODE_RESULT://リザルト画面
 			DrawResult();
 
-			if (bExit == true)
+			if (pFlag->bExit == true)
 			{
 				//リザルトタイムの描画処理
 				DrawResultTime();

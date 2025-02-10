@@ -124,10 +124,8 @@ void UninitTask(void)
 void UpdateTask(void)
 {
 	GAME* pGame = GetGame();
-	//Flags* pFlag = GetFlag();
+	Flags* pFlag = GetFlag();
 
-	bool bFuseGet = GetFuseGet();
-	bool bFuseCmp = GetFuseCmp();
 
 	VERTEX_2D* pVtx;
 
@@ -138,7 +136,7 @@ void UpdateTask(void)
 
 	for (nCntTask = 0; nCntTask < MAX_TASK; nCntTask++)
 	{
-		if (bFuseCmp == false && g_aTask[nCntTask].nType == TASKTYPE_ONE)
+		if (pFlag->bFuseCmp == false && g_aTask[nCntTask].nType == TASKTYPE_ONE)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1130.0f)
 			{
@@ -149,7 +147,7 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bFuseCmp == false && g_aTask[nCntTask].nType == TASKTYPE_SUB1)
+		else if (pFlag->bFuseCmp == false && g_aTask[nCntTask].nType == TASKTYPE_SUB1)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1170.0f)
 			{
@@ -160,7 +158,7 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bFuseCmp == false && g_aTask[nCntTask].nType == TASKTYPE_SUB2)
+		else if (pFlag->bFuseCmp == false && g_aTask[nCntTask].nType == TASKTYPE_SUB2)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1160.0f)
 			{
@@ -171,7 +169,7 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && 
+		else if (pFlag->bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false &&
 			pGame->bBallClear == false && g_aTask[nCntTask].nType == TASKTYPE_TWO)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1120.0f)
@@ -183,7 +181,7 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && 
+		else if (pFlag->bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false &&
 			pGame->bBallClear == false && g_aTask[nCntTask].nType == TASKTYPE_SUB3)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1160.0f)
@@ -195,7 +193,7 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && 
+		else if (pFlag->bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false &&
 			pGame->bBallClear == false && g_aTask[nCntTask].nType == TASKTYPE_SUB4)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1150.0f)
@@ -207,7 +205,7 @@ void UpdateTask(void)
 				g_aTask[nCntTask].pos.x -= 15.0f;
 			}
 		}
-		else if (bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false && 
+		else if (pFlag->bFuseCmp == true && pGame->bSTClear == false && pGame->bACClear == false &&
 			pGame->bBallClear == false && g_aTask[nCntTask].nType == TASKTYPE_SUB5)
 		{
 			if (g_aTask[nCntTask].pos.x <= 1150.0f)
@@ -243,7 +241,7 @@ void UpdateTask(void)
 		}
 
 		// ヒューズを見つけたら
-		if (bFuseGet == true)
+		if (pFlag->bFuseGet == true)
 		{
 			if (g_aTask[nCntTask].nType == TASKTYPE_SUB1)
 			{
@@ -253,7 +251,7 @@ void UpdateTask(void)
 		}
 
 		// ヒューズを付けたら
-		if (bFuseCmp == true)
+		if (pFlag->bFuseCmp == true)
 		{
 			if (g_aTask[nCntTask].nType == TASKTYPE_ONE)
 			{

@@ -245,9 +245,8 @@ void UninitTime(void)
 void UpdateTime(void)
 {
 	Block* pBlock = GetBlock();
-	//Flags* pFlag = GetFlag();
+	Flags* pFlag = GetFlag();
 
-	bool bExit = GetExit();
 	bool bEnd = GetEnd();
 
 	VERTEX_2D* pVtx;
@@ -256,7 +255,7 @@ void UpdateTime(void)
 
 	nCntTimeSecond++;
 
-	if (bExit == false && bEnd == false)
+	if (pFlag->bExit == false && bEnd == false)
 	{
 		if (nCntTimeSecond >= 60)			// 1•b‚²‚Æ‚Éˆ—
 		{

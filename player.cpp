@@ -198,8 +198,8 @@ void UpdatePlayer(void)
 	Block* pBlock = GetBlock();
 	Camera* pCamera = GetCamera();
 	GAME* pGame = GetGame();
-	//Flags* pFlag = GetFlag();
-	bool bExit = GetExit();
+	Flags* pFlag = GetFlag();
+
 	bool bEnd = GetEnd();
 	bool bFirstPerson = GetFirstPerson();
 
@@ -210,7 +210,7 @@ void UpdatePlayer(void)
 		g_player.motion.motionType = MOTIONTYPE_NEUTRAL;
 	}
 
-	if (bExit == false && g_player.bDisp == true && bEnd == false && pGame->bDraw == false &&
+	if (pFlag->bExit == false && g_player.bDisp == true && bEnd == false && pGame->bDraw == false &&
 		pGame->bDraw2 == false && pGame->bDraw3 == false && pGame->bBallHint == false && pGame->bCraneHint == false)
 	{
 		////左スティック移動処理

@@ -17,18 +17,13 @@ BallPass g_aBallPass[MAX_NUM_SCORE] = {};
 //=========================
 void InitBallPass(void)
 {
-	int nCntBallPass;
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	//テクスチャ1の読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\ballnum.png",//テクスチャのファイル名
+		"data\\TEXTURE\\ballnumber.png",//テクスチャのファイル名
 		&g_pTextureBallPass);
-
-	//g_nBallPass = 0;
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_NUM_SCORE,
@@ -43,7 +38,7 @@ void InitBallPass(void)
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffBallPass->Lock(0, 0, (void**)&pVtx, 0);
-	for (nCntBallPass = 0; nCntBallPass < MAX_NUM_SCORE; nCntBallPass++)
+	for (int nCntBallPass = 0; nCntBallPass < MAX_NUM_SCORE; nCntBallPass++)
 	{
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(PASSPOSX + nCntBallPass * 20.0f, 160.0f, 0.0f);
@@ -119,13 +114,9 @@ void UpdateBallPass(void)
 void DrawBallPass(void)
 {
 
-	VERTEX_2D* pVtx = 0;//頂点情報へのポインタ
-	int nCntBallPass;
-	LPDIRECT3DDEVICE9 pDevice;
+	VERTEX_2D* pVtx = 0;						//頂点情報へのポインタ
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();	//デバイスの取得
 	
-	//デバイスの取得
-	pDevice = GetDevice();
-
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffBallPass, 0, sizeof(VERTEX_2D));
 
@@ -135,7 +126,7 @@ void DrawBallPass(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffBallPass->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (nCntBallPass = 0; nCntBallPass < MAX_NUM_SCORE; nCntBallPass++)
+	for (int nCntBallPass = 0; nCntBallPass < MAX_NUM_SCORE; nCntBallPass++)
 	{
 		if (g_aBallPass[nCntBallPass].buse == true)
 		{

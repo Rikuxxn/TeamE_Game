@@ -177,6 +177,7 @@ void UninitBackGround(void)
 	//		g_pTextureBG[nCntBG] = NULL;
 	//	}
 	//}
+
 	if (g_pTextureBG != NULL)
 	{
 		g_pTextureBG->Release();

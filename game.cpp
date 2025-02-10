@@ -432,12 +432,12 @@ void UpdateGame(void)
 		}
 
 		// キーパッドのトリガー
-		if (KeyboardTrigger(DIK_E) == true/* && 
+		if (KeyboardTrigger(DIK_E) == true && 
 			pPassState != PASSWORDGAMESTATE_END &&
 			pFlag->bKeypad == true &&
 			g_Game.bMap == false &&
 			pFlag->bFuseCmp == true &&
-			g_Game.bSTClear == true && g_Game.bACClear == true && g_Game.bBallClear == true*/)
+			g_Game.bSTClear == true && g_Game.bACClear == true && g_Game.bBallClear == true)
 		{
 			g_Game.bDraw4 = g_Game.bDraw4 ? false : true;
 			g_Game.bMini = g_Game.bMini ? false : true;

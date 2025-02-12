@@ -20,10 +20,8 @@ bool bHoldingItem = false;  // アイテムを持っているか
 
 void InitBallItem(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -258,10 +256,8 @@ void UpdateBallItem(void)
 }
 void DrawBallItem(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();//デバイスへのポインタ
 
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffBallItem, 0, sizeof(VERTEX_2D));

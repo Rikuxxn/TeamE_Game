@@ -12,11 +12,8 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPasswordClear = NULL;	//頂点バッファへのポイン
 //クリアの初期化処理
 void InitPasswordClear(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-	int nCntBG;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -36,34 +33,29 @@ void InitPasswordClear(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffPasswordClear->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (nCntBG = 0; nCntBG < 3; nCntBG++)
-	{
-		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(PASSWORDFIELD_LEFT + 7.0f, PASSWORDFIELD_TOP + 7.0f, 0.0f);//幅400.0f
-		pVtx[1].pos = D3DXVECTOR3(PASSWORDFIELD_RIGHT - 7.0f, PASSWORDFIELD_TOP + 7.0f, 0.0f);//高さ150.0f
-		pVtx[2].pos = D3DXVECTOR3(PASSWORDFIELD_LEFT + 7.0f, PASSWORDFIELD_TOP + 59.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(PASSWORDFIELD_RIGHT - 7.0f, PASSWORDFIELD_TOP + 59.0f, 0.0f);
+	//頂点座標の設定
+	pVtx[0].pos = D3DXVECTOR3(PASSWORDFIELD_LEFT + 7.0f, PASSWORDFIELD_TOP + 7.0f, 0.0f);//幅400.0f
+	pVtx[1].pos = D3DXVECTOR3(PASSWORDFIELD_RIGHT - 7.0f, PASSWORDFIELD_TOP + 7.0f, 0.0f);//高さ150.0f
+	pVtx[2].pos = D3DXVECTOR3(PASSWORDFIELD_LEFT + 7.0f, PASSWORDFIELD_TOP + 59.0f, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(PASSWORDFIELD_RIGHT - 7.0f, PASSWORDFIELD_TOP + 59.0f, 0.0f);
 
-		//rhwの設定
-		pVtx[0].rhw = 1.0f;
-		pVtx[1].rhw = 1.0f;
-		pVtx[2].rhw = 1.0f;
-		pVtx[3].rhw = 1.0f;
+	//rhwの設定
+	pVtx[0].rhw = 1.0f;
+	pVtx[1].rhw = 1.0f;
+	pVtx[2].rhw = 1.0f;
+	pVtx[3].rhw = 1.0f;
 
-		//頂点カラーの設定
-		pVtx[0].col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
-		pVtx[1].col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
-		pVtx[2].col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
-		pVtx[3].col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
+	//頂点カラーの設定
+	pVtx[0].col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
+	pVtx[1].col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
+	pVtx[2].col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
+	pVtx[3].col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
 
-		//テクスチャ座標の設定
-		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)
-		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-
-		pVtx += 4;//頂点データのポインタを4つ分進める
-	}
+	//テクスチャ座標の設定
+	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)
+	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
 	//頂点バッファをアンロックする
 	g_pVtxBuffPasswordClear->Unlock();
@@ -94,10 +86,8 @@ void UpdatePasswordClear(void)
 void DrawPasswordClear(void)
 {
 	//テクスチャ3枚の描画+(必要なら)何かしら背景
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffPasswordClear, 0, sizeof(VERTEX_2D));

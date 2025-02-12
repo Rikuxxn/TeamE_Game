@@ -20,11 +20,8 @@ BALLBLOCK g_aBlock[MAX_BLOCK];						//ブロックの情報
 
 void InitBallBlock(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();	//デバイスの取得
 	int nCntBlock;
-
-	//デバイスの取得
-	pDevice = GetDevice();
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -148,10 +145,8 @@ void UpdateBallBlock(void)
 }
 void DrawBallBlock(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();//デバイスへのポインタ
 
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffBallBlock, 0, sizeof(VERTEX_2D));
@@ -176,14 +171,13 @@ void DrawBallBlock(void)
 //ブロックの設定処理
 void SetBallBlock(D3DXVECTOR3 pos,D3DXVECTOR3 move,float fWidth,float fHeight,int nType)
 {
-	int nCntBlock;
 	VERTEX_2D* pVtx=0;
 	
 	//ロック
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffBallBlock->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
+	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
 		if (g_aBlock[nCntBlock].bUse == false)
 		{//ブロックが使用されていない

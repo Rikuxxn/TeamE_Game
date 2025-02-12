@@ -22,11 +22,9 @@ bool g_bTyakuti;
 
 void InitCraneBlock(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
-	int nCntBlock;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();
+	int nCntBlock;
 
 	////テクスチャの読み込み
 	//D3DXCreateTextureFromFile(pDevice,
@@ -163,11 +161,8 @@ void UpdateCraneBlock(void)
 }
 void DrawCraneBlock(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-	int nCntBlock;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();//デバイスへのポインタ
 
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffBlock, 0, sizeof(VERTEX_2D));
@@ -175,7 +170,7 @@ void DrawCraneBlock(void)
 	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
-	for (nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
+	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
 		if (g_aBlock[nCntBlock].bUse == true)
 		{//ブロックが使用されている	
@@ -192,14 +187,12 @@ void DrawCraneBlock(void)
 //ブロックの設定処理
 void SetCraneBlock(D3DXVECTOR3 pos,D3DXVECTOR3 move,float fWidth,float fHeight,int nType)
 {
-	int nCntBlock;
 	VERTEX_2D* pVtx=0;
 	
-	//ロック
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffBlock->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
+	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
 		if (g_aBlock[nCntBlock].bUse == false)
 		{//ブロックが使用されていない
@@ -232,7 +225,6 @@ void SetCraneBlock(D3DXVECTOR3 pos,D3DXVECTOR3 move,float fWidth,float fHeight,i
 		}
 		pVtx += 4;//頂点データのポインタを４つ分進める
 	}
-	//アンロック
 	//頂点バッファをアンロック
 	g_pVtxBuffBlock->Unlock();
 }

@@ -11,10 +11,8 @@ void InitShootingFade(MODE modeNext)
 	g_fade = FADE_IN;//フェードイン状態に
 	g_colorShootingFade = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
 
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
@@ -100,10 +98,8 @@ void UpdateShootingFade(void)
 }
 void DrawShootingFade(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffShootingFade, 0, sizeof(VERTEX_2D));

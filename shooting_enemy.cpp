@@ -20,11 +20,9 @@ int g_nNumEnemy = 0;//敵の総数
 
 void InitShootingEnemy(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
-	int nCntEnemy;
-	
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	int nCntEnemy;
 
 	VERTEX_2D* pVtx;//頂点情報へのポインタ
 	
@@ -104,8 +102,7 @@ void InitShootingEnemy(void)
 }
 void UninitShootingEnemy(void)
 {
-	int nCntEnemy;
-	for (nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
+	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
 	{
 		//テクスチャの破棄
 
@@ -116,13 +113,13 @@ void UninitShootingEnemy(void)
 			g_apTextureEnemy[nCntEnemy]->Release();
 			g_apTextureEnemy[nCntEnemy] = NULL;
 		}
-		//頂点バッファの破棄
-		if (g_pVtxBuffEnemy != NULL)
-		{
-			g_pVtxBuffEnemy->Release();
-			g_pVtxBuffEnemy = NULL;
-		}
 		break;
+	}
+	//頂点バッファの破棄
+	if (g_pVtxBuffEnemy != NULL)
+	{
+		g_pVtxBuffEnemy->Release();
+		g_pVtxBuffEnemy = NULL;
 	}
 }
 void UpdateShootingEnemy(void)
@@ -204,17 +201,15 @@ void UpdateShootingEnemy(void)
 }
 void DrawShootingEnemy(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
-	int nCntEnemy;
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffEnemy, 0, sizeof(VERTEX_2D));
 
 	//頂点フォーマットの設定
 	//pDevice->SetFVF(FVF_VERTEX_2D);
 
-	for (nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
+	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
 	{
 		if (g_aEnemy[nCntEnemy].bUse == true)
 		{
@@ -234,12 +229,11 @@ void DrawShootingEnemy(void)
 void SetEnemy(D3DXVECTOR3 pos,D3DXVECTOR3 move, int nType)
 {
 	VERTEX_2D* pVtx=0;//頂点情報へのポインタ
-	int nCntEnemy;
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffEnemy->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
+	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
 	{
 		if (g_aEnemy[nCntEnemy].bUse == false)
 		{

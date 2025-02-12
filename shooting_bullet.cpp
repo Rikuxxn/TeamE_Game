@@ -21,11 +21,9 @@ Bullet g_aBullet[MAX_BULLET];					//弾の情報
 
 void InitBullet(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
-	int nCntBullet;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	int nCntBullet;
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -212,11 +210,8 @@ void UpdateBullet(void)
 }
 void DrawBullet(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-	int nCntBullet;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffBullet, 0, sizeof(VERTEX_2D));
@@ -227,7 +222,7 @@ void DrawBullet(void)
 	//テクスチャの設定
 	pDevice->SetTexture(0, g_pTextureBullet);
 
-	for (nCntBullet = 0; nCntBullet < MAX_BULLET; nCntBullet++)
+	for (int nCntBullet = 0; nCntBullet < MAX_BULLET; nCntBullet++)
 	{
 		if (g_aBullet[nCntBullet].bUse == true)
 		{//弾が使用されている	
@@ -239,14 +234,13 @@ void DrawBullet(void)
 //弾の設定処理
 void SetBullet(D3DXVECTOR3 pos, D3DXVECTOR3 move, BULLETTYPE type,int nLife,int nBulletType)
 {
-	int nCntBullet;
 	VERTEX_2D* pVtx=0;
 	
 	//ロック
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffBullet->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (nCntBullet = 0; nCntBullet < MAX_BULLET; nCntBullet++)
+	for (int nCntBullet = 0; nCntBullet < MAX_BULLET; nCntBullet++)
 	{
 		if (g_aBullet[nCntBullet].bUse == false)
 		{//弾が使用されていない

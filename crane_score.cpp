@@ -41,10 +41,10 @@ void InitCranePass(void)
 	for (int nCntCranePass = 0; nCntCranePass < MAX_NUM_SCORE; nCntCranePass++)
 	{
 		//’¸“_À•W‚ÌÝ’è
-		pVtx[0].pos = D3DXVECTOR3(PASSPOSX + nCntCranePass * 20.0f, PASSWORDFIELD_TOP + 10.0f, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(PASSPOSX + nCntCranePass * 20.0f + 60.0f, PASSWORDFIELD_TOP + 10.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(PASSPOSX + nCntCranePass * 20.0f, PASSWORDFIELD_TOP + 55.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(PASSPOSX + nCntCranePass * 20.0f + 60.0f, PASSWORDFIELD_TOP + 55.0f, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(PASSPOSX + nCntCranePass * 20.0f, PASSWORDFIELD_TOP/* + 10.0f*/, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(PASSPOSX + nCntCranePass * 20.0f + 45.0f, PASSWORDFIELD_TOP/* + 10.0f*/, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(PASSPOSX + nCntCranePass * 20.0f, PASSWORDFIELD_TOP + 70.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(PASSPOSX + nCntCranePass * 20.0f + 45.0f, PASSWORDFIELD_TOP + 70.0f, 0.0f);
 		//rhw‚ÌÝ’è
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;

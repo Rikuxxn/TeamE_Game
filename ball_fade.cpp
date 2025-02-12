@@ -15,10 +15,8 @@ void InitBallFade(MODE modeNext)
 	g_fade = FADE_IN;//フェードイン状態に
 	g_colorBallFade = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
 
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();//デバイスへのポインタ
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
@@ -118,15 +116,12 @@ void UpdateBallFade(void)
 
 		//頂点バッファをアンロックする
 		g_pVtxBuffBallFade->Unlock();
-
 	}
 }
 void DrawBallFade(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();//デバイスへのポインタ
 
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffBallFade, 0, sizeof(VERTEX_2D));

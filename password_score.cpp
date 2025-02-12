@@ -26,10 +26,8 @@ Password g_aPassword[MAX_NUM_SCORE] = {};
 void InitPassword(void)
 {
 	int nCntPassword;
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	//テクスチャ1の読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -297,7 +295,7 @@ void DrawPassword(void)
 {
 	PASSWORDITEM* pItem = GetItem();
 	VERTEX_2D* pVtx = 0;						//頂点情報へのポインタ
-	LPDIRECT3DDEVICE9 	pDevice = GetDevice();	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();	//デバイスの取得
 	int nCntPassword;
 
 	//頂点バッファをデータストリーム

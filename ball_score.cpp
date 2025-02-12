@@ -41,10 +41,10 @@ void InitBallPass(void)
 	for (int nCntBallPass = 0; nCntBallPass < MAX_NUM_SCORE; nCntBallPass++)
 	{
 		//’¸“_À•W‚ÌÝ’è
-		pVtx[0].pos = D3DXVECTOR3(PASSPOSX + nCntBallPass * 20.0f, 160.0f, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(PASSPOSX + nCntBallPass * 20.0f + 200.0f, 160.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(PASSPOSX + nCntBallPass * 20.0f, 560.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(PASSPOSX + nCntBallPass * 20.0f + 200.0f, 560.0f, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(PASSPOSX + nCntBallPass * 20.0f, 210.0f, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(PASSPOSX + nCntBallPass * 20.0f + 100.0f, 210.0f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(PASSPOSX + nCntBallPass * 20.0f, 510.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(PASSPOSX + nCntBallPass * 20.0f + 100.0f, 510.0f, 0.0f);
 		//rhw‚ÌÝ’è
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;

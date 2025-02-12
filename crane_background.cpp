@@ -18,11 +18,9 @@ float g_aPosCraneTexU[NUM_BG];//テクスチャ座標の開始位置（U値）
 //背景の初期化処理
 void InitCraneBackGround(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-	int nCntBG;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();//デバイスへのポインタ
+	int nCntBG;
 
 	//テクスチャ1の読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -46,6 +44,18 @@ void InitCraneBackGround(void)
 		FVF_VERTEX_2D,
 		D3DPOOL_MANAGED,
 		&g_pVtxBuffCraneBG,
+		NULL);
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_2D,
+		D3DPOOL_MANAGED,
+		&g_pVtxBuffCraneBG2,
+		NULL);
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_2D,
+		D3DPOOL_MANAGED,
+		&g_pVtxBuffCraneBG3,
 		NULL);
 
 	VERTEX_2D* pVtx;//頂点情報へのポインタ
@@ -85,76 +95,56 @@ void InitCraneBackGround(void)
 	//頂点バッファをアンロックする
 	g_pVtxBuffCraneBG->Unlock();
 
-	//頂点バッファの生成
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
-		D3DUSAGE_WRITEONLY,
-		FVF_VERTEX_2D,
-		D3DPOOL_MANAGED,
-		&g_pVtxBuffCraneBG2,
-		NULL);
-
-	VERTEX_2D* pVtx2;//頂点情報へのポインタ
-
 	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffCraneBG2->Lock(0, 0, (void**)&pVtx2, 0);
+	g_pVtxBuffCraneBG2->Lock(0, 0, (void**)&pVtx, 0);
 
 	//頂点座標の設定
-	pVtx2[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	pVtx2[1].pos = D3DXVECTOR3(1280.0f, 0.0f, 0.0f);
-	pVtx2[2].pos = D3DXVECTOR3(0.0f, 720.0f, 0.0f);
-	pVtx2[3].pos = D3DXVECTOR3(1280.0f, 720.0f, 0.0f);
+	pVtx[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(1280.0f, 0.0f, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(0.0f, 720.0f, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(1280.0f, 720.0f, 0.0f);
 
 	//rhwの設定
-	pVtx2[0].rhw = 1.0f;
-	pVtx2[1].rhw = 1.0f;
-	pVtx2[2].rhw = 1.0f;
-	pVtx2[3].rhw = 1.0f;
+	pVtx[0].rhw = 1.0f;
+	pVtx[1].rhw = 1.0f;
+	pVtx[2].rhw = 1.0f;
+	pVtx[3].rhw = 1.0f;
 
 	//頂点カラーの設定
-	pVtx2[0].col = D3DCOLOR_RGBA(100, 100, 100, 100);
-	pVtx2[1].col = D3DCOLOR_RGBA(100, 100, 100, 100);
-	pVtx2[2].col = D3DCOLOR_RGBA(100, 100, 100, 100);
-	pVtx2[3].col = D3DCOLOR_RGBA(100, 100, 100, 100);
+	pVtx[0].col = D3DCOLOR_RGBA(100, 100, 100, 100);
+	pVtx[1].col = D3DCOLOR_RGBA(100, 100, 100, 100);
+	pVtx[2].col = D3DCOLOR_RGBA(100, 100, 100, 100);
+	pVtx[3].col = D3DCOLOR_RGBA(100, 100, 100, 100);
 
 	//頂点バッファをアンロックする
 	g_pVtxBuffCraneBG2->Unlock();
 
-	//頂点バッファの生成
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
-		D3DUSAGE_WRITEONLY,
-		FVF_VERTEX_2D,
-		D3DPOOL_MANAGED,
-		&g_pVtxBuffCraneBG3,
-		NULL);
-
-	VERTEX_2D* pVtx3;//頂点情報へのポインタ
-
 	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffCraneBG3->Lock(0, 0, (void**)&pVtx3, 0);
+	g_pVtxBuffCraneBG3->Lock(0, 0, (void**)&pVtx, 0);
 
 	//頂点座標の設定
-	pVtx3[0].pos = D3DXVECTOR3(300.0f, 475.0f, 0.0f);//幅400.0f
-	pVtx3[1].pos = D3DXVECTOR3(700.0f, 475.0f, 0.0f);//高さ150.0f
-	pVtx3[2].pos = D3DXVECTOR3(300.0f, 625.0f, 0.0f);
-	pVtx3[3].pos = D3DXVECTOR3(700.0f, 625.0f, 0.0f);
+	pVtx[0].pos = D3DXVECTOR3(300.0f, 475.0f, 0.0f);//幅400.0f
+	pVtx[1].pos = D3DXVECTOR3(700.0f, 475.0f, 0.0f);//高さ150.0f
+	pVtx[2].pos = D3DXVECTOR3(300.0f, 625.0f, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(700.0f, 625.0f, 0.0f);
 
 	//rhwの設定
-	pVtx3[0].rhw = 1.0f;
-	pVtx3[1].rhw = 1.0f;
-	pVtx3[2].rhw = 1.0f;
-	pVtx3[3].rhw = 1.0f;
+	pVtx[0].rhw = 1.0f;
+	pVtx[1].rhw = 1.0f;
+	pVtx[2].rhw = 1.0f;
+	pVtx[3].rhw = 1.0f;
 
 	//頂点カラーの設定
-	pVtx3[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	pVtx3[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	pVtx3[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	pVtx3[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 
 	//テクスチャ座標の設定
-	pVtx3[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)
-	pVtx3[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx3[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx3[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)
+	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
 	//頂点バッファをアンロックする
 	g_pVtxBuffCraneBG3->Unlock();
@@ -162,8 +152,7 @@ void InitCraneBackGround(void)
 //背景の終了処理
 void UninitCraneBackGround(void)
 {
-	int nCntBG;
-	for (nCntBG = 0; nCntBG < NUM_BG; nCntBG++)
+	for (int nCntBG = 0; nCntBG < NUM_BG; nCntBG++)
 	{
 		//テクスチャの破棄
 		if (g_pTextureCraneBG[nCntBG] != NULL)
@@ -172,7 +161,6 @@ void UninitCraneBackGround(void)
 			g_pTextureCraneBG[nCntBG] = NULL;
 		}
 	}
-	//テクスチャの破棄
 	if (g_pTextureCraneBG3 != NULL)
 	{
 		g_pTextureCraneBG3->Release();
@@ -185,15 +173,11 @@ void UninitCraneBackGround(void)
 		g_pVtxBuffCraneBG->Release();
 		g_pVtxBuffCraneBG = NULL;
 	}
-
-	//頂点バッファの破棄
 	if (g_pVtxBuffCraneBG2 != NULL)
 	{
 		g_pVtxBuffCraneBG2->Release();
 		g_pVtxBuffCraneBG2 = NULL;
 	}
-
-	//頂点バッファの破棄
 	if (g_pVtxBuffCraneBG3 != NULL)
 	{
 		g_pVtxBuffCraneBG3->Release();
@@ -208,11 +192,8 @@ void UpdateCraneBackGround(void)
 //背景の描画処理
 void DrawCraneBackGround(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-	int nCntBG;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();//デバイスへのポインタ
 
 	//透明
 	//頂点バッファをデータストリーム
@@ -248,7 +229,7 @@ void DrawCraneBackGround(void)
 	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
-	for (nCntBG = 0; nCntBG < NUM_BG; nCntBG++)
+	for (int nCntBG = 0; nCntBG < NUM_BG; nCntBG++)
 	{
 		//テクスチャの設定
 		pDevice->SetTexture(0, g_pTextureCraneBG[0]);

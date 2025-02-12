@@ -26,10 +26,8 @@ ShootingPlayer g_player;						 //レイヤーの情報
 //プレイヤーの初期化処理
 void InitShootingPlayer(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,

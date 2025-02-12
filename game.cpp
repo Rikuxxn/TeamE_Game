@@ -433,10 +433,10 @@ void UpdateGame(void)
 
 
 		// パスワード(ball)のヒント
-		if (KeyboardTrigger(DIK_E) == true /*&&
+		if (KeyboardTrigger(DIK_E) == true &&
 			pFlag->bHintBall == true &&
 			g_Game.bMap == false &&
-			pFlag->bFuseCmp == true*/)
+			pFlag->bFuseCmp == true)
 		{
 			g_Game.bBallHint = g_Game.bBallHint ? false : true;
 		}

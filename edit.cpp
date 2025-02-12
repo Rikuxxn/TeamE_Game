@@ -282,11 +282,11 @@ void UpdateEdit(void)
     //ブロックをY軸回転する
     if (KeyboardTrigger(DIK_Y) == true)
     {
-        g_Editinfo[g_nCntEdit].rot.y += 0.75f;
+        g_Editinfo[g_nCntEdit].rot.y += D3DXToRadian(90);
     }
     else if (KeyboardTrigger(DIK_H) == true)
     {
-        g_Editinfo[g_nCntEdit].rot.y -= 0.75f;
+        g_Editinfo[g_nCntEdit].rot.y -= D3DXToRadian(90);
     }
 
     //ブロックをX軸回転する

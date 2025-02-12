@@ -154,8 +154,8 @@ void InitPlayer(void)
 //=============================
 void UninitPlayer(void)
 {
-	//StopSound(SOUND_LABEL_STEP1);
-	//StopSound(SOUND_LABEL_STEP2);
+	StopSound(SOUND_LABEL_STEP1);
+	StopSound(SOUND_LABEL_STEP2);
 
 	for (int nCntModel = 0; nCntModel < MAX_PARTS; nCntModel++)
 	{
@@ -530,7 +530,6 @@ void UpdatePlayer(void)
 		}
 	}
 
-
 	// ÉJÉÅÉâÇÃâÒì]äpÅiYaw, PitchÅjÇéÊìæ
 	float yaw = pCamera->rot.y;   // êÖïΩâÒì]
 	float pitch = pCamera->rot.x; // êÇíºâÒì]
@@ -553,13 +552,27 @@ void UpdatePlayer(void)
 	g_player.move.z += (0.0f - g_player.move.z) * 0.3f;
 	g_player.move.y += (0.0f - g_player.move.y) * 0.1f;
 
-	if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 1 && g_player.motion.nCounterMotion == 9)
-	{
-		//PlaySound(SOUND_LABEL_STEP1);
+	if (g_player.bDush == true)
+	{// ëñÇ¡ÇƒÇ¢ÇÈÇ∆Ç´
+		if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 1 && g_player.motion.nCounterMotion == 9)
+		{
+			PlaySound(SOUND_LABEL_STEP1);
+		}
+		else if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 3 && g_player.motion.nCounterMotion == 5)
+		{
+			PlaySound(SOUND_LABEL_STEP2);
+		}
 	}
-	else if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 3 && g_player.motion.nCounterMotion == 5)
-	{
-		//PlaySound(SOUND_LABEL_STEP2);
+	else
+	{// ï‡Ç¢ÇƒÇ¢ÇÈÇ∆Ç´
+		if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 1 && g_player.motion.nCounterMotion == 9)
+		{
+			PlaySound(SOUND_LABEL_STEP1);
+		}
+		else if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 3 && g_player.motion.nCounterMotion == 12)
+		{
+			PlaySound(SOUND_LABEL_STEP2);
+		}
 	}
 
 	//// âeÇÃposê›íË

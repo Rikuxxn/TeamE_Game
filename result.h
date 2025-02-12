@@ -46,7 +46,7 @@ static const char* CLEAR_TEXTURE[MAX_CLEAR] =
 
 static const char* GAMEOVER_TEXTURE[MAX_GAMEOVER] =
 {
-	"data\\TEXTURE\\retry1.png",
+	"data\\TEXTURE\\retry.png",
 	"data\\TEXTURE\\titleback.png",
 };
 

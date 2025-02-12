@@ -12,7 +12,7 @@
 LPDIRECT3DTEXTURE9 g_pTextureMeshcylinder = NULL;//テクスチャへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffMeshcylinder = NULL;//頂点バッファへのポインタ
 LPDIRECT3DINDEXBUFFER9 g_pIdxBuffMeshcylinder = NULL;//インデックスバッファへのポインタ
-Cylinder g_Cylinder;
+Cylinder g_Cylinder[MAX_CYLINDER]; // 複数のメッシュシリンダーを管理
 
 //==================================
 //メッシュシリンダーの初期化処理
@@ -25,11 +25,14 @@ void InitMeshcylinder(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-	g_Cylinder.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	g_Cylinder.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	g_Cylinder.bUse = false;
+	for (int nCnt = 0; nCnt < MAX_CYLINDER; nCnt++)
+	{
+		g_Cylinder[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_Cylinder[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_Cylinder[nCnt].bUse = false;
+	}
 
-	//頂点バッファの生成
+	// 頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * MESHCYLINDER_VERTEX,
 		D3DUSAGE_WRITEONLY,
 		FVF_VERTEX_3D,
@@ -80,7 +83,7 @@ void InitMeshcylinder(void)
 			//pVtx[nCnt].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
 			//頂点カラーの設定
-			pVtx[nCnt].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f);
+			pVtx[nCnt].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
 
 			//テクスチャ座標の設定
 			pVtx[nCnt].tex = D3DXVECTOR2(/*tex * */nCntV, /*tex2 * */nCntH);
@@ -106,26 +109,22 @@ void InitMeshcylinder(void)
 	{
 		for (int nCntIdx2 = 0; nCntIdx2 <= MESHCYLINDER_X; nCntIdx2++, nCntIdx3++, Num++)
 		{
-
 			pIdx[nCntNum] = nCntIdx3;
 
 			pIdx[nCntNum + 1] = Num;
 
 			nCntNum += 2;
-
 		}
 
-		//最後の行かどうか
+		// 最後の行かどうか
 		// NOTE: 最後の行に縮退ポリゴンが無い
 		if (nCntIdx != MESHCYLINDER_Z - 1)
 		{
-
 			pIdx[nCntNum] = Num - 1;
 
 			pIdx[nCntNum + 1] = nCntIdx3;
 
 			nCntNum += 2;
-
 		}
 	}
 
@@ -161,6 +160,11 @@ void UninitMeshcylinder(void)
 		g_pVtxBuffMeshcylinder = NULL;
 	}
 
+	// シリンダーのリセット
+	for (int i = 0; i < MAX_CYLINDER; i++)
+	{
+		g_Cylinder[i].bUse = false;
+	}
 }
 //==================================
 //メッシュシリンダーの更新処理
@@ -168,33 +172,41 @@ void UninitMeshcylinder(void)
 void UpdateMeshcylinder(void)
 {
 	Block* pBlock = GetBlock();
+	int cylinderIndex = 0;
 
-	bool cylinderExists = false; // メッシュシリンダーが置かれているか判定
+	// 一度すべてのシリンダーを未使用状態にする
+	for (int i = 0; i < MAX_CYLINDER; i++)
+	{
+		g_Cylinder[i].bUse = false;
+	}
 
+	// ブロックをスキャンして、必要なシリンダーだけを再登録
 	for (int nCnt = 0; nCnt < MAX_BLOCK; nCnt++)
 	{
-		if (pBlock[nCnt].bUse == true && (pBlock[nCnt].nType == BLOCKTYPE_FUSE))
+		if (pBlock[nCnt].bUse == true && (pBlock[nCnt].nType == BLOCKTYPE_FUSE || 
+			pBlock[nCnt].nType == BLOCKTYPE_BALL || pBlock[nCnt].nType == BLOCKTYPE_BEAR))
 		{
-			// ブロックが使われている → メッシュシリンダーを設置
-			SetMeshcylinder(pBlock[nCnt].pos);
-			cylinderExists = true;
-			break; // 最初に見つけたブロックの位置に設置
+			if (cylinderIndex < MAX_CYLINDER)
+			{
+				g_Cylinder[cylinderIndex].pos = pBlock[nCnt].pos;
+				g_Cylinder[cylinderIndex].bUse = true;
+				cylinderIndex++;
+			}
 		}
 	}
 
-	// 関連するブロックがなくなったらメッシュシリンダーも消す
-	if (!cylinderExists)
+	// Y軸回転処理
+	for (int i = 0; i < MAX_CYLINDER; i++)
 	{
-		g_Cylinder.bUse = false;
-	}
-
-	// Y軸回転
-	if (g_Cylinder.bUse == true)
-	{
-		g_Cylinder.rot.y += D3DX_PI * 0.005f; // 回転スピード
-		if (g_Cylinder.rot.y > D3DX_PI * 2.0f)
+		if (g_Cylinder[i].bUse)
 		{
-			g_Cylinder.rot.y -= D3DX_PI * 2.0f; // 角度が 360° を超えたらリセット
+			// **回転処理**
+			g_Cylinder[i].rot.y += D3DX_PI * 0.005f;  // 回転スピード
+
+			if (g_Cylinder[i].rot.y > D3DX_PI * 2.0f)
+			{
+				g_Cylinder[i].rot.y -= D3DX_PI * 2.0f;
+			}
 		}
 	}
 }
@@ -212,36 +224,39 @@ void DrawMeshcylinder(void)
 	//計算用マトリックス
 	D3DXMATRIX mtxRot, mtxTrans;
 
-	if (g_Cylinder.bUse == true)
+	for (int nCnt = 0; nCnt < MAX_CYLINDER; nCnt++)
 	{
-		//ワールドマトリックスの初期化
-		D3DXMatrixIdentity(&g_Cylinder.mtxWorld);
+		if (g_Cylinder[nCnt].bUse == true)
+		{
+			//ワールドマトリックスの初期化
+			D3DXMatrixIdentity(&g_Cylinder[nCnt].mtxWorld);
 
-		//向きを反映
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, g_Cylinder.rot.y, g_Cylinder.rot.x, g_Cylinder.rot.z);
-		D3DXMatrixMultiply(&g_Cylinder.mtxWorld, &g_Cylinder.mtxWorld, &mtxRot);
+			//向きを反映
+			D3DXMatrixRotationYawPitchRoll(&mtxRot, g_Cylinder[nCnt].rot.y, g_Cylinder[nCnt].rot.x, g_Cylinder[nCnt].rot.z);
+			D3DXMatrixMultiply(&g_Cylinder[nCnt].mtxWorld, &g_Cylinder[nCnt].mtxWorld, &mtxRot);
 
-		//位置を反映
-		D3DXMatrixTranslation(&mtxTrans, g_Cylinder.pos.x, g_Cylinder.pos.y, g_Cylinder.pos.z);
-		D3DXMatrixMultiply(&g_Cylinder.mtxWorld, &g_Cylinder.mtxWorld, &mtxTrans);
+			//位置を反映
+			D3DXMatrixTranslation(&mtxTrans, g_Cylinder[nCnt].pos.x, g_Cylinder[nCnt].pos.y, g_Cylinder[nCnt].pos.z);
+			D3DXMatrixMultiply(&g_Cylinder[nCnt].mtxWorld, &g_Cylinder[nCnt].mtxWorld, &mtxTrans);
 
-		//ワールドマトリックスを設定
-		pDevice->SetTransform(D3DTS_WORLD, &g_Cylinder.mtxWorld);
+			//ワールドマトリックスを設定
+			pDevice->SetTransform(D3DTS_WORLD, &g_Cylinder[nCnt].mtxWorld);
 
-		//頂点バッファをデータストリームに設定
-		pDevice->SetStreamSource(0, g_pVtxBuffMeshcylinder, 0, sizeof(VERTEX_3D));
+			//頂点バッファをデータストリームに設定
+			pDevice->SetStreamSource(0, g_pVtxBuffMeshcylinder, 0, sizeof(VERTEX_3D));
 
-		//インデックスバッファをデータストリームに設定
-		pDevice->SetIndices(g_pIdxBuffMeshcylinder);
+			//インデックスバッファをデータストリームに設定
+			pDevice->SetIndices(g_pIdxBuffMeshcylinder);
 
-		//頂点フォーマットの設定
-		pDevice->SetFVF(FVF_VERTEX_3D);
+			//頂点フォーマットの設定
+			pDevice->SetFVF(FVF_VERTEX_3D);
 
-		//テクスチャの設定
-		pDevice->SetTexture(0, g_pTextureMeshcylinder);
+			//テクスチャの設定
+			pDevice->SetTexture(0, g_pTextureMeshcylinder);
 
-		//ポリゴンの描画
-		pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, MESHCYLINDER_VERTEX, 0, MESHCYLINDER_PRIMITIVE);
+			//ポリゴンの描画
+			pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, MESHCYLINDER_VERTEX, 0, MESHCYLINDER_PRIMITIVE);
+		}
 	}
 }
 //==================================
@@ -249,9 +264,28 @@ void DrawMeshcylinder(void)
 //==================================
 void SetMeshcylinder(D3DXVECTOR3 pos)
 {
-	if (g_Cylinder.bUse == false)
+	int i;
+
+	// すでに同じ位置にシリンダーがあるかチェック
+	for (i = 0; i < MAX_CYLINDER; i++)
 	{
-		g_Cylinder.pos = pos;
-		g_Cylinder.bUse = true;
+		if (g_Cylinder[i].bUse &&
+			g_Cylinder[i].pos.x == pos.x &&
+			g_Cylinder[i].pos.z == pos.z)
+		{
+			return; // すでにある場合は追加しない
+		}
+	}
+
+	// 空いているスロットを探して新規登録
+	for (i = 0; i < MAX_CYLINDER; i++)
+	{
+		if (!g_Cylinder[i].bUse)
+		{
+			g_Cylinder[i].pos = pos;
+			g_Cylinder[i].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			g_Cylinder[i].bUse = true;
+			return;
+		}
 	}
 }

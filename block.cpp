@@ -239,8 +239,8 @@ void UpdateBlock(void)
 		if (g_aBlock[nCntBlock].bUse == true)
 		{
 			MeshcylinderOnBlock(BLOCKTYPE_FUSE);
-			//MeshcylinderOnBlock(BLOCKTYPE_BALL);
-			//MeshcylinderOnBlock(BLOCKTYPE_BEAR);
+			MeshcylinderOnBlock(BLOCKTYPE_BALL);
+			MeshcylinderOnBlock(BLOCKTYPE_BEAR);
 
 			// ‹‘ä’†‰›”»’è‚ğÀs
 			CheckBlocksInCenter();

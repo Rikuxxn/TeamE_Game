@@ -36,7 +36,8 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 {
 
 	{"data/BGM/gameBGM.wav", -1},		// ÉQÅ[ÉÄBGM
-	//{"data/SE/arrested.wav", 0},		// SE
+	{"data/SE/footstep_1.wav", 0},		// ë´âπSE
+	{"data/SE/footstep_2.wav", 0},		// ë´âπSE
 
 };
 

@@ -35,11 +35,11 @@ float clearScales[MAX_CLEAR] = { CLEAR_MIN_SCALE };
 float clearAlphas[MAX_CLEAR] = { 0.3f };						// 初期は全て半透明（範囲外状態）
 float gameoverAlphas[MAX_GAMEOVER] = { 0.3f, 0.3f };			// 初期は全て半透明（範囲外状態）
 
-float g_fAlphaTime = 0.0f;										// タイム用のアルファ値
-float g_fAlphaRank = 0.0f;										// ランク用のアルファ値
+float g_fAlphaTime;												// タイム用のアルファ値
+float g_fAlphaRank;												// ランク用のアルファ値
 
-int g_nRankCnt = 0;
-int g_nTimeCnt = 0;
+int g_nRankCnt;
+int g_nTimeCnt;
 
 LPDIRECT3DTEXTURE9 g_pTextureResultTimeMinute = NULL;			// テクスチャへのポインタ
 LPDIRECT3DTEXTURE9 g_pTextureResultTimeSecond = NULL;			// テクスチャへのポインタ
@@ -64,8 +64,10 @@ void InitResult(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	g_fAlphaRank = 0.0f;			// フェードアルファ値をリセット
+	g_fAlphaTime = 0.0f;
+	g_fAlphaRank = 0.0f;
 	g_nRankCnt = 0;
+	g_nTimeCnt = 0;
 
 	Player* pPlayer = GetPlayer();	//プレイヤーの情報へのポインタ
 	Block* pBlock = GetBlock();

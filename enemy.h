@@ -20,7 +20,6 @@ typedef enum
     ENEMYSTATE_PATROLLING,     // „‰ñ’†
     ENEMYSTATE_CHASING,        // ’ÇÕ’†
     ENEMYSTATE_SEARCHING,      // ‘{õ’†:’ÇÕ‚ð“¦‚³‚ê‚½Œã
-    ENEMYSTATE_IDLE,           // ‘Ò‹@’†:“®‚«‚ð’âŽ~
     ENEMYSTATE_MAX
 } EnemyState;
 

@@ -150,8 +150,11 @@ void UpdateUI(void)
 		}
 		else// 範囲外
 		{
-			// falseにする
-			g_aUI[nCntUI].bUse = false;
+			if (g_aUI[nCntUI].nType == UITYPE_GAME)
+			{
+				// falseにする
+				g_aUI[nCntUI].bUse = false;
+			}
 		}
 
 		// UFOキャッチャーの範囲内
@@ -162,8 +165,11 @@ void UpdateUI(void)
 		}
 		else// 範囲外
 		{
-			// falseにする
-			g_aUI[nCntUI].bUse = false;
+			if (g_aUI[nCntUI].nType == UITYPE_GAME)
+			{
+				// falseにする
+				g_aUI[nCntUI].bUse = false;
+			}
 		}
 
 		// ボールプールの範囲内
@@ -174,8 +180,11 @@ void UpdateUI(void)
 		}
 		else// 範囲外
 		{
-			// falseにする
-			g_aUI[nCntUI].bUse = false;
+			if (g_aUI[nCntUI].nType == UITYPE_GAME)
+			{
+				// falseにする
+				g_aUI[nCntUI].bUse = false;
+			}
 		}
 
 		// キーパッドの範囲内
@@ -187,8 +196,11 @@ void UpdateUI(void)
 		}
 		else// 範囲外
 		{
-			// falseにする
-			g_aUI[nCntUI].bUse = false;
+			if (g_aUI[nCntUI].nType == UITYPE_INPUT)
+			{
+				// falseにする
+				g_aUI[nCntUI].bUse = false;
+			}
 		}
 
 		// ヒューズの範囲内
@@ -199,8 +211,11 @@ void UpdateUI(void)
 		}
 		else// 範囲外
 		{
-			// falseにする
-			g_aUI[nCntUI].bUse = false;
+			if (g_aUI[nCntUI].nType == UITYPE_INTERACT)
+			{
+				// falseにする
+				g_aUI[nCntUI].bUse = false;
+			}
 		}
 
 		// ヒューズボックスの範囲内
@@ -211,8 +226,11 @@ void UpdateUI(void)
 		}
 		else// 範囲外
 		{
-			// falseにする
-			g_aUI[nCntUI].bUse = false;
+			if (g_aUI[nCntUI].nType == UITYPE_USE)
+			{
+				// falseにする
+				g_aUI[nCntUI].bUse = false;
+			}
 		}
 
 		// ヒントボールの範囲内
@@ -223,8 +241,11 @@ void UpdateUI(void)
 		}
 		else// 範囲外
 		{
-			// falseにする
-			g_aUI[nCntUI].bUse = false;
+			if (g_aUI[nCntUI].nType == UITYPE_GAME)
+			{
+				// falseにする
+				g_aUI[nCntUI].bUse = false;
+			}
 		}
 
 		// ヒントくまさんの範囲内
@@ -235,8 +256,11 @@ void UpdateUI(void)
 		}
 		else// 範囲外
 		{
-			// falseにする
-			g_aUI[nCntUI].bUse = false;
+			if (g_aUI[nCntUI].nType == UITYPE_GAME)
+			{
+				// falseにする
+				g_aUI[nCntUI].bUse = false;
+			}
 		}
 
 		pVtx[0].pos = D3DXVECTOR3(g_aUI[nCntUI].pos.x - g_aUI[nCntUI].fWidth, g_aUI[nCntUI].pos.y - g_aUI[nCntUI].fHeight, 0.0f);

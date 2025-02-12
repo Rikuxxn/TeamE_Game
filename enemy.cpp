@@ -14,8 +14,7 @@
 
 // 巡回ポイント配列
 D3DXVECTOR3 patrolPoints[] =
-{//左回りのポイント
-
+{
 	D3DXVECTOR3(1000.0f, 0.0f, 110.0f),
 	D3DXVECTOR3(850.0f, 0.0f, 475.0f),
 	D3DXVECTOR3(520.0f, 0.0f, 490.0f),
@@ -41,6 +40,27 @@ D3DXVECTOR3 patrolPoints[] =
 	D3DXVECTOR3(-1055.0f, 0.0f, -25.0f),
 	D3DXVECTOR3(-1025.0f, 0.0f, -225.0f),
 	D3DXVECTOR3(-1025.0f, 0.0f, -420.0f),
+	D3DXVECTOR3(-1080.0f, 0.0f, -600.0f),
+	D3DXVECTOR3(-1075.0f, 0.0f, -805.0f),
+	D3DXVECTOR3(-785.0f, 0.0f, -800.0f),
+	D3DXVECTOR3(-525.0f, 0.0f, -800.0f),
+	D3DXVECTOR3(-335.0f, 0.0f, -800.0f),
+	D3DXVECTOR3(45.0f, 0.0f, -730.0f),
+	D3DXVECTOR3(378.0f, 0.0f, -705.0f),
+	D3DXVECTOR3(495.0f, 0.0f, -670.0f),
+	D3DXVECTOR3(475.0f, 0.0f, -420.0f),
+	D3DXVECTOR3(570.0f, 0.0f, -235.0f),
+	D3DXVECTOR3(830.0f, 0.0f, -140.0f),
+	D3DXVECTOR3(840.0f, 0.0f, -265.0f),
+	D3DXVECTOR3(935.0f, 0.0f, -365.0f),
+	D3DXVECTOR3(985.0f, 0.0f, -495.0f),
+	D3DXVECTOR3(1055.0f, 0.0f, -720.0f),
+	D3DXVECTOR3(765.0f, 0.0f, -715.0f),
+	D3DXVECTOR3(495.0f, 0.0f, -670.0f),
+	D3DXVECTOR3(45.0f, 0.0f, -730.0f),
+	D3DXVECTOR3(25.0f, 0.0f, -445.0f),
+	D3DXVECTOR3(-225.0f, 0.0f, -425.0f),
+
 	D3DXVECTOR3(-710.0f, 0.0f, -420.0f),
 	D3DXVECTOR3(-455.0f, 0.0f, -425.0f),
 	D3DXVECTOR3(-225.0f, 0.0f, -425.0f),
@@ -56,21 +76,20 @@ D3DXVECTOR3 patrolPoints[] =
 	D3DXVECTOR3(30.0f, 0.0f, 270.0f),
 	D3DXVECTOR3(465.0f, 0.0f, 204.0f),
 	D3DXVECTOR3(680.0f, 0.0f, 115.0f),
-
 };
 
-//グローバル変数
-Enemy g_aEnemy;						//敵情報
-bool g_bEnd;						//捕まった判定
-bool Inside;						//視界に入ったか
+// グローバル変数
+Enemy g_aEnemy;						// 敵情報
+bool g_bEnd;						// 捕まった判定
+bool Inside;						// 視界に入ったか
 bool isPlayerInSightPrev;
 bool isReversePatrol;				// 巡回の方向（false: 順回り, true: 逆回り）
 
-int currentPatrolPoint = 0;			// 現在の巡回ポイント
+int currentPatrolPoint;				// 現在の巡回ポイント
 int g_nIdxShadowEnemy;
 
 //=============================
-//敵の初期化処理
+// 敵の初期化処理
 //=============================
 void InitEnemy(void)
 {
@@ -189,7 +208,7 @@ void InitEnemy(void)
 
 }
 //=============================
-//敵の終了処理
+// 敵の終了処理
 //=============================
 void UninitEnemy(void)
 {
@@ -225,7 +244,7 @@ void UninitEnemy(void)
 	}
 }
 //=============================
-//敵の更新処理
+// 敵の更新処理
 //=============================
 void UpdateEnemy(void)
 {
@@ -240,7 +259,7 @@ void UpdateEnemy(void)
 			//PlaySound(SOUND_LABEL_WARNING); // SEを再生
 			SetFoundFade(MODE_FOUND);
 		}
-
+		
 		// フラグを更新して次のフレームに備える
 		isPlayerInSightPrev = isPlayerInSightNow;
 
@@ -535,15 +554,11 @@ void UpdateEnemy(void)
 			}
 
 			break;
-
-		case ENEMYSTATE_IDLE:
-
-			break;
 		}
 	}
 }
 //=============================
-//敵の描画処理
+// 敵の描画処理
 //=============================
 void DrawEnemy(void)
 {
@@ -638,27 +653,25 @@ void DrawEnemy(void)
 	}
 }
 //=============================
-//敵の設定処理
+// 敵の設定処理
 //=============================
 void SetEnemy(D3DXVECTOR3 pos)
 {
 	if (g_aEnemy.bUse == false)
 	{
-
 		g_aEnemy.pos = pos;
 		g_aEnemy.bUse = true;
-
 	}
 }
 //============================================
-//敵の取得
+// 敵の取得
 //============================================
 Enemy* GetEnemy(void)
 {
 	return &g_aEnemy;
 }
 //=============================
-//視界内判定
+// 視界内判定
 //=============================
 bool isPlayerInSight(void) 
 {
@@ -705,7 +718,7 @@ bool isPlayerInSight(void)
 	return false; // 視界外
 }
 //======================================================
-//一番近い巡回ポイントの算出処理
+// 一番近い巡回ポイントの算出処理
 //======================================================
 int GetNearestPatrolPoint(D3DXVECTOR3 currentPos) 
 {
@@ -731,14 +744,14 @@ int GetNearestPatrolPoint(D3DXVECTOR3 currentPos)
 	return nearestPoint; // 最も近い巡回ポイントのインデックスを返す
 }
 //======================================================
-//捕まった判定
+// 捕まった判定
 //======================================================
 bool GetEnd(void)
 {
 	return g_bEnd;
 }
 //======================================================
-//視界に入ったか判定
+// 視界に入ったか判定
 //======================================================
 bool GetInside(void)
 {

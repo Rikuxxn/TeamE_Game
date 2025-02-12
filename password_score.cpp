@@ -15,6 +15,7 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPassword3 = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPassword4 = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPassword5 = NULL;
 int g_nPassword, g_nPassword2, g_nPassword3, g_nPassword4;	//パスワードの値
+bool g_bPush1, g_bPush2, g_bPush3, g_bPush4;				//押されたか
 int g_nCnt;
 bool g_bJudge;
 Password g_aPassword[MAX_NUM_SCORE] = {};
@@ -36,6 +37,10 @@ void InitPassword(void)
 		&g_pTexturePassword);
 
 	g_nPassword, g_nPassword2, g_nPassword3, g_nPassword4 = 0;
+	g_bPush1 = false;
+	g_bPush2 = false;
+	g_bPush3 = false;
+	g_bPush4 = false;
 	g_nCnt = 0;
 
 	//頂点バッファの生成
@@ -290,13 +295,10 @@ void UpdatePassword(void)
 //=========================
 void DrawPassword(void)
 {
-
-	VERTEX_2D* pVtx = 0;//頂点情報へのポインタ
+	PASSWORDITEM* pItem = GetItem();
+	VERTEX_2D* pVtx = 0;						//頂点情報へのポインタ
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();	//デバイスの取得
 	int nCntPassword;
-	LPDIRECT3DDEVICE9 pDevice;
-	
-	//デバイスの取得
-	pDevice = GetDevice();
 
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffPassword, 0, sizeof(VERTEX_2D));
@@ -311,13 +313,15 @@ void DrawPassword(void)
 	{
 		if (g_aPassword[nCntPassword].buse == true)
 		{
-			//テクスチャの設定
-			pDevice->SetTexture(0, g_pTexturePassword);
-
-			//ポリゴンの描画
-			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,	//プリミティブの種類
-				nCntPassword * 4,						//描画する最初の頂点インデックス
-				2);										//描画するプリミティブ数
+			if (g_bPush1 == true)
+			{
+				//テクスチャの設定
+				pDevice->SetTexture(0, g_pTexturePassword);
+				//ポリゴンの描画
+				pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,	//プリミティブの種類
+					nCntPassword * 4,						//描画する最初の頂点インデックス
+					2);										//描画するプリミティブ数
+			}
 		}
 	}
 
@@ -334,12 +338,15 @@ void DrawPassword(void)
 	{
 		if (g_aPassword[nCntPassword].buse == true)
 		{
-			//テクスチャの設定
-			pDevice->SetTexture(0, g_pTexturePassword);
-			//ポリゴンの描画
-			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,	//プリミティブの種類
-				nCntPassword * 4,						//描画する最初の頂点インデックス
-				2);										//描画するプリミティブ数
+			if (g_bPush2 == true)
+			{
+				//テクスチャの設定
+				pDevice->SetTexture(0, g_pTexturePassword);
+				//ポリゴンの描画
+				pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,	//プリミティブの種類
+					nCntPassword * 4,						//描画する最初の頂点インデックス
+					2);										//描画するプリミティブ数
+			}
 		}
 	}
 	//頂点バッファをアンロックする
@@ -355,12 +362,15 @@ void DrawPassword(void)
 	{
 		if (g_aPassword[nCntPassword].buse == true)
 		{
-			//テクスチャの設定
-			pDevice->SetTexture(0, g_pTexturePassword);
-			//ポリゴンの描画
-			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,	//プリミティブの種類
-				nCntPassword * 4,						//描画する最初の頂点インデックス
-				2);										//描画するプリミティブ数
+			if (g_bPush3 == true)
+			{
+				//テクスチャの設定
+				pDevice->SetTexture(0, g_pTexturePassword);
+				//ポリゴンの描画
+				pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,	//プリミティブの種類
+					nCntPassword * 4,						//描画する最初の頂点インデックス
+					2);										//描画するプリミティブ数
+			}
 		}
 	}
 	//頂点バッファをアンロックする
@@ -376,12 +386,15 @@ void DrawPassword(void)
 	{
 		if (g_aPassword[nCntPassword].buse == true)
 		{
-			//テクスチャの設定
-			pDevice->SetTexture(0, g_pTexturePassword);
-			//ポリゴンの描画
-			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,	//プリミティブの種類
-				nCntPassword * 4,						//描画する最初の頂点インデックス
-				2);										//描画するプリミティブ数
+			if (g_bPush4 == true)
+			{
+				//テクスチャの設定
+				pDevice->SetTexture(0, g_pTexturePassword);
+				//ポリゴンの描画
+				pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,	//プリミティブの種類
+					nCntPassword * 4,						//描画する最初の頂点インデックス
+					2);										//描画するプリミティブ数
+			}
 		}
 	}
 	//頂点バッファをアンロックする
@@ -431,6 +444,7 @@ void SetPassword(int nPass, int nA, bool bAnswer)
 	if (bA == true)
 	{
 		nAnum = nA;
+		
 	}
 	else if (bA == false)
 	{
@@ -440,6 +454,10 @@ void SetPassword(int nPass, int nA, bool bAnswer)
 		g_nPassword4 = nPass;
 	}
 	g_nCnt = 0;
+	g_bPush1 = GetReset();
+	g_bPush2 = GetReset();
+	g_bPush3 = GetReset();
+	g_bPush4 = GetReset();
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffPassword->Lock(0, 0, (void**)&pVtx, 0);
@@ -585,6 +603,7 @@ void AddPassword(int nValue)
 	{
 	case 1:
 		g_nPassword = nValue;
+		g_bPush1 = true;
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		g_pVtxBuffPassword->Lock(0, 0, (void**)&pVtx, 0);
 		for (nCntPassword = 0; nCntPassword < MAX_NUM_SCORE; nCntPassword++)
@@ -611,6 +630,7 @@ void AddPassword(int nValue)
 		break;
 	case 2:
 		g_nPassword2 = nValue;
+		g_bPush2 = true;
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		g_pVtxBuffPassword2->Lock(0, 0, (void**)&pVtx, 0);
 		for (nCntPassword = 0; nCntPassword < MAX_NUM_SCORE; nCntPassword++)
@@ -637,6 +657,7 @@ void AddPassword(int nValue)
 		break;
 	case 3:
 		g_nPassword3 = nValue;
+		g_bPush3 = true;
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		g_pVtxBuffPassword3->Lock(0, 0, (void**)&pVtx, 0);
 		for (nCntPassword = 0; nCntPassword < MAX_NUM_SCORE; nCntPassword++)
@@ -663,6 +684,7 @@ void AddPassword(int nValue)
 		break;
 	case 4:
 		g_nPassword4 = nValue;
+		g_bPush4 = true;
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		g_pVtxBuffPassword4->Lock(0, 0, (void**)&pVtx, 0);
 		for (nCntPassword = 0; nCntPassword < MAX_NUM_SCORE; nCntPassword++)
@@ -731,6 +753,22 @@ int GetPassword3(void)
 int GetPassword4(void)
 {
 	return g_nPassword4;
+}
+bool GetPush1(void)
+{
+	return g_bPush1;
+}
+bool GetPush2(void)
+{
+	return g_bPush2;
+}
+bool GetPush3(void)
+{
+	return g_bPush3;
+}
+bool GetPush4(void)
+{
+	return g_bPush4;
 }
 int GetCntCounter(void)
 {

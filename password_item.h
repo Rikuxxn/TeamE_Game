@@ -59,7 +59,8 @@ void UninitPasswordItem(void);
 void UpdatePasswordItem(void);
 void DrawPasswordItem(void);
 void SetPasswordItem(D3DXVECTOR3 pos,float fWidth,float fHeight,int nType, NUMTYPE type);//ブロックの設置
-int GetNumItem(void);
+PASSWORDITEM* GetItem(void);
 bool GetJudgment(void);
+bool GetReset(void);
 
 #endif

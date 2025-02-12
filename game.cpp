@@ -521,7 +521,7 @@ void UpdateGame(void)
 			}
 
 			// 120(2•b)Œo‚Á‚½‚ç
-			if (g_Game.nPassCnt >= 60)
+			if (g_Game.nPassCnt >= 90)
 			{
 				g_Game.bDraw4 = false;
 				g_Game.bPassClear = true;

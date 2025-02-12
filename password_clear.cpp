@@ -3,6 +3,7 @@
 //|Author:Yoshida Atsushi|
 //========================
 #include "password_clear.h"
+#include "password_background.h"
 
 //グローバル
 LPDIRECT3DTEXTURE9 g_apTexturePasswordClear = {};		//テクスチャへのポインタ
@@ -19,7 +20,7 @@ void InitPasswordClear(void)
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\Complete.png",//テクスチャのファイル名
+		"data\\TEXTURE\\COMPLETE2.png",//テクスチャのファイル名
 		&g_apTexturePasswordClear);
 
 	//頂点バッファの生成
@@ -38,10 +39,10 @@ void InitPasswordClear(void)
 	for (nCntBG = 0; nCntBG < 3; nCntBG++)
 	{
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(440.0f, 260.0f, 0.0f);//幅400.0f
-		pVtx[1].pos = D3DXVECTOR3(840.0f, 260.0f, 0.0f);//高さ150.0f
-		pVtx[2].pos = D3DXVECTOR3(440.0f, 410.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(840.0f, 410.0f, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(PASSWORDFIELD_LEFT + 7.0f, PASSWORDFIELD_TOP + 7.0f, 0.0f);//幅400.0f
+		pVtx[1].pos = D3DXVECTOR3(PASSWORDFIELD_RIGHT - 7.0f, PASSWORDFIELD_TOP + 7.0f, 0.0f);//高さ150.0f
+		pVtx[2].pos = D3DXVECTOR3(PASSWORDFIELD_LEFT + 7.0f, PASSWORDFIELD_TOP + 59.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(PASSWORDFIELD_RIGHT - 7.0f, PASSWORDFIELD_TOP + 59.0f, 0.0f);
 
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
@@ -50,10 +51,10 @@ void InitPasswordClear(void)
 		pVtx[3].rhw = 1.0f;
 
 		//頂点カラーの設定
-		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[0].col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
+		pVtx[1].col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
+		pVtx[2].col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
+		pVtx[3].col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
 
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)

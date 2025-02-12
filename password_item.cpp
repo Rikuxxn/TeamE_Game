@@ -15,8 +15,8 @@
 LPDIRECT3DTEXTURE9 g_pTexturePassItem[NUM_ITEM] = {};	//テクスチャへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPassItem = NULL;		//頂点バッファへのポインタ
 PASSWORDITEM g_item[MAX_ITEM];							//アイテムの情報
-//int g_nItem;
 bool g_bJudgment;
+bool g_bReset;
 
 // ポーズ項目の拡大率を管理する配列
 float passScales[MAX_ITEM] = { ITEM_MIN_SCALE, ITEM_MIN_SCALE, ITEM_MIN_SCALE, ITEM_MIN_SCALE };
@@ -227,6 +227,7 @@ void UpdatePasswordItem(void)
 						SetPassword(0,0,false);
 						SetPassword(0, GetAnum4(), true);
 						g_bJudgment = false;
+						g_bReset = false;
 						break;
 					}
 				}
@@ -269,7 +270,6 @@ void DrawPasswordItem(void)
 	{
 		if (g_item[nCntItem].bUse != false)
 		{//アイテムが使用されている	
-
 			//テクスチャの設定
 			pDevice->SetTexture(0, g_pTexturePassItem[g_item[nCntItem].nType]);
 
@@ -317,8 +317,17 @@ void SetPasswordItem(D3DXVECTOR3 pos, float fWidth, float fHeight, int nType, NU
 	//頂点バッファをアンロック
 	g_pVtxBuffPassItem->Unlock();
 }
+//パスワードの取得
+PASSWORDITEM* GetItem(void)
+{
+	return g_item;
+}
 //一致判定
 bool GetJudgment(void)
 {
 	return g_bJudgment;
+}
+bool GetReset(void)
+{
+	return g_bReset;
 }

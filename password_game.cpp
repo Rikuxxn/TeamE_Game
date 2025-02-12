@@ -96,6 +96,7 @@ void UpdatePasswordGame(void)
 	UpdatePasswordEffect();		//エフェクトの更新処理
 	UpdatePasswordItem();		//アイテムの更新処理
 	UpdatePassword();
+	UpdatePasswordClear();
 
 	if (nPass == g_nA1 &&
 		nPass2 == g_nA2 &&
@@ -105,6 +106,7 @@ void UpdatePasswordGame(void)
 	{//終了条件
 		//画面(モード)の設定
 		g_gameState = PASSWORDGAMESTATE_END;
+		SetPassword(0, GetAnum4(), true);
 	}
 	else if ((nPass == g_nA1 || nPass != g_nA1) &&
 		(nPass2 == g_nA2 || nPass2 != g_nA2) &&
@@ -112,25 +114,8 @@ void UpdatePasswordGame(void)
 		(nPass4 == g_nA4 || nPass4 != g_nA4) &&
 		bJudge == true)//暗証番号の不一致
 	{
-		SetPassword(0,0,false);
+		SetPassword(0, 0, false);
 		SetPassword(0, GetAnum4(), true);
-	}
-
-	switch (g_gameState)
-	{
-	case PASSWORDGAMESTATE_NORMAL:	//通常状態
-		break;
-	case PASSWORDGAMESTATE_END:		//終了状態
-		if (g_nCounterPasswordGameState <= 45)
-		{
-			g_nCounterPasswordGameState++;
-		}
-
-		if (g_nCounterPasswordGameState >= 45)
-		{
-			UpdatePasswordClear();
-		}
-		break;
 	}
 }
 //=======================
@@ -146,9 +131,9 @@ void DrawPasswordGame(void)
 	DrawPasswordEffect();		//エフェクトの描画処理
 	DrawPassword();
 
-	if (g_nCounterPasswordGameState >= 45)
+	if (g_gameState == PASSWORDGAMESTATE_END)
 	{
-		//DrawPasswordClear();
+		DrawPasswordClear();
 	}
 }
 void SetPasswordGameState(PASSWORDGAMESTATE state)

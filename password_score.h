@@ -9,7 +9,7 @@
 
 //マクロ
 #define MAX_NUM_SCORE (4)
-#define PASSWORDPOS (505.0f)
+#define PASSWORDPOS (500.0f)
 
 //パスワードの構造体
 typedef struct
@@ -32,6 +32,10 @@ int GetPassword(void);			//取得
 int GetPassword2(void);
 int GetPassword3(void);
 int GetPassword4(void);
+bool GetPush1(void);
+bool GetPush2(void);
+bool GetPush3(void);
+bool GetPush4(void);
 int GetCntCounter(void);
 bool GetJudge(void);			//判定
 

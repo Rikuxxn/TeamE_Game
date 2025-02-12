@@ -18,11 +18,9 @@ float g_aBallPosTexU[NUM_BG];//テクスチャ座標の開始位置（U値）
 //背景の初期化処理
 void InitBallBackGround(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-	int nCntBG;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();//デバイスへのポインタ
+	int nCntBG;
 
 	//テクスチャ1の読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -162,8 +160,7 @@ void InitBallBackGround(void)
 //背景の終了処理
 void UninitBallBackGround(void)
 {
-	int nCntBG;
-	for (nCntBG = 0; nCntBG < NUM_BG; nCntBG++)
+	for (int nCntBG = 0; nCntBG < NUM_BG; nCntBG++)
 	{
 		//テクスチャの破棄
 		if (g_pTextureBallBG[nCntBG] != NULL)
@@ -200,11 +197,8 @@ void UpdateBallBackGround(void)
 //背景の描画処理
 void DrawBallBackGround(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-	int nCntBG;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();//デバイスへのポインタ
 
 	//透明
 	//頂点バッファをデータストリーム
@@ -240,7 +234,7 @@ void DrawBallBackGround(void)
 	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
-	for (nCntBG = 0; nCntBG < NUM_BG; nCntBG++)
+	for (int nCntBG = 0; nCntBG < NUM_BG; nCntBG++)
 	{
 		//テクスチャの設定
 		pDevice->SetTexture(0, g_pTextureBallBG[0]);

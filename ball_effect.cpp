@@ -27,11 +27,8 @@ BallEffect g_aEffect[MAX_EFFECT];					//弾の情報
 
 void InitBallEffect(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();	//デバイスの取得
 	int nCntEffect;
-
-	//デバイスの取得
-	pDevice = GetDevice();
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -111,15 +108,13 @@ void UninitBallEffect(void)
 }
 void UpdateBallEffect(void)
 {
-	int nCntEffect;
 	VERTEX_2D* pVtx=0;
-	LPDIRECT3DDEVICE9 pDevice;
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffBallEffect->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (nCntEffect = 0; nCntEffect < MAX_EFFECT; nCntEffect++)
+	for (int nCntEffect = 0; nCntEffect < MAX_EFFECT; nCntEffect++)
 	{
 		if (g_aEffect[nCntEffect].bUse == true)
 		{//エフェクトが使用されている
@@ -157,12 +152,9 @@ void UpdateBallEffect(void)
 //エフェクトの描画
 void DrawBallEffect(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-	int nCntEffect;
-	//VERTEX_2D* pVtx=0;
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();//デバイスへのポインタ
 
 	//デバイスの取得
-	pDevice = GetDevice();
 
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffBallEffect, 0, sizeof(VERTEX_2D));
@@ -178,7 +170,7 @@ void DrawBallEffect(void)
 	pDevice->SetRenderState(D3DRS_SRCBLEND,D3DBLEND_SRCALPHA);
 	pDevice->SetRenderState(D3DRS_DESTBLEND,D3DBLEND_ONE);
 
-	for (nCntEffect = 0; nCntEffect < MAX_EFFECT; nCntEffect++)
+	for (int nCntEffect = 0; nCntEffect < MAX_EFFECT; nCntEffect++)
 	{
 		if (g_aEffect[nCntEffect].bUse == true)
 		{//弾が使用されている	
@@ -195,14 +187,13 @@ void DrawBallEffect(void)
 //エフェクトの設定処理
 void SetBallEffect(D3DXVECTOR3 pos,D3DXVECTOR3 move, D3DXCOLOR col, float fRadius, int nLife,int nType)
 {
-	int nCntEffect;
 	VERTEX_2D* pVtx=0;
 	
 	//ロック
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffBallEffect->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (nCntEffect = 0; nCntEffect < MAX_EFFECT; nCntEffect++)
+	for (int nCntEffect = 0; nCntEffect < MAX_EFFECT; nCntEffect++)
 	{
 		if (g_aEffect[nCntEffect].bUse == false)
 		{//弾が使用されていない

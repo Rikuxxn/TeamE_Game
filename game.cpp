@@ -391,6 +391,7 @@ void UpdateGame(void)
 			g_Game.bMini = g_Game.bMini ? false : true;
 		}
 
+
 		// ミニゲーム（クレーン）のトリガー
 		if (KeyboardTrigger(DIK_E) == true &&
 			pCraneState != CRANEGAMESTATE_END &&
@@ -402,6 +403,7 @@ void UpdateGame(void)
 			g_Game.bMini = g_Game.bMini ? false : true;
 		}
 
+
 		// パスワード(クレーン)のヒント
 		if (KeyboardTrigger(DIK_E) == true &&
 			pFlag->bHintBear == true &&
@@ -410,6 +412,7 @@ void UpdateGame(void)
 		{
 			g_Game.bCraneHint = g_Game.bCraneHint ? false : true;
 		}
+
 
 		// ボールプールのトリガー
 		if (KeyboardTrigger(DIK_E) == true && 
@@ -422,14 +425,16 @@ void UpdateGame(void)
 			g_Game.bMini = g_Game.bMini ? false : true;
 		}
 
+
 		// パスワード(ball)のヒント
-		if (KeyboardTrigger(DIK_E) == true &&
+		if (KeyboardTrigger(DIK_E) == true /*&&
 			pFlag->bHintBall == true &&
 			g_Game.bMap == false &&
-			pFlag->bFuseCmp == true)
+			pFlag->bFuseCmp == true*/)
 		{
 			g_Game.bBallHint = g_Game.bBallHint ? false : true;
 		}
+
 
 		// キーパッドのトリガー
 		if (KeyboardTrigger(DIK_E) == true && 

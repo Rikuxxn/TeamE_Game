@@ -11,11 +11,8 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBallClear = NULL;	//頂点バッファへのポインタ
 //クリアの初期化処理
 void InitBallClear(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-	int nCntBG;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();//デバイスへのポインタ
 
 	//テクスチャ1の読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -35,7 +32,7 @@ void InitBallClear(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffBallClear->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (nCntBG = 0; nCntBG < 3; nCntBG++)
+	for (int nCntBG = 0; nCntBG < 3; nCntBG++)
 	{
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(440.0f, 260.0f, 0.0f);//幅400.0f
@@ -93,11 +90,8 @@ void UpdateBallClear(void)
 //クリアの描画処理
 void DrawBallClear(void)
 {
-	//テクスチャ3枚の描画+(必要なら)何かしら背景
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();//デバイスへのポインタ
 
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffBallClear, 0, sizeof(VERTEX_2D));

@@ -15,10 +15,8 @@ void InitPasswordFade(MODE modeNext)
 	g_fade = FADE_IN;//フェードイン状態に
 	g_colorPasswordFade = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
 
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
@@ -136,10 +134,8 @@ void UpdatePasswordFade(void)
 }
 void DrawPasswordFade(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, g_pVtxBuffPasswordFade, 0, sizeof(VERTEX_2D));

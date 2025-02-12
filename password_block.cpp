@@ -20,11 +20,9 @@ PASSWORDBLOCK g_aPassBlock[MAX_BLOCK];						//ブロックの情報
 
 void InitPassBlock(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
-	int nCntPassBlock;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	int nCntPassBlock;
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -155,11 +153,8 @@ void UpdatePassBlock(void)
 }
 void DrawPassBlock(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-	int nCntPassBlock;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffPassBlock, 0, sizeof(VERTEX_2D));
@@ -167,7 +162,7 @@ void DrawPassBlock(void)
 	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
-	for (nCntPassBlock = 0; nCntPassBlock < MAX_BLOCK; nCntPassBlock++)
+	for (int nCntPassBlock = 0; nCntPassBlock < MAX_BLOCK; nCntPassBlock++)
 	{
 		if (g_aPassBlock[nCntPassBlock].bUse == true)
 		{//ブロックが使用されている	
@@ -184,14 +179,13 @@ void DrawPassBlock(void)
 //ブロックの設定処理
 void SetPassBlock(D3DXVECTOR3 pos,D3DXVECTOR3 move,float fWidth,float fHeight,int nType)
 {
-	int nCntPassBlock;
 	VERTEX_2D* pVtx=0;
 	
 	//ロック
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffPassBlock->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (nCntPassBlock = 0; nCntPassBlock < MAX_BLOCK; nCntPassBlock++)
+	for (int nCntPassBlock = 0; nCntPassBlock < MAX_BLOCK; nCntPassBlock++)
 	{
 		if (g_aPassBlock[nCntPassBlock].bUse == false)
 		{//ブロックが使用されていない

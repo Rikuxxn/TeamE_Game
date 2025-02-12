@@ -9,7 +9,7 @@
 
 //マクロ
 #define MAX_NUM_SCORE (4)
-#define PASSPOSX (500.0f)
+#define PASSPOSX (530.0f)
 #define PASSPOSY (260.0f)
 
 //パスワードの構造体

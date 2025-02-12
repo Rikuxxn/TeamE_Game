@@ -155,6 +155,7 @@
     <ClCompile Include="ball_item.cpp" />
     <ClCompile Include="ball_particle.cpp" />
     <ClCompile Include="ball_score.cpp" />
+    <ClCompile Include="ball_tutorial.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="crane_background.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="ball_item.h" />
     <ClInclude Include="ball_particle.h" />
     <ClInclude Include="ball_score.h" />
+    <ClInclude Include="ball_tutorial.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="crane_background.h" />

@@ -11,11 +11,8 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffCraneClear = NULL;	//頂点バッファへのポインタ
 //クリアの初期化処理
 void InitCraneClear(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-	int nCntBG;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 	pDevice = GetDevice();//デバイスへのポインタ
 
 	//テクスチャ1の読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -35,34 +32,29 @@ void InitCraneClear(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffCraneClear->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (nCntBG = 0; nCntBG < 3; nCntBG++)
-	{
-		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(440.0f, 160.0f, 0.0f);//幅400.0f
-		pVtx[1].pos = D3DXVECTOR3(840.0f, 160.0f, 0.0f);//高さ150.0f
-		pVtx[2].pos = D3DXVECTOR3(440.0f, 310.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(840.0f, 310.0f, 0.0f);
+	//頂点座標の設定
+	pVtx[0].pos = D3DXVECTOR3(440.0f, 160.0f, 0.0f);//幅400.0f
+	pVtx[1].pos = D3DXVECTOR3(840.0f, 160.0f, 0.0f);//高さ150.0f
+	pVtx[2].pos = D3DXVECTOR3(440.0f, 310.0f, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(840.0f, 310.0f, 0.0f);
 
-		//rhwの設定
-		pVtx[0].rhw = 1.0f;
-		pVtx[1].rhw = 1.0f;
-		pVtx[2].rhw = 1.0f;
-		pVtx[3].rhw = 1.0f;
+	//rhwの設定
+	pVtx[0].rhw = 1.0f;
+	pVtx[1].rhw = 1.0f;
+	pVtx[2].rhw = 1.0f;
+	pVtx[3].rhw = 1.0f;
 
-		//頂点カラーの設定
-		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	//頂点カラーの設定
+	pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
-		//テクスチャ座標の設定
-		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)
-		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-
-		pVtx += 4;//頂点データのポインタを4つ分進める
-	}
+	//テクスチャ座標の設定
+	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)
+	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
 	//頂点バッファをアンロックする
 	g_pVtxBuffCraneClear->Unlock();

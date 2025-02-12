@@ -25,8 +25,6 @@ void InitSTPass(void)
 		"data\\TEXTURE\\ballnumber.png",//テクスチャのファイル名
 		&g_pTextureSTPass);
 
-	//g_nSTPass = 0;
-
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_NUM_SCORE,
 		D3DUSAGE_WRITEONLY,
@@ -117,11 +115,7 @@ void DrawSTPass(void)
 {
 
 	VERTEX_2D* pVtx = 0;//頂点情報へのポインタ
-	int nCntSTPass;
-	LPDIRECT3DDEVICE9 pDevice;
-	
-	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();	//デバイスの取得
 
 	//頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffSTPass, 0, sizeof(VERTEX_2D));
@@ -132,7 +126,7 @@ void DrawSTPass(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffSTPass->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (nCntSTPass = 0; nCntSTPass < MAX_NUM_SCORE; nCntSTPass++)
+	for (int nCntSTPass = 0; nCntSTPass < MAX_NUM_SCORE; nCntSTPass++)
 	{
 		if (g_aSTPass[nCntSTPass].buse == true)
 		{

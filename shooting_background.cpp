@@ -25,21 +25,17 @@ float g_aPosTexU[NUM_BG];							// テクスチャ座標の開始位置（U値）
 //背景の初期化処理
 void InitBackGround(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	// 薄暗い背景テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
 		"data\\TEXTURE\\.png",						//テクスチャのファイル名
 		&g_pTextureBG2);
-
 	// 黒い背景テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
 		"data\\TEXTURE\\.png",	//テクスチャのファイル名
 		&g_pTextureBG4);
-
 	//テクスチャ1の読み込み
 	D3DXCreateTextureFromFile(pDevice,
 		"data\\TEXTURE\\bg100.png",						//テクスチャのファイル名
@@ -134,28 +130,26 @@ void InitBackGround(void)
 	g_pVtxBuffBG->Unlock();
 
 
-	VERTEX_2D* pVtx2;//頂点情報へのポインタ
-
 	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffBG2->Lock(0, 0, (void**)&pVtx2, 0);
+	g_pVtxBuffBG2->Lock(0, 0, (void**)&pVtx, 0);
 
 	//頂点座標の設定
-	pVtx2[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	pVtx2[1].pos = D3DXVECTOR3(1280.0f, 0.0f, 0.0f);
-	pVtx2[2].pos = D3DXVECTOR3(0.0f, 720.0f, 0.0f);
-	pVtx2[3].pos = D3DXVECTOR3(1280.0f, 720.0f, 0.0f);
+	pVtx[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(1280.0f, 0.0f, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(0.0f, 720.0f, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(1280.0f, 720.0f, 0.0f);
 
 	//rhwの設定
-	pVtx2[0].rhw = 1.0f;
-	pVtx2[1].rhw = 1.0f;
-	pVtx2[2].rhw = 1.0f;
-	pVtx2[3].rhw = 1.0f;
+	pVtx[0].rhw = 1.0f;
+	pVtx[1].rhw = 1.0f;
+	pVtx[2].rhw = 1.0f;
+	pVtx[3].rhw = 1.0f;
 
 	//頂点カラーの設定
-	pVtx2[0].col = D3DXCOLOR(0.0f,0.0f,0.0f, 0.5f);
-	pVtx2[1].col = D3DXCOLOR(0.0f,0.0f,0.0f, 0.5f);
-	pVtx2[2].col = D3DXCOLOR(0.0f,0.0f,0.0f, 0.5f);
-	pVtx2[3].col = D3DXCOLOR(0.0f,0.0f,0.0f, 0.5f);
+	pVtx[0].col = D3DXCOLOR(0.0f,0.0f,0.0f, 0.5f);
+	pVtx[1].col = D3DXCOLOR(0.0f,0.0f,0.0f, 0.5f);
+	pVtx[2].col = D3DXCOLOR(0.0f,0.0f,0.0f, 0.5f);
+	pVtx[3].col = D3DXCOLOR(0.0f,0.0f,0.0f, 0.5f);
 
 	//頂点バッファをアンロックする
 	g_pVtxBuffBG2->Unlock();
@@ -284,11 +278,10 @@ void UninitBackGround(void)
 void UpdateBackGround(void)
 {
 	VERTEX_2D* pVtx=0;//頂点情報へのポインタ
-	int nCntBG;
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffBG->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (nCntBG = 0; nCntBG < NUM_BG; nCntBG++)
+	for (int nCntBG = 0; nCntBG < NUM_BG; nCntBG++)
 	{
 		g_aPosTexU[nCntBG] += 0.007f;
 
@@ -305,10 +298,8 @@ void UpdateBackGround(void)
 //背景の描画処理
 void DrawBackGround(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
 
 	// 薄暗い背景
 	//頂点バッファをデータストリーム

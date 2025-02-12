@@ -11,13 +11,15 @@
 #include "ball_block.h"
 #include "ball_item.h"
 #include "ball_background.h"
+#include "ball_tutorial.h"
 #include "time.h"
 //#include "sound.h"
 #include "ball_clear.h"
 
 //グローバル
-BALLGAMESTATE g_gameState = BALLGAMESTATE_NONE;	  //ゲームの状態
-int g_nCounterBallGameState = 0;				  //状態管理カウンター
+BALLGAMESTATE g_gameState = BALLGAMESTATE_NONE;		//ゲームの状態
+int g_nTutoCnt = 0;									//チュートリアル表示カウンター
+int g_nCounterBallGameState = 0;					//状態管理カウンター
 
 void InitBallGame(void)
 {
@@ -28,6 +30,7 @@ void InitBallGame(void)
 	InitBallEffect();		//エフェクトの初期化
 	InitBallItem();			//アイテムの初期化
 	InitBallClear();		//クリア画面の初期化
+	InitBallTutorial();		//チュートリアルの初期化
 
 	SetBallBlock(D3DXVECTOR3(BALLFIELD_LEFT + 100.0f, BALLFIELD_UNDER - 30.0f, 0.0f), D3DXVECTOR3(), 50.0f, 30.0f, 0);	//ブロック
 	
@@ -47,6 +50,7 @@ void InitBallGame(void)
 	SetBallItem(D3DXVECTOR3(870.0f, BALLFIELD_UNDER - 209.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 0);
 
 	g_gameState = BALLGAMESTATE_NORMAL;//通常状態に設定
+	g_nTutoCnt = 0;
 	g_nCounterBallGameState = 0;
 
 	////サウンドの再生
@@ -64,6 +68,7 @@ void UninitBallGame(void)
 	UninitBallEffect();		//エフェクトの終了処理
 	UninitBallItem();		//アイテムの終了処理
 	UninitBallClear();		//クリア画面の終了処理
+	UninitBallTutorial();	//チュートリアルの終了処理
 }
 void UpdateBallGame(void)
 {
@@ -74,8 +79,9 @@ void UpdateBallGame(void)
 	UpdateBallParticle();	//パーティクルの更新処理
 	UpdateBallEffect();		//エフェクトの更新処理
 	UpdateBallItem();		//アイテムの更新処理
+	UpdateBallTutorial();	//チュートリアルの更新処理
 
-	if (nNum==0)//終了条件
+	if (nNum == 0)//終了条件
 	{
 		//画面(モード)の設定
 		g_gameState = BALLGAMESTATE_END;
@@ -83,7 +89,13 @@ void UpdateBallGame(void)
 
 	switch (g_gameState)
 	{
+	case BALLGAMESTATE_NONE:
+		break;
 	case BALLGAMESTATE_NORMAL://通常状態
+		if (g_nTutoCnt <= 90)
+		{
+			g_nTutoCnt++;
+		}
 		break;
 	case BALLGAMESTATE_END://終了状態
 		if (g_nCounterBallGameState <= 45)
@@ -106,6 +118,10 @@ void DrawBallGame(void)
 	DrawBallItem();			//アイテムの描画処理
 	DrawBallBlock();		//ブロックの描画処理
 	DrawBallEffect();		//エフェクトの描画処理
+	if (g_nTutoCnt <= 90)
+	{
+		DrawBallTutorial();	//チュートリアルの描画処理
+	}
 
 	if (g_nCounterBallGameState >= 45)
 	{

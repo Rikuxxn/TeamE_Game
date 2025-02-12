@@ -12,13 +12,11 @@ PasswordParticle g_aParticle[MAX_PARTICLE];//パーティクルの情報
 //syokika
 void InitPasswordParticle(void)
 {
-	int nCntParticle;
 	VERTEX_2D* pVtx = 0;
-	LPDIRECT3DDEVICE9 pDevice;
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//パーティクルの情報の初期化
-	for (nCntParticle = 0; nCntParticle < MAX_PARTICLE; nCntParticle++)
+	for (int nCntParticle = 0; nCntParticle < MAX_PARTICLE; nCntParticle++)
 	{
 		g_aParticle[nCntParticle].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		g_aParticle[nCntParticle].nLife = 0;

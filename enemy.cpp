@@ -19,6 +19,8 @@ D3DXVECTOR3 patrolPoints[] =
 	D3DXVECTOR3(850.0f, 0.0f, 475.0f),
 	D3DXVECTOR3(520.0f, 0.0f, 490.0f),
 	D3DXVECTOR3(220.0f, 0.0f, 675.0f),
+	D3DXVECTOR3(12.0f, 0.0f, 590.0f),
+
 	D3DXVECTOR3(-125.0f, 0.0f, 830.0f),
 	D3DXVECTOR3(-225.0f, 0.0f, 830.0f),
 	D3DXVECTOR3(-325.0f, 0.0f, 830.0f),
@@ -700,8 +702,8 @@ bool isPlayerInSight(void)
 	// ベクトルの内積を計算
 	float dotProduct = D3DXVec3Dot(&enemyFront, &toPlayer);
 
-	// 内積から視野内か判定
-	if (dotProduct > cosf(g_aEnemy.sightAngle * 0.5f)) // 視野角の半分で判定
+	// 内積から視野内か判定(0.5fはしきい値)
+	if (dotProduct > cosf(g_aEnemy.sightAngle * 0.5f)) // 視野角の半分で判定 1 → 完全に同じ方向（正面）0 → 直角（真横）- 1 → 真逆（背後）
 	{
 		// プレイヤーとの距離を計算
 		float distanceSquared =

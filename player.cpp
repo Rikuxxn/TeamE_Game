@@ -192,9 +192,7 @@ void UninitPlayer(void)
 void UpdatePlayer(void)
 {
 
-	XINPUT_STATE* pStick;
-	pStick = GetJoyStickAngle();
-
+	XINPUT_STATE* pStick = GetJoyStickAngle();
 	Block* pBlock = GetBlock();
 	Camera* pCamera = GetCamera();
 	GAME* pGame = GetGame();
@@ -213,76 +211,47 @@ void UpdatePlayer(void)
 	if (pFlag->bExit == false && g_player.bDisp == true && bEnd == false && pGame->bDraw == false &&
 		pGame->bDraw2 == false && pGame->bDraw3 == false && pGame->bBallHint == false && pGame->bCraneHint == false)
 	{
-		////左スティック移動処理
-		//if (GetJoyStick() == true)
-		//{
-		//	float stickX = pStick->Gamepad.sThumbLX;
-		//	float stickY = pStick->Gamepad.sThumbLY;
 
-		//	// デッドゾーン外のスケーリング処理
-		//	float deadzone = 10922.0f;
-		//	float magnitude = sqrtf(stickX * stickX + stickY * stickY);
+		//一人称 ゲームパッドの移動処理
+		if (GetJoyStick() == true)
+		{
+			// 左スティックの入力を取得
+			float stickX = pStick->Gamepad.sThumbLX;
+			float stickY = pStick->Gamepad.sThumbLY;
 
-		//	if (magnitude > deadzone)
-		//	{
-		//		float adjustedMagnitude = (magnitude - deadzone) / (32768.0f - deadzone); // 0.0～1.0 にスケーリング
-		//		float normalizedX = (stickX / magnitude) * adjustedMagnitude;
-		//		float normalizedY = (stickY / magnitude) * adjustedMagnitude;
+			// デッドゾーン処理
+			const float DEADZONE = 10922.0f;
 
-		//		// スティック方向に移動
-		//		g_player.move.x += normalizedX * PLAYER_SPEED;
-		//		g_player.move.z += normalizedY * PLAYER_SPEED;
+			if (fabsf(stickX) < DEADZONE) stickX = 0.0f;
+			if (fabsf(stickY) < DEADZONE) stickY = 0.0f;
 
-		//		// プレイヤーの向きを計算
-		//		g_player.rotDestPlayer.y = atan2f(-normalizedX, -normalizedY); // Z軸を基準に反時計回り
+			// 正規化
+			float magnitude = sqrtf(stickX * stickX + stickY * stickY);
+			if (magnitude > 0.0f)
+			{
+				stickX /= magnitude;
+				stickY /= magnitude;
+			}
 
-		//		g_player.motion.motionType = MOTIONTYPE_MOVE;
+			// カメラの回転を取得
+			float cameraYaw = pCamera->rot.y;
 
-		//	}
-		//}
+			// 移動ベクトル計算
+			float moveX = -(stickX * cosf(cameraYaw) + stickY * sinf(cameraYaw));
+			float moveZ = stickX * sinf(-cameraYaw) + stickY * cosf(cameraYaw);
 
+			// 移動方向反転
+			moveZ = -moveZ;
 
+			// プレイヤーの移動更新
+			g_player.move.x += moveX * PLAYER_SPEED;
+			g_player.move.z += moveZ * PLAYER_SPEED;
 
-		////一人称 ゲームパッドの移動処理
-		//if (GetJoyStick() == true)
-		//{
-		//	// 左スティックの入力を取得
-		//	float stickX = pStick->Gamepad.sThumbLX;
-		//	float stickY = pStick->Gamepad.sThumbLY;
+			// プレイヤーの向きを更新
+			g_player.rotDestPlayer.y = atan2f(-moveX, -moveZ);
 
-		//	// デッドゾーン処理
-		//	const float DEADZONE = 10922.0f;
-
-		//	if (fabsf(stickX) < DEADZONE) stickX = 0.0f;
-		//	if (fabsf(stickY) < DEADZONE) stickY = 0.0f;
-
-		//	// 正規化
-		//	float magnitude = sqrtf(stickX * stickX + stickY * stickY);
-		//	if (magnitude > 0.0f)
-		//	{
-		//		stickX /= magnitude;
-		//		stickY /= magnitude;
-		//	}
-
-		//	// カメラの回転を取得
-		//	float cameraYaw = pCamera->rot.y;
-
-		//	// 移動ベクトル計算
-		//	float moveX = -(stickX * cosf(cameraYaw) + stickY * sinf(cameraYaw));
-		//	float moveZ = stickX * sinf(-cameraYaw) + stickY * cosf(cameraYaw);
-
-		//	// 移動方向反転
-		//	moveZ = -moveZ;
-
-		//	// プレイヤーの移動更新
-		//	g_player.move.x += moveX * PLAYER_SPEED;
-		//	g_player.move.z += moveZ * PLAYER_SPEED;
-
-		//	// プレイヤーの向きを更新
-		//	g_player.rotDestPlayer.y = atan2f(-moveX, -moveZ);
-
-		//	g_player.motion.motionType = MOTIONTYPE_MOVE;
-		//}
+			g_player.motion.motionType = MOTIONTYPE_MOVE;
+		}
 
 		if (GetKeyboardPress(DIK_A) == true /*|| GetJoypadPress(JOYKEY_LEFT) == true*/)
 		{//Aキーが押された
@@ -574,6 +543,7 @@ void UpdatePlayer(void)
 			PlaySound(SOUND_LABEL_STEP2);
 		}
 	}
+
 
 	//// 影のpos設定
 	//SetPositionShadow(g_nIdxShadow, D3DXVECTOR3(g_player.pos.x, 0.0f, g_player.pos.z));

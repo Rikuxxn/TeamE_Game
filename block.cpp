@@ -336,18 +336,26 @@ void DrawBlock(void)
 			// 現在のマテリアルの取得
 			pDevice->GetMaterial(&matDef);
 
-			for (int nCntMat = 0; nCntMat < (int)g_aBlock[nCntBlock].blockinfo[nType].dwNumMat; nCntMat++) 
+			for (int nCntMat = 0; nCntMat < (int)g_aBlock[nCntBlock].blockinfo[nType].dwNumMat; nCntMat++)
 			{
-				// マテリアルデータへのポインタを取得
 				pMat = (D3DXMATERIAL*)g_aBlock[nCntBlock].blockinfo[nType].pBuffMat->GetBufferPointer();
 
-				// マテリアルの設定
-				pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+				// ハイライト用のマテリアルを作成
+				D3DMATERIAL9 matHighlight = pMat[nCntMat].MatD3D;
+				if (g_aBlock[nCntBlock].bInsight)
+				{
+					matHighlight.Emissive.r = 0.2f;
+					matHighlight.Emissive.g = 0.2f;
+					matHighlight.Emissive.b = 0.2f;
+				}
 
-				// テクスチャの設定
+				// マテリアルをセット
+				pDevice->SetMaterial(&matHighlight);
+
+				// テクスチャをセット
 				pDevice->SetTexture(0, g_aBlock[nCntBlock].blockinfo[nType].apTexture[nCntMat]);
 
-				// モデル(パーツ)の描画
+				// モデルの描画
 				g_aBlock[nCntBlock].blockinfo[nType].pMesh->DrawSubset(nCntMat);
 			}
 
@@ -450,6 +458,11 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 			}
 			else
 			{
+				if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BEAR || g_aBlock[nCntBlock].nType == BLOCKTYPE_BALL)
+				{
+					continue;
+				}
+
 				// OBB 衝突判定
 				if (CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 				{

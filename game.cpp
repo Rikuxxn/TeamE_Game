@@ -117,8 +117,14 @@ void InitGame(void)
 	//UIの初期化
 	InitUI();
 
+
+	// UIを表示
+	SetUI(D3DXVECTOR3(140.0f, 670.0f, 0.0f), 90.0f, 25.0f, UITYPE_MAP);
+
+
 	//タスクUIの初期化処理
 	InitTask();
+
 
 	SetTask(D3DXVECTOR3(2350.0f, 200.0f, 0.0f), 160.0f, 25.0f, TASKTYPE_ONE);
 	SetTask(D3DXVECTOR3(2350.0f, 200.0f, 0.0f), 160.0f, 25.0f, TASKTYPE_TWO);

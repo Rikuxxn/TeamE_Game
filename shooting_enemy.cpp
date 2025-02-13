@@ -5,9 +5,9 @@
 
 #include "shooting_enemy.h"
 #include "shooting_bullet.h"
-//#include "sound.h"
 #include "shooting_player.h"
 #include "shooting_particle.h"
+#include "sound.h"
 
 //マクロ
 #define NUM_ENEMY (3)//敵の種類
@@ -281,8 +281,8 @@ void HitEnemy(int nCntEnemy, int nDamage)
 
 	if (g_aEnemy[nCntEnemy].nLife <= 0)
 	{
-		////サウンドの再生
-		//PlaySound(SOUND_LABEL_EXPLOSION);
+		//サウンドの再生
+		PlaySound(SOUND_LABEL_STDEAD);
 		SetParticle(g_aEnemy[nCntEnemy].pos,0);
 		//bakuhatu
 		g_aEnemy[nCntEnemy].bUse = false;
@@ -307,8 +307,8 @@ void HitEnemy(int nCntEnemy, int nDamage)
 		//頂点バッファをアンロックする
 		g_pVtxBuffEnemy->Unlock();
 
-		////サウンドの再生
-		//PlaySound(SOUND_LABEL_DAMAGE);
+		//サウンドの再生
+		PlaySound(SOUND_LABEL_STHIT);
 	}
 }
 int GetNumEnemy()

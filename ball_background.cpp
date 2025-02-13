@@ -109,10 +109,10 @@ void InitBallBackGround(void)
 	pVtx2[3].rhw = 1.0f;
 
 	//頂点カラーの設定
-	pVtx2[0].col = D3DCOLOR_RGBA(100, 100, 100, 100);
-	pVtx2[1].col = D3DCOLOR_RGBA(100, 100, 100, 100);
-	pVtx2[2].col = D3DCOLOR_RGBA(100, 100, 100, 100);
-	pVtx2[3].col = D3DCOLOR_RGBA(100, 100, 100, 100);
+	pVtx2[0].col = D3DCOLOR_RGBA(0, 0, 0, 150);
+	pVtx2[1].col = D3DCOLOR_RGBA(0, 0, 0, 150);
+	pVtx2[2].col = D3DCOLOR_RGBA(0, 0, 0, 150);
+	pVtx2[3].col = D3DCOLOR_RGBA(0, 0, 0, 150);
 
 	//頂点バッファをアンロックする
 	g_pVtxBuffBallBG2->Unlock();
@@ -206,6 +206,9 @@ void DrawBallBackGround(void)
 
 	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
+
+	//テクスチャの設定
+	pDevice->SetTexture(0, NULL);
 
 	//背景の描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,//プリミティブの種類

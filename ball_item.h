@@ -1,7 +1,7 @@
 #ifndef _ITEM_H_
 #define _ITEM_H_
 
-#include "main.h"
+#include "ball_game.h"
 
 //マクロ
 #define MAX_ITEM (16)							//アイテムの最大数
@@ -9,8 +9,8 @@
 #define ITEM_WIDTH (25.0f)						//アイテムの幅
 #define ITEM_HEIGHT (25.0f)						//アイテムの高さ
 #define ITEM_CLEARZONEX (75.0f)					//片づけ先の範囲(X)
-#define ITEM_CLEARZONEY (20.0f)					//片づけ先の範囲(Y)
-#define ITEM_CLEARPOSX (BALLFIELD_LEFT + 100.0f)//アイテムの場所(X)
+#define ITEM_CLEARZONEY (50.0f)					//片づけ先の範囲(Y)
+#define ITEM_CLEARPOSX (BALLPOS + 100.0f)		//アイテムの場所(X)
 #define ITEM_CLEARPOSY (BALLFIELD_UNDER - 30.0f)//アイテムの場所(Y)
 #define ITEM_MIN_SCALE (1.0f)					//アイテムの拡大率
 

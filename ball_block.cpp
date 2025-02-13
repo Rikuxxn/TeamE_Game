@@ -25,7 +25,7 @@ void InitBallBlock(void)
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
-	"data\\TEXTURE\\block2.png",		//テクスチャのファイル名
+	"data\\TEXTURE\\box.png",		//テクスチャのファイル名
 		&g_pTextureBallBlock);
 
 	//ブロックの情報の初期化
@@ -195,16 +195,24 @@ void SetBallBlock(D3DXVECTOR3 pos,D3DXVECTOR3 move,float fWidth,float fHeight,in
 			pVtx[3].pos = D3DXVECTOR3(g_aBlock[nCntBlock].pos.x + g_aBlock[nCntBlock].fWidth, g_aBlock[nCntBlock].pos.y + g_aBlock[nCntBlock].fHeight, 0.0f);
 
 			//頂点カラーの設定
-			pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);//0.0～1.0で設定
-			pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
-			pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
-			pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
+			//pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);//0.0～1.0で設定
+			//pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
+			//pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
+			//pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
+			pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);//0.0～1.0で設定
+			pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 			//テクスチャ
+			//pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+			//pVtx[1].tex = D3DXVECTOR2(fWidth / BLOCK_HABA, 0.0f);
+			//pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+			//pVtx[3].tex = D3DXVECTOR2(fWidth / BLOCK_HABA, 1.0f);
 			pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-			pVtx[1].tex = D3DXVECTOR2(fWidth / BLOCK_HABA, 0.0f);
+			pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
 			pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-			pVtx[3].tex = D3DXVECTOR2(fWidth / BLOCK_HABA, 1.0f);
+			pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
 			break;
 		}

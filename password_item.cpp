@@ -10,6 +10,7 @@
 #include "password_particle.h"
 #include "password_score.h"
 #include "password_game.h"
+#include "sound.h"
 
 //グローバル
 LPDIRECT3DTEXTURE9 g_pTexturePassItem[NUM_ITEM] = {};	//テクスチャへのポインタ
@@ -185,7 +186,8 @@ void UpdatePasswordItem(void)
 				mouseY >= itemTop && mouseY <= itemBottom)
 			{
 				if (GetMouseButtonTrigger(0) == true)
-				{
+				{//ボタンを押した
+					PlaySound(SOUND_LABEL_PASSPUSH);
 					switch (g_item[nCntItem].type)
 					{// 押したボタンに応じて処理の変化
 					case NUMTYPE_0:		// 0

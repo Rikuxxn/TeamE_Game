@@ -778,7 +778,7 @@ void DrawGame(void)
 		DrawGuage();
 	}
 
-	if (g_Game.bMini == false)
+	if (g_Game.bMini == false && (g_Game.bBallHint || g_Game.bCraneHint) == false)
 	{
 		// ƒ^ƒXƒNUI‚Ì•`‰æˆ—
 		DrawTask();

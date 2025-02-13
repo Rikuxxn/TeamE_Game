@@ -38,6 +38,16 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/BGM/gameBGM.wav", -1},		// ゲームBGM
 	{"data/SE/footstep_1.wav", 0},		// 足音SE
 	{"data/SE/footstep_2.wav", 0},		// 足音SE
+	{"data/SE/ClaneDown.wav", 0},		// クレーンを下げる
+	{"data/SE/ClaneUP.wav", 0},			// クレーンを上げる
+	{"data/SE/Claneget.wav", 0},		// 景品ゲット
+	{"data/SE/stshot.wav", 0},			// シューティング射撃
+	{"data/SE/sthit.wav", 0},			// ヒット音
+	{"data/SE/stdead.wav", 0},			// 撃破音
+	{"data/SE/stclear.wav", 0},			// シューティングクリア
+	{"data/SE/Passpush.wav", 0},		// パスワード入力
+	{"data/SE/Passwrong.wav", 0},		// パスワードが違う
+	{"data/SE/Passcorrect.wav", 0},		// パスワードがあっている
 
 };
 

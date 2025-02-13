@@ -3,6 +3,9 @@
 
 #include "main.h"
 
+//ƒ}ƒNƒ
+#define BALLPOS (530.0f)//•820.0f
+
 typedef enum
 {
 	BALLGAMESTATE_NONE = 0,	//‰½‚à‚µ‚Ä‚¢‚È‚¢ó‘Ô

@@ -209,7 +209,8 @@ void UpdatePlayer(void)
 	}
 
 	if (pFlag->bExit == false && g_player.bDisp == true && bEnd == false && pGame->bDraw == false &&
-		pGame->bDraw2 == false && pGame->bDraw3 == false && pGame->bBallHint == false && pGame->bCraneHint == false)
+		pGame->bDraw2 == false && pGame->bDraw3 == false && pGame->bBallHint == false && 
+		pGame->bCraneHint == false && pGame->bMap == false)
 	{
 
 		//一人称 ゲームパッドの移動処理

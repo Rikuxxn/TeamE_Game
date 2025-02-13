@@ -456,8 +456,9 @@ void UpdateGame(void)
 
 
 		// マップを開けるのはミニゲームがどちらも動いていない場合のみ
-		if (g_Game.bMini == false && g_Game.bDraw == false && g_Game.bDraw2 == false && 
+		if (g_Game.bMini == false && g_Game.bDraw == false && g_Game.bDraw2 == false &&
 			g_Game.bDraw3 == false && g_Game.bDraw4 == false &&
+			g_Game.bBallHint == false && g_Game.bCraneHint == false &&
 			(KeyboardTrigger(DIK_C) == true || JoyPadTrigger(JOYKEY_BACK) == true))
 		{
 			g_Game.bMap = g_Game.bMap ? false : true;
@@ -549,14 +550,9 @@ void UpdateGame(void)
 		// カーソルを非表示する
 		SetCursorVisibility(false);
 
+		//プレイヤーの更新処理
+		UpdatePlayer();
 
-		//if (g_Game.bDraw == false && g_Game.bDraw2 == false && g_Game.bDraw3 == false &&
-		//	g_Game.bBallHint == false)
-		//{
-			//プレイヤーの更新処理
-			UpdatePlayer();
-
-		//}
 		if (g_Game.bDraw == true)
 		{
 			//ミニゲーム(シューティング)の更新処理
@@ -611,7 +607,7 @@ void UpdateGame(void)
 		UpdateMeshcylinder();
 
 		if (g_Game.bDraw == false && g_Game.bDraw2 == false && g_Game.bDraw3 == false && g_Game.bDraw4 == false &&
-			g_Game.bBallHint == false && g_Game.bCraneHint == false)
+			g_Game.bBallHint == false && g_Game.bCraneHint == false && g_Game.bMap == false)
 		{
 			//カメラの更新処理
 			UpdateCamera();
@@ -801,11 +797,6 @@ void DrawGame(void)
 	{//マップの描画
 		DrawMap();
 	}
-	if (g_bPause == true)
-	{//ポーズ中
-		//ポーズの描画処理
-		DrawPause();
-	}
 	if (g_Game.bBallHint == true)
 	{//パスワードのヒント
 		DrawBallHint();
@@ -813,6 +804,11 @@ void DrawGame(void)
 	if (g_Game.bCraneHint == true)
 	{//パスワードのヒント
 		DrawCraneHint();
+	}
+	if (g_bPause == true)
+	{//ポーズ中
+		//ポーズの描画処理
+		DrawPause();
 	}
 
 	//ミニゲームの描画処理

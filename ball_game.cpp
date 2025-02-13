@@ -13,12 +13,11 @@
 #include "ball_background.h"
 #include "ball_tutorial.h"
 #include "time.h"
-//#include "sound.h"
+#include "sound.h"
 #include "ball_clear.h"
 
 //グローバル
 BALLGAMESTATE g_gameState = BALLGAMESTATE_NONE;		//ゲームの状態
-int g_nTutoCnt = 0;									//チュートリアル表示カウンター
 int g_nCounterBallGameState = 0;					//状態管理カウンター
 
 void InitBallGame(void)
@@ -32,7 +31,7 @@ void InitBallGame(void)
 	InitBallClear();		//クリア画面の初期化
 	InitBallTutorial();		//チュートリアルの初期化
 
-	SetBallBlock(D3DXVECTOR3(BALLFIELD_LEFT + 100.0f, BALLFIELD_UNDER - 30.0f, 0.0f), D3DXVECTOR3(), 50.0f, 30.0f, 0);	//ブロック
+	SetBallBlock(D3DXVECTOR3(BALLPOS + 100.0f, BALLFIELD_UNDER - 50.0f, 0.0f), D3DXVECTOR3(), 50.0f, 50.0f, 1);	//ブロック
 	
 	SetBallItem(D3DXVECTOR3(740.0f, BALLFIELD_UNDER - 160.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 0);					//アイテム
 	SetBallItem(D3DXVECTOR3(540.0f, BALLFIELD_UNDER - 69.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 1);
@@ -50,17 +49,10 @@ void InitBallGame(void)
 	SetBallItem(D3DXVECTOR3(870.0f, BALLFIELD_UNDER - 209.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 0);
 
 	g_gameState = BALLGAMESTATE_NORMAL;//通常状態に設定
-	g_nTutoCnt = 0;
 	g_nCounterBallGameState = 0;
-
-	////サウンドの再生
-	//PlaySound(SOUND_LABEL_GAMEBGM);
 }
 void UninitBallGame(void)
 {
-	////サウンドの停止
-	//StopSound(SOUND_LABEL_GAMEBGM);
-
 	//各種オブジェクトの終了処理
 	UninitBallBackGround();	//背景の終了処理
 	UninitBallParticle();	//パーティクルの終了処理
@@ -73,12 +65,16 @@ void UninitBallGame(void)
 void UpdateBallGame(void)
 {
 	int nNum = GetNumBallItem();
+	bool bStart = GetStart();
 
 	//各種オブジェクトの更新処理
-	UpdateBallBackGround();	//背景の更新処理
-	UpdateBallParticle();	//パーティクルの更新処理
-	UpdateBallEffect();		//エフェクトの更新処理
-	UpdateBallItem();		//アイテムの更新処理
+	if (bStart == true)
+	{
+		UpdateBallBackGround();	//背景の更新処理
+		UpdateBallParticle();	//パーティクルの更新処理
+		UpdateBallEffect();		//エフェクトの更新処理
+		UpdateBallItem();		//アイテムの更新処理
+	}
 	UpdateBallTutorial();	//チュートリアルの更新処理
 
 	if (nNum == 0)//終了条件
@@ -92,10 +88,6 @@ void UpdateBallGame(void)
 	case BALLGAMESTATE_NONE:
 		break;
 	case BALLGAMESTATE_NORMAL://通常状態
-		if (g_nTutoCnt <= 90)
-		{
-			g_nTutoCnt++;
-		}
 		break;
 	case BALLGAMESTATE_END://終了状態
 		if (g_nCounterBallGameState <= 45)
@@ -118,10 +110,7 @@ void DrawBallGame(void)
 	DrawBallItem();			//アイテムの描画処理
 	DrawBallBlock();		//ブロックの描画処理
 	DrawBallEffect();		//エフェクトの描画処理
-	if (g_nTutoCnt <= 90)
-	{
-		DrawBallTutorial();	//チュートリアルの描画処理
-	}
+	DrawBallTutorial();		//チュートリアルの描画処理
 
 	if (g_nCounterBallGameState >= 45)
 	{

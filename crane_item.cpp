@@ -8,6 +8,7 @@
 #include "crane_player.h"
 #include "crane_particle.h"
 #include "crane_block.h"
+#include "sound.h"
 
 //グローバル
 LPDIRECT3DTEXTURE9 g_pTextureItem[NUM_ITEM] = {};	//テクスチャへのポインタ
@@ -141,7 +142,6 @@ void UpdateCraneItem(void)
 		if (g_item[nCntItem].pos.y >= FIELD_UNDER - g_item[nCntItem].fHeight)//地面
 		{
 			g_item[nCntItem].pos.y = FIELD_UNDER - g_item[nCntItem].fHeight;
-			//g_item[nCntItem].bcatch = false;
 		}
 		if (g_item[nCntItem].pos.y >= ITEM_CLEARPOSY &&
 			g_item[nCntItem].pos.x - g_item[nCntItem].fWidth >= ITEM_CLEARPOSX - ITEM_CLEARZONE &&
@@ -150,6 +150,7 @@ void UpdateCraneItem(void)
 			g_item[nCntItem].bUse == true &&
 			pPlayer->bFall == true)
 		{//アイテムゲット
+			PlaySound(SOUND_LABEL_CRANEGET);
 			g_item[nCntItem].bUse = false;
 			pPlayer->bFall = false;
 			g_nItem--;

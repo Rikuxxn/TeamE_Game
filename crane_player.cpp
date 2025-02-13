@@ -9,7 +9,7 @@
 #include "crane_block.h"
 #include "crane_particle.h"
 #include "crane_item.h"
-//#include "sound.h"
+#include "sound.h"
 
 //マクロ
 #define MAX_MAX (400.0f)//最大でかい
@@ -41,6 +41,7 @@ void InitCranePlayer(void)
 	g_player.bMove = true;
 	g_player.bLeft = false;
 	g_player.bDown = false;
+	g_player.bUpSound = false;
 	g_player.bLanding = false;
 	g_player.bGetItem = false;
 	g_player.pBlock = NULL;
@@ -154,23 +155,29 @@ void UpdateCranePlayer(void)
 			g_player.pos.x > FIELD_LEFT + 75.0f + WIDTH &&
 			(GetMouseButtonTrigger(0) /*|| JoypadTrigger(JOYKEY_A) == true*/))
 		{//クレーンを下す
-			//PlaySound(SOUND_LABEL_JAMP_SHORT);
 			g_player.move.y = DOWN;
 			g_player.bMove = false;
 			g_player.bDown = true;
 			g_player.bLeft = false;
+			PlaySound(SOUND_LABEL_CRANEDOWN);
 		}
 	}
 
 	if (g_player.bLanding == true &&
-		g_player.bMove == false)
+		g_player.bMove == false &&
+		g_player.bUpSound == false)
 	{//上に昇る
 		g_player.move.y = UP;
+		g_player.bUpSound = true;
+		StopSound(SOUND_LABEL_CRANEDOWN);
+		PlaySound(SOUND_LABEL_CRANEUP);
 	}
 
 	if (g_player.bLeft == true &&
 		g_player.bMove == false)
 	{
+		StopSound(SOUND_LABEL_CRANEUP);
+		g_player.move.y = 0.0f;
 		g_player.move.x = MAX_SPEED_L;
 	}
 
@@ -211,6 +218,7 @@ void UpdateCranePlayer(void)
 		g_player.bMove = true;
 		g_player.bLeft = false;
 		g_player.bFall = true;
+		g_player.bUpSound = false;
 		g_player.bLanding = false;
 		g_player.move.x = 0;
 	}

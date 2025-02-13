@@ -40,6 +40,7 @@ typedef struct
 	float Angle;			//対角線の角度
 	bool bUse;				//使われているか
 	bool bMove;				//動けるか
+	bool bUpSound;			//上に上がっているか
 	bool bLeft;				//左に進むか
 	bool bDown;				//落ちているか
 	bool bLanding;			//着地しているか

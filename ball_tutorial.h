@@ -16,5 +16,6 @@ void InitBallTutorial(void);
 void UninitBallTutorial(void);
 void UpdateBallTutorial(void);
 void DrawBallTutorial(void);
+bool GetStart(void);
 
 #endif

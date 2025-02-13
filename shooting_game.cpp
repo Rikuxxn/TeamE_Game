@@ -13,7 +13,7 @@
 #include "shooting_clear.h"
 #include "shooting_score.h"
 #include "password_game.h"
-//#include "sound.h"
+#include "sound.h"
 
 //グローバル
 STGSTATE g_gameState = STGSTATE_NONE;	//ゲームの状態
@@ -40,14 +40,9 @@ void InitShootingGame(void)
 
 	g_gameState = STGSTATE_NORMAL;//通常状態に設定
 	g_nCntShootingGameState = 0;
-
-	////サウンドの再生
-	//PlaySound(SOUND_LABEL_GAMEBGM);
 }
 void UninitShootingGame(void)
 {
-	//StopSound();	//サウンドの停止
-
 	//各種オブジェクトの終了処理
 	UninitBackGround();		//背景の終了処理
 	UninitShootingPlayer();	//プレイヤーの終了処理
@@ -107,6 +102,8 @@ void DrawShootingGame(void)
 
 	if (g_nCntShootingGameState >= 60)
 	{
+		//サウンドの再生
+		PlaySound(SOUND_LABEL_STCLEAR);
 		DrawSTPass();		//パスワードの描画処理
 		DrawClear();		//クリア表示の描画処理
 	}

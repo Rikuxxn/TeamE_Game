@@ -14,7 +14,7 @@
 #include "crane_background.h"
 #include "time.h"
 #include "game.h"
-//#include "sound.h"
+#include "sound.h"
 #include "crane_clear.h"
 #include "crane_score.h"
 #include "password_game.h"

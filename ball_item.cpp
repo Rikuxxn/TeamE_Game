@@ -7,6 +7,7 @@
 #include "ball_item.h"
 #include "ball_particle.h"
 #include "input.h"
+#include "crane_item.h"
 
 //グローバル
 LPDIRECT3DTEXTURE9 g_pTextureBallItem[NUM_ITEM] = {};	//テクスチャへのポインタ

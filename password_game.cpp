@@ -14,7 +14,7 @@
 #include "password_item.h"
 #include "password_particle.h"
 #include "password_score.h"
-//#include "sound.h"
+#include "sound.h"
 
 // グローバル変数宣言
 PASSWORDGAMESTATE g_gameState = PASSWORDGAMESTATE_NONE;	//ゲームの状態
@@ -107,6 +107,7 @@ void UpdatePasswordGame(void)
 		//画面(モード)の設定
 		g_gameState = PASSWORDGAMESTATE_END;
 		SetPassword(0, GetAnum4(), true);
+		PlaySound(SOUND_LABEL_PASSCORRECT);
 	}
 	else if ((nPass == g_nA1 || nPass != g_nA1) &&
 		(nPass2 == g_nA2 || nPass2 != g_nA2) &&
@@ -116,6 +117,7 @@ void UpdatePasswordGame(void)
 	{
 		SetPassword(0, 0, false);
 		SetPassword(0, GetAnum4(), true);
+		PlaySound(SOUND_LABEL_PASSWRONG);
 	}
 }
 //=======================

@@ -111,10 +111,10 @@ void InitCraneBackGround(void)
 	pVtx[3].rhw = 1.0f;
 
 	//頂点カラーの設定
-	pVtx[0].col = D3DCOLOR_RGBA(100, 100, 100, 100);
-	pVtx[1].col = D3DCOLOR_RGBA(100, 100, 100, 100);
-	pVtx[2].col = D3DCOLOR_RGBA(100, 100, 100, 100);
-	pVtx[3].col = D3DCOLOR_RGBA(100, 100, 100, 100);
+	pVtx[0].col = D3DCOLOR_RGBA(0, 0, 0, 150);
+	pVtx[1].col = D3DCOLOR_RGBA(0, 0, 0, 150);
+	pVtx[2].col = D3DCOLOR_RGBA(0, 0, 0, 150);
+	pVtx[3].col = D3DCOLOR_RGBA(0, 0, 0, 150);
 
 	//頂点バッファをアンロックする
 	g_pVtxBuffCraneBG2->Unlock();
@@ -201,6 +201,9 @@ void DrawCraneBackGround(void)
 
 	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
+
+	//テクスチャの設定
+	pDevice->SetTexture(0, NULL);
 
 	//背景の描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,//プリミティブの種類

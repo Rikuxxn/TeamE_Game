@@ -10,7 +10,7 @@
 #include "shooting_enemy.h"
 #include "shooting_effect.h"
 #include "shooting_fade.h"
-//#include "sound.h"
+#include "sound.h"
 #include "shooting_particle.h"
 #include "game.h"
 
@@ -231,7 +231,7 @@ void UpdateShootingPlayer(void)
 				if (g_player.nBulletCnt >= BULLETINTERVAL/* && g_player.nBulletMax < BULLETMAX*/)
 				{
 					//’e‚ÌÝ’è
-					//PlaySound(SOUND_LABEL_SHOT01);
+					PlaySound(SOUND_LABEL_STSHOT);
 					SetBullet(g_player.pos, D3DXVECTOR3(sinf(g_player.rot.z + D3DX_PI) * 10.0f, cosf(g_player.rot.z + D3DX_PI) * 10.0f, 0.0f), BULLETTYPE_PLAYER, 20, 1);
 					g_player.nBulletCnt = 0;
 					g_player.nBulletMax++;

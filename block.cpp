@@ -302,6 +302,7 @@ void UpdateBlock(void)
 //=============================
 void DrawBlock(void)
 {
+	GAME* pGame = GetGame();
 
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -342,7 +343,39 @@ void DrawBlock(void)
 
 				// ハイライト用のマテリアルを作成
 				D3DMATERIAL9 matHighlight = pMat[nCntMat].MatD3D;
-				if (g_aBlock[nCntBlock].bInsight)
+
+				if (g_aBlock[nCntBlock].bInsight == true && g_aBlock[nCntBlock].nType != BLOCKTYPE_UFOCATCHER1 &&
+					g_aBlock[nCntBlock].nType != BLOCKTYPE_BALLPOOL && g_aBlock[nCntBlock].nType != BLOCKTYPE_ARCADE1 &&
+					g_aBlock[nCntBlock].nType != BLOCKTYPE_KEYPAD)
+				{
+					matHighlight.Emissive.r = 0.2f;
+					matHighlight.Emissive.g = 0.2f;
+					matHighlight.Emissive.b = 0.2f;
+				}
+				else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_UFOCATCHER1 && pGame->bACClear == false &&
+					g_flag.bFuseCmp == true && g_aBlock[nCntBlock].bInsight == true)
+				{
+					matHighlight.Emissive.r = 0.2f;
+					matHighlight.Emissive.g = 0.2f;
+					matHighlight.Emissive.b = 0.2f;
+				}
+				else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1 &&
+					g_flag.bFuseCmp == true && g_aBlock[nCntBlock].bInsight == true)
+				{
+					matHighlight.Emissive.r = 0.2f;
+					matHighlight.Emissive.g = 0.2f;
+					matHighlight.Emissive.b = 0.2f;
+				}
+				else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BALLPOOL && pGame->bBallClear == false &&
+					g_flag.bFuseCmp == true && g_aBlock[nCntBlock].bInsight == true)
+				{
+					matHighlight.Emissive.r = 0.2f;
+					matHighlight.Emissive.g = 0.2f;
+					matHighlight.Emissive.b = 0.2f;
+				}
+				else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_KEYPAD && pGame->bSTClear == true &&
+					pGame->bACClear == true && pGame->bBallClear == true && g_aBlock[nCntBlock].bInsight == true &&
+					pGame->bPassClear == false)
 				{
 					matHighlight.Emissive.r = 0.2f;
 					matHighlight.Emissive.g = 0.2f;

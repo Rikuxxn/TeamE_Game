@@ -1,16 +1,21 @@
+//---------------------------------------------------------
+// 
+// ミニマップ表示処理[map.h]
+// Author:Tanekawa Riku
+// 
+//---------------------------------------------------------
 #ifndef _MAP_H_
 #define _MAP_H_
-
 
 #include "main.h"
 
 // マクロ定義
-#define MINIMAP_LEFT (280.0f)//幅720.0f
-#define MINIMAP_RIGHT (1000.0f)
-#define MINIMAP_TOP (50.0f)//高さ400.0f
+#define MINIMAP_LEFT (300.0f)
+#define MINIMAP_RIGHT (940.0f)
+#define MINIMAP_TOP (100.0f)
 #define MINIMAP_UNDER (450.0f)
 
-//プロト
+// プロトタイプ宣言
 void InitMap(void);
 void UninitMap(void);
 void UpdateMap(void);

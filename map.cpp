@@ -1,22 +1,27 @@
 //---------------------------------------------------------
-// 2Dアクション
-// Author:Yoshida Atsushi
+// 
+// ミニマップ表示処理[map.cpp]
+// Author:Tanekawa Riku
+// 
 //---------------------------------------------------------
 #include "map.h"
 #include "player.h"
 #include "input.h"
 #include "meshfield.h"
+#include "camera.h"
 
-//グローバル
-LPDIRECT3DTEXTURE9 g_pTextureMap = { NULL };//テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTexturePlayerIcon = NULL;//テクスチャへのポインタ
+//グローバル変数
+LPDIRECT3DTEXTURE9 g_pTextureMap = { NULL };						// テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTexturePlayerIcon = NULL;						// テクスチャへのポインタ
 
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffMap = NULL;//頂点バッファへのポインタ
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPlayerIcon = NULL;//頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffMap = NULL;						// 頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPlayerIcon = NULL;				// 頂点バッファへのポインタ
 
-float g_aPosCraneTexU;//テクスチャ座標の開始位置（U値）
+D3DXVECTOR3 miniMapBasePos;	// ミニマップの基準位置
 
-//背景の初期化処理
+//===============================
+// ミニマップの初期化処理
+//===============================
 void InitMap(void)
 {
 	Player* pPlayer = GetPlayer();
@@ -52,9 +57,9 @@ void InitMap(void)
 		&g_pVtxBuffPlayerIcon,
 		NULL);
 
-	float PlayerPosX = pPlayer->pos.x;  // プレイヤーの位置を取得
-	float PlayerPosY = pPlayer->pos.y;	// プレイヤーの位置を取得
-
+	miniMapBasePos = D3DXVECTOR3(1180.0f, 0.0f, 1480.0f);	// アイコンの初期位置
+	float PlayerPosX = pPlayer->pos.x;						// プレイヤーの位置を取得
+	float PlayerPosY = pPlayer->pos.y;						// プレイヤーの位置を取得
 
 	// フィールドの幅と高さ
 	float fieldWidth = MAX_WIDTH;
@@ -68,9 +73,11 @@ void InitMap(void)
 	float scaleX = miniMapWidth / fieldWidth;
 	float scaleY = miniMapHeight / fieldHeight;
 
-	// プレイヤーの座標をミニマップの座標に変換
-	float miniMapPlayerX = MINIMAP_LEFT + (pPlayer->pos.x / fieldWidth) * miniMapWidth;
-	float miniMapPlayerY = MINIMAP_TOP + (pPlayer->pos.y / fieldHeight) * miniMapHeight;
+	// ミニマップのX座標を変換
+	float miniMapPlayerX = MINIMAP_LEFT + (((pPlayer->pos.x + miniMapBasePos.x) / fieldWidth) * miniMapWidth);
+
+	// ミニマップのY座標を変換
+	float miniMapPlayerY = MINIMAP_TOP - ((((pPlayer->pos.z - 100) - miniMapBasePos.z) / fieldHeight) * miniMapHeight);
 
 	VERTEX_2D* pVtx;//頂点情報へのポインタ
 
@@ -78,10 +85,10 @@ void InitMap(void)
 	g_pVtxBuffMap->Lock(0, 0, (void**)&pVtx, 0);
 
 	//頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(MINIMAP_LEFT - 50.0f, MINIMAP_TOP, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(MINIMAP_RIGHT + 50.f, MINIMAP_TOP, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(MINIMAP_LEFT - 50.0f, MINIMAP_UNDER + 200.f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(MINIMAP_RIGHT + 50.f, MINIMAP_UNDER + 200.f, 0.0f);
+	pVtx[0].pos = D3DXVECTOR3(MINIMAP_LEFT - 5.0f, MINIMAP_TOP + 100.0f, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(MINIMAP_RIGHT - 10.0f, MINIMAP_TOP + 100.0f, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(MINIMAP_LEFT - 5.0f, MINIMAP_UNDER + 115.0f, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(MINIMAP_RIGHT - 10.0f, MINIMAP_UNDER + 115.0f, 0.0f);
 
 	//rhwの設定
 	pVtx[0].rhw = 1.0f;
@@ -108,7 +115,7 @@ void InitMap(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffPlayerIcon->Lock(0, 0, (void**)&pVtx, 0);
 
-	float size = 5.0f; // ミニマップ上でのプレイヤーアイコンの大きさ
+	float size = 15.0f; // ミニマップ上でのプレイヤーアイコンの大きさ
 
 	// ミニマップ上の座標でプレイヤーアイコンの頂点を設定
 	pVtx[0].pos = D3DXVECTOR3(miniMapPlayerX - size, miniMapPlayerY - size, 0.0f);
@@ -138,7 +145,9 @@ void InitMap(void)
 	g_pVtxBuffPlayerIcon->Unlock();
 
 }
-//背景の終了処理
+//===============================
+// ミニマップの終了処理
+//===============================
 void UninitMap(void)
 {
 	//テクスチャの破棄
@@ -170,16 +179,67 @@ void UninitMap(void)
 	}
 
 }
-//背景の更新処理
+//===============================
+// ミニマップの更新処理
+//===============================
 void UpdateMap(void)
 {
 
+	Player* pPlayer = GetPlayer();
+	Camera* pCamera = GetCamera();
 
+	// フィールドの幅と高さ
+	float fieldWidth = MAX_WIDTH;
+	float fieldHeight = MAX_HEIGHT;
 
+	// ミニマップの幅と高さ
+	float miniMapWidth = MINIMAP_RIGHT - MINIMAP_LEFT;
+	float miniMapHeight = MINIMAP_UNDER - MINIMAP_TOP;
 
+	// ミニマップ上の移動量
+	float miniMapScale = 0.5f;
 
+	// ミニマップのX座標を変換
+	float miniMapPlayerX = MINIMAP_LEFT + (((pPlayer->pos.x + miniMapBasePos.x) / fieldWidth) * miniMapWidth);
+
+	// ミニマップのY座標を変換
+	float miniMapPlayerY = MINIMAP_TOP - ((((pPlayer->pos.z - 100) - miniMapBasePos.z) / fieldHeight) * miniMapHeight);
+
+	// 頂点バッファを更新
+	VERTEX_2D* pVtx;
+
+	float angle = pCamera->rot.y;
+
+	// 頂点バッファのロック
+	g_pVtxBuffPlayerIcon->Lock(0, 0, (void**)&pVtx, 0);
+
+	float size = 15.0f; // アイコンのサイズ
+
+	// 回転行列
+	D3DXMATRIX matRot;
+	D3DXMatrixRotationZ(&matRot, angle); // Z軸回転（2D回転）
+
+	// アイコンの頂点を回転
+	D3DXVECTOR3 v[4] =
+	{
+		{  size,  size, 0.0f },
+		{ -size,  size, 0.0f },
+		{  size, -size, 0.0f },
+		{ -size, -size, 0.0f }
+	};
+
+	for (int nCnt = 0; nCnt < 4; nCnt++)
+	{
+		D3DXVec3TransformCoord(&v[nCnt], &v[nCnt], &matRot);
+		pVtx[nCnt].pos = D3DXVECTOR3(miniMapPlayerX + v[nCnt].x, miniMapPlayerY + v[nCnt].y, 0.0f);
+	}
+
+	// 頂点バッファのアンロック
+	g_pVtxBuffPlayerIcon->Unlock();
 }
-//背景の描画処理
+//===============================
+// ミニマップの描画処理
+//===============================
 void DrawMap(void)
 {
 	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ

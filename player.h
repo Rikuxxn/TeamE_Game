@@ -51,6 +51,8 @@ typedef struct
 	bool bDush;								// ダッシュしてるか
 	bool bEmpty;							// スタミナ切れかどうか
 	bool bDrawDush;							// ダッシュゲージ描画用
+	bool bEmptySound;						// 息切れ音の再生
+	bool bDushSound;						// ダッシュ音の再生
 	D3DXVECTOR3 forward;					// プレイヤーの視線（正規化されたベクトル）
 	Motion motion;							// モーション情報
 }Player;

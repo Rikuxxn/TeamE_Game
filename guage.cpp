@@ -5,6 +5,7 @@
 
 #include "guage.h"
 #include "player.h"
+#include "sound.h"
 
 //マクロ
 #define NUM_LIFE (5)	 //ライフの種類

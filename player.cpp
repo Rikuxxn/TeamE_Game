@@ -56,6 +56,8 @@ void InitPlayer(void)
 	g_player.motion.nCounterMotion = 0;							// モーション用のカウンター
 	g_player.motion.aMotionInfo[MOTIONTYPE_MOVE].startKey = 1;	// モーションの最初のキー
 	//g_player.pos = D3DXVECTOR3(120.0f, 0.0f, 540.0f);			// デバッグ用
+	g_player.bEmptySound = false;
+	g_player.bDushSound = false;
 
 	// プレイヤーの読み込み
 	LoadPlayerTEXT();
@@ -380,6 +382,11 @@ void UpdatePlayer(void)
 				g_player.bDush = true;
 				g_player.nDrawDush = 0;
 				g_player.bDrawDush = true;
+				if (g_player.bDushSound == false)
+				{
+					PlaySound(SOUND_LABEL_EMPTYBREATH);
+					g_player.bDushSound = true;
+				}
 
 				//ダッシュの移動量を更新(増加させる)
 				g_player.move.x -= sinf(pCamera->rot.y) * PLAYER_DUSHSPEED;
@@ -396,6 +403,7 @@ void UpdatePlayer(void)
 				g_player.move.z -= cosf(pCamera->rot.y) * PLAYER_SPEED;
 
 				g_player.rotDestPlayer.y = pCamera->rot.y + D3DX_PI;
+				g_player.bDushSound = false;
 
 				g_player.motion.motionType = MOTIONTYPE_MOVE;
 			}
@@ -414,9 +422,17 @@ void UpdatePlayer(void)
 		}
 
 		if (g_player.fDush <= 0)
-		{
+		{//息切れ
 			g_player.bEmpty = true;
 			g_player.bDush = false;
+			g_player.bEmptySound = true;
+		}
+
+		if (g_player.bEmpty == true &&
+			g_player.bEmptySound == true)
+		{//息切れ時のサウンド
+			PlaySound(SOUND_LABEL_EMPTYBREATH);
+			g_player.bEmptySound = false;
 		}
 
 		//ダッシュしていない時
@@ -424,19 +440,6 @@ void UpdatePlayer(void)
 		{
 			g_player.bDush = false;
 		}
-
-		//if (g_player.bDush == false || GetKeyboardPress(DIK_W) == false)
-		//{//スタミナ回復
-		//	if (g_player.fDush <= PLAYER_STAMINA)
-		//	{
-		//		g_player.fDush += STAMINA_RECOVERY;
-		//	}
-		//	else if (g_player.fDush >= PLAYER_STAMINA)
-		//	{
-		//		g_player.fDush += 0;
-		//		g_player.bEmpty = false;
-		//	}
-		//}
 
 		if (g_player.fDush >= PLAYER_STAMINA &&
 			GetKeyboardPress(DIK_LSHIFT) == false)

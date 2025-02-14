@@ -147,9 +147,10 @@ void InitGame(void)
 	InitBallGame();
 	InitBallHint();
 
-	//// 天井の中央付近から特定エリアを照らすスポットライト
+
+	//// 天井の中央付近から特定エリアを照らすポイントライト
 	//AddLight(
-	//	D3DLIGHT_SPOT,                       // ライトの種類
+	//	D3DLIGHT_POINT,                       // ライトの種類
 	//	D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),   // 少し明るい光
 	//	D3DXVECTOR3(0.0f, -1.0f, 0.0f),      // 真下方向
 	//	D3DXVECTOR3(0.0f, 5.0f, 0.0f)       // 天井中央の位置

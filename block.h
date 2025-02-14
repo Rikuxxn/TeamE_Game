@@ -59,6 +59,8 @@ typedef enum
 	BLOCKTYPE_FUSEBOX_CMP,
 	BLOCKTYPE_BALL,
 	BLOCKTYPE_BEAR,
+	BLOCKTYPE_EXIT2,
+	BLOCKTYPE_CLEAR,
 
 	BLOCKTYPE_MAX
 }BLOCKTYPE;
@@ -91,6 +93,8 @@ typedef struct
 	bool bHintBear;					// ヒントくまさん
 	bool bSet;						// ブロック設置したかどうか1
 	bool bSet2;						// ブロック設置したかどうか2
+	bool bSet3;						// ブロック(クリアブロック)設置したかどうか3
+
 }Flags;
 
 // ブロック構造体
@@ -144,7 +148,7 @@ static const char* BLOCK[BLOCKTYPE_MAX] =
 	"data/MODEL/Vending.x",								// 自販機
 	"data/MODEL/UFO_mini.x",							// UFOキャッチャーミニ
 	"data/MODEL/title_board.x",							// タイトルロゴ表示用ボード
-	"data/MODEL/exit.x",								// 出口ドア
+	"data/MODEL/exit.x",								// 出口ドア左
 	"data/MODEL/exit_sign.x",							// 非常口看板
 	"data/MODEL/keypad.x",								// キーパッド
 	"data/MODEL/tutorial_board.x",						// チュートリアル表示用ボード
@@ -153,6 +157,8 @@ static const char* BLOCK[BLOCKTYPE_MAX] =
 	"data/MODEL/fusebox_cmp.x",							// ヒューズボックス完全体
 	"data/MODEL/ball.x",								// ボール
 	"data/MODEL/bear.x",								// くまさん
+	"data/MODEL/exit.x",								// 出口ドア右
+	"data/MODEL/clear_block.x",							// クリア判定ブロック
 
 };
 

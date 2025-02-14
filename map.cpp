@@ -1,14 +1,35 @@
-//---------------------------------------------------------
+//=========================================================
 // 
 // ミニマップ表示処理[map.cpp]
-// Author:Tanekawa Riku
+// Author:TANEKAWA RIKU
 // 
-//---------------------------------------------------------
+//=========================================================
 #include "map.h"
 #include "player.h"
 #include "input.h"
 #include "meshfield.h"
 #include "camera.h"
+
+//// アイコン構造体
+//typedef struct
+//{
+//	D3DXVECTOR3 pos;
+//	D3DXVECTOR3 rot;
+//	float fWidth;
+//	float fHeight;
+//}Icon;
+//
+//// ミニマップ構造体
+//typedef struct
+//{
+//	D3DXVECTOR3 pos;
+//	float fWidth;
+//	float fHeight;
+//}Map;
+//
+//Icon g_Icon;// アイコンの情報
+//
+//Map g_Map;// マップの情報
 
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureMap = { NULL };						// テクスチャへのポインタ

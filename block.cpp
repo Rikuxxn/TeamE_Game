@@ -59,6 +59,7 @@ void InitBlock(void)
 	g_flag.bHintBear = false;
 	g_flag.bSet = false;
 	g_flag.bSet2 = false;
+	g_flag.bSet3 = false;
 
 	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
 	{
@@ -290,10 +291,40 @@ void UpdateBlock(void)
 				g_flag.bSet2 = true;
 			}
 
-			////位置を更新
-			//g_aBlock[nCntBlock].pos.x += g_aBlock[nCntBlock].move.x;
-			//g_aBlock[nCntBlock].pos.y += g_aBlock[nCntBlock].move.y;
-			//g_aBlock[nCntBlock].pos.z += g_aBlock[nCntBlock].move.z;
+			// パスワードがあってたら
+			if (pGame->bPassClear == true && g_flag.bSet3 == false)
+			{
+				SetBlock(D3DXVECTOR3(0.0f, 0.0f, 1010.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), BLOCKTYPE_CLEAR);
+
+				g_flag.bSet3 = true;
+			}
+			if (pGame->bPassClear == true && g_aBlock[nCntBlock].nType == BLOCKTYPE_EXIT)
+			{
+				if (g_aBlock[nCntBlock].pos.x > -200.0f)
+				{
+					g_aBlock[nCntBlock].move.x = -1.1f;
+				}
+				else if (g_aBlock[nCntBlock].pos.x < -200.0f)
+				{
+					g_aBlock[nCntBlock].move.x = 0.0f;
+				}
+			}
+			if (pGame->bPassClear == true && g_aBlock[nCntBlock].nType == BLOCKTYPE_EXIT2)
+			{
+				if (g_aBlock[nCntBlock].pos.x < 200.0f)
+				{
+					g_aBlock[nCntBlock].move.x = 1.1f;
+				}
+				else if (g_aBlock[nCntBlock].pos.x > 200.0f)
+				{
+					g_aBlock[nCntBlock].move.x = 0.0f;
+				}
+			}
+
+			//位置を更新
+			g_aBlock[nCntBlock].pos.x += g_aBlock[nCntBlock].move.x;
+			g_aBlock[nCntBlock].pos.y += g_aBlock[nCntBlock].move.y;
+			g_aBlock[nCntBlock].pos.z += g_aBlock[nCntBlock].move.z;
 		}
 	}
 }
@@ -418,6 +449,8 @@ void SetBlock(D3DXVECTOR3 pos, D3DXVECTOR3 rot,int nType)
 			g_aBlock[nCntBlock].nType = nType;
 			g_aBlock[nCntBlock].bUse = true;
 
+			//AddPointlightToBlock();
+
 			break;
 		}
 	}
@@ -442,7 +475,7 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 			D3DXMATRIX playerWorld;
 			D3DXMatrixTranslation(&playerWorld, pPos->x, pPos->y, pPos->z);
 
-			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_EXIT)
+			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_CLEAR)
 			{
 				// OBB 衝突判定
 				if (CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
@@ -873,7 +906,7 @@ bool GetBlockPosition(D3DXVECTOR3* outPosition)
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
 		// 対象のブロックの位置を取得する
-		if (g_aBlock[nCntBlock].bUse && g_aBlock[nCntBlock].nType == BLOCKTYPE_TUTORIALBOARD)
+		if (g_aBlock[nCntBlock].bUse == true && g_aBlock[nCntBlock].nType == BLOCKTYPE_TUTORIALBOARD)
 		{
 			*outPosition = g_aBlock[nCntBlock].pos;
 			return true; // 位置が取得できた

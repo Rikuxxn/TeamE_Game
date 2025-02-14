@@ -10,8 +10,8 @@
 #include "main.h"
 
 
-#define MAX_WIDTH (2400)															// 横幅
-#define MAX_HEIGHT (2000)															// 縦幅
+#define MAX_WIDTH (2400.0f)															// 横幅
+#define MAX_HEIGHT (2000.0f)															// 縦幅
 
 #define MESHFIELD_X (20)															// X方向のブロック数
 #define MESHFIELD_Z (20)															// Z方向のブロック数

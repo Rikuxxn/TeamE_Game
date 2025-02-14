@@ -130,8 +130,8 @@ void InitResult(void)
 	else if (bEnd == true)
 	{//捕まったらまたはタイムが0になったら
 
-		////リザルト(ゲームオーバー)画面に遷移
-		//PlaySound(SOUND_LABEL_GAMEOVER);
+		//リザルト(ゲームオーバー)画面に遷移
+		PlaySound(SOUND_LABEL_GAMEOVERBGM);
 
 		//テクスチャの読み込み(背景)
 		D3DXCreateTextureFromFile(pDevice,

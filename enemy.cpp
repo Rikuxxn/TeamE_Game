@@ -260,7 +260,7 @@ void UpdateEnemy(void)
 		{
 			// プレイヤーが視界に入った瞬間
 			//PlaySound(SOUND_LABEL_WARNING); // SEを再生
-			SetFoundFade(MODE_FOUND);
+			//SetFoundFade(MODE_FOUND);
 		}
 		
 		// フラグを更新して次のフレームに備える

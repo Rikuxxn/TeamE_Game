@@ -16,6 +16,7 @@
 #include "game.h"
 #include "meshcylinder.h"
 #include "light.h"
+#include "sound.h"
 
 //グローバル変数
 Block g_aBlock[MAX_BLOCK];		// ブロック情報
@@ -257,6 +258,7 @@ void UpdateBlock(void)
 			{
 				if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE)
 				{
+					PlaySound(SOUND_LABEL_FUSEGET);
 					g_aBlock[nCntBlock].bUse = false;
 					g_flag.bFuseGet = true;
 				}
@@ -267,6 +269,7 @@ void UpdateBlock(void)
 			{
 				if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSEBOX)
 				{
+					PlaySound(SOUND_LABEL_FUSESET);
 					g_flag.bFuseCmp = true;
 					g_aBlock[nCntBlock].bUse = false;
 					SetBlock(D3DXVECTOR3(1140.0f, 80.0f, 250.0f), D3DXVECTOR3(0.0f, 1.57f, 0.0f), BLOCKTYPE_FUSEBOX_CMP);

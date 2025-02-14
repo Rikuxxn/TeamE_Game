@@ -384,7 +384,7 @@ void UpdatePlayer(void)
 				g_player.bDrawDush = true;
 				if (g_player.bDushSound == false)
 				{
-					PlaySound(SOUND_LABEL_EMPTYBREATH);
+					//PlaySound(SOUND_LABEL_EMPTYBREATH);
 					g_player.bDushSound = true;
 				}
 

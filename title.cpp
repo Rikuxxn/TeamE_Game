@@ -174,6 +174,7 @@ void InitTitle(void)
 
 	g_titleMenu = TITLE_MENU_START;
 	g_bSelect = false;
+	PlaySound(SOUND_LABEL_TITLEBGM);
 }
 //========================
 // タイトルの終了
@@ -207,13 +208,9 @@ void UninitTitle(void)
 	UninitPlayer();
 
 	//サウンドの停止
-	//StopSound();
-	//StopSound(SOUND_LABEL_BGM);
-	//StopSound(SOUND_LABEL_ENTER);
+	StopSound(SOUND_LABEL_TITLEBGM);
 
-	int nCnt;
-
-	for (nCnt = 0; nCnt < MAX_TITLE; nCnt++)
+	for (int nCnt = 0; nCnt < MAX_TITLE; nCnt++)
 	{
 		//テクスチャの破棄
 		if (g_apTextureTitle[nCnt] != NULL)

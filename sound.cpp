@@ -36,6 +36,8 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 {
 
 	{"data/BGM/gameBGM.wav", -1},		// ゲームBGM
+	{"data/BGM/gameoverBGM.wav", -1},	// ゲームオーバーBGM
+	{"data/BGM/titleBGM.wav", -1},		// タイトルBGM
 	{"data/SE/footstep_1.wav", 0},		// 足音SE
 	{"data/SE/footstep_2.wav", 0},		// 足音SE
 	{"data/SE/ClaneDown.wav", 0},		// クレーンを下げる

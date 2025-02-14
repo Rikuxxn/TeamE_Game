@@ -26,6 +26,7 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTitle = NULL;				//頂点バッファへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTitleBG = NULL;			//頂点バッファへのポインタ
 
 TITLE_MENU g_titleMenu;										//ポーズメニュー
+bool g_bSelect;												//選ばれているか
 
 // タイトル項目の拡大率を管理する配列
 float titleScales[MAX_TITLE] = { TITLE_MIN_SCALE, TITLE_MIN_SCALE };
@@ -172,7 +173,7 @@ void InitTitle(void)
 	g_pVtxBuffTitle->Unlock();
 
 	g_titleMenu = TITLE_MENU_START;
-
+	g_bSelect = false;
 }
 //========================
 // タイトルの終了
@@ -205,7 +206,8 @@ void UninitTitle(void)
 	//プレイヤーの終了処理
 	UninitPlayer();
 
-	////サウンドの停止
+	//サウンドの停止
+	//StopSound();
 	//StopSound(SOUND_LABEL_BGM);
 	//StopSound(SOUND_LABEL_ENTER);
 
@@ -310,6 +312,10 @@ void UpdateTitle(void)
 			// 範囲外ならすべて半透明
 			titleAlphas[nCnt] -= 0.1f; // 徐々に薄く
 			if (titleAlphas[nCnt] < 0.3f) titleAlphas[nCnt] = 0.3f;
+			else
+			{
+				g_bSelect = false;
+			}
 		}
 		else if (nCnt == g_titleMenu)
 		{
@@ -318,6 +324,11 @@ void UpdateTitle(void)
 			if (titleAlphas[nCnt] > 1.0f)
 			{
 				titleAlphas[nCnt] = 1.0f;
+			}
+			if (g_bSelect == false)
+			{
+				PlaySound(SOUND_LABEL_SELECT);
+				g_bSelect = true;
 			}
 		}
 		else
@@ -376,7 +387,7 @@ void UpdateTitle(void)
 
 				// ゲーム画面に移行
 				SetFade(MODE_TUTORIAL);
-
+				PlaySound(SOUND_LABEL_GAMESTART);
 				break;
 
 			case TITLE_MENU_QUIT:

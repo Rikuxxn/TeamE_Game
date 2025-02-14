@@ -20,7 +20,7 @@ void InitBallTutorial(void)
 
 	//テクスチャ1の読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\Complete.png",//テクスチャのファイル名
+		"data\\TEXTURE\\IamJobHoshii.png",//テクスチャのファイル名
 		&g_apTextureBallTutorial);
 
 	g_nTutoCnt = 0;

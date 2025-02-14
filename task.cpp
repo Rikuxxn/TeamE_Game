@@ -7,6 +7,7 @@
 #include "task.h"
 #include "block.h"
 #include "game.h"
+#include "sound.h"
 
 // グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureTask[TASKTYPE_MAX] = {};	//テクスチャへのポインタ
@@ -247,6 +248,7 @@ void UpdateTask(void)
 			{
 				g_aTask[nCntTask].bUse = false;
 				SetTask(D3DXVECTOR3(1165.0f, 230.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB1_CMP);
+				PlaySound(SOUND_LABEL_TASKOK);
 			}
 		}
 
@@ -289,6 +291,7 @@ void UpdateTask(void)
 			{
 				g_aTask[nCntTask].bUse = false;
 				SetTask(D3DXVECTOR3(1155.0f, 260.0f, 0.0f), 130.0f, 20.0f, TASKTYPE_SUB2_CMP);
+				PlaySound(SOUND_LABEL_TASKOK);
 			}
 		}
 
@@ -299,6 +302,7 @@ void UpdateTask(void)
 			{
 				g_aTask[nCntTask].bUse = false;
 				SetTask(D3DXVECTOR3(1150.0f, 230.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB3_CMP);
+				PlaySound(SOUND_LABEL_TASKOK);
 			}
 		}
 		// シューティングクリアしたら
@@ -308,6 +312,7 @@ void UpdateTask(void)
 			{
 				g_aTask[nCntTask].bUse = false;
 				SetTask(D3DXVECTOR3(1145.0f, 260.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB4_CMP);
+				PlaySound(SOUND_LABEL_TASKOK);
 			}
 		}
 		// ボールプールクリアしたら
@@ -317,6 +322,7 @@ void UpdateTask(void)
 			{
 				g_aTask[nCntTask].bUse = false;
 				SetTask(D3DXVECTOR3(1145.0f, 290.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB5_CMP);
+				PlaySound(SOUND_LABEL_TASKOK);
 			}
 		}
 
@@ -327,6 +333,7 @@ void UpdateTask(void)
 			{
 				g_aTask[nCntTask].bUse = false;
 				SetTask(D3DXVECTOR3(1145.0f, 230.0f, 0.0f), 110.0f, 20.0f, TASKTYPE_SUB6_CMP);
+				PlaySound(SOUND_LABEL_TASKOK);
 			}
 		}
 

@@ -15,7 +15,7 @@
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTutorial = NULL;   //頂点バッファのポインタ
 LPDIRECT3DTEXTURE9 g_pTextureTutorial = NULL;        //タイトル背景テクスチャのポインタ
 
-int nCnt;
+//int nCnt;
 
 //=================================
 // チュートリアル画面の初期化
@@ -39,7 +39,7 @@ void InitTutorial(void)
 		&g_pVtxBuffTutorial,
 		NULL);
 
-	nCnt = 0;
+	//nCnt = 0;
 
 	VERTEX_2D* pVtx;
 
@@ -110,7 +110,7 @@ void UpdateTutorial(void)
 		if (g_fade == FADE_NONE && GetMouseButtonTrigger(0) /*|| JoyPadTrigger(JOYKEY_A)==true*/)
 		{//決定キー(ENTERキー)が押された
 
-			nCnt = 0;
+			//nCnt = 0;
 			//モード設定(チュートリアル画面2に移行)
 			SetFade(MODE_GAME);
 

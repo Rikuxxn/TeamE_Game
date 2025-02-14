@@ -19,6 +19,7 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPause = NULL;				//頂点バッファへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPauseBG = NULL;			//頂点バッファへのポインタ
 
 PAUSE_MENU g_pauseMenu;										//ポーズメニュー
+bool g_bPauseSelect;										//選ばれているか
 
 // ポーズ項目の拡大率を管理する配列
 float pauseScales[MAX_PAUSE] = { PAUSE_MIN_SCALE, PAUSE_MIN_SCALE, PAUSE_MIN_SCALE };
@@ -252,6 +253,10 @@ void UpdatePause(void)
 			// 範囲外ならすべて半透明
 			pauseAlphas[nCnt] -= 0.1f; // 徐々に薄く
 			if (pauseAlphas[nCnt] < 0.3f) pauseAlphas[nCnt] = 0.3f;
+			else
+			{
+				g_bPauseSelect = false;
+			}
 		}
 		else if (nCnt == g_pauseMenu) 
 		{
@@ -260,6 +265,11 @@ void UpdatePause(void)
 			if (pauseAlphas[nCnt] > 1.0f)
 			{
 				pauseAlphas[nCnt] = 1.0f;
+			}
+			if (g_bPauseSelect == false)
+			{
+				PlaySound(SOUND_LABEL_SELECT);
+				g_bPauseSelect = true;
 			}
 		}
 		else 
@@ -316,12 +326,15 @@ void UpdatePause(void)
 			{
 			case PAUSE_MENU_CONTINUE:
 				SetEnablePause(false);
+				PlaySound(SOUND_LABEL_OK);
 				break;
 			case PAUSE_MENU_RETRY:
 				SetFade(MODE_GAME);
+				PlaySound(SOUND_LABEL_OK);
 				break;
 			case PAUSE_MENU_QUIT:
 				SetFade(MODE_TITLE);
+				PlaySound(SOUND_LABEL_OK);
 				break;
 			}
 		}

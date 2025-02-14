@@ -186,7 +186,7 @@ void SetFade(MODE modeNext)
 {
 	g_fade = FADE_OUT;//フェードアウト状態に
 	g_modeNext = modeNext;//次の画面を設定
-	g_colorFade = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);//黒いポリゴン(透明)にしておく
+	//g_colorFade = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);//黒いポリゴン(透明)にしておく
 }
 void SetFoundFade(MODE modeNext)
 {

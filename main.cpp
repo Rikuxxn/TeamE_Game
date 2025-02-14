@@ -24,6 +24,7 @@
 #include "tutorial.h"
 #include "password_game.h"
 #include "sound.h"
+#include "recommendation.h"
 
 //プロトタイプ宣言
 void DrawFPS(void);
@@ -36,7 +37,7 @@ LPDIRECT3D9 g_pD3D = NULL;				//DirectX3Dオブジェクトへのポインタ
 LPD3DXFONT g_pFont = NULL;				//フォントへのポインタ
 
 LPDIRECT3DDEVICE9 g_pD3DDevice = NULL;
-MODE g_mode = MODE_TITLE;				//現在のモード
+MODE g_mode = MODE_RECOMMEND;			//現在のモード
 int g_nCountFPS = 0;					//FPSカウンター
 
 RECT g_windowRect;						//ウィンドウを切り替えるための変数
@@ -443,6 +444,10 @@ void Update(void)
 
 	switch (g_mode)
 	{
+	case MODE_RECOMMEND://推奨画面
+		UpdateRecommendation();
+		break;
+
 	case MODE_TITLE://タイトル画面
 		UpdateTitle();
 		break;
@@ -464,10 +469,6 @@ void Update(void)
 		}
 
 		break;
-
-	//case MODE_RANKING://ランキング画面
-	//	UpdateRanking();
-	//	break;
 
 	case MODE_EDIT://エディット画面
 		UpdateEdit();
@@ -511,6 +512,11 @@ void Draw(void)
 
 		switch (g_mode)
 		{
+		case MODE_RECOMMEND://推奨画面
+			DrawRecommendation();
+
+			break;
+
 		case MODE_TITLE://タイトル画面
 			DrawTitle();
 
@@ -718,6 +724,10 @@ void SetMode(MODE mode)
 	//現在の画面の終了処理
 	switch (g_mode)
 	{
+	case MODE_RECOMMEND://推奨画面
+		UninitRecommendation();
+		break;
+
 	case MODE_TITLE://タイトル画面
 		UninitTitle();
 		break;
@@ -736,10 +746,6 @@ void SetMode(MODE mode)
 
 		break;
 
-	//case MODE_RANKING://ランキング画面
-	//	UninitRanking();
-	//	break;
-
 	case MODE_EDIT://エディット画面
 		UninitEdit();
 		break;
@@ -750,6 +756,11 @@ void SetMode(MODE mode)
 	//新しい画面の初期化処理
 	switch (mode)
 	{
+	case MODE_RECOMMEND://推奨画面
+		InitRecommendation();
+
+		break;
+
 	case MODE_TITLE://タイトル画面
 		InitTitle();
 
@@ -768,10 +779,6 @@ void SetMode(MODE mode)
 		InitResultTime();
 
 		break;
-
-	//case MODE_RANKING://ランキング画面
-	//	InitRanking();
-	//	break;
 
 	case MODE_EDIT://エディット画面
 		InitEdit();

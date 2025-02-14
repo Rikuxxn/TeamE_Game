@@ -40,6 +40,7 @@
 #include "time.h"
 #include "sound.h"
 #include "crane_hint.h"
+#include "recommendation.h"
 
 //グローバル変数
 GAMESTATE g_gameState = GAMESTATE_NONE;		// ゲームの状態

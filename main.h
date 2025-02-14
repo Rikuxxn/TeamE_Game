@@ -49,13 +49,11 @@
 //画面の種類
 typedef enum
 {
-	MODE_TITLE = 0,			//タイトル画面
-	MODE_SELECT,			//モードセレクト画面
+	MODE_RECOMMEND = 0,		//推奨画面
+	MODE_TITLE,				//タイトル画面
 	MODE_TUTORIAL,			//チュートリアル画面
-	MODE_TUTORIAL2,			//チュートリアル画面2
 	MODE_GAME,				//ゲーム画面
 	MODE_RESULT,			//リザルト画面
-	MODE_RANKING,			//ランキング画面
 	MODE_FOUND,				//敵に見つかった時の画面
 	MODE_EDIT,
 	MODE_MAX

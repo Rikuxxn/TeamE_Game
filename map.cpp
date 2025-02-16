@@ -10,26 +10,26 @@
 #include "meshfield.h"
 #include "camera.h"
 
-//// アイコン構造体
-//typedef struct
-//{
-//	D3DXVECTOR3 pos;
-//	D3DXVECTOR3 rot;
-//	float fWidth;
-//	float fHeight;
-//}Icon;
-//
-//// ミニマップ構造体
-//typedef struct
-//{
-//	D3DXVECTOR3 pos;
-//	float fWidth;
-//	float fHeight;
-//}Map;
-//
-//Icon g_Icon;// アイコンの情報
-//
-//Map g_Map;// マップの情報
+// アイコン構造体
+typedef struct
+{
+	D3DXVECTOR3 pos;
+	D3DXVECTOR3 rot;
+	float fWidth;
+	float fHeight;
+}Icon;
+
+// ミニマップ構造体
+typedef struct
+{
+	D3DXVECTOR3 pos;
+	float fWidth;
+	float fHeight;
+}Map;
+
+Icon g_Icon;// アイコンの情報
+
+Map g_Map;// マップの情報
 
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureMap = { NULL };						// テクスチャへのポインタ
@@ -37,8 +37,6 @@ LPDIRECT3DTEXTURE9 g_pTexturePlayerIcon = NULL;						// テクスチャへのポインタ
 
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffMap = NULL;						// 頂点バッファへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPlayerIcon = NULL;				// 頂点バッファへのポインタ
-
-D3DXVECTOR3 miniMapBasePos;	// ミニマップの基準位置
 
 //===============================
 // ミニマップの初期化処理
@@ -78,27 +76,19 @@ void InitMap(void)
 		&g_pVtxBuffPlayerIcon,
 		NULL);
 
-	miniMapBasePos = D3DXVECTOR3(1180.0f, 0.0f, 1480.0f);	// アイコンの初期位置
-	float PlayerPosX = pPlayer->pos.x;						// プレイヤーの位置を取得
-	float PlayerPosY = pPlayer->pos.y;						// プレイヤーの位置を取得
+	g_Map.pos = D3DXVECTOR3(640.0f, 360.0f, 0.0f); // 初期位置
 
 	// フィールドの幅と高さ
-	float fieldWidth = MAX_WIDTH;
-	float fieldHeight = MAX_HEIGHT;
+	g_Map.fWidth = MAX_WIDTH / 3.0f;
+	g_Map.fHeight = MAX_HEIGHT / 3.0f;
 
-	// ミニマップの幅と高さ
-	float miniMapWidth = MINIMAP_RIGHT - MINIMAP_LEFT;
-	float miniMapHeight = MINIMAP_UNDER - MINIMAP_TOP;
+	// アイコンのサイズ設定
+	g_Icon.fWidth = 15.0f;
+	g_Icon.fHeight = 15.0f;
 
-	// スケール（縮尺）の計算
-	float scaleX = miniMapWidth / fieldWidth;
-	float scaleY = miniMapHeight / fieldHeight;
-
-	// ミニマップのX座標を変換
-	float miniMapPlayerX = MINIMAP_LEFT + (((pPlayer->pos.x + miniMapBasePos.x) / fieldWidth) * miniMapWidth);
-
-	// ミニマップのY座標を変換
-	float miniMapPlayerY = MINIMAP_TOP - ((((pPlayer->pos.z - 100) - miniMapBasePos.z) / fieldHeight) * miniMapHeight);
+	// ミニマップの左上座標を計算
+	float miniMapLeft = g_Map.pos.x - g_Map.fWidth / 2.0f;
+	float miniMapTop = g_Map.pos.y - g_Map.fHeight / 2.0f;
 
 	VERTEX_2D* pVtx;//頂点情報へのポインタ
 
@@ -106,10 +96,10 @@ void InitMap(void)
 	g_pVtxBuffMap->Lock(0, 0, (void**)&pVtx, 0);
 
 	//頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(MINIMAP_LEFT - 5.0f, MINIMAP_TOP + 100.0f, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(MINIMAP_RIGHT - 10.0f, MINIMAP_TOP + 100.0f, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(MINIMAP_LEFT - 5.0f, MINIMAP_UNDER + 115.0f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(MINIMAP_RIGHT - 10.0f, MINIMAP_UNDER + 115.0f, 0.0f);
+	pVtx[0].pos = D3DXVECTOR3(miniMapLeft, miniMapTop, 0.0f);                      // 左上
+	pVtx[1].pos = D3DXVECTOR3(miniMapLeft + g_Map.fWidth, miniMapTop, 0.0f);       // 右上
+	pVtx[2].pos = D3DXVECTOR3(miniMapLeft, miniMapTop + g_Map.fHeight, 0.0f);      // 左下
+	pVtx[3].pos = D3DXVECTOR3(miniMapLeft + g_Map.fWidth, miniMapTop + g_Map.fHeight, 0.0f); // 右下
 
 	//rhwの設定
 	pVtx[0].rhw = 1.0f;
@@ -136,13 +126,13 @@ void InitMap(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffPlayerIcon->Lock(0, 0, (void**)&pVtx, 0);
 
-	float size = 15.0f; // ミニマップ上でのプレイヤーアイコンの大きさ
+	float size = g_Icon.fWidth;// ミニマップ上でのプレイヤーアイコンの大きさ
 
 	// ミニマップ上の座標でプレイヤーアイコンの頂点を設定
-	pVtx[0].pos = D3DXVECTOR3(miniMapPlayerX - size, miniMapPlayerY - size, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(miniMapPlayerX + size, miniMapPlayerY - size, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(miniMapPlayerX - size, miniMapPlayerY + size, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(miniMapPlayerX + size, miniMapPlayerY + size, 0.0f);
+	pVtx[0].pos = D3DXVECTOR3(g_Icon.pos.x - size, g_Icon.pos.y - size, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(g_Icon.pos.x + size, g_Icon.pos.y - size, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(g_Icon.pos.x - size, g_Icon.pos.y + size, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(g_Icon.pos.x + size, g_Icon.pos.y + size, 0.0f);
 
 	//rhwの設定
 	pVtx[0].rhw = 1.0f;
@@ -209,50 +199,45 @@ void UpdateMap(void)
 	Player* pPlayer = GetPlayer();
 	Camera* pCamera = GetCamera();
 
-	// フィールドの幅と高さ
-	float fieldWidth = MAX_WIDTH;
-	float fieldHeight = MAX_HEIGHT;
+	// ミニマップの左上の座標（g_Map を基準に計算）
+	float miniMapLeft = g_Map.pos.x - g_Map.fWidth / 2.0f;
+	float miniMapTop = g_Map.pos.y - g_Map.fHeight / 2.0f;
 
-	// ミニマップの幅と高さ
-	float miniMapWidth = MINIMAP_RIGHT - MINIMAP_LEFT;
-	float miniMapHeight = MINIMAP_UNDER - MINIMAP_TOP;
+	// スケール（ワールド座標 → ミニマップ座標変換用）
+	float scaleX = g_Map.fWidth / MAX_WIDTH;   // 600 / 2400 = 0.25
+	float scaleY = g_Map.fHeight / MAX_HEIGHT; // 500 / 2000 = 0.25
 
-	// ミニマップ上の移動量
-	float miniMapScale = 0.5f;
+	// **プレイヤーの座標をミニマップ座標に変換**
+	g_Icon.pos.x = miniMapLeft + (pPlayer->pos.x + (MAX_WIDTH / 2.0f)) * scaleX;
+	g_Icon.pos.y = miniMapTop - (pPlayer->pos.z - (MAX_HEIGHT / 2.0f)) * scaleY;
+	g_Icon.pos.z = 0.0f;
 
-	// ミニマップのX座標を変換
-	float miniMapPlayerX = MINIMAP_LEFT + (((pPlayer->pos.x + miniMapBasePos.x) / fieldWidth) * miniMapWidth);
-
-	// ミニマップのY座標を変換
-	float miniMapPlayerY = MINIMAP_TOP - ((((pPlayer->pos.z - 100) - miniMapBasePos.z) / fieldHeight) * miniMapHeight);
+	// プレイヤーの回転をアイコンに反映
+	g_Icon.rot.y = pCamera->rot.y; // カメラのY軸回転
 
 	// 頂点バッファを更新
 	VERTEX_2D* pVtx;
 
-	float angle = pCamera->rot.y;
-
 	// 頂点バッファのロック
 	g_pVtxBuffPlayerIcon->Lock(0, 0, (void**)&pVtx, 0);
 
-	float size = 15.0f; // アイコンのサイズ
-
 	// 回転行列
 	D3DXMATRIX matRot;
-	D3DXMatrixRotationZ(&matRot, angle); // Z軸回転（2D回転）
+	D3DXMatrixRotationZ(&matRot, g_Icon.rot.y); // Z軸回転（2D回転）
 
 	// アイコンの頂点を回転
 	D3DXVECTOR3 v[4] =
 	{
-		{  size,  size, 0.0f },
-		{ -size,  size, 0.0f },
-		{  size, -size, 0.0f },
-		{ -size, -size, 0.0f }
+		{  g_Icon.fWidth,  g_Icon.fHeight, 0.0f },
+		{ -g_Icon.fWidth,  g_Icon.fHeight, 0.0f },
+		{  g_Icon.fWidth, -g_Icon.fHeight, 0.0f },
+		{ -g_Icon.fWidth, -g_Icon.fHeight, 0.0f }
 	};
 
 	for (int nCnt = 0; nCnt < 4; nCnt++)
 	{
 		D3DXVec3TransformCoord(&v[nCnt], &v[nCnt], &matRot);
-		pVtx[nCnt].pos = D3DXVECTOR3(miniMapPlayerX + v[nCnt].x, miniMapPlayerY + v[nCnt].y, 0.0f);
+		pVtx[nCnt].pos = D3DXVECTOR3(g_Icon.pos.x + v[nCnt].x, g_Icon.pos.y + v[nCnt].y, 0.0f);
 	}
 
 	// 頂点バッファのアンロック

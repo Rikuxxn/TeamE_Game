@@ -70,41 +70,38 @@ void InitTitle(void)
 	//エディット読み込み
 	LoadWallData();
 
-	//// 点光源を追加
-	//AddLight(D3DLIGHT_POINT, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f), D3DXVECTOR3(0.0f, -1.0f, 0.0f), D3DXVECTOR3(0.0f, 5.0f, -540.0f));
 
 	AddLight(
 		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-		D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f),    // 暗めの白い光
+		D3DXCOLOR(0.1f, 0.1f, 0.1f, 1.0f),    // 暗めの白い光
 		D3DXVECTOR3(0.0f, -1.0f, 0.0f),       // 真下方向
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
 	);
 
 	AddLight(
 		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-		D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f),    // 暗めの白い光
+		D3DXCOLOR(0.1f, 0.1f, 0.1f, 1.0f),    // 暗めの白い光
 		D3DXVECTOR3(-1.0f, 0.0f, 0.0f),       // 左方向
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
 	);
 
 	AddLight(
 		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-		D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f),    // 暗めの白い光
+		D3DXCOLOR(0.1f, 0.1f, 0.1f, 1.0f),    // 暗めの白い光
 		D3DXVECTOR3(0.0f, 0.0f, -1.0f),       // 手前方向
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
 	);
 
-
 	AddLight(
 		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-		D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f),    // 暗めの白い光
+		D3DXCOLOR(0.1f, 0.1f, 0.1f, 1.0f),    // 暗めの白い光
 		D3DXVECTOR3(1.0f, 0.0f, 0.0f),       // 右方向
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
 	);
 
 	AddLight(
 		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-		D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f),    // 暗めの白い光
+		D3DXCOLOR(0.1f, 0.1f, 0.1f, 1.0f),    // 暗めの白い光
 		D3DXVECTOR3(0.0f, 0.0f, 1.0f),       // 奥方向
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
 	);
@@ -245,6 +242,9 @@ void UpdateTitle(void)
 
 	////ライトの更新処理
 	//UpdateLight(0, D3DXVECTOR3(0.0f, -1.0f, 0.0f));
+
+	// ライトの点滅更新処理
+	UpdateLightBlinking(0.016f);
 
 	////ブロックの更新処理
 	//UpdateBlock();
@@ -455,12 +455,10 @@ void DrawTitle(void)
 
 		//ポリゴンの描画
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCntTitle * 4, 2);
-
 	}
 
 	// 霧の無効化
 	pDevice->SetRenderState(D3DRS_FOGENABLE, TRUE);
-
 }
 
 

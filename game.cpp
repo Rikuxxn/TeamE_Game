@@ -148,15 +148,6 @@ void InitGame(void)
 	InitBallGame();
 	InitBallHint();
 
-
-	//// 天井の中央付近から特定エリアを照らすポイントライト
-	//AddLight(
-	//	D3DLIGHT_POINT,                       // ライトの種類
-	//	D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),   // 少し明るい光
-	//	D3DXVECTOR3(0.0f, -1.0f, 0.0f),      // 真下方向
-	//	D3DXVECTOR3(0.0f, 5.0f, 0.0f)       // 天井中央の位置
-	//);
-
 	AddLight(
 		D3DLIGHT_DIRECTIONAL,                 // ライトの種類
 		D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),    // 暗めの白い光
@@ -200,8 +191,10 @@ void InitGame(void)
 	//ポーズの初期化処理
 	InitPause();
 
+
 	//マップの初期化処理
 	InitMap();
+
 
 	////エフェクトの初期化処理
 	//InitEffect();
@@ -552,8 +545,10 @@ void UpdateGame(void)
 		// カーソルを非表示する
 		SetCursorVisibility(false);
 
+
 		//プレイヤーの更新処理
 		UpdatePlayer();
+
 
 		if (g_Game.bDraw == true)
 		{
@@ -616,8 +611,8 @@ void UpdateGame(void)
 		}
 
 
-		//ライトの更新処理
-		UpdateLight(0, D3DXVECTOR3(0.0f, 5.0f, -400.0f), D3DXVECTOR3(0.0f, -1.0f, 0.0f));
+		////ライトの更新処理
+		//UpdateLight(0, D3DXVECTOR3(0.0f, 5.0f, -400.0f), D3DXVECTOR3(0.0f, -1.0f, 0.0f));
 
 
 		//ブロックの更新処理

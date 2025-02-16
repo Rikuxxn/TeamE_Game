@@ -852,8 +852,8 @@ void SetupVertexFog(LPDIRECT3DDEVICE9 pDevice, DWORD Color, DWORD Mode, BOOL Use
 	else if (pMode == MODE_GAME)
 	{
 		// 霧の開始・終了距離を遠めに設定
-		Start = 100.0f;	// 霧の開始距離
-		End = 1000.0f;	// 霧の終了距離
+		Start = 80.0f;	// 霧の開始距離
+		End = 950.0f;	// 霧の終了距離
 	}
 
     // 霧の有効化

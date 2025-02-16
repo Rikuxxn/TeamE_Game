@@ -1,6 +1,6 @@
-//=======================================
+﻿//=======================================
 //
-// ���C�g����[light.cpp]
+// ライト処理[light.cpp]
 // Author : TANEKAWA RIKU
 //
 //=======================================
@@ -9,64 +9,72 @@
 #include "player.h"
 #include "block.h"
 
-#define MAX_LIGHT (3)              // ���C�g�̍ő吔
+#define MAX_LIGHT (10)              // ライトの最大数
 
 typedef struct 
 {
-    D3DLIGHT9 light;               // ���C�g���
-    D3DXVECTOR3 direction;         // ���C�g�̕����x�N�g��
-    D3DXVECTOR3 position;          // ���C�g�̈ʒu
+    D3DLIGHT9 light;               // ライト情報
+    D3DXVECTOR3 direction;         // ライトの方向ベクトル
+    D3DXVECTOR3 position;          // ライトの位置
 } LightInfo;
 
-//�O���[�o���ϐ�
-static LightInfo* g_Lights = NULL; // ���I�ȃ��C�g���X�g
-static int g_LightCount = 0;       // ���݂̃��C�g��
-static int g_LightCapacity = 0;    // ���C�g���X�g�̗e��
+//グローバル変数
+static LightInfo* g_Lights = NULL; // 動的なライトリスト
+static int g_LightCount = 0;       // 現在のライト数
+static int g_LightCapacity = 0;    // ライトリストの容量
+
+static bool g_bLightOn = true;  // ライトのON/OFF状態
+static float g_LightTimer = 0.0f; // タイマー
+static float g_NextBlinkTime = 0.0f; // 次に点滅する時間
+static int g_BlinkingLightIndex = -1; // 点滅するライトのインデックス
 
 //=============================
-// ���C�g�̏���������
+// ライトの初期化処理
 //=============================
 void InitLight(void)
 {
     Player* pPlayer = GetPlayer();
 
-    // �����e�ʂŃ��C�g���X�g���m��
+    // 初期容量でライトリストを確保
     g_LightCapacity = MAX_LIGHT;
     g_Lights = (LightInfo*)malloc(sizeof(LightInfo) * g_LightCapacity);
     if (!g_Lights) 
     {
-        // �������m�ێ��s
+        // メモリ確保失敗
         g_LightCapacity = 0;
         return;
     }
 
-    g_LightCount = 0; // ���݂̃��C�g�������Z�b�g
+    g_LightCount = 0; // 現在のライト数をリセット
+
 }
 //=============================
-// ���C�g�̒ǉ�����
+// ライトの追加処理
 //=============================
-void AddLight(D3DLIGHTTYPE type, D3DXCOLOR diffuse, D3DXVECTOR3 direction, D3DXVECTOR3 position) 
+int AddLight(D3DLIGHTTYPE type, D3DXCOLOR diffuse, D3DXVECTOR3 direction, D3DXVECTOR3 position) 
 {
     LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
     if (g_LightCount >= g_LightCapacity)
     {
-        g_LightCapacity *= 2; // �e�ʊg��
+        g_LightCapacity *= 2; // 容量拡張
         LightInfo* newLights = (LightInfo*)realloc(g_Lights, sizeof(LightInfo) * g_LightCapacity);
-        if (!newLights) return;
+        if (!newLights) return - 1;
         g_Lights = newLights;
     }
 
-    LightInfo* newLight = &g_Lights[g_LightCount];
+    int newIndex = g_LightCount;
+
+    LightInfo* newLight = &g_Lights[newIndex];
     ZeroMemory(&newLight->light, sizeof(D3DLIGHT9));
 
     newLight->light.Type = type;
-    newLight->light.Diffuse = diffuse;
+    newLight->light.Diffuse = diffuse;                  // 光の強さ
 
-    // �����x�N�g���̏������i�[���x�N�g���h�~�j
+    // 方向ベクトルの初期化（ゼロベクトル防止）
     if (D3DXVec3Length(&direction) == 0.0f) 
     {
-        direction = D3DXVECTOR3(0, -1, 0); // �f�t�H���g�͉�����
+        direction = D3DXVECTOR3(0, -1, 0);              // デフォルトは下向き
     }
 
     D3DXVec3Normalize(&newLight->direction, &direction);
@@ -75,13 +83,13 @@ void AddLight(D3DLIGHTTYPE type, D3DXCOLOR diffuse, D3DXVECTOR3 direction, D3DXV
     newLight->position = position;
     newLight->light.Position = position;
 
-    // ���C�g�̎�ނ��Ƃ̐ݒ�
+    // ライトの種類ごとの設定
     if (type == D3DLIGHT_POINT)
     {
-        newLight->light.Attenuation0 = 0.0f;
-        newLight->light.Attenuation1 = 0.1f;
-        newLight->light.Attenuation2 = 0.01f;
-        newLight->light.Range = 100.0f;
+        newLight->light.Attenuation0 = 0.1f;    // 減衰なしで光を強くする
+        newLight->light.Attenuation1 = 0.2f;
+        newLight->light.Attenuation2 = 0.0f;
+        newLight->light.Range = 100.0f;         // 光の届く範囲
     }
     else if (type == D3DLIGHT_SPOT)
     {
@@ -91,64 +99,64 @@ void AddLight(D3DLIGHTTYPE type, D3DXCOLOR diffuse, D3DXVECTOR3 direction, D3DXV
         newLight->light.Falloff = 1.0f;
     }
 
-    pDevice->SetLight(g_LightCount, &newLight->light);
-    pDevice->LightEnable(g_LightCount, TRUE);
+    pDevice->SetLight(newIndex, &newLight->light);
+    pDevice->LightEnable(newIndex, TRUE);
 
     g_LightCount++;
+
+    return newIndex; // **追加したライトのインデックスを返す！**
 }
 //=============================
-// ���C�g�̍폜����
+// ライトの削除処理
 //=============================
 void RemoveLight(int index) 
 {
-    // �͈͊O�`�F�b�N
+    // 範囲外チェック
     if (index < 0 || index >= g_LightCount) 
     {
-        return; // �����ȃC���f�b�N�X
+        return; // 無効なインデックス
     }
 
-    // �f�o�C�X�̎擾
+    // デバイスの取得
     LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-    // �폜���郉�C�g�𖳌���
+    // 削除するライトを無効化
     pDevice->LightEnable(index, FALSE);
 
-    // ���C�g�����X�g����폜�i�㑱�̃��C�g��O�ɋl�߂�j
+    // ライトをリストから削除（後続のライトを前に詰める）
     for (int nLight = index; nLight < g_LightCount - 1; nLight++)
     {
         g_Lights[nLight] = g_Lights[nLight + 1];
-        // ���C�g�̃C���f�b�N�X���Đݒ�
+        // ライトのインデックスを再設定
         pDevice->SetLight(nLight, &g_Lights[nLight].light);
         pDevice->LightEnable(nLight, TRUE);
     }
 
-    // ���C�g��������
+    // ライト数を減少
     g_LightCount--;
 }
 //=============================
-// ���C�g�̏I������
+// ライトの終了処理
 //=============================
 void UninitLight(void)
 {
 
-    // �f�o�C�X�̎擾
     LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-    // �S�Ẵ��C�g�𖳌���
-    for (int nLight = 0; nLight < g_LightCount; nLight++)
+    // すべてのライトを無効化
+    for (int i = 0; i < g_LightCount; i++)
     {
-        pDevice->LightEnable(nLight, FALSE);
+        pDevice->LightEnable(i, FALSE);
     }
 
-    // �����������
+    // メモリ解放
     free(g_Lights);
     g_Lights = NULL;
     g_LightCount = 0;
     g_LightCapacity = 0;
-
 }
 //=============================
-// ���C�g�̍X�V����
+// ライトの更新処理
 //=============================
 void UpdateLight(int index, D3DXVECTOR3 newPosition, D3DXVECTOR3 newDirection) 
 {
@@ -161,20 +169,20 @@ void UpdateLight(int index, D3DXVECTOR3 newPosition, D3DXVECTOR3 newDirection)
     LPDIRECT3DDEVICE9 pDevice = GetDevice();
     LightInfo* light = &g_Lights[index];
 
-    // �ʒu�̍X�V
+    // 位置の更新
     light->position = newPosition;
     light->light.Position = newPosition;
 
-    // �����̍X�V�i�[���x�N�g���h�~�j
+    // 方向の更新（ゼロベクトル防止）
     if (D3DXVec3Length(&newDirection) == 0.0f) 
     {
-        newDirection = D3DXVECTOR3(0, -1, 0);  // �f�t�H���g�͉�����
+        newDirection = D3DXVECTOR3(0, -1, 0);  // デフォルトは下向き
     }
 
     D3DXVec3Normalize(&light->direction, &newDirection);
     light->light.Direction = light->direction;
 
-    // �X�|�b�g���C�g�̏ꍇ�A�����W��p�x���Đݒ肷��
+    // スポットライトの場合、レンジや角度を再設定する
     if (light->light.Type == D3DLIGHT_SPOT) 
     {
         light->light.Range = 100.0f;
@@ -183,15 +191,42 @@ void UpdateLight(int index, D3DXVECTOR3 newPosition, D3DXVECTOR3 newDirection)
         light->light.Falloff = 1.0f;
     }
 
-    // ���C�g���Đݒ�
+    // ライトを再設定
     pDevice->SetLight(index, &light->light);
 
-    // �O�̂��߃��C�g���ēx�L����
+    // 念のためライトを再度有効化
     pDevice->LightEnable(index, TRUE);
 
 }
 //=============================
-// �v���C���[���C�g�̐ݒ菈��
+// ライト点滅の更新処理
+//=============================
+void UpdateLightBlinking(float deltaTime)
+{
+    LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+    if (g_BlinkingLightIndex == -1)
+    {
+        return; // 点滅させるライトがない場合は何もしない
+    }
+
+    g_LightTimer += deltaTime;
+
+    // 次の点滅時間を超えたらON/OFFを切り替える
+    if (g_LightTimer > g_NextBlinkTime)
+    {
+        g_bLightOn = !g_bLightOn; // フラグを反転
+
+        pDevice->LightEnable(g_BlinkingLightIndex, g_bLightOn); // ライトのON/OFFを切り替え
+
+        g_LightTimer = 0.0f; // タイマーをリセット
+
+        // 次の点滅時間をランダムに設定（0.2〜2秒）
+        g_NextBlinkTime = (rand() % 1800 + 200) / 1000.0f; // 0.2〜2.0秒
+    }
+}
+//=============================
+// プレイヤーライトの設定処理
 //=============================
 void AddLightPlayer(D3DLIGHTTYPE type, D3DXCOLOR diffuse)
 {
@@ -204,30 +239,30 @@ void AddLightPlayer(D3DLIGHTTYPE type, D3DXCOLOR diffuse)
         return;
     }
 
-    // �v���C���[�̈ʒu�Ǝ����������擾
-    D3DXVECTOR3 playerPos = pPlayer->pos;  // �v���C���[�̌��݈ʒu
-    D3DXVECTOR3 playerDir = pPlayer->forward; // �v���C���[�̎�������
+    // プレイヤーの位置と視線方向を取得
+    D3DXVECTOR3 playerPos = pPlayer->pos;  // プレイヤーの現在位置
+    D3DXVECTOR3 playerDir = pPlayer->forward; // プレイヤーの視線方向
 
-    // �v���C���[�̖ڂ̍����Ƀ��C�g��ݒ�
+    // プレイヤーの目の高さにライトを設定
     playerPos.y += 75.0f;
 
-    // �ڐ��������[���x�N�g���łȂ����m�F���A���K��
+    // 目線方向がゼロベクトルでないか確認し、正規化
     if (D3DXVec3Length(&playerDir) == 0.0f)
     {
-        playerDir = D3DXVECTOR3(0, 0, 1); // �f�t�H���g�̎�������
+        playerDir = D3DXVECTOR3(0, 0, 1); // デフォルトの視線方向
     }
 
     D3DXVec3Normalize(&playerDir, &playerDir);
 
-    // �v���C���[�̎��������ɏ����O���Ƀ��C�g��z�u
+    // プレイヤーの視線方向に少し前方にライトを配置
     D3DXVECTOR3 lightPos = playerPos + (playerDir);
 
-    // ���C�g��ǉ�
+    // ライトを追加
     AddLight(type, diffuse, playerDir, lightPos);
 
 }
 //=============================
-// �|�C���g���C�g�̐ݒ菈��
+// ポイントライトの設定処理
 //=============================
 void AddPointlightToBlock(void)
 {
@@ -235,18 +270,27 @@ void AddPointlightToBlock(void)
 
     if (!GetBlockPosition(&boardPosition))
     {
-        return; // �`���[�g���A���{�[�h��������Ȃ���Ή������Ȃ�
+        return; // チュートリアルボードが見つからなければ何もしない
     }
 
-    // �|�C���g���C�g�̌�����ݒ�i�ォ��Ƃ炷�j
+    // ポイントライトの向きを設定
     D3DXVECTOR3 lightDirection = D3DXVECTOR3(0, -1, 0);
 
-    // ���C�g�̐F��ݒ�
+    // ライトの色を設定
     D3DXCOLOR lightColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
-    // �|�C���g���C�g�̈ʒu�i�{�[�h�̏�ɔz�u�j
-    D3DXVECTOR3 lightPosition = boardPosition + D3DXVECTOR3(0, 200.0f, 0);
+    // ポイントライトの位置（ボードの上に配置）
+    D3DXVECTOR3 lightPosition = boardPosition + D3DXVECTOR3(-50.0f, 100.0f, 0.0f);
 
-    // �|�C���g���C�g�̒ǉ�
-    AddLight(D3DLIGHT_POINT, lightColor, lightDirection, lightPosition);
+    // AddLight の戻り値を g_BlinkingLightIndex に設定
+    int newLightIndex = AddLight(D3DLIGHT_POINT, lightColor, lightPosition,lightPosition);
+
+    // 新しいライトが追加されたか確認
+    if (newLightIndex != -1)
+    {
+        g_BlinkingLightIndex = newLightIndex;
+    }
+
+    // 最初の点滅時間をランダムに設定
+    g_NextBlinkTime = (rand() % 2000) / 1000.0f; // 0.0〜2.0秒の間でランダム
 }

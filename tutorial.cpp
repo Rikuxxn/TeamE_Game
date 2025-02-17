@@ -79,7 +79,6 @@ void InitTutorial(void)
 //=================================
 void UninitTutorial(void)
 {
-
 	//テクスチャの破棄
 	if (g_pTextureTutorial != NULL)
 	{
@@ -87,14 +86,12 @@ void UninitTutorial(void)
 		g_pTextureTutorial = NULL;
 	}
 
-
 	//頂点バッファの破棄
 	if (g_pVtxBuffTutorial != NULL)
 	{
 		g_pVtxBuffTutorial->Release();
 		g_pVtxBuffTutorial = NULL;
 	}
-
 }
 //=================================
 // チュートリアル画面の更新処理

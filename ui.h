@@ -19,6 +19,7 @@ typedef enum
 	UITYPE_INPUT,
 	UITYPE_MAP,
 	UITYPE_USE,
+	UITYPE_DROP,
 
 	UITYPE_MAX
 }UITYPE;
@@ -31,6 +32,7 @@ typedef struct
 	float fWidth;								// UIの幅
 	float fHeight;								// UIの高さ
 	int nType;									// UIの種類
+	int nCounterUI;								// カウンター
 	bool bUse;									// 使用しているかどうか
 }UI;
 
@@ -41,6 +43,7 @@ static const char* UI_TEXTURE[UITYPE_MAX] =		// UIのテクスチャの設定
 	"data/TEXTURE/UI1.png",						// 入力する
 	"data/TEXTURE/UI4.png",						// マップ
 	"data/TEXTURE/UI5.png",						// 使う
+	"data/TEXTURE/画像1.png",					// 何かが落ちてきた
 
 };
 

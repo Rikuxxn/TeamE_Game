@@ -14,6 +14,7 @@
 LPDIRECT3DTEXTURE9 g_pTextureUI[UITYPE_MAX] = {};	// テクスチャへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffUI = NULL;		// 頂点バッファへのポインタ
 UI g_aUI[MAX_UI];
+bool bSetUI;
 
 //=========================================================
 // UIの初期化処理
@@ -43,8 +44,10 @@ void InitUI(void)
 		g_aUI[nCntUI].fHeight = 0.0f;
 		g_aUI[nCntUI].nType = UITYPE_GAME;
 		g_aUI[nCntUI].bUse = false;
+		g_aUI[nCntUI].nCounterUI = 0;
 
 	}
+	bSetUI = false;
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_UI,
@@ -169,6 +172,28 @@ void UpdateUI(void)
 			{
 				// falseにする
 				g_aUI[nCntUI].bUse = false;
+			}
+		}
+
+		// クレーンゲームをクリアしたら
+		if (pGame->bACClear == true && pGame->bDraw2 == false && bSetUI == false)
+		{
+			// UIを表示
+			SetUI(D3DXVECTOR3(650.0f, 600.0f, 0.0f), 160.0f, 30.0f, UITYPE_DROP);
+			bSetUI = true;
+		}
+		if (pGame->bACClear == true && pGame->bDraw2 == false)
+		{
+			g_aUI[nCntUI].nCounterUI++;
+
+			if (g_aUI[nCntUI].nCounterUI >= 240)
+			{
+				if (g_aUI[nCntUI].nType == UITYPE_DROP)
+				{
+					// falseにする
+					g_aUI[nCntUI].bUse = false;
+				}
+				g_aUI[nCntUI].nCounterUI = 0;
 			}
 		}
 

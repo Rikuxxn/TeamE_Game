@@ -46,70 +46,68 @@ void InitTitle(void)
 	// カーソルを表示する
 	SetCursorVisibility(true);
 
-	//メッシュフィールドの初期化処理
+	// メッシュフィールドの初期化処理
 	InitMeshfield();
 
-	//メッシュシーリングの初期化処理
+	// メッシュシーリングの初期化処理
 	InitMeshCeiling();
 
-	//カメラの初期化処理
+	// カメラの初期化処理
 	InitCamera();
 
-	//ライトの初期化処理
+	// ライトの初期化処理
 	InitLight();
 
-	//ブロックの初期化処理
+	// ブロックの初期化処理
 	InitBlock();
 
-	//プレイヤーの初期化処理
+	// プレイヤーの初期化処理
 	InitPlayer();
 
-	//エディット読み込み
+	// エディット読み込み
 	LoadTitleData();
 
-	//エディット読み込み
+	// エディット読み込み
 	LoadWallData();
 
 
 	AddLight(
 		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-		D3DXCOLOR(0.1f, 0.1f, 0.1f, 1.0f),    // 暗めの白い光
+		D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f),    // 暗めの白い光
 		D3DXVECTOR3(0.0f, -1.0f, 0.0f),       // 真下方向
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
 	);
 
 	AddLight(
 		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-		D3DXCOLOR(0.1f, 0.1f, 0.1f, 1.0f),    // 暗めの白い光
+		D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f),    // 暗めの白い光
 		D3DXVECTOR3(-1.0f, 0.0f, 0.0f),       // 左方向
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
 	);
 
 	AddLight(
 		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-		D3DXCOLOR(0.1f, 0.1f, 0.1f, 1.0f),    // 暗めの白い光
+		D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f),    // 暗めの白い光
 		D3DXVECTOR3(0.0f, 0.0f, -1.0f),       // 手前方向
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
 	);
 
 	AddLight(
 		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-		D3DXCOLOR(0.1f, 0.1f, 0.1f, 1.0f),    // 暗めの白い光
+		D3DXCOLOR(0.2f, 0.2, 0.2f, 1.0f),    // 暗めの白い光
 		D3DXVECTOR3(1.0f, 0.0f, 0.0f),       // 右方向
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
 	);
 
 	AddLight(
 		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-		D3DXCOLOR(0.1f, 0.1f, 0.1f, 1.0f),    // 暗めの白い光
+		D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f),    // 暗めの白い光
 		D3DXVECTOR3(0.0f, 0.0f, 1.0f),       // 奥方向
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
 	);
 
-	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
-	//デバイスの取得
-	pDevice = GetDevice();
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	for (int title = 0; title < MAX_TITLE; title++)
 	{
@@ -135,13 +133,11 @@ void InitTitle(void)
 
 	for (nCntTitle = 0; nCntTitle < MAX_TITLE; nCntTitle++)
 	{
-
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(500.0f, (150.0f + nCntTitle * 150), 0.0f);
 		pVtx[1].pos = D3DXVECTOR3(800.0f, (150.0f + nCntTitle * 150), 0.0f);
 		pVtx[2].pos = D3DXVECTOR3(500.0f, (250.0f + nCntTitle * 150), 0.0f);
 		pVtx[3].pos = D3DXVECTOR3(800.0f, (250.0f + nCntTitle * 150), 0.0f);
-
 
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
@@ -149,13 +145,11 @@ void InitTitle(void)
 		pVtx[2].rhw = 1.0f;
 		pVtx[3].rhw = 1.0f;
 
-
 		//頂点カラーの設定
 		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
 
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);

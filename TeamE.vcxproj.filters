@@ -71,6 +71,7 @@
     <ClCompile Include="crane_hint_bg.cpp" />
     <ClCompile Include="ball_tutorial.cpp" />
     <ClCompile Include="recommendation.cpp" />
+    <ClCompile Include="tutorial2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
@@ -142,5 +143,6 @@
     <ClInclude Include="crane_hint_bg.h" />
     <ClInclude Include="ball_tutorial.h" />
     <ClInclude Include="recommendation.h" />
+    <ClInclude Include="tutorial2.h" />
   </ItemGroup>
 </Project>

@@ -25,6 +25,7 @@
 #include "password_game.h"
 #include "sound.h"
 #include "recommendation.h"
+#include "tutorial2.h"
 
 //プロトタイプ宣言
 void DrawFPS(void);
@@ -456,6 +457,10 @@ void Update(void)
 		UpdateTutorial();
 		break;
 
+	case MODE_TUTORIAL2://チュートリアル画面2
+		UpdateTutorial2();
+		break;
+
 	case MODE_GAME://ゲーム画面
 		UpdateGame();
 		break;
@@ -528,6 +533,10 @@ void Draw(void)
 
 		case MODE_TUTORIAL://チュートリアル画面
 			DrawTutorial();
+			break;
+
+		case MODE_TUTORIAL2://チュートリアル画面2
+			DrawTutorial2();
 			break;
 
 		case MODE_GAME://ゲーム画面
@@ -736,6 +745,10 @@ void SetMode(MODE mode)
 		UninitTutorial();
 		break;
 
+	case MODE_TUTORIAL2://チュートリアル画面2
+		UninitTutorial2();
+		break;
+
 	case MODE_GAME://ゲーム画面
 		UninitGame();
 		break;
@@ -768,6 +781,10 @@ void SetMode(MODE mode)
 
 	case MODE_TUTORIAL://チュートリアル画面
 		InitTutorial();
+		break;
+
+	case MODE_TUTORIAL2://チュートリアル画面2
+		InitTutorial2();
 		break;
 
 	case MODE_GAME://ゲーム画面

@@ -204,12 +204,12 @@ void InitGame(void)
 	//InitParticle();
 
 
+	//サウンドの停止
+	StopSound();
+
+
 	//サウンドの再生
 	PlaySound(SOUND_LABEL_GAMEBGM);
-
-
-	////サウンドの停止
-	//StopSound(SOUND_LABEL_RANK);
 
 
 	g_gameState = GAMESTATE_NORMAL;//通常状態に設定

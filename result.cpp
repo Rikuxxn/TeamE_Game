@@ -40,6 +40,7 @@ float g_fAlphaRank;												// ランク用のアルファ値
 
 int g_nRankCnt;
 int g_nTimeCnt;
+bool g_bResulutSelect;
 
 LPDIRECT3DTEXTURE9 g_pTextureResultTimeMinute = NULL;			// テクスチャへのポインタ
 LPDIRECT3DTEXTURE9 g_pTextureResultTimeSecond = NULL;			// テクスチャへのポインタ
@@ -76,6 +77,7 @@ void InitResult(void)
 	bool bEnd = GetEnd();
 	int nTimeMinutes = GetTimeMinutes();
 	int nTimeSeconds = GetTimeSeconds();
+	g_bResulutSelect = false;
 
 	if (pFlag->bExit == true)
 	{//脱出したら
@@ -495,6 +497,7 @@ void UpdateResult(void)
 				{
 					clearAlphas[nCnt] = 0.3f;
 				}
+				g_bResulutSelect = false;
 			}
 			else if (nCnt == g_clearMenu)
 			{
@@ -503,6 +506,11 @@ void UpdateResult(void)
 				if (clearAlphas[nCnt] > 1.0f)
 				{
 					clearAlphas[nCnt] = 1.0f;
+				}
+				if (g_bResulutSelect == false)
+				{
+					PlaySound(SOUND_LABEL_SELECT);
+					g_bResulutSelect = true;
 				}
 			}
 			else
@@ -561,6 +569,7 @@ void UpdateResult(void)
 
 					// タイトル画面に移行
 					SetFade(MODE_TITLE);
+					PlaySound(SOUND_LABEL_OK);
 
 					break;
 				}
@@ -600,6 +609,10 @@ void UpdateResult(void)
 				// 範囲外ならすべて半透明
 				gameoverAlphas[nCnt] -= 0.1f; // 徐々に薄く
 				if (gameoverAlphas[nCnt] < 0.3f) gameoverAlphas[nCnt] = 0.3f;
+				else
+				{
+					g_bResulutSelect = false;
+				}
 			}
 			else if (nCnt == g_gameoverMenu)
 			{
@@ -608,6 +621,11 @@ void UpdateResult(void)
 				if (gameoverAlphas[nCnt] > 1.0f)
 				{
 					gameoverAlphas[nCnt] = 1.0f;
+				}
+				if (g_bResulutSelect == false)
+				{
+					PlaySound(SOUND_LABEL_SELECT);
+					g_bResulutSelect = true;
 				}
 			}
 			else
@@ -666,6 +684,7 @@ void UpdateResult(void)
 
 					// ゲーム画面に移行
 					SetFade(MODE_GAME);
+					PlaySound(SOUND_LABEL_OK);
 
 					break;
 
@@ -673,6 +692,7 @@ void UpdateResult(void)
 
 					// タイトル画面に移行
 					SetFade(MODE_TITLE);
+					PlaySound(SOUND_LABEL_OK);
 
 					break;
 				}

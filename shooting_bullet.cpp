@@ -175,10 +175,10 @@ void UpdateBullet(void)
 
 				if (pPlayer->bUse == true)
 				{//プレイヤーが使用されている
-					if (g_aBullet[nCntBullet].pos.x >= pPlayer->pos.x-HABA
-						&& g_aBullet[nCntBullet].pos.x <= pPlayer->pos.x + HABA
-						&& g_aBullet[nCntBullet].pos.y >= pPlayer->pos.y - TAKASA
-						&& g_aBullet[nCntBullet].pos.y <= pPlayer->pos.y + TAKASA)//敵と弾が当たった
+					if (g_aBullet[nCntBullet].pos.x >= pPlayer->pos.x - WIDTH
+						&& g_aBullet[nCntBullet].pos.x <= pPlayer->pos.x + WIDTH
+						&& g_aBullet[nCntBullet].pos.y >= pPlayer->pos.y - HEIGHT
+						&& g_aBullet[nCntBullet].pos.y <= pPlayer->pos.y + HEIGHT)//敵と弾が当たった
 					{
 						HitShootingPlayer(1);
 						g_aBullet[nCntBullet].bUse = false;//弾を使用していない状態にする

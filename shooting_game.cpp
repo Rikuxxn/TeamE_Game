@@ -83,8 +83,10 @@ void UpdateShootingGame(void)
 			g_nCntShootingGameState++;
 		}
 
-		if (g_nCntShootingGameState >= 90 && nNum <= 0 && pPlayer->bUse == true)
+		if (g_nCntShootingGameState == 60 && nNum <= 0 && pPlayer->bUse == true)
 		{
+			//サウンドの再生
+			PlaySound(SOUND_LABEL_MINICLEAR);
 			UpdateClear();
 		}
 		break;
@@ -102,8 +104,6 @@ void DrawShootingGame(void)
 
 	if (g_nCntShootingGameState >= 60)
 	{
-		//サウンドの再生
-		PlaySound(SOUND_LABEL_STCLEAR);
 		DrawSTPass();		//パスワードの描画処理
 		DrawClear();		//クリア表示の描画処理
 	}

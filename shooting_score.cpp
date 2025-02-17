@@ -42,9 +42,9 @@ void InitSTPass(void)
 	{
 		//í∏ì_ç¿ïWÇÃê›íË
 		pVtx[0].pos = D3DXVECTOR3(PASSPOSX + nCntSTPass * 20.0f, PASSPOSY, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(PASSPOSX + nCntSTPass * 20.0f + 100.0f, PASSPOSY, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(PASSPOSX + nCntSTPass * 20.0f, PASSPOSY + 110.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(PASSPOSX + nCntSTPass * 20.0f + 100.0f, PASSPOSY + 110.0f, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(PASSPOSX + nCntSTPass * 20.0f + 80.0f, PASSPOSY, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(PASSPOSX + nCntSTPass * 20.0f, PASSPOSY + 150.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(PASSPOSX + nCntSTPass * 20.0f + 80.0f, PASSPOSY + 150.0f, 0.0f);
 		//rhwÇÃê›íË
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;

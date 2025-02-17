@@ -6,11 +6,11 @@
 #ifndef _SHOOTINGPLAYER_H_//このマクロ定義がされてなかったら
 #define _SHOOTINGPLAYER_H_//２重インクルード防止のマクロ定義
 
-#define HABA (25.0f)		//幅
-#define TAKASA (50.0f)		//高さ
-#define BULLETINTERVAL (10)	//発射間隔
-#define BULLETCOOL (20)		//クールタイム
-#define BULLETMAX (3)		//1度の射撃数
+#define WIDTH (25.0f)		//幅
+#define HEIGHT (50.0f)		//高さ
+#define BULLET_INTERVAL (10)//発射間隔
+#define BULLET_COOL (20)	//クールタイム
+#define BULLET_MAX (3)		//1度の射撃数
 
 //プレイヤーの状態
 typedef enum

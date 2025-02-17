@@ -59,6 +59,7 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/SE/select.wav", 0},			// 選択
 	{"data/SE/ok.wav", 0},				// 決定
 	{"data/SE/gamestart.wav", 0},		// ゲームスタート
+	{"data/SE/clear.wav", 0},			// ミニゲームクリア
 
 };
 

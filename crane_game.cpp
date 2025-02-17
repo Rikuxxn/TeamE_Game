@@ -35,9 +35,9 @@ void InitCraneGame(void)
 	InitCraneClear();		//クリア画面の初期化
 
 	SetCraneBlock(D3DXVECTOR3(FIELD_LEFT + 100.0f, FIELD_UNDER - 30.0f, 0.0f), D3DXVECTOR3(), 40.0f, 30.0f, 0);	//ブロック
-	SetCraneItem(D3DXVECTOR3(540.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH + 20.0f, ITEM_HEIGHT + 20.0f, 1);
-	SetCraneItem(D3DXVECTOR3(640.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 2);
-	SetCraneItem(D3DXVECTOR3(740.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 3);					//アイテム
+	SetCraneItem(D3DXVECTOR3(600.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH + 20.0f, ITEM_HEIGHT + 20.0f, 1);
+	SetCraneItem(D3DXVECTOR3(800.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 2);
+	//SetCraneItem(D3DXVECTOR3(740.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 3);					//アイテム
 
 	g_gameState = CRANEGAMESTATE_NORMAL;//通常状態に設定
 	g_nCounterCraneGameState = 0;
@@ -87,9 +87,10 @@ void UpdateCraneGame(void)
 			g_nCounterCraneGameState++;
 		}
 
-		if (g_nCounterCraneGameState >= 45 && nNum == 0 && pPlayer->bUse == true)
+		if (g_nCounterCraneGameState == 45 && nNum == 0 && pPlayer->bUse == true)
 		{
-			UpdateCraneClear();
+			PlaySound(SOUND_LABEL_MINICLEAR);
+			//UpdateCraneClear();
 		}
 		break;
 	}
@@ -104,10 +105,10 @@ void DrawCraneGame(void)
 	DrawCraneBlock();		//ブロックの描画処理
 	DrawCraneEffect();		//エフェクトの描画処理
 
-	if (g_nCounterCraneGameState >= 45)
-	{
-		//DrawCraneClear();
-	}
+	//if (g_nCounterCraneGameState >= 45)
+	//{
+	//	DrawCraneClear();
+	//}
 }
 void SetCraneGameState(CRANEGAMESTATE state)
 {

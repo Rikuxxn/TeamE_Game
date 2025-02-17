@@ -34,9 +34,9 @@ void InitShootingPlayer(void)
 		"data\\TEXTURE\\Player.png",//テクスチャのファイル名
 		&g_pTexturePlayer1);
 
-	g_player.pos = D3DXVECTOR3(640.0f,700.0f,0.0f);//位置を初期化する
-	g_player.move = D3DXVECTOR3(0.0f,0.0f,0.0f);   //移動量を初期化する
-	g_player.rot = D3DXVECTOR3(0.0f,0.0f,0.0f);	   //向きを初期化する、今回はZ軸（3番目）
+	g_player.pos = D3DXVECTOR3(640.0f,700.0f,0.0f);// 位置を初期化する
+	g_player.move = D3DXVECTOR3(0.0f,0.0f,0.0f);   // 移動量を初期化する
+	g_player.rot = D3DXVECTOR3(0.0f,0.0f,0.0f);	   // 向きを初期化する、今回はZ軸（3番目）
 	g_player.Bullet.x = 10.0f;
 	g_player.Bullet.y = 10.0f;
 	g_player.bUse = true;
@@ -45,7 +45,7 @@ void InitShootingPlayer(void)
 	g_player.nCntAnimState = 0;
 	g_player.nLife = 8;
 	g_player.nBulletType = 0;
-	g_player.nBulletCnt = BULLETCOOL;
+	g_player.nBulletCnt = BULLET_COOL;
 	g_player.nBulletCool = 0;
 	g_player.nBulletMax = 0;
 
@@ -53,7 +53,7 @@ void InitShootingPlayer(void)
 	g_player.Length = sqrtf(50.0f * 50.0f + 50.0f * 50.0f) / 2.0f;
 
 	//対角線の角度を算出する
-	g_player.Angle = atan2f(HABA ,TAKASA);
+	g_player.Angle = atan2f(WIDTH,HEIGHT);
 
 	//頂点バッファ2の生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
@@ -228,7 +228,7 @@ void UpdateShootingPlayer(void)
 			if (GetKeyboardPress(DIK_SPACE) == true || GetMouseButtonPress(0)/*|| GetJoypadPress(JOYKEY_A) == true*/)
 			{//SPACE
 				g_player.nBulletCnt++;
-				if (g_player.nBulletCnt >= BULLETINTERVAL/* && g_player.nBulletMax < BULLETMAX*/)
+				if (g_player.nBulletCnt >= BULLET_INTERVAL/* && g_player.nBulletMax < BULLETMAX*/)
 				{
 					//弾の設定
 					PlaySound(SOUND_LABEL_STSHOT);
@@ -239,7 +239,7 @@ void UpdateShootingPlayer(void)
 			}
 			else if (KeyboardRelease(DIK_SPACE) == true /*|| JoypadRelease(JOYKEY_A) == true*/)
 			{
-				g_player.nBulletCnt = BULLETINTERVAL;
+				g_player.nBulletCnt = BULLET_INTERVAL;
 				g_player.nBulletMax = 0;
 			}
 			break;
@@ -262,9 +262,9 @@ void UpdateShootingPlayer(void)
 		SetParticle(D3DXVECTOR3(g_player.pos.x - 7.0f, g_player.pos.y + 20.0f, g_player.pos.z), 1);
 	}
 
-	if (g_player.nBulletMax < BULLETMAX)
+	if (g_player.nBulletMax < BULLET_MAX)
 	{
-		g_player.nBulletCool = BULLETCOOL;
+		g_player.nBulletCool = BULLET_COOL;
 	}
 	if (g_player.nBulletCool >= 0)
 	{
@@ -336,22 +336,22 @@ void UpdateShootingPlayer(void)
 	pVtx[3].pos.y = g_player.pos.y + cosf(g_player.rot.z + (0.0f + g_player.Angle)) * g_player.Length;
 	pVtx[3].pos.z = 0.0f;
 
-	if (g_player.pos.x >= 920 - HABA)
+	if (g_player.pos.x >= 920 - WIDTH)
 	{
-		g_player.pos.x = 920 - HABA;
+		g_player.pos.x = 920 - WIDTH;
 	}
-	else if (g_player.pos.x <= 360 + HABA)
+	else if (g_player.pos.x <= 360 + WIDTH)
 	{
-		g_player.pos.x = 360 + HABA;
+		g_player.pos.x = 360 + WIDTH;
 	}
 
-	if (g_player.pos.y >= SCREEN_HEIGHT - TAKASA)
+	if (g_player.pos.y >= SCREEN_HEIGHT - HEIGHT)
 	{
-		g_player.pos.y = SCREEN_HEIGHT - TAKASA;
+		g_player.pos.y = SCREEN_HEIGHT - HEIGHT;
 	}
-	else if (g_player.pos.y <= 0 + TAKASA)
+	else if (g_player.pos.y <= 0 + HEIGHT)
 	{
-		g_player.pos.y = 0 + TAKASA;
+		g_player.pos.y = 0 + HEIGHT;
 	}
 
 	//頂点バッファをアンロックする

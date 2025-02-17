@@ -11,7 +11,7 @@
 #define CLEAR_WIDTH (400.0f)
 #define CLEAR_HEIGHT (150.0f)
 
-//プロト
+// プロト
 void InitBallClear(void);
 void UninitBallClear(void);
 void UpdateBallClear(void);

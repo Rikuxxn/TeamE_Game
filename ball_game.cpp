@@ -16,20 +16,20 @@
 #include "sound.h"
 #include "ball_clear.h"
 
-//グローバル
-BALLGAMESTATE g_gameState = BALLGAMESTATE_NONE;		//ゲームの状態
-int g_nCounterBallGameState = 0;					//状態管理カウンター
+// グローバル
+BALLGAMESTATE g_gameState = BALLGAMESTATE_NONE;		// ゲームの状態
+int g_nCounterBallGameState = 0;					// 状態管理カウンター
 
 void InitBallGame(void)
 {
-	//各種オブジェクトの初期化処理
-	InitBallBackGround();	//背景の初期化処理
-	InitBallParticle();		//パーティクルの初期化
-	InitBallBlock();		//ブロックの初期化処理
-	InitBallEffect();		//エフェクトの初期化
-	InitBallItem();			//アイテムの初期化
-	InitBallClear();		//クリア画面の初期化
-	InitBallTutorial();		//チュートリアルの初期化
+	// 各種オブジェクトの初期化処理
+	InitBallBackGround();	// 背景の初期化処理
+	InitBallParticle();		// パーティクルの初期化
+	InitBallBlock();		// ブロックの初期化処理
+	InitBallEffect();		// エフェクトの初期化
+	InitBallItem();			// アイテムの初期化
+	InitBallClear();		// クリア画面の初期化
+	InitBallTutorial();		// チュートリアルの初期化
 
 	SetBallBlock(D3DXVECTOR3(BALLPOS + 100.0f, BALLFIELD_UNDER - 50.0f, 0.0f), D3DXVECTOR3(), 50.0f, 50.0f, 1);	//ブロック
 	
@@ -48,38 +48,38 @@ void InitBallGame(void)
 	SetBallItem(D3DXVECTOR3(637.0f, BALLFIELD_UNDER - 389.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 2);
 	SetBallItem(D3DXVECTOR3(870.0f, BALLFIELD_UNDER - 209.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 0);
 
-	g_gameState = BALLGAMESTATE_NORMAL;//通常状態に設定
+	g_gameState = BALLGAMESTATE_NORMAL;// 通常状態に設定
 	g_nCounterBallGameState = 0;
 }
 void UninitBallGame(void)
 {
-	//各種オブジェクトの終了処理
-	UninitBallBackGround();	//背景の終了処理
-	UninitBallParticle();	//パーティクルの終了処理
-	UninitBallBlock();		//ブロックの終了処理
-	UninitBallEffect();		//エフェクトの終了処理
-	UninitBallItem();		//アイテムの終了処理
-	UninitBallClear();		//クリア画面の終了処理
-	UninitBallTutorial();	//チュートリアルの終了処理
+	// 各種オブジェクトの終了処理
+	UninitBallBackGround();	// 背景の終了処理
+	UninitBallParticle();	// パーティクルの終了処理
+	UninitBallBlock();		// ブロックの終了処理
+	UninitBallEffect();		// エフェクトの終了処理
+	UninitBallItem();		// アイテムの終了処理
+	UninitBallClear();		// クリア画面の終了処理
+	UninitBallTutorial();	// チュートリアルの終了処理
 }
 void UpdateBallGame(void)
 {
 	int nNum = GetNumBallItem();
 	bool bStart = GetStart();
 
-	//各種オブジェクトの更新処理
+	// 各種オブジェクトの更新処理
 	if (bStart == true)
 	{
-		UpdateBallBackGround();	//背景の更新処理
-		UpdateBallParticle();	//パーティクルの更新処理
-		UpdateBallEffect();		//エフェクトの更新処理
-		UpdateBallItem();		//アイテムの更新処理
+		UpdateBallBackGround();	// 背景の更新処理
+		UpdateBallParticle();	// パーティクルの更新処理
+		UpdateBallEffect();		// エフェクトの更新処理
+		UpdateBallItem();		// アイテムの更新処理
 	}
-	UpdateBallTutorial();	//チュートリアルの更新処理
+	UpdateBallTutorial();	// チュートリアルの更新処理
 
-	if (nNum == 0)//終了条件
+	if (nNum == 0)// 終了条件
 	{
-		//画面(モード)の設定
+		// 画面(モード)の設定
 		g_gameState = BALLGAMESTATE_END;
 	}
 
@@ -87,9 +87,9 @@ void UpdateBallGame(void)
 	{
 	case BALLGAMESTATE_NONE:
 		break;
-	case BALLGAMESTATE_NORMAL://通常状態
+	case BALLGAMESTATE_NORMAL:	// 通常状態
 		break;
-	case BALLGAMESTATE_END://終了状態
+	case BALLGAMESTATE_END:		// 終了状態
 		if (g_nCounterBallGameState <= 45)
 		{
 			g_nCounterBallGameState++;
@@ -104,17 +104,18 @@ void UpdateBallGame(void)
 }
 void DrawBallGame(void)
 {
-	//各種オブジェクトの描画処理
-	DrawBallBackGround();	//背景の描画処理
-	DrawBallParticle();		//パーティクルの描画処理
-	DrawBallItem();			//アイテムの描画処理
-	DrawBallBlock();		//ブロックの描画処理
-	DrawBallEffect();		//エフェクトの描画処理
-	DrawBallTutorial();		//チュートリアルの描画処理
+	// 各種オブジェクトの描画処理
+	DrawBallBackGround();	// 背景の描画処理
+	DrawBallParticle();		// パーティクルの描画処理
+	DrawBallItem();			// アイテムの描画処理
+	DrawBallBlock();		// ブロックの描画処理
+	DrawBallEffect();		// エフェクトの描画処理
+	DrawBallTutorial();		// チュートリアルの描画処理
 
 	if (g_nCounterBallGameState >= 45)
 	{
-		DrawBallClear();
+		PlaySound(SOUND_LABEL_MINICLEAR);
+		//DrawBallClear();
 	}
 }
 void SetBallGameState(BALLGAMESTATE state)

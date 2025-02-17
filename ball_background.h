@@ -4,7 +4,7 @@
 
 #include "main.h"
 
-//プロト
+// プロト
 void InitBallBackGround(void);
 void UninitBallBackGround(void);
 void UpdateBallBackGround(void);

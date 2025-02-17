@@ -5,13 +5,13 @@
 
 typedef enum
 {
-	CRANEGAMESTATE_NONE = 0,//何もしていない状態
-	CRANEGAMESTATE_NORMAL,	//通常状態（ゲーム進行中）
-	CRANEGAMESTATE_END,		//終了状態（敵全滅、プレイヤー減、タイムオーバーなど）
+	CRANEGAMESTATE_NONE = 0,// 何もしていない状態
+	CRANEGAMESTATE_NORMAL,	// 通常状態（ゲーム進行中）
+	CRANEGAMESTATE_END,		// 終了状態（敵全滅、プレイヤー減、タイムオーバーなど）
 	CRANEGAMESTATE_MAX
 }CRANEGAMESTATE;
 
-//マクロ
+// マクロ
 void InitCraneGame(void);
 void UninitCraneGame(void);
 void UpdateCraneGame(void);

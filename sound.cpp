@@ -40,6 +40,9 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/BGM/titleBGM.wav", -1},		// タイトルBGM
 	{"data/SE/footstep_1.wav", 0},		// 足音SE
 	{"data/SE/footstep_2.wav", 0},		// 足音SE
+	{"data/SE/ballcatch.wav", 0},		// ボールを掴む
+	{"data/SE/ballget.wav", 0},			// ボールを手に入れる
+	{"data/SE/ballclear.wav", 0},		// ボールプールクリア
 	{"data/SE/ClaneDown.wav", 0},		// クレーンを下げる
 	{"data/SE/ClaneUP.wav", 0},			// クレーンを上げる
 	{"data/SE/Claneget.wav", 0},		// 景品ゲット

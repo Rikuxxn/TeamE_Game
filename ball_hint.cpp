@@ -7,22 +7,26 @@
 #include "ball_score.h"
 #include "password_game.h"
 
+// ‰Šú‰»ˆ—
 void InitBallHint(void)
 {
 	InitBallHintBG();
 	InitBallPass();
 	SetBallPass(GetAnum3());
 }
+// I—¹ˆ—
 void UninitBallHint(void)
 {
 	UninitBallHintBG();
 	UninitBallPass();
 }
+// XVˆ—
 void UpdateBallHint(void)
 {
 	UpdateBallHintBG();
 	UpdateBallPass();
 }
+// •`‰æˆ—
 void DrawBallHint(void)
 {
 	DrawBallHintBG();

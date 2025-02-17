@@ -34,9 +34,9 @@ void InitCraneGame(void)
 	InitCraneItem();		//アイテムの初期化
 	InitCraneClear();		//クリア画面の初期化
 
-	SetCraneBlock(D3DXVECTOR3(FIELD_LEFT + 100.0f, FIELD_UNDER - 30.0f, 0.0f), D3DXVECTOR3(), 40.0f, 30.0f, 0);	//ブロック
-	SetCraneItem(D3DXVECTOR3(600.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH + 20.0f, ITEM_HEIGHT + 20.0f, 1);
-	SetCraneItem(D3DXVECTOR3(800.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 2);
+	SetCraneBlock(D3DXVECTOR3(CLANEFIELD_LEFT + 125.0f, CLANEFIELD_UNDER - 30.0f, 0.0f), D3DXVECTOR3(), 40.0f, 30.0f, 0);	//ブロック
+	SetCraneItem(D3DXVECTOR3(600.0f, CLANEFIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH + 20.0f, ITEM_HEIGHT + 20.0f, 1);
+	SetCraneItem(D3DXVECTOR3(800.0f, CLANEFIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH + 10.0f, ITEM_HEIGHT + 10.0f, 2);
 	//SetCraneItem(D3DXVECTOR3(740.0f, FIELD_UNDER - 15.0f, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 3);					//アイテム
 
 	g_gameState = CRANEGAMESTATE_NORMAL;//通常状態に設定

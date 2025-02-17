@@ -17,26 +17,26 @@
 #include "sound.h"
 
 // グローバル変数宣言
-PASSWORDGAMESTATE g_gameState = PASSWORDGAMESTATE_NONE;	//ゲームの状態
-int g_nCounterPasswordGameState = 0;					//状態管理カウンター
-int g_nA1, g_nA2, g_nA3, g_nA4;							//パスワードの答え
+PASSWORDGAMESTATE g_gameState = PASSWORDGAMESTATE_NONE;	// ゲームの状態
+int g_nCounterPasswordGameState = 0;					// 状態管理カウンター
+int g_nA1, g_nA2, g_nA3, g_nA4;							// パスワードの答え
 
 //=========================
 //|      初期化処理　     |
 //=========================
 void InitPasswordGame(void)
 {
-	//各種オブジェクトの初期化処理
-	InitPasswordBackGround();	//背景の初期化処理
-	InitPasswordParticle();		//パーティクルの初期化
-	InitPassBlock();			//ブロックの初期化処理
-	InitPasswordEffect();		//エフェクトの初期化
-	InitPasswordItem();			//アイテムの初期化
-	InitPasswordClear();		//クリア画面の初期化
-	InitPassword();				//パスワードの初期化
+	// 各種オブジェクトの初期化処理
+	InitPasswordBackGround();	// 背景の初期化処理
+	InitPasswordParticle();		// パーティクルの初期化
+	InitPassBlock();			// ブロックの初期化処理
+	InitPasswordEffect();		// エフェクトの初期化
+	InitPasswordItem();			// アイテムの初期化
+	InitPasswordClear();		// クリア画面の初期化
+	InitPassword();				// パスワードの初期化
 
 	SetPassword(0,0,false);
-	//アイテム
+	// アイテム
 	SetPasswordItem(D3DXVECTOR3(ITEM_POSX_LEFT, ITEM_POSY_TOP, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 1, NUMTYPE_1);
 	SetPasswordItem(D3DXVECTOR3(ITEM_POSX_CENTER, ITEM_POSY_TOP, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 2, NUMTYPE_2);
 	SetPasswordItem(D3DXVECTOR3(ITEM_POSX_RIGHT, ITEM_POSY_TOP, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 3, NUMTYPE_3);
@@ -50,8 +50,8 @@ void InitPasswordGame(void)
 	SetPasswordItem(D3DXVECTOR3(ITEM_POSX_CENTER, ITEM_POSY_UNDER, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 0, NUMTYPE_0);
 	SetPasswordItem(D3DXVECTOR3(ITEM_POSX_RIGHT, ITEM_POSY_UNDER, 0.0f), ITEM_WIDTH, ITEM_HEIGHT, 10, NUMTYPE_ENTER);
 
-	srand((unsigned int)time(NULL));		//ランダム
-	g_gameState = PASSWORDGAMESTATE_NORMAL;	//通常状態に設定
+	srand((unsigned int)time(NULL));		// ランダムの種
+	g_gameState = PASSWORDGAMESTATE_NORMAL;	// 通常状態に設定
 	g_nCounterPasswordGameState = 0;
 	g_nA1 = rand() % 9 + 0;
 	g_nA2 = rand() % 9 + 0;
@@ -70,13 +70,13 @@ void UninitPasswordGame(void)
 	////サウンドの停止
 	//StopSound(SOUND_LABEL_GAMEBGM);
 
-	//各種オブジェクトの終了処理
-	UninitPasswordBackGround();	//背景の終了処理
-	UninitPasswordParticle();	//パーティクルの終了処理
-	UninitPassBlock();			//ブロックの終了処理
-	UninitPasswordEffect();		//エフェクトの終了処理
-	UninitPasswordItem();		//アイテムの終了処理
-	UninitPasswordClear();		//クリア画面の終了処理
+	// 各種オブジェクトの終了処理
+	UninitPasswordBackGround();	// 背景の終了処理
+	UninitPasswordParticle();	// パーティクルの終了処理
+	UninitPassBlock();			// ブロックの終了処理
+	UninitPasswordEffect();		// エフェクトの終了処理
+	UninitPasswordItem();		// アイテムの終了処理
+	UninitPasswordClear();		// クリア画面の終了処理
 	UninitPassword();
 }
 //=======================
@@ -90,11 +90,11 @@ void UpdatePasswordGame(void)
 	int nPass4 = GetPassword4();
 	bool bJudge = GetJudgment();
 
-	//各種オブジェクトの更新処理
-	UpdatePasswordBackGround();	//背景の更新処理
-	UpdatePasswordParticle();	//パーティクルの更新処理
-	UpdatePasswordEffect();		//エフェクトの更新処理
-	UpdatePasswordItem();		//アイテムの更新処理
+	// 各種オブジェクトの更新処理
+	UpdatePasswordBackGround();	// 背景の更新処理
+	UpdatePasswordParticle();	// パーティクルの更新処理
+	UpdatePasswordEffect();		// エフェクトの更新処理
+	UpdatePasswordItem();		// アイテムの更新処理
 	UpdatePassword();
 	UpdatePasswordClear();
 
@@ -102,9 +102,9 @@ void UpdatePasswordGame(void)
 		nPass2 == g_nA2 &&
 		nPass3 == g_nA3 &&
 		nPass4 == g_nA4 &&
-		bJudge == true)//暗証番号の一致
-	{//終了条件
-		//画面(モード)の設定
+		bJudge == true)// 暗証番号の一致
+	{// 終了条件
+		// 画面(モード)の設定
 		g_gameState = PASSWORDGAMESTATE_END;
 		SetPassword(0, GetAnum4(), true);
 		PlaySound(SOUND_LABEL_PASSCORRECT);
@@ -113,7 +113,7 @@ void UpdatePasswordGame(void)
 		(nPass2 == g_nA2 || nPass2 != g_nA2) &&
 		(nPass3 == g_nA3 || nPass3 != g_nA3) &&
 		(nPass4 == g_nA4 || nPass4 != g_nA4) &&
-		bJudge == true)//暗証番号の不一致
+		bJudge == true)// 暗証番号の不一致
 	{
 		SetPassword(0, 0, false);
 		SetPassword(0, GetAnum4(), true);
@@ -125,12 +125,12 @@ void UpdatePasswordGame(void)
 //=======================
 void DrawPasswordGame(void)
 {
-	//各種オブジェクトの描画処理
-	DrawPasswordBackGround();	//背景の描画処理
-	DrawPasswordParticle();		//パーティクルの描画処理
-	DrawPasswordItem();			//アイテムの描画処理
-	DrawPassBlock();			//ブロックの描画処理
-	DrawPasswordEffect();		//エフェクトの描画処理
+	// 各種オブジェクトの描画処理
+	DrawPasswordBackGround();	// 背景の描画処理
+	DrawPasswordParticle();		// パーティクルの描画処理
+	DrawPasswordItem();			// アイテムの描画処理
+	DrawPassBlock();			// ブロックの描画処理
+	DrawPasswordEffect();		// エフェクトの描画処理
 	DrawPassword();
 
 	if (g_gameState == PASSWORDGAMESTATE_END)

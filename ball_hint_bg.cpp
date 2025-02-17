@@ -4,28 +4,28 @@
 //---------------------------------------------------------
 #include "ball_hint.h"
 
-//グローバル
-LPDIRECT3DTEXTURE9 g_pTextureBallHint = NULL;		//テクスチャへのポインタ
+// グローバル
+LPDIRECT3DTEXTURE9 g_pTextureBallHint = NULL;		// テクスチャへのポインタ
 LPDIRECT3DTEXTURE9 g_pTextureBallHint2 = NULL;
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBallHint = NULL;	//頂点バッファへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBallHint = NULL;	// 頂点バッファへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBallHint2 = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBallHint3 = NULL;
 
-//ヒントの初期化
+// ヒントの初期化
 void InitBallHintBG(void)
 {
-	//デバイスの取得
+	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	//テクスチャの読み込み
+	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\Ball_red.png",		//テクスチャのファイル名
+		"data\\TEXTURE\\Ball_red.png",	// テクスチャのファイル名
 		&g_pTextureBallHint);
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\画像5.png",		//テクスチャのファイル名
+		"data\\TEXTURE\\画像5.png",		// テクスチャのファイル名
 		&g_pTextureBallHint2);
 
-	//頂点バッファの生成
+	// 頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
 		D3DUSAGE_WRITEONLY,
 		FVF_VERTEX_2D,
@@ -45,83 +45,83 @@ void InitBallHintBG(void)
 		&g_pVtxBuffBallHint3,
 		NULL);
 
-	VERTEX_2D* pVtx;//頂点情報へのポインタ
+	VERTEX_2D* pVtx;// 頂点情報へのポインタ
 
-	//頂点バッファをロックし、頂点情報へのポインタを取得
+	// 頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffBallHint->Lock(0, 0, (void**)&pVtx, 0);
-	//頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(440.0f, 160.0f, 0.0f);//幅400.0f
-	pVtx[1].pos = D3DXVECTOR3(840.0f, 160.0f, 0.0f);//高さ400.0f
+	// 頂点座標の設定
+	pVtx[0].pos = D3DXVECTOR3(440.0f, 160.0f, 0.0f);// 幅400.0f
+	pVtx[1].pos = D3DXVECTOR3(840.0f, 160.0f, 0.0f);// 高さ400.0f
 	pVtx[2].pos = D3DXVECTOR3(440.0f, 560.0f, 0.0f);
 	pVtx[3].pos = D3DXVECTOR3(840.0f, 560.0f, 0.0f);
-	//rhwの設定
+	// rhwの設定
 	pVtx[0].rhw = 1.0f;
 	pVtx[1].rhw = 1.0f;
 	pVtx[2].rhw = 1.0f;
 	pVtx[3].rhw = 1.0f;
-	//頂点カラーの設定
+	// 頂点カラーの設定
 	pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	//テクスチャ座標の設定
+	// テクスチャ座標の設定
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)
 	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
 	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
 	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-	//頂点バッファをアンロックする
+	// 頂点バッファをアンロックする
 	g_pVtxBuffBallHint->Unlock();
 
 
-	//頂点バッファをロックし、頂点情報へのポインタを取得
+	// 頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffBallHint2->Lock(0, 0, (void**)&pVtx, 0);
-	//頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//幅400.0f
-	pVtx[1].pos = D3DXVECTOR3(1280.0f, 0.0f, 0.0f);//高さ400.0f
+	// 頂点座標の設定
+	pVtx[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// 幅400.0f
+	pVtx[1].pos = D3DXVECTOR3(1280.0f, 0.0f, 0.0f);	// 高さ400.0f
 	pVtx[2].pos = D3DXVECTOR3(0.0f, 720.0f, 0.0f);
 	pVtx[3].pos = D3DXVECTOR3(1280.0f, 720.0f, 0.0f);
-	//rhwの設定
+	// rhwの設定
 	pVtx[0].rhw = 1.0f;
 	pVtx[1].rhw = 1.0f;
 	pVtx[2].rhw = 1.0f;
 	pVtx[3].rhw = 1.0f;
-	//頂点カラーの設定
+	// 頂点カラーの設定
 	pVtx[0].col = D3DXCOLOR(0.1f, 0.1f, 0.1f, 0.5f);
 	pVtx[1].col = D3DXCOLOR(0.1f, 0.1f, 0.1f, 0.5f);
 	pVtx[2].col = D3DXCOLOR(0.1f, 0.1f, 0.1f, 0.5f);
 	pVtx[3].col = D3DXCOLOR(0.1f, 0.1f, 0.1f, 0.5f);
-	//頂点バッファをアンロックする
+	// 頂点バッファをアンロックする
 	g_pVtxBuffBallHint2->Unlock();
 
-	//頂点バッファをロックし、頂点情報へのポインタを取得
+	// 頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffBallHint3->Lock(0, 0, (void**)&pVtx, 0);
-	//頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(440.0f, 580.0f, 0.0f);//幅400.0f
-	pVtx[1].pos = D3DXVECTOR3(840.0f, 580.0f, 0.0f);//高さ400.0f
+	// 頂点座標の設定
+	pVtx[0].pos = D3DXVECTOR3(440.0f, 580.0f, 0.0f);// 幅400.0f
+	pVtx[1].pos = D3DXVECTOR3(840.0f, 580.0f, 0.0f);// 高さ400.0f
 	pVtx[2].pos = D3DXVECTOR3(440.0f, 630.0f, 0.0f);
 	pVtx[3].pos = D3DXVECTOR3(840.0f, 630.0f, 0.0f);
-	//rhwの設定
+	// rhwの設定
 	pVtx[0].rhw = 1.0f;
 	pVtx[1].rhw = 1.0f;
 	pVtx[2].rhw = 1.0f;
 	pVtx[3].rhw = 1.0f;
-	//頂点カラーの設定
+	// 頂点カラーの設定
 	pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	//テクスチャ座標の設定
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)
+	// テクスチャ座標の設定
+	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);// (u,v)
 	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
 	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
 	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-	//頂点バッファをアンロックする
+	// 頂点バッファをアンロックする
 	g_pVtxBuffBallHint3->Unlock();
 }
-//ヒントの終了
+// ヒントの終了
 void UninitBallHintBG(void)
 {
-	//テクスチャの破棄
+	// テクスチャの破棄
 	if (g_pTextureBallHint != NULL)
 	{
 		g_pTextureBallHint->Release();
@@ -133,7 +133,7 @@ void UninitBallHintBG(void)
 		g_pTextureBallHint2 = NULL;
 	}
 
-	//頂点バッファの破棄
+	// 頂点バッファの破棄
 	if (g_pVtxBuffBallHint != NULL)
 	{
 		g_pVtxBuffBallHint->Release();
@@ -150,50 +150,50 @@ void UninitBallHintBG(void)
 		g_pVtxBuffBallHint3 = NULL;
 	}
 }
-//ヒントの更新
+// ヒントの更新
 void UpdateBallHintBG(void)
 {
 
 }
-//ヒントの描画
+// ヒントの描画
 void DrawBallHintBG(void)
 {
-	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();//デバイスへのポインタ
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();// デバイスへのポインタ
 
-	//背景
-	//頂点バッファをデータストリーム
+	// 背景
+	// 頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffBallHint2, 0, sizeof(VERTEX_2D));
-	//頂点フォーマットの設定
+	// 頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
-	//テクスチャの設定
+	// テクスチャの設定
 	pDevice->SetTexture(0, NULL);
-	//背景の描画
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,//プリミティブの種類
-		0,									   //描画する最初の頂点インデックス
-		2);                                    //描画するプリミティブ数
+	// 背景の描画
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,// プリミティブの種類
+		0,									   // 描画する最初の頂点インデックス
+		2);                                    // 描画するプリミティブ数
 
-	//ボール
-	//頂点バッファをデータストリーム
+	// ボール
+	// 頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffBallHint, 0, sizeof(VERTEX_2D));
-	//頂点フォーマットの設定
+	// 頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
-	//テクスチャの設定
+	// テクスチャの設定
 	pDevice->SetTexture(0, g_pTextureBallHint);
-	//背景の描画
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,//プリミティブの種類
-		0,									   //描画する最初の頂点インデックス
-		2);                                    //描画するプリミティブ数
+	// 背景の描画
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,// プリミティブの種類
+		0,									   // 描画する最初の頂点インデックス
+		2);                                    // 描画するプリミティブ数
 
-	//何か書かれている
-	//頂点バッファをデータストリーム
+	// 何か書かれている
+	// 頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffBallHint3, 0, sizeof(VERTEX_2D));
-	//頂点フォーマットの設定
+	// 頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
-	//テクスチャの設定
+	// テクスチャの設定
 	pDevice->SetTexture(0, g_pTextureBallHint2);
-	//背景の描画
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,//プリミティブの種類
-		0,									   //描画する最初の頂点インデックス
-		2);                                    //描画するプリミティブ数
+	// 背景の描画
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,// プリミティブの種類
+		0,									   // 描画する最初の頂点インデックス
+		2);                                    // 描画するプリミティブ数
 }

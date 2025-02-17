@@ -11,7 +11,7 @@
 #define TUTORIAL_WIDTH (400.0f)
 #define TUTORIAL_HEIGHT (150.0f)
 
-//プロト
+// プロト
 void InitBallTutorial(void);
 void UninitBallTutorial(void);
 void UpdateBallTutorial(void);

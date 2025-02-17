@@ -562,7 +562,7 @@ void UpdateGame(void)
 		}
 		if (g_Game.bDraw3 == true)
 		{
-			//ボールプールの更新処理
+			// ボールプールの更新処理
 			UpdateBallGame();
 
 			// カーソルを表示する
@@ -570,7 +570,7 @@ void UpdateGame(void)
 		}
 		if (g_Game.bDraw4 == true)
 		{
-			//キーパッドの更新処理
+			// キーパッドの更新処理
 			UpdatePasswordGame();
 
 			// カーソルを表示する
@@ -765,7 +765,8 @@ void DrawGame(void)
 	//DrawBillboard();
 
 
-	if (pPlayer->bDrawDush == true)
+	if (pPlayer->bDrawDush == true && g_Game.bMini == false &&
+		(g_Game.bBallHint || g_Game.bCraneHint) == false)
 	{
 		//ゲージの描画処理
 		DrawGuage();

@@ -6,7 +6,7 @@
 
 #include "main.h"
 
-//プロト
+// プロト
 void InitCraneHintBG(void);
 void UninitCraneHintBG(void);
 void UpdateCraneHintBG(void);

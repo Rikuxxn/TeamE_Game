@@ -6,7 +6,7 @@
 
 #include "main.h"
 
-//プロト
+// プロト
 void InitBallHintBG(void);
 void UninitBallHintBG(void);
 void UpdateBallHintBG(void);

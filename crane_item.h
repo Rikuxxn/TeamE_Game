@@ -4,13 +4,13 @@
 #include "main.h"
 
 //マクロ
-#define MAX_ITEM (4)							//アイテムの最大数
-#define NUM_ITEM (4)							//アイテムの種類
-#define ITEM_WIDTH (20.0f)						//アイテムの幅
-#define ITEM_HEIGHT (15.0f)						//アイテムの高さ
-#define ITEM_CLEARZONE (50.0f)					//アイテムの範囲
-#define ITEM_CLEARPOSX (FIELD_LEFT + 100.0f)	//アイテムの場所(X)
-#define ITEM_CLEARPOSY (FIELD_UNDER - 40.0f)	//アイテムの場所(Y)
+#define MAX_ITEM (4)								//アイテムの最大数
+#define NUM_ITEM (4)								//アイテムの種類
+#define ITEM_WIDTH (20.0f)							//アイテムの幅
+#define ITEM_HEIGHT (15.0f)							//アイテムの高さ
+#define ITEM_CLEARZONE (50.0f)						//アイテムの範囲
+#define ITEM_CLEARPOSX (CLANEFIELD_LEFT + 120.0f)	//アイテムの場所(X)
+#define ITEM_CLEARPOSY (CLANEFIELD_UNDER - 40.0f)	//アイテムの場所(Y)
 
 //弾構造体の定義
 typedef struct

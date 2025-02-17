@@ -215,7 +215,7 @@ void UpdatePlayer(void)
 		pGame->bCraneHint == false && pGame->bMap == false)
 	{
 
-		//一人称 ゲームパッドの移動処理
+		// 一人称 ゲームパッドの移動処理
 		if (GetJoyStick() == true)
 		{
 			// 左スティックの入力を取得

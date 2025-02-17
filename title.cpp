@@ -94,7 +94,7 @@ void InitTitle(void)
 
 	AddLight(
 		D3DLIGHT_DIRECTIONAL,                  // ライトの種類
-		D3DXCOLOR(0.2f, 0.2, 0.2f, 1.0f),    // 暗めの白い光
+		D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f),    // 暗めの白い光
 		D3DXVECTOR3(1.0f, 0.0f, 0.0f),       // 右方向
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
 	);

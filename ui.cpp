@@ -23,10 +23,8 @@ void InitUI(void)
 {
 	int nCntUI;
 
-	LPDIRECT3DDEVICE9 pDevice;
-
-	//デバイスの取得
-	pDevice = GetDevice();
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	for (int nCnt = 0; nCnt < UITYPE_MAX; nCnt++)
 	{
@@ -78,20 +76,17 @@ void InitUI(void)
 		pVtx[2].rhw = 1.0f;
 		pVtx[3].rhw = 1.0f;
 
-
 		//頂点カラーの設定
 		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
-
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
 		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
 		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-
 
 		pVtx += 4;//頂点データのポインタを4つ分進める
 
@@ -139,7 +134,7 @@ void UpdateUI(void)
 
 	int nCntUI;
 
-	//頂点バッファをロックし、頂点情報へのポインタを取得
+	// 頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffUI->Lock(0, 0, (void**)&pVtx, 0);
 
 	for (nCntUI = 0; nCntUI < MAX_UI; nCntUI++)
@@ -186,7 +181,7 @@ void UpdateUI(void)
 		{
 			g_aUI[nCntUI].nCounterUI++;
 
-			if (g_aUI[nCntUI].nCounterUI >= 240)
+			if (g_aUI[nCntUI].nCounterUI >= 180)
 			{
 				if (g_aUI[nCntUI].nType == UITYPE_DROP)
 				{
@@ -296,7 +291,7 @@ void UpdateUI(void)
 		pVtx += 4;
 	}
 
-	//頂点バッファをアンロックする
+	// 頂点バッファをアンロックする
 	g_pVtxBuffUI->Unlock();
 
 }
@@ -368,7 +363,7 @@ void SetUI(D3DXVECTOR3 pos, float fWidth, float fHeight, int nType)
 		pVtx += 4;//頂点データのポインタを4つ分進める
 	}
 
-	//頂点バッファをアンロックする
+	// 頂点バッファをアンロックする
 	g_pVtxBuffUI->Unlock();
 
 }

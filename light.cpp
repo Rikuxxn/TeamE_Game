@@ -1,6 +1,6 @@
 ﻿//=======================================
 //
-// ライト処理[light.cpp]
+// ライト処理 [light.cpp]
 // Author : TANEKAWA RIKU
 //
 //=======================================
@@ -9,24 +9,24 @@
 #include "player.h"
 #include "block.h"
 
-#define MAX_LIGHT (10)              // ライトの最大数
+#define MAX_LIGHT (10)                  // ライトの最大数
 
 typedef struct 
 {
-    D3DLIGHT9 light;               // ライト情報
-    D3DXVECTOR3 direction;         // ライトの方向ベクトル
-    D3DXVECTOR3 position;          // ライトの位置
+    D3DLIGHT9 light;                    // ライト情報
+    D3DXVECTOR3 direction;              // ライトの方向ベクトル
+    D3DXVECTOR3 position;               // ライトの位置
 } LightInfo;
 
 //グローバル変数
-static LightInfo* g_Lights = NULL; // 動的なライトリスト
-static int g_LightCount = 0;       // 現在のライト数
-static int g_LightCapacity = 0;    // ライトリストの容量
+static LightInfo* g_Lights = NULL;      // 動的なライトリスト
+static int g_LightCount = 0;            // 現在のライト数
+static int g_LightCapacity = 0;         // ライトリストの容量
 
-static bool g_bLightOn = true;  // ライトのON/OFF状態
-static float g_LightTimer = 0.0f; // タイマー
-static float g_NextBlinkTime = 0.0f; // 次に点滅する時間
-static int g_BlinkingLightIndex = -1; // 点滅するライトのインデックス
+static bool g_bLightOn = true;          // ライトのON/OFF状態
+static float g_LightTimer = 0.0f;       // タイマー
+static float g_NextBlinkTime = 0.0f;    // 次に点滅する時間
+static int g_BlinkingLightIndex = -1;   // 点滅するライトのインデックス
 
 //=============================
 // ライトの初期化処理
@@ -104,7 +104,7 @@ int AddLight(D3DLIGHTTYPE type, D3DXCOLOR diffuse, D3DXVECTOR3 direction, D3DXVE
 
     g_LightCount++;
 
-    return newIndex; // **追加したライトのインデックスを返す！**
+    return newIndex; // 追加したライトのインデックスを返す
 }
 //=============================
 // ライトの削除処理

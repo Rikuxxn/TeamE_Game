@@ -90,8 +90,8 @@ void InitResult(void)
 			"data\\TEXTURE\\resultBG.png",
 			&g_pTextureResult);
 
-		// 2分切ったら
-		if (nTimeMinutes < 2 && nTimeSeconds >= 0)
+		// 3分切ったら
+		if (nTimeMinutes < 3 && nTimeSeconds >= 0)
 		{// ランクA
 
 			//テクスチャの読み込み
@@ -100,8 +100,8 @@ void InitResult(void)
 				&g_pTextureRank);
 
 		}
-		// 2分以上3分未満
-		else if (nTimeMinutes >= 2 && nTimeMinutes < 3 && nTimeSeconds >= 0 && nTimeSeconds <= 59)
+		// 3分以上4分未満
+		else if (nTimeMinutes >= 3 && nTimeMinutes < 4 && nTimeSeconds >= 0 && nTimeSeconds <= 59)
 		{// ランクB
 
 			//テクスチャの読み込み
@@ -110,8 +110,8 @@ void InitResult(void)
 				&g_pTextureRank);
 
 		}
-		// 3分以上
-		else if (nTimeMinutes >= 3 && nTimeSeconds >= 0)
+		// 4分以上
+		else if (nTimeMinutes >= 4 && nTimeSeconds >= 0)
 		{// ランクC
 
 			//テクスチャの読み込み
@@ -741,7 +741,7 @@ void DrawResult(void)
 		// ランク描画
 		//====================================
 
-		if (nTimeMinutes < 2 && nTimeSeconds >= 0)
+		if (nTimeMinutes < 3 && nTimeSeconds >= 0)
 		{
 
 			// 頂点バッファをロック
@@ -769,7 +769,7 @@ void DrawResult(void)
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
 		}
-		else if (nTimeMinutes >= 2 && nTimeMinutes < 3 && nTimeSeconds >= 0 && nTimeSeconds <= 59)
+		else if (nTimeMinutes >= 3 && nTimeMinutes < 4 && nTimeSeconds >= 0 && nTimeSeconds <= 59)
 		{
 
 			// 頂点バッファをロック
@@ -797,7 +797,7 @@ void DrawResult(void)
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
 		}
-		else if (nTimeMinutes >= 3 && nTimeSeconds >= 0)
+		else if (nTimeMinutes >= 4 && nTimeSeconds >= 0)
 		{
 
 			// 頂点バッファをロック

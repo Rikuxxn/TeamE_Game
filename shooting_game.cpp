@@ -38,7 +38,6 @@ void InitShootingGame(void)
 	SetEnemy(D3DXVECTOR3(470.0f, 100.0f, 0.0f), D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1);
 	SetEnemy(D3DXVECTOR3(750.0f, 100.0f, 0.0f), D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1);
 	SetEnemy(D3DXVECTOR3(610.0f, 160.0f, 0.0f), D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1);
-	SetEnemy(D3DXVECTOR3(610.0f, 260.0f, 0.0f),  D3DXVECTOR3(1.0f, 0.0f, 0.0f),1);
 
 	g_gameState = STGSTATE_NORMAL;// í èÌèÛë‘Ç…ê›íË
 	g_nCntShootingGameState = 0;

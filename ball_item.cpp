@@ -9,6 +9,7 @@
 #include "input.h"
 #include "crane_item.h"
 #include "sound.h"
+#include "ball_background.h"
 
 // グローバル
 LPDIRECT3DTEXTURE9 g_pTextureBallItem[NUM_ITEM] = {};	// テクスチャへのポインタ

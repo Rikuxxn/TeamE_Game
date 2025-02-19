@@ -33,10 +33,10 @@ void InitClear(void)
 	g_pVtxBuffClear->Lock(0, 0, (void**)&pVtx, 0);
 
 	// í∏ì_ç¿ïWÇÃê›íË
-	pVtx[0].pos = D3DXVECTOR3(440.0f, 210.0f, 0.0f);// ïù400.0f
-	pVtx[1].pos = D3DXVECTOR3(840.0f, 210.0f, 0.0f);// çÇÇ≥100.0f
-	pVtx[2].pos = D3DXVECTOR3(440.0f, 310.0f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(840.0f, 310.0f, 0.0f);
+	pVtx[0].pos = D3DXVECTOR3(490.0f, 110.0f, 0.0f);// ïù400.0f
+	pVtx[1].pos = D3DXVECTOR3(790.0f, 110.0f, 0.0f);// çÇÇ≥100.0f
+	pVtx[2].pos = D3DXVECTOR3(490.0f, 210.0f, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(790.0f, 210.0f, 0.0f);
 
 	// rhwÇÃê›íË
 	pVtx[0].rhw = 1.0f;

@@ -29,7 +29,7 @@ typedef struct
 	D3DXVECTOR3 dragOffset;	// マウスを押した位置のオフセット
 }BALLITEM;
 
-//プロト
+// プロト
 void InitBallItem(void);
 void UninitBallItem(void);
 void UpdateBallItem(void);

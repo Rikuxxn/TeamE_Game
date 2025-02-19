@@ -215,6 +215,7 @@ void InitEnemy(void)
 //=============================
 void UninitEnemy(void)
 {
+	StopSound(SOUND_LABEL_INSIGHT);
 
 	for (int nCntModel = 0; nCntModel < MAX_PARTS; nCntModel++)
 	{
@@ -335,7 +336,7 @@ void UpdateEnemy(void)
 		// S‰¹1
 		if (fDistanceSound1 <= fRadiusSound1)
 		{
-
+			//PlaySound(SOUND_LABEL_HEART); // SE‚ðÄ¶
 		}
 
 		D3DXVECTOR3 posPlayerRadius(1.0f, 1.0f, 1.0f);

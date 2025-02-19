@@ -1,6 +1,6 @@
 //=======================================
 //
-// プレイヤー処理[player.cpp]
+// プレイヤー処理 [player.cpp]
 // Author : TANEKAWA RIKU
 //
 //=======================================
@@ -9,7 +9,6 @@
 #include "input.h"
 #include "camera.h"
 #include "shadow.h"
-//#include "particle.h"
 #include "model.h"
 #include "motion.h"
 

@@ -1,6 +1,6 @@
 //=======================================
 //
-// 敵の処理[enemy.h]
+// 敵の処理 [enemy.h]
 // Author : TANEKAWA RIKU
 //
 //=======================================
@@ -31,8 +31,8 @@ typedef struct
     float sightRange;                           // 視界の範囲
     float sightAngle;                           // 視界の角度
     EnemyState state;                           // 現在の状態
-    EnemyMotion enemymotion;
-    D3DXMATRIX mtxWorld;
+    EnemyMotion enemymotion;                    // 敵のモーション情報
+    D3DXMATRIX mtxWorld;                        // ワールドマトリックス
     D3DXVECTOR3 size;						    // サイズ
     D3DXVECTOR3 vtxMin;						    // サイズ
     D3DXVECTOR3 vtxMax;						    // サイズ

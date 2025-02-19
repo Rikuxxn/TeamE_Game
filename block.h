@@ -1,6 +1,6 @@
 //=======================================
 //
-// ブロック配置処理[block.h]
+// ブロック配置処理 [block.h]
 // Author : TANEKAWA RIKU
 //
 //=======================================
@@ -9,7 +9,7 @@
 
 #include "main.h"
 
-#define MAX_BLOCK (200)									// ブロックの使う数
+#define MAX_BLOCK (256)									// ブロックの使う数
 #define MAX_BLOCKTEXTURE (64)							// ブロックの最大テクスチャ
 
 // ブロックの種類
@@ -94,7 +94,6 @@ typedef struct
 	bool bSet;						// ブロック設置したかどうか1
 	bool bSet2;						// ブロック設置したかどうか2
 	bool bSet3;						// ブロック(クリアブロック)設置したかどうか3
-
 }Flags;
 
 // ブロック構造体
@@ -178,7 +177,6 @@ bool OverlapOnAxis(const D3DXVECTOR3& center1, const D3DXVECTOR3 axes1[3], const
 float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], const D3DXVECTOR3& axis);
 
 // イベント判定用関数のプロトタイプ宣言
-void HandleBlockInteraction(Block* pBlock);
 void CheckBlocksInCenter(void);
 
 void MeshcylinderOnBlock(int targetType);

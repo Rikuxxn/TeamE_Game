@@ -238,7 +238,6 @@ bool GetJoyTrigger(JOYKEY key)
 	else if (key == JOYKEY_RT)
 	{
 		return (g_joyKeyState.Gamepad.bRightTrigger) ? true : false;
-
 	}
 }
 bool GeyJoyTriggerTrigger(JOYKEY key)//‰Ÿ‚µ‚½‚Æ‚«

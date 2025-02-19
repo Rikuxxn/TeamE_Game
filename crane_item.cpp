@@ -240,10 +240,7 @@ int GetNumItem(void)
 }
 CRANEITEM GetItem(void)
 {
-	for (int nCntItem = 0; nCntItem < MAX_ITEM; nCntItem++)
-	{
-		return g_item[nCntItem];
-	}
+	return g_item[0];
 }
 // アイテムのあたりはんてぇ
 bool CollisionCraneItem(D3DXVECTOR3* pPos,		// 現在の位置

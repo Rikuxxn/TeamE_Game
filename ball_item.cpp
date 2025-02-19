@@ -8,6 +8,7 @@
 #include "ball_particle.h"
 #include "input.h"
 #include "crane_item.h"
+#include "sound.h"
 
 // グローバル
 LPDIRECT3DTEXTURE9 g_pTextureBallItem[NUM_ITEM] = {};	// テクスチャへのポインタ
@@ -161,6 +162,11 @@ void UpdateBallItem(void)
 			{
 				if (!bHoldingItem && GetMouseButtonPress(0))
 				{
+					if (g_ballitem[nCntItem].bGet == false)
+					{
+						PlaySound(SOUND_LABEL_BALLCATCH);
+						g_ballitem[nCntItem].bGet = true;
+					}
 					g_ballitem[nCntItem].bcatch = true;
 					bHoldingItem = true;  // アイテムを持っていることを記録
 
@@ -171,6 +177,7 @@ void UpdateBallItem(void)
 				if (GetMouseButtonRelease(0))
 				{
 					g_ballitem[nCntItem].bcatch = false;
+					g_ballitem[nCntItem].bGet = false;
 					bHoldingItem = false;  // 持っている状態を解除
 
 					// 画面端の制限
@@ -231,6 +238,7 @@ void UpdateBallItem(void)
 			&& g_ballitem[nCntItem].pos.x + g_ballitem[nCntItem].fWidth <= ITEM_CLEARPOSX + ITEM_CLEARZONEX
 			&& g_ballitem[nCntItem].bUse == true)
 		{// ボールを片づけた
+			PlaySound(SOUND_LABEL_BALLGET);
 			g_ballitem[nCntItem].bUse = false;
 			g_nBallItem--;
 		}

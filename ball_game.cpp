@@ -19,6 +19,7 @@
 // グローバル
 BALLGAMESTATE g_gameState = BALLGAMESTATE_NONE;		// ゲームの状態
 int g_nCounterBallGameState = 0;					// 状態管理カウンター
+bool g_bClear;										//クリアしたか
 
 void InitBallGame(void)
 {
@@ -50,6 +51,7 @@ void InitBallGame(void)
 
 	g_gameState = BALLGAMESTATE_NORMAL;// 通常状態に設定
 	g_nCounterBallGameState = 0;
+	g_bClear = false;
 }
 void UninitBallGame(void)
 {
@@ -112,10 +114,11 @@ void DrawBallGame(void)
 	DrawBallEffect();		// エフェクトの描画処理
 	DrawBallTutorial();		// チュートリアルの描画処理
 
-	if (g_nCounterBallGameState >= 45)
+	if (g_nCounterBallGameState >= 45 && g_bClear == false)
 	{
 		PlaySound(SOUND_LABEL_MINICLEAR);
 		//DrawBallClear();
+		g_bClear = true;
 	}
 }
 void SetBallGameState(BALLGAMESTATE state)

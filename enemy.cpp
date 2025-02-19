@@ -215,9 +215,6 @@ void InitEnemy(void)
 //=============================
 void UninitEnemy(void)
 {
-	//StopSound(SOUND_LABEL_DENKI);
-	//StopSound(SOUND_LABEL_STEP1);
-	//StopSound(SOUND_LABEL_STEP2);
 
 	for (int nCntModel = 0; nCntModel < MAX_PARTS; nCntModel++)
 	{
@@ -268,7 +265,6 @@ void UpdateEnemy(void)
 
 		Player* pPlayer = GetPlayer();
 
-
 		//移動量を更新(減衰させる)
 		g_aEnemy.move.x += (0.0f - g_aEnemy.move.x) * 0.25f;
 		g_aEnemy.move.z += (0.0f - g_aEnemy.move.z) * 0.25f;
@@ -290,6 +286,7 @@ void UpdateEnemy(void)
 
 		D3DXVECTOR3 PlayerRadius(20.0f, 20.0f, 20.0f);				// 捕まる距離
 		D3DXVECTOR3 PlayerInsightRadius(50.0f, 50.0f, 50.0f);		// バレる距離
+		D3DXVECTOR3 SoundRadius1(500.0f, 500.0f, 500.0f);			// 心音の鳴る距離
 
 		float fDistance =
 			(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +
@@ -311,6 +308,17 @@ void UpdateEnemy(void)
 			(g_aEnemy.RadiusEnemy.y + PlayerInsightRadius.y) * (g_aEnemy.RadiusEnemy.y + PlayerInsightRadius.y) +
 			(g_aEnemy.RadiusEnemy.z + PlayerInsightRadius.z) * (g_aEnemy.RadiusEnemy.z + PlayerInsightRadius.z);
 
+		float fDistanceSound1 =
+			(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +
+			(g_aEnemy.pos.y - pPlayer->pos.y) * (g_aEnemy.pos.y - pPlayer->pos.y) +
+			(g_aEnemy.pos.z - pPlayer->pos.z) * (g_aEnemy.pos.z - pPlayer->pos.z);
+
+		float fRadiusSound1 =
+			(g_aEnemy.RadiusEnemy.x + SoundRadius1.x) * (g_aEnemy.RadiusEnemy.x + SoundRadius1.x) +
+			(g_aEnemy.RadiusEnemy.y + SoundRadius1.y) * (g_aEnemy.RadiusEnemy.y + SoundRadius1.y) +
+			(g_aEnemy.RadiusEnemy.z + SoundRadius1.z) * (g_aEnemy.RadiusEnemy.z + SoundRadius1.z);
+
+		// 捕まった
 		if (fDistance <= fRadius)
 		{
 			pPlayer->pos = pPlayer->posOld;
@@ -319,9 +327,16 @@ void UpdateEnemy(void)
 			g_bEnd = true;
 		}
 
+		// 追跡モードにする
 		if (fDistance2 <= fRadius2)
 		{
 			g_aEnemy.state = ENEMYSTATE_CHASING;
+		}
+
+		// 心音1
+		if (fDistanceSound1 <= fRadiusSound1)
+		{
+
 		}
 
 		D3DXVECTOR3 posPlayerRadius(1.0f, 1.0f, 1.0f);
@@ -439,14 +454,14 @@ void UpdateEnemy(void)
 			g_aEnemy.enemymotion.nKey++;
 		}
 
-		float moveSpeed = 0.0f;
-		static int lostSightTimer = 0;			// 視界外タイマー
-		float distanceToTarget = 0.0f;
-		float angleToTarget = 0.0f;
-		float fAngle = 0.0f;
+		float moveSpeed           = 0.0f;
+		float distanceToTarget	  = 0.0f;
+		float angleToTarget       = 0.0f;
+		float fAngle              = 0.0f;
+		static int lostSightTimer = 0;				// 視界外タイマー
+		static int patrolTimer    = 0;				// 捜索タイマー
 
 		D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
-		static int patrolTimer = 0;				// 捜索タイマー
 
 		switch (g_aEnemy.state)
 		{
@@ -474,7 +489,7 @@ void UpdateEnemy(void)
 
 			if (distanceToTarget > 5.0f)
 			{ // 到達判定
-				angleToTarget = atan2f(target.x - g_aEnemy.pos.x, target.z - g_aEnemy.pos.z);
+				angleToTarget	 = atan2f(target.x - g_aEnemy.pos.x, target.z - g_aEnemy.pos.z);
 				g_aEnemy.move.x += sinf(angleToTarget) * moveSpeed;
 				g_aEnemy.move.z += cosf(angleToTarget) * moveSpeed;
 

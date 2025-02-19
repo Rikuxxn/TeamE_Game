@@ -67,8 +67,8 @@ void InitMap(void)
 	g_Icon.fHeight = 15.0f;
 
 	// ミニマップの左上座標を計算
-	float miniMapLeft = g_Map.pos.x - g_Map.fWidth / 2.0f;
-	float miniMapTop = g_Map.pos.y - g_Map.fHeight / 2.0f;
+	float miniMapLeft	= g_Map.pos.x - g_Map.fWidth / 2.0f;
+	float miniMapTop	= g_Map.pos.y - g_Map.fHeight / 2.0f;
 
 	VERTEX_2D* pVtx;//頂点情報へのポインタ
 
@@ -180,8 +180,8 @@ void UpdateMap(void)
 	Camera* pCamera = GetCamera();
 
 	// ミニマップの左上の座標
-	float miniMapLeft = g_Map.pos.x - g_Map.fWidth / 2.0f;
-	float miniMapTop = g_Map.pos.y - g_Map.fHeight / 2.0f;
+	float miniMapLeft	= g_Map.pos.x - g_Map.fWidth / 2.0f;
+	float miniMapTop	= g_Map.pos.y - g_Map.fHeight / 2.0f;
 
 	// スケール（ワールド座標 → ミニマップ座標変換用）
 	float scaleX = g_Map.fWidth / MAX_WIDTH;   // 600 / 2400 = 0.25

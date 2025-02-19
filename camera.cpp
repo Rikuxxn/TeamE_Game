@@ -1,6 +1,6 @@
 //=======================================
 //
-// カメラ処理[camera.cpp]
+// カメラ処理 [camera.cpp]
 // Author : TANEKAWA RIKU
 //
 //=======================================
@@ -99,7 +99,7 @@ void UpdateCamera(void)
 		if (GetMouseState(&mouseState))
 		{
 			// 前フレームのカーソル位置を記録する静的変数
-			static POINT prevCursorPos = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
+			static POINT prevCursorPos = { SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f };
 
 			// 現在のカーソル位置を取得
 			POINT cursorPos;
@@ -139,11 +139,11 @@ void UpdateCamera(void)
 			}
 
 			// カーソルを画面中央に戻す
-			SetCursorPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+			SetCursorPos(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f);
 
 			// 現在のカーソル位置を次回の計算用に保存
-			prevCursorPos.x = SCREEN_WIDTH / 2;
-			prevCursorPos.y = SCREEN_HEIGHT / 2;
+			prevCursorPos.x = SCREEN_WIDTH * 0.5f;
+			prevCursorPos.y = SCREEN_HEIGHT * 0.5f;
 		}
 
 		// カメラの位置をプレイヤーの位置に設定
@@ -266,77 +266,6 @@ void UpdateCamera(void)
 		g_camera.posR.y = g_camera.posV.y - sinf(g_camera.rot.x);
 		g_camera.posR.z = g_camera.posV.z - cosf(g_camera.rot.y) * cosf(g_camera.rot.x);
 	}
-
-	//if (KeyboardTrigger(DIK_F2) == true)
-	//{
-	//	if (g_cameramode == CAMERAMODE_NORMAL)
-	//	{
-	//		g_cameramode = CAMERAMODE_AUTO;
-	//	}
-	//	else if (g_cameramode == CAMERAMODE_AUTO)
-	//	{
-	//		g_cameramode = CAMERAMODE_NORMAL;
-	//	}
-	//}
-
-	//if (KeyboardTrigger(DIK_F3) == true)
-	//{
-	//	if (g_cameramode == CAMERAMODE_NORMAL || g_cameramode == CAMERAMODE_AUTO)
-	//	{
-	//		g_cameramode = CAMERAMODE_AUTOTURN;
-	//	}
-	//	else if (g_cameramode == CAMERAMODE_AUTOTURN)
-	//	{
-	//		g_cameramode = CAMERAMODE_NORMAL;
-	//	}
-	//}
-
-
-	//switch (g_cameramode)
-	//{
-	//case CAMERAMODE_NORMAL:
-	//	break;
-
-	//case CAMERAMODE_AUTO:
-
-	//	//g_camera.posRDest.x = pPlayer->pos.x - sinf(fAngleA) * PLAYER_SPEED;
-	//	//g_camera.posRDest.z = pPlayer->pos.z - cosf(fAngleA) * PLAYER_SPEED;
-
-	//	//g_camera.posVDest.x = pPlayer->pos.x + sinf(g_camera.rot.y + D3DX_PI) * g_camera.fDistance;
-	//	//g_camera.posVDest.z = pPlayer->pos.z + cosf(g_camera.rot.y + D3DX_PI) * g_camera.fDistance;
-
-	//	//g_camera.posR.x += (g_camera.posRDest.x - g_camera.posR.x) * 0.05f;
-	//	//g_camera.posV.x += (g_camera.posVDest.x - g_camera.posV.x) * 0.05f;
-
-	//	//g_camera.posR.z += (g_camera.posRDest.z - g_camera.posR.z) * 0.05f;
-	//	//g_camera.posV.z += (g_camera.posVDest.z - g_camera.posV.z) * 0.05f;
-
-	//	break;
-
-	//case CAMERAMODE_AUTOTURN:
-
-	//	g_camera.rot.y -= 0.006f;
-
-	//	//角度の正規化
-	//	if (g_camera.rot.y > D3DX_PI)
-	//	{
-	//		g_camera.rot.y -= D3DX_PI * 2.0f;
-	//	}
-	//	else if (g_camera.rot.y < -D3DX_PI)
-	//	{
-	//		g_camera.rot.y += D3DX_PI * 2.0f;
-	//	}
-
-	//	g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
-	//	g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
-
-	//	break;
-
-	//default:
-
-	//	break;
-	//}
-
 
 }
 //=============================

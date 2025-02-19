@@ -1,6 +1,6 @@
 //=======================================
 //
-// “G‚Ìˆ—[enemy.cpp]
+// “G‚Ìˆ— [enemy.cpp]
 // Author : TANEKAWA RIKU
 //
 //=======================================
@@ -111,8 +111,8 @@ void InitEnemy(void)
 	g_aEnemy.posRadiusEnemy = D3DXVECTOR3(50.0f, 50.0f, 50.0f);
 	g_aEnemy.state = ENEMYSTATE_PATROLLING;
 	g_aEnemy.bUse = false;
-	g_aEnemy.sightRange = 250.0f;							//Ž‹ŠE‹——£
-	g_aEnemy.sightAngle = D3DXToRadian(100.0f);				//Ž‹ŠE”ÍˆÍ
+	g_aEnemy.sightRange = 310.0f;							//Ž‹ŠE‹——£
+	g_aEnemy.sightAngle = D3DXToRadian(90.0f);				//Ž‹ŠE”ÍˆÍ
 	g_bEnd = false;
 	Inside = false;
 	isPlayerInSightPrev = false;
@@ -288,7 +288,8 @@ void UpdateEnemy(void)
 		CollisionBlock(&g_aEnemy.pos,&g_aEnemy.posOld,&g_aEnemy.move,&g_aEnemy.size);
 
 
-		D3DXVECTOR3 PlayerRadius(20.0f, 20.0f, 20.0f);
+		D3DXVECTOR3 PlayerRadius(20.0f, 20.0f, 20.0f);				// •ß‚Ü‚é‹——£
+		D3DXVECTOR3 PlayerInsightRadius(50.0f, 50.0f, 50.0f);		// ƒoƒŒ‚é‹——£
 
 		float fDistance =
 			(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +
@@ -300,6 +301,15 @@ void UpdateEnemy(void)
 			(g_aEnemy.RadiusEnemy.y + PlayerRadius.y) * (g_aEnemy.RadiusEnemy.y + PlayerRadius.y) +
 			(g_aEnemy.RadiusEnemy.z + PlayerRadius.z) * (g_aEnemy.RadiusEnemy.z + PlayerRadius.z);
 
+		float fDistance2 =
+			(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +
+			(g_aEnemy.pos.y - pPlayer->pos.y) * (g_aEnemy.pos.y - pPlayer->pos.y) +
+			(g_aEnemy.pos.z - pPlayer->pos.z) * (g_aEnemy.pos.z - pPlayer->pos.z);
+
+		float fRadius2 =
+			(g_aEnemy.RadiusEnemy.x + PlayerInsightRadius.x) * (g_aEnemy.RadiusEnemy.x + PlayerInsightRadius.x) +
+			(g_aEnemy.RadiusEnemy.y + PlayerInsightRadius.y) * (g_aEnemy.RadiusEnemy.y + PlayerInsightRadius.y) +
+			(g_aEnemy.RadiusEnemy.z + PlayerInsightRadius.z) * (g_aEnemy.RadiusEnemy.z + PlayerInsightRadius.z);
 
 		if (fDistance <= fRadius)
 		{
@@ -307,6 +317,11 @@ void UpdateEnemy(void)
 			g_aEnemy.pos = g_aEnemy.posOld;
 			g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_ACTION;
 			g_bEnd = true;
+		}
+
+		if (fDistance2 <= fRadius2)
+		{
+			g_aEnemy.state = ENEMYSTATE_CHASING;
 		}
 
 		D3DXVECTOR3 posPlayerRadius(1.0f, 1.0f, 1.0f);
@@ -321,12 +336,6 @@ void UpdateEnemy(void)
 			(g_aEnemy.posRadiusEnemy.y + posPlayerRadius.y) * (g_aEnemy.posRadiusEnemy.y + posPlayerRadius.y) +
 			(g_aEnemy.posRadiusEnemy.z + posPlayerRadius.z) * (g_aEnemy.posRadiusEnemy.z + posPlayerRadius.z);
 
-
-		//”ÍˆÍ“à‚É“ü‚Á‚½
-		if (fDistancePlayer <= fRadiusPlayer)
-		{
-			g_aEnemy.state = ENEMYSTATE_CHASING;
-		}
 
 		if (isPlayerInSight())
 		{
@@ -448,7 +457,7 @@ void UpdateEnemy(void)
 			// Œ»Ý‚Ì„‰ñƒ|ƒCƒ“ƒg‚ÉŒü‚©‚¤
 			target = patrolPoints[currentPatrolPoint];
 
-			distanceToTarget = (float)sqrt
+			distanceToTarget = sqrtf
 			(
 				(target.x - g_aEnemy.pos.x) * (target.x - g_aEnemy.pos.x) +
 				(target.y - g_aEnemy.pos.y) * (target.y - g_aEnemy.pos.y) +
@@ -730,7 +739,7 @@ int GetNearestPatrolPoint(D3DXVECTOR3 currentPos)
 
 	for (int nCnt = 0; nCnt < sizeof(patrolPoints) / sizeof(patrolPoints[0]); nCnt++)
 	{
-		float distance = sqrt
+		float distance = sqrtf
 		(
 			(patrolPoints[nCnt].x - currentPos.x) * (patrolPoints[nCnt].x - currentPos.x) +
 			(patrolPoints[nCnt].y - currentPos.y) * (patrolPoints[nCnt].y - currentPos.y) +

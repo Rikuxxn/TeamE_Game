@@ -1,6 +1,6 @@
 //=======================================
 //
-// プレイヤー処理[player.h]
+// プレイヤー処理 [player.h]
 // Author : TANEKAWA RIKU
 //
 //=======================================
@@ -17,7 +17,7 @@
 #define PLAYER_STAMINA (240.0f)				// プレイヤーのスタミナ
 #define STAMINA_RECOVERY (0.6f)				// スタミナの回復速度
 
-#define MAX_JUMP (40.0f)						// ジャンプ力
+#define MAX_JUMP (40.0f)					// ジャンプ力
 #define MAX_GRAVITY (0.8f)					// 重力
 #define PLAYER_LIFE (0)						// プレイヤーの体力
 

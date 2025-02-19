@@ -288,7 +288,7 @@ void AddPointlightToBlock(void)
     // 新しいライトが追加されたか確認
     if (newLightIndex != -1)
     {
-        g_BlinkingLightIndex = newLightIndex + 1;
+        g_BlinkingLightIndex = newLightIndex;
     }
 
     // 最初の点滅時間をランダムに設定

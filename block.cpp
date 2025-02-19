@@ -168,7 +168,6 @@ void UninitBlock(void)
 
 	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
 	{
-
 		for (int nCntMat = 0; nCntMat < (int)g_info[nCnt].blockinfo[nCnt].dwNumMat; nCntMat++)
 		{
 			//テクスチャの破棄
@@ -246,12 +245,6 @@ void UpdateBlock(void)
 
 			// 視錐台中央判定を実行
 			CheckBlocksInCenter();
-
-			if (g_aBlock[nCntBlock].bInsight)
-			{
-				// 中央範囲内のブロックがあれば何か処理をする
-				HandleBlockInteraction(&g_aBlock[nCntBlock]);
-			}
 
 			// ヒューズを手に入れた
 			if (g_flag.bFuse == true && KeyboardTrigger(DIK_E) == true && g_aBlock[nCntBlock].bInsight == true)
@@ -661,42 +654,6 @@ float GetProjectionRadius(const D3DXVECTOR3& size, const D3DXVECTOR3 axes[3], co
 		fabs(D3DXVec3Dot(&axes[1], &axis)) * size.y / 2.0f +
 		fabs(D3DXVec3Dot(&axes[2], &axis)) * size.z / 2.0f;
 }
-//====================================
-// ブロックインタラクト種類判定処理
-//====================================
-void HandleBlockInteraction(Block* pBlock)
-{
-	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
-	{
-		UI* pUI = GetUI();
-
-		// ブロックの種類によってインタラクト内容を変更
-		switch (pBlock->nType)
-		{
-		case BLOCKTYPE_ARCADE1:
-			break;
-
-		case BLOCKTYPE_UFOCATCHER1:
-			break;
-
-		case BLOCKTYPE_BALLPOOL:
-			break;
-
-		case BLOCKTYPE_KEYPAD:
-			break;
-
-		case BLOCKTYPE_FUSE:
-			break;
-
-		case BLOCKTYPE_FUSEBOX:
-			break;
-
-		default:
-
-			break;
-		}
-	}
-}
 //=================================
 // 視錐台(フラスタム)中央判定処理
 //=================================
@@ -892,7 +849,6 @@ void MeshcylinderOnBlock(int targetType)
 		{
 			// ブロックの位置を取得
 			D3DXVECTOR3 meshPos = g_aBlock[nCntBlock].pos;
-			meshPos.y += 0.0f;
 
 			// メッシュシリンダーの位置を設定
 			SetMeshcylinder(meshPos);

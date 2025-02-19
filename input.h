@@ -9,7 +9,6 @@
 
 #include "main.h"
 
-
 //ƒL[‚Ìí—Ş
 typedef enum
 {

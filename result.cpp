@@ -334,7 +334,7 @@ void UninitResult(void)
 
 	////サウンドの停止
 	//StopSound(SOUND_LABEL_CLEAR);
-	//StopSound(SOUND_LABEL_GAMEOVER);
+	StopSound(SOUND_LABEL_GAMEOVERBGM);
 	//StopSound(SOUND_LABEL_RANK);
 
 	//テクスチャの破棄

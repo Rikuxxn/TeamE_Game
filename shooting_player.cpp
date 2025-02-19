@@ -13,6 +13,7 @@
 #include "sound.h"
 #include "shooting_particle.h"
 #include "game.h"
+#include "shooting_background.h"
 
 // マクロ
 #define MAX_MAX (400.0f)	//最大でかい
@@ -34,7 +35,7 @@ void InitShootingPlayer(void)
 		"data\\TEXTURE\\Player.png",//テクスチャのファイル名
 		&g_pTexturePlayer1);
 
-	g_player.pos = D3DXVECTOR3(640.0f,700.0f,0.0f);// 位置を初期化する
+	g_player.pos = D3DXVECTOR3(640.0f,540.0f,0.0f);// 位置を初期化する
 	g_player.move = D3DXVECTOR3(0.0f,0.0f,0.0f);   // 移動量を初期化する
 	g_player.rot = D3DXVECTOR3(0.0f,0.0f,0.0f);	   // 向きを初期化する、今回はZ軸（3番目）
 	g_player.Bullet.x = 10.0f;
@@ -50,7 +51,7 @@ void InitShootingPlayer(void)
 	g_player.nBulletMax = 0;
 
 	// 対角線の長さを算出する
-	g_player.Length = sqrtf(50.0f * 50.0f + 50.0f * 50.0f) / 2.0f;
+	g_player.Length = sqrtf(40.0f * 40.0f + 40.0f * 40.0f) / 2.0f;
 
 	// 対角線の角度を算出する
 	g_player.Angle = atan2f(WIDTH,HEIGHT);
@@ -334,18 +335,18 @@ void UpdateShootingPlayer(void)
 	pVtx[3].pos.y = g_player.pos.y + cosf(g_player.rot.z + (0.0f + g_player.Angle)) * g_player.Length;
 	pVtx[3].pos.z = 0.0f;
 
-	if (g_player.pos.x >= 920 - WIDTH)
+	if (g_player.pos.x >= 640.0f + BACKGROUND_WIDTH - WIDTH)
 	{
-		g_player.pos.x = 920 - WIDTH;
+		g_player.pos.x = 640.0f + BACKGROUND_WIDTH - WIDTH;
 	}
-	else if (g_player.pos.x <= 360 + WIDTH)
+	else if (g_player.pos.x <= 640.0f - BACKGROUND_WIDTH + WIDTH)
 	{
-		g_player.pos.x = 360 + WIDTH;
+		g_player.pos.x = 640.0f - BACKGROUND_WIDTH + WIDTH;
 	}
 
-	if (g_player.pos.y >= SCREEN_HEIGHT - HEIGHT)
+	if (g_player.pos.y >= BACKGROUND_HEIGHT - HEIGHT)
 	{
-		g_player.pos.y = SCREEN_HEIGHT - HEIGHT;
+		g_player.pos.y = BACKGROUND_HEIGHT - HEIGHT;
 	}
 	else if (g_player.pos.y <= 0 + HEIGHT)
 	{

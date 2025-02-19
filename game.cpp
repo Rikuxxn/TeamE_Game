@@ -383,10 +383,10 @@ void UpdateGame(void)
 	{//ポーズ中ではない
 
 		// ミニゲーム（シューティング）のトリガー
-		if (KeyboardTrigger(DIK_E) == true && 
+		if (KeyboardTrigger(DIK_E) == true /*&& 
 			pFlag->bArcade == true &&
 			g_Game.bMap == false &&
-			pFlag->bFuseCmp == true)
+			pFlag->bFuseCmp == true*/)
 		{
 			g_Game.bDraw = g_Game.bDraw ? false : true;
 			g_Game.bMini = g_Game.bMini ? false : true;

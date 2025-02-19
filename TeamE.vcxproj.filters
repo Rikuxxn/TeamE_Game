@@ -144,5 +144,6 @@
     <ClInclude Include="ball_tutorial.h" />
     <ClInclude Include="recommendation.h" />
     <ClInclude Include="tutorial2.h" />
+    <ClInclude Include="shooting_background.h" />
   </ItemGroup>
 </Project>

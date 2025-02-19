@@ -223,7 +223,7 @@ void UpdateShootingPlayer(void)
 		switch (g_player.nBulletType)
 		{
 		case 0:
-			if (GetKeyboardPress(DIK_SPACE) == true || GetMouseButtonPress(0)/*|| GetJoypadPress(JOYKEY_A) == true*/)
+			if (/*GetKeyboardPress(DIK_SPACE) == true ||*/ GetMouseButtonPress(0)/*|| GetJoypadPress(JOYKEY_A) == true*/)
 			{// SPACE
 				g_player.nBulletCnt++;
 				if (g_player.nBulletCnt >= BULLET_INTERVAL/* && g_player.nBulletMax < BULLETMAX*/)

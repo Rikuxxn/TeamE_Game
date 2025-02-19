@@ -10,6 +10,7 @@
 #include "crane_particle.h"
 #include "crane_item.h"
 #include "sound.h"
+#include "crane_background.h"
 
 // É}ÉNÉç
 #define MAX_MAX (400.0f)	// ç≈ëÂÇ≈Ç©Ç¢

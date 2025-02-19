@@ -222,6 +222,10 @@ void InitGame(void)
 	g_Game.nPassCnt = 0;
 	g_Game.bSTClear = false;
 	g_Game.bACClear = false;
+	g_Game.bDraw = false;
+	g_Game.bDraw2 = false;
+	g_Game.bDraw3 = false;
+	g_Game.bDraw4 = false;
 	g_Game.bCraneHint = false;
 	g_Game.bBallClear = false;
 	g_Game.bBallHint = false;
@@ -362,7 +366,7 @@ void UpdateGame(void)
 	bool bEnd = GetEnd();
 
 	// ミニゲーム中はポーズを開けないようにする
-	if (g_Game.bMini == false && g_Game.bMap == false && (KeyboardTrigger(DIK_P) == true || JoyPadTrigger(JOYKEY_START) == true))
+	if (/*g_Game.bMini == false &&*/ g_Game.bMap == false && (KeyboardTrigger(DIK_P) == true || JoyPadTrigger(JOYKEY_START) == true))
 	{
 		g_bPause = g_bPause ? false : true;
 
@@ -791,24 +795,6 @@ void DrawGame(void)
 	//影の描画処理
 	DrawShadow();
 
-	if (g_Game.bMap == true && g_Game.bMini == false)
-	{//マップの描画
-		DrawMap();
-	}
-	if (g_Game.bBallHint == true)
-	{//パスワードのヒント
-		DrawBallHint();
-	}
-	if (g_Game.bCraneHint == true)
-	{//パスワードのヒント
-		DrawCraneHint();
-	}
-	if (g_bPause == true)
-	{//ポーズ中
-		//ポーズの描画処理
-		DrawPause();
-	}
-
 	//ミニゲームの描画処理
 	if (g_Game.bDraw == true/* && g_Game.nStgCnt <= 120*/)
 	{//シューティング
@@ -825,6 +811,24 @@ void DrawGame(void)
 	else if (g_Game.bDraw4 == true && g_Game.nPassCnt <= 120)
 	{//パスワード
 		DrawPasswordGame();
+	}
+
+	if (g_Game.bMap == true && g_Game.bMini == false)
+	{//マップの描画
+		DrawMap();
+	}
+	if (g_Game.bBallHint == true)
+	{//パスワードのヒント
+		DrawBallHint();
+	}
+	if (g_Game.bCraneHint == true)
+	{//パスワードのヒント
+		DrawCraneHint();
+	}
+	if (g_bPause == true)
+	{//ポーズ中
+		//ポーズの描画処理
+		DrawPause();
 	}
 
 	// 霧の有効化

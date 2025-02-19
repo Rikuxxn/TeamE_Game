@@ -9,6 +9,7 @@
 #include "crane_particle.h"
 #include "crane_block.h"
 #include "sound.h"
+#include "crane_background.h"
 
 // グローバル
 LPDIRECT3DTEXTURE9 g_pTextureItem[NUM_ITEM] = {};	// テクスチャへのポインタ

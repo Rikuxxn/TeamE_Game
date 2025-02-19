@@ -10,7 +10,7 @@
 //マクロ
 #define MAX_NUM_SCORE (4)
 #define PASSPOSX (540.0f)
-#define PASSPOSY (360.0f)
+#define PASSPOSY (180.0f)
 
 //パスワードの構造体
 typedef struct

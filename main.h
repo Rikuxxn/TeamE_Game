@@ -35,16 +35,6 @@
 //#define FVF_VERTEX_3D_MULTI (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX2)	// マルチテクスチャ
 
 
-#define CLANEFIELD_LEFT (280.0f)//幅720.0f
-#define CLANEFIELD_RIGHT (1000.0f)
-#define CLANEFIELD_TOP (50.0f)//高さ400.0f
-#define CLANEFIELD_UNDER (450.0f)
-
-#define BALLFIELD_LEFT (230.0f)//幅820.0f
-#define BALLFIELD_RIGHT (1050.0f)
-#define BALLFIELD_TOP (50.0f)//高さ400.0f
-#define BALLFIELD_UNDER (650.0f)
-
 
 //画面の種類
 typedef enum

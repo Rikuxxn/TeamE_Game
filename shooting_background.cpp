@@ -50,7 +50,7 @@ void InitBackGround(void)
 
 	// チュートリアルテクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\Mini_Shooting_Tutorial.png",	// テクスチャのファイル名
+		"data\\TEXTURE\\Shooting_Board.png",	// テクスチャのファイル名
 		&g_pTextureBG3);
 
 
@@ -99,8 +99,8 @@ void InitBackGround(void)
 	for (int nCntBG = 0; nCntBG < NUM_BG;nCntBG++)
 	{
 		// 頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(640.0f - BACKGROUND_WIDTH, 0.0f, 0.0f);//560.0f
-		pVtx[1].pos = D3DXVECTOR3(640.0f + BACKGROUND_WIDTH, 0.0f, 0.0f);//640.0f中央
+		pVtx[0].pos = D3DXVECTOR3(640.0f - BACKGROUND_WIDTH, 20.0f, 0.0f);//560.0f
+		pVtx[1].pos = D3DXVECTOR3(640.0f + BACKGROUND_WIDTH, 20.0f, 0.0f);//640.0f中央
 		pVtx[2].pos = D3DXVECTOR3(640.0f - BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 0.0f);
 		pVtx[3].pos = D3DXVECTOR3(640.0f + BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 0.0f);
 
@@ -157,10 +157,10 @@ void InitBackGround(void)
 	g_pVtxBuffBG3->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(950.0f, 200.0f, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(1200.0f, 200.0f, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(950.0f, 600.0f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(1200.0f, 600.0f, 0.0f);
+	pVtx[0].pos = D3DXVECTOR3(640.0f - BACKGROUNDTUTORIAL_WIDTH, 0.0f, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(640.0f + BACKGROUNDTUTORIAL_WIDTH, 0.0f, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(640.0f - BACKGROUNDTUTORIAL_WIDTH, 720.0f, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(640.0f + BACKGROUNDTUTORIAL_WIDTH, 720.0f, 0.0f);
 
 	// rhwの設定
 	pVtx[0].rhw = 1.0f;
@@ -188,8 +188,8 @@ void InitBackGround(void)
 	g_pVtxBuffBG4->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(640.0f - BACKGROUND_WIDTH, 0.0f, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(640.0f + BACKGROUND_WIDTH, 0.0f, 0.0f);
+	pVtx[0].pos = D3DXVECTOR3(640.0f - BACKGROUND_WIDTH, 20.0f, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(640.0f + BACKGROUND_WIDTH, 20.0f, 0.0f);
 	pVtx[2].pos = D3DXVECTOR3(640.0f - BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 0.0f);
 	pVtx[3].pos = D3DXVECTOR3(640.0f + BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 0.0f);
 
@@ -305,6 +305,18 @@ void DrawBackGround(void)
 		0,									   // 描画する最初の頂点インデックス
 		2);                                    // 描画するプリミティブ数
 
+	// チュートリアル
+	// 頂点バッファをデータストリーム
+	pDevice->SetStreamSource(0, g_pVtxBuffBG3, 0, sizeof(VERTEX_2D));
+	// 頂点フォーマットの設定
+	pDevice->SetFVF(FVF_VERTEX_2D);
+	// テクスチャの設定
+	pDevice->SetTexture(0, g_pTextureBG3);
+	// 描画
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,// プリミティブの種類
+		0,									   // 描画する最初の頂点インデックス
+		2);                                    // 描画するプリミティブ数
+
 	// 黒い背景
 	// 頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffBG4, 0, sizeof(VERTEX_2D));
@@ -316,7 +328,6 @@ void DrawBackGround(void)
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,// プリミティブの種類
 		0,									   // 描画する最初の頂点インデックス
 		2);                                    // 描画するプリミティブ数
-
 
 	// 背景
 	// 頂点バッファをデータストリーム
@@ -335,17 +346,5 @@ void DrawBackGround(void)
 			0,									   // 描画する最初の頂点インデックス
 			2);                                    // 描画するプリミティブ数
 	}
-
-	// チュートリアル
-	// 頂点バッファをデータストリーム
-	pDevice->SetStreamSource(0, g_pVtxBuffBG3, 0, sizeof(VERTEX_2D));
-	// 頂点フォーマットの設定
-	pDevice->SetFVF(FVF_VERTEX_2D);
-	// テクスチャの設定
-	pDevice->SetTexture(0, g_pTextureBG3);
-	// 描画
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,// プリミティブの種類
-		0,									   // 描画する最初の頂点インデックス
-		2);                                    // 描画するプリミティブ数
 
 }

@@ -5,6 +5,9 @@
 
 //maku
 #define MAX_ENEMY (128)//tekimax
+#define ENEMY_WIDTH (15.0f)//tekimax
+#define ENEMY_HEIGHT (15.0f)//tekimax
+
 
 //“G‚Ìó‘Ô
 typedef enum

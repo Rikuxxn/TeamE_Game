@@ -4,7 +4,7 @@
 //---------------------------------------------------------
 
 #include "main.h"
-#include "shooting_player.h"
+#include "shooting_background.h"
 
 // マクロ
 #define NUM_BG (3)//背景の数
@@ -99,10 +99,10 @@ void InitBackGround(void)
 	for (int nCntBG = 0; nCntBG < NUM_BG;nCntBG++)
 	{
 		// 頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(360.0f, 0.0f, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(920.0f, 0.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(360.0f, 720.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(920.0f, 720.0f, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(640.0f - BACKGROUND_WIDTH, 0.0f, 0.0f);//560.0f
+		pVtx[1].pos = D3DXVECTOR3(640.0f + BACKGROUND_WIDTH, 0.0f, 0.0f);//640.0f中央
+		pVtx[2].pos = D3DXVECTOR3(640.0f - BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(640.0f + BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 0.0f);
 
 		// rhwの設定
 		pVtx[0].rhw = 1.0f;
@@ -188,10 +188,10 @@ void InitBackGround(void)
 	g_pVtxBuffBG4->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(360.0f, 0.0f, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(920.0f, 0.0f, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(360.0f, 720.0f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(920.0f, 720.0f, 0.0f);
+	pVtx[0].pos = D3DXVECTOR3(640.0f - BACKGROUND_WIDTH, 0.0f, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(640.0f + BACKGROUND_WIDTH, 0.0f, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(640.0f - BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(640.0f + BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 0.0f);
 
 	// rhwの設定
 	pVtx[0].rhw = 1.0f;

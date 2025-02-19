@@ -38,8 +38,12 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/BGM/gameBGM.wav", -1},		// ゲームBGM
 	{"data/BGM/gameoverBGM.wav", -1},	// ゲームオーバーBGM
 	{"data/BGM/titleBGM.wav", -1},		// タイトルBGM
+	{"data/SE/insight.wav", 0},			// プレイヤーを発見
+	{"data/SE/wandering.wav", 0},		// 敵の徘徊
 	{"data/SE/footstep_1.wav", 0},		// 足音SE
-	{"data/SE/footstep_2.wav", 0},		// 足音SE
+	{"data/SE/footstep_2.wav", 0},		// 足音SE2
+	{"data/SE/heart.wav", 0},			// 心音
+	{"data/SE/heart_quick.wav", 0},		// 心音(速)
 	{"data/SE/ballcatch.wav", 0},		// ボールを掴む
 	{"data/SE/ballget.wav", 0},			// ボールを手に入れる
 	{"data/SE/ballclear.wav", 0},		// ボールプールクリア

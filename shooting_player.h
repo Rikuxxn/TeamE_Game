@@ -6,8 +6,8 @@
 #ifndef _SHOOTINGPLAYER_H_//このマクロ定義がされてなかったら
 #define _SHOOTINGPLAYER_H_//２重インクルード防止のマクロ定義
 
-#define WIDTH (25.0f)		//幅
-#define HEIGHT (50.0f)		//高さ
+#define WIDTH (20.0f)		//幅
+#define HEIGHT (35.0f)		//高さ
 #define BULLET_INTERVAL (10)//発射間隔
 #define BULLET_COOL (20)	//クールタイム
 #define BULLET_MAX (3)		//1度の射撃数
@@ -45,10 +45,6 @@ typedef struct
 }ShootingPlayer;
 
 //プロト
-void InitBackGround(void);
-void UninitBackGround(void);
-void UpdateBackGround(void);
-void DrawBackGround(void);
 void InitShootingPlayer(void);
 void UninitShootingPlayer(void);
 void UpdateShootingPlayer(void);

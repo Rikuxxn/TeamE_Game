@@ -12,6 +12,7 @@
 #include "shooting_particle.h"
 #include "shooting_clear.h"
 #include "shooting_score.h"
+#include "shooting_background.h"
 #include "password_game.h"
 #include "sound.h"
 
@@ -34,10 +35,10 @@ void InitShootingGame(void)
 	InitSTPass();			// パスワードの初期化
 
 	SetSTPass(GetAnum2());
-	SetEnemy(D3DXVECTOR3(470.0f, 200.0f, 0.0f), D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1);
-	SetEnemy(D3DXVECTOR3(750.0f, 200.0f, 0.0f), D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1);
-	SetEnemy(D3DXVECTOR3(610.0f, 260.0f, 0.0f), D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1);
-	SetEnemy(D3DXVECTOR3(610.0f, 360.0f, 0.0f),  D3DXVECTOR3(1.0f, 0.0f, 0.0f),1);
+	SetEnemy(D3DXVECTOR3(470.0f, 100.0f, 0.0f), D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1);
+	SetEnemy(D3DXVECTOR3(750.0f, 100.0f, 0.0f), D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1);
+	SetEnemy(D3DXVECTOR3(610.0f, 160.0f, 0.0f), D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1);
+	SetEnemy(D3DXVECTOR3(610.0f, 260.0f, 0.0f),  D3DXVECTOR3(1.0f, 0.0f, 0.0f),1);
 
 	g_gameState = STGSTATE_NORMAL;// 通常状態に設定
 	g_nCntShootingGameState = 0;

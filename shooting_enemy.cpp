@@ -66,10 +66,10 @@ void InitShootingEnemy(void)
 	{
 
 		// 頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x - 25.0f, g_aEnemy[nCntEnemy].pos.y - 25.0f, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x + 25.0f, g_aEnemy[nCntEnemy].pos.y - 25.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x - 25.0f, g_aEnemy[nCntEnemy].pos.y + 25.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x + 25.0f, g_aEnemy[nCntEnemy].pos.y + 25.0f, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x - ENEMY_WIDTH, g_aEnemy[nCntEnemy].pos.y - ENEMY_HEIGHT, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x + ENEMY_WIDTH, g_aEnemy[nCntEnemy].pos.y - ENEMY_HEIGHT, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x - ENEMY_WIDTH, g_aEnemy[nCntEnemy].pos.y + ENEMY_HEIGHT, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x + ENEMY_WIDTH, g_aEnemy[nCntEnemy].pos.y + ENEMY_HEIGHT, 0.0f);
 
 		// rhwの設定
 		pVtx[0].rhw = 1.0f;
@@ -174,10 +174,10 @@ void UpdateShootingEnemy(void)
 			g_aEnemy[nCntEnemy].pos.x += g_aEnemy[nCntEnemy].move.x;
 
 			// 頂点座標の設定
-			pVtx[0].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x - 20.0f, g_aEnemy[nCntEnemy].pos.y - 20.0f, 0.0f);
-			pVtx[1].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x + 20.0f, g_aEnemy[nCntEnemy].pos.y - 20.0f, 0.0f);
-			pVtx[2].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x - 20.0f, g_aEnemy[nCntEnemy].pos.y + 20.0f, 0.0f);
-			pVtx[3].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x + 20.0f, g_aEnemy[nCntEnemy].pos.y + 20.0f, 0.0f);
+			pVtx[0].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x - ENEMY_WIDTH, g_aEnemy[nCntEnemy].pos.y - ENEMY_HEIGHT, 0.0f);
+			pVtx[1].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x + ENEMY_WIDTH, g_aEnemy[nCntEnemy].pos.y - ENEMY_HEIGHT, 0.0f);
+			pVtx[2].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x - ENEMY_WIDTH, g_aEnemy[nCntEnemy].pos.y + ENEMY_HEIGHT, 0.0f);
+			pVtx[3].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x + ENEMY_WIDTH, g_aEnemy[nCntEnemy].pos.y + ENEMY_HEIGHT, 0.0f);
 
 			// テクスチャ
 			pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -240,10 +240,10 @@ void SetEnemy(D3DXVECTOR3 pos,D3DXVECTOR3 move, int nType)
 			g_nNumEnemy++;// 敵の総数カウントダウン
 			
 			// 頂点座標の設定
-			pVtx[0].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x - 25.0f, g_aEnemy[nCntEnemy].pos.y - 25.0f, 0.0f);
-			pVtx[1].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x + 25.0f, g_aEnemy[nCntEnemy].pos.y - 25.0f, 0.0f);
-			pVtx[2].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x - 25.0f, g_aEnemy[nCntEnemy].pos.y + 25.0f, 0.0f);
-			pVtx[3].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x + 25.0f, g_aEnemy[nCntEnemy].pos.y + 25.0f, 0.0f);
+			pVtx[0].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x - ENEMY_WIDTH, g_aEnemy[nCntEnemy].pos.y - ENEMY_HEIGHT, 0.0f);
+			pVtx[1].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x + ENEMY_WIDTH, g_aEnemy[nCntEnemy].pos.y - ENEMY_HEIGHT, 0.0f);
+			pVtx[2].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x - ENEMY_WIDTH, g_aEnemy[nCntEnemy].pos.y + ENEMY_HEIGHT, 0.0f);
+			pVtx[3].pos = D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x + ENEMY_WIDTH, g_aEnemy[nCntEnemy].pos.y + ENEMY_HEIGHT, 0.0f);
 			
 			// 頂点カラーの設定
 			pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);// 0.0～1.0で設定

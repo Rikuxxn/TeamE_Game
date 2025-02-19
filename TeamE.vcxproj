@@ -271,6 +271,7 @@
     <ClInclude Include="recommendation.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="shadow.h" />
+    <ClInclude Include="shooting_background.h" />
     <ClInclude Include="shooting_bullet.h" />
     <ClInclude Include="shooting_clear.h" />
     <ClInclude Include="shooting_effect.h" />

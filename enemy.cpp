@@ -256,8 +256,7 @@ void UpdateEnemy(void)
 		if (isPlayerInSightNow && !isPlayerInSightPrev)
 		{
 			// プレイヤーが視界に入った瞬間
-			//PlaySound(SOUND_LABEL_WARNING); // SEを再生
-			//SetFoundFade(MODE_FOUND);
+			PlaySound(SOUND_LABEL_INSIGHT); // SEを再生
 		}
 		
 		// フラグを更新して次のフレームに備える

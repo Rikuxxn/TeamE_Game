@@ -21,7 +21,7 @@ void InitBallBackGround(void)
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 	pDevice = GetDevice();// デバイスへのポインタ
 	int nCntBG;
-
+	
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
 		"data\\TEXTURE\\Ball_bg2.png",// テクスチャのファイル名

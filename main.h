@@ -14,8 +14,7 @@
 #include "dinput.h"															// 入力処理に必要
 #include "Xinput.h"															// ジョイパッド処理に必要
 #include "xaudio2.h"														// サウンド処理に必要
-//#include "d3d12.h"															// 
-
+#include<x3daudio.h>														// 3Dサウンド処理に必要
 
 //ライブラリのリンク
 #pragma comment(lib,"d3d9.lib")												// 描画処理に必要

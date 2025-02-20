@@ -11,10 +11,6 @@
 #include "model.h"
 #include "motion.h"
 
-//#define MAP_WIDTH 24   // 2400 / 100
-//#define MAP_HEIGHT 20  // 2000 / 100
-//#define GRID_SIZE 50  // 1マスのサイズ
-
 typedef enum 
 {
     ENEMYSTATE_PATROLLING,     // 巡回中
@@ -39,12 +35,10 @@ typedef struct
     D3DXVECTOR3 move;						    // 移動量
     D3DXVECTOR3 RadiusEnemy, posRadiusEnemy;
     bool bUse;
-    int nIdxExcla;
 }Enemy;
 
 
 //プロトタイプ宣言
-void InitBlockMap(void);
 void InitEnemy(void);
 void UninitEnemy(void);
 void UpdateEnemy(void);

@@ -32,7 +32,7 @@ void InitMap(void)
 
 	// テクスチャ1の読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\map.png",				// テクスチャのファイル名
+		"data\\TEXTURE\\minimap.png",			// テクスチャのファイル名
 		&g_pTextureMap);
 
 	// テクスチャ1の読み込み

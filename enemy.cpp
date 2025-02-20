@@ -1,6 +1,6 @@
-//=======================================
+ï»¿//=======================================
 //
-// “G‚Ìˆ— [enemy.cpp]
+// æ•µã®å‡¦ç† [enemy.cpp]
 // Author : TANEKAWA RIKU
 //
 //=======================================
@@ -12,7 +12,7 @@
 #include "sound.h"
 #include "shadow.h"
 
-// „‰ñƒ|ƒCƒ“ƒg”z—ñ
+// å·¡å›ãƒã‚¤ãƒ³ãƒˆé…åˆ—
 D3DXVECTOR3 patrolPoints[] =
 {
 	D3DXVECTOR3(1000.0f, 0.0f, 110.0f),
@@ -81,38 +81,38 @@ D3DXVECTOR3 patrolPoints[] =
 	D3DXVECTOR3(680.0f, 0.0f, 115.0f),
 };
 
-// ƒOƒ[ƒoƒ‹•Ï”
-Enemy g_aEnemy;						// “Gî•ñ
-bool g_bEnd;						// •ß‚Ü‚Á‚½”»’è
-bool Inside;						// ‹ŠE‚É“ü‚Á‚½‚©
+// ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+Enemy g_aEnemy;						// æ•µæƒ…å ±
+bool g_bEnd;						// æ•ã¾ã£ãŸåˆ¤å®š
+bool Inside;						// è¦–ç•Œã«å…¥ã£ãŸã‹
 bool isPlayerInSightPrev;
-bool isReversePatrol;				// „‰ñ‚Ì•ûŒüifalse: ‡‰ñ‚è, true: ‹t‰ñ‚èj
+bool isReversePatrol;				// å·¡å›ã®æ–¹å‘ï¼ˆfalse: é †å›ã‚Š, true: é€†å›ã‚Šï¼‰
 
-int currentPatrolPoint;				// Œ»İ‚Ì„‰ñƒ|ƒCƒ“ƒg
+int currentPatrolPoint;				// ç¾åœ¨ã®å·¡å›ãƒã‚¤ãƒ³ãƒˆ
 int g_nIdxShadowEnemy;
 
 //=============================
-// “G‚Ì‰Šú‰»ˆ—
+// æ•µã®åˆæœŸåŒ–å‡¦ç†
 //=============================
 void InitEnemy(void)
 {
 
-	//ƒfƒoƒCƒX‚Ìæ“¾
+	//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-    //‰Šú‰»
-    g_aEnemy.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//ˆÊ’u‚ğ‰Šú‰»‚·‚é
-    g_aEnemy.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	//‘O‚ÌˆÊ’u‚ğ‰Šú‰»‚·‚é
+    //åˆæœŸåŒ–
+    g_aEnemy.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//ä½ç½®ã‚’åˆæœŸåŒ–ã™ã‚‹
+    g_aEnemy.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	//å‰ã®ä½ç½®ã‚’åˆæœŸåŒ–ã™ã‚‹
 	g_aEnemy.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-    g_aEnemy.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//ˆÚ“®—Ê‚ğ‰Šú‰»‚·‚é
+    g_aEnemy.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//ç§»å‹•é‡ã‚’åˆæœŸåŒ–ã™ã‚‹
     g_aEnemy.enemymotion.bLoopMotion = true;
     g_aEnemy.enemymotion.nCounterMotion = 0;
 	g_aEnemy.RadiusEnemy = D3DXVECTOR3(10.0f, 10.0f, 10.0f);
 	g_aEnemy.posRadiusEnemy = D3DXVECTOR3(50.0f, 50.0f, 50.0f);
 	g_aEnemy.state = ENEMYSTATE_PATROLLING;
 	g_aEnemy.bUse = false;
-	g_aEnemy.sightRange = 310.0f;							//‹ŠE‹——£
-	g_aEnemy.sightAngle = D3DXToRadian(90.0f);				//‹ŠE”ÍˆÍ
+	g_aEnemy.sightRange = 310.0f;							//è¦–ç•Œè·é›¢
+	g_aEnemy.sightAngle = D3DXToRadian(90.0f);				//è¦–ç•Œç¯„å›²
 	g_bEnd = false;
 	Inside = false;
 	isPlayerInSightPrev = false;
@@ -123,7 +123,7 @@ void InitEnemy(void)
 
 	//g_nIdxShadowEnemy = SetShadow(D3DXVECTOR3(g_aEnemy.pos.x, g_aEnemy.pos.y, g_aEnemy.pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-	//ƒIƒtƒZƒbƒgl—¶
+	//ã‚ªãƒ•ã‚»ãƒƒãƒˆè€ƒæ…®
 	for (int nCntOff = 0; nCntOff < g_aEnemy.enemymotion.nNumModel; nCntOff++)
 	{
 		g_aEnemy.enemymotion.aModel[nCntOff].Offpos = g_aEnemy.enemymotion.aModel[nCntOff].pos;
@@ -133,25 +133,25 @@ void InitEnemy(void)
 	for (int nCntVtx = 0; nCntVtx < MAX_PARTS; nCntVtx++)
 	{
 
-		int nNumVtx;//’¸“_”
-		DWORD sizeFVF;//’¸“_ƒtƒH[ƒ}ƒbƒg‚ÌƒTƒCƒY
-		BYTE* pVtxBuff;//’¸“_ƒoƒbƒtƒ@‚Ö‚Ìƒ|ƒCƒ“ƒ^
+		int nNumVtx;//é ‚ç‚¹æ•°
+		DWORD sizeFVF;//é ‚ç‚¹ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®ã‚µã‚¤ã‚º
+		BYTE* pVtxBuff;//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 
-		//’¸“_”‚Ìæ“¾
+		//é ‚ç‚¹æ•°ã®å–å¾—
 		nNumVtx = g_aEnemy.enemymotion.aModel[nCntVtx].pMesh->GetNumVertices();
 
-		//’¸“_ƒtƒH[ƒ}ƒbƒg‚Ìæ“¾
+		//é ‚ç‚¹ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®å–å¾—
 		sizeFVF = D3DXGetFVFVertexSize(g_aEnemy.enemymotion.aModel[nCntVtx].pMesh->GetFVF());
 
-		//’¸“_ƒoƒbƒtƒ@‚ÌƒƒbƒN
+		//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ãƒ­ãƒƒã‚¯
 		g_aEnemy.enemymotion.aModel[nCntVtx].pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
 
 		for (int nCntVtx = 0; nCntVtx < nNumVtx; nCntVtx++)
 		{
-			//’¸“_À•W‚Ì‘ã“ü
+			//é ‚ç‚¹åº§æ¨™ã®ä»£å…¥
 			D3DXVECTOR3 vtx = *(D3DXVECTOR3*)pVtxBuff;
 
-			//’¸“_À•W‚ğ”äŠr‚µ‚Äƒ‚ƒfƒ‹‚ÌÅ¬’lÅ‘å’l‚ğæ“¾
+			//é ‚ç‚¹åº§æ¨™ã‚’æ¯”è¼ƒã—ã¦ãƒ¢ãƒ‡ãƒ«ã®æœ€å°å€¤æœ€å¤§å€¤ã‚’å–å¾—
 			if (vtx.x < g_aEnemy.vtxMin.x)
 			{
 				g_aEnemy.vtxMin.x = vtx.x;
@@ -178,7 +178,7 @@ void InitEnemy(void)
 				g_aEnemy.vtxMax.z = vtx.z;
 			}
 
-			//’¸“_ƒtƒH[ƒ}ƒbƒg‚ÌƒTƒCƒY•ªƒ|ƒCƒ“ƒ^‚ği‚ß‚é
+			//é ‚ç‚¹ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®ã‚µã‚¤ã‚ºåˆ†ãƒã‚¤ãƒ³ã‚¿ã‚’é€²ã‚ã‚‹
 			pVtxBuff += sizeFVF;
 		}
 
@@ -186,20 +186,20 @@ void InitEnemy(void)
 		g_aEnemy.size.y = (g_aEnemy.vtxMax.y - g_aEnemy.vtxMin.y);
 		g_aEnemy.size.z = (g_aEnemy.vtxMax.z - g_aEnemy.vtxMin.z);
 
-		//’¸“_ƒoƒbƒtƒ@‚ÌƒAƒ“ƒƒbƒN
+		//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚¢ãƒ³ãƒ­ãƒƒã‚¯
 		g_aEnemy.enemymotion.aModel[nCntVtx].pMesh->UnlockVertexBuffer();
 
-		D3DXMATERIAL* pMat;//ƒ}ƒeƒŠƒAƒ‹‚Ö‚Ìƒ|ƒCƒ“ƒ^
+		D3DXMATERIAL* pMat;//ãƒãƒ†ãƒªã‚¢ãƒ«ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 
-		//ƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğæ“¾
+		//ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—
 		pMat = (D3DXMATERIAL*)g_aEnemy.enemymotion.aModel[nCntVtx].pBuffMat->GetBufferPointer();
 
 		for (int nCntMat = 0; nCntMat < (int)g_aEnemy.enemymotion.aModel[nCntVtx].dwNumMat; nCntMat++)
 		{
 			if (pMat[nCntMat].pTextureFilename != NULL)
-			{//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹‚ª‘¶İ‚·‚é
+			{//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã™ã‚‹
 
-				//ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ
+				//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿
 				D3DXCreateTextureFromFile(pDevice,
 					pMat[nCntMat].pTextureFilename,
 					&g_aEnemy.enemymotion.aModel[nCntVtx].apTexture[nCntMat]);
@@ -211,7 +211,7 @@ void InitEnemy(void)
 
 }
 //=============================
-// “G‚ÌI—¹ˆ—
+// æ•µã®çµ‚äº†å‡¦ç†
 //=============================
 void UninitEnemy(void)
 {
@@ -221,7 +221,7 @@ void UninitEnemy(void)
 	{
 		for (int nCntMat = 0; nCntMat < (int)g_aEnemy.enemymotion.aModel[nCntModel].dwNumMat; nCntMat++)
 		{
-			//ƒeƒNƒXƒ`ƒƒ‚Ì”jŠü
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç ´æ£„
 			if (g_aEnemy.enemymotion.aModel[nCntModel].apTexture[nCntMat] != NULL)
 			{
 				g_aEnemy.enemymotion.aModel[nCntModel].apTexture[nCntMat]->Release();
@@ -229,14 +229,14 @@ void UninitEnemy(void)
 			}
 		}
 
-		//ƒƒbƒVƒ…‚Ì”jŠü
+		//ãƒ¡ãƒƒã‚·ãƒ¥ã®ç ´æ£„
 		if (g_aEnemy.enemymotion.aModel[nCntModel].pMesh != NULL)
 		{
 			g_aEnemy.enemymotion.aModel[nCntModel].pMesh->Release();
 			g_aEnemy.enemymotion.aModel[nCntModel].pMesh = NULL;
 		}
 
-		//ƒ}ƒeƒŠƒAƒ‹‚Ì”jŠü
+		//ãƒãƒ†ãƒªã‚¢ãƒ«ã®ç ´æ£„
 		if (g_aEnemy.enemymotion.aModel[nCntModel].pBuffMat != NULL)
 		{
 			g_aEnemy.enemymotion.aModel[nCntModel].pBuffMat->Release();
@@ -245,35 +245,35 @@ void UninitEnemy(void)
 	}
 }
 //=============================
-// “G‚ÌXVˆ—
+// æ•µã®æ›´æ–°å‡¦ç†
 //=============================
 void UpdateEnemy(void)
 {
 	if (g_aEnemy.bUse == true)
 	{
-		bool isPlayerInSightNow = isPlayerInSight(); // Œ»İ‚Ì‹ŠE”»’è
+		bool isPlayerInSightNow = isPlayerInSight(); // ç¾åœ¨ã®è¦–ç•Œåˆ¤å®š
 
-		// ‹ŠEŠO‚©‚ç‹ŠE“à‚É•Ï‰»‚µ‚½uŠÔ
+		// è¦–ç•Œå¤–ã‹ã‚‰è¦–ç•Œå†…ã«å¤‰åŒ–ã—ãŸç¬é–“
 		if (isPlayerInSightNow && !isPlayerInSightPrev)
 		{
-			// ƒvƒŒƒCƒ„[‚ª‹ŠE‚É“ü‚Á‚½uŠÔ
-			PlaySound(SOUND_LABEL_INSIGHT); // SE‚ğÄ¶
+			// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒè¦–ç•Œã«å…¥ã£ãŸç¬é–“
+			PlaySound(SOUND_LABEL_INSIGHT); // SEã‚’å†ç”Ÿ
 		}
 		
-		// ƒtƒ‰ƒO‚ğXV‚µ‚ÄŸ‚ÌƒtƒŒ[ƒ€‚É”õ‚¦‚é
+		// ãƒ•ãƒ©ã‚°ã‚’æ›´æ–°ã—ã¦æ¬¡ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã«å‚™ãˆã‚‹
 		isPlayerInSightPrev = isPlayerInSightNow;
 
 		Player* pPlayer = GetPlayer();
 
-		//ˆÚ“®—Ê‚ğXV(Œ¸Š‚³‚¹‚é)
+		//ç§»å‹•é‡ã‚’æ›´æ–°(æ¸›è¡°ã•ã›ã‚‹)
 		g_aEnemy.move.x += (0.0f - g_aEnemy.move.x) * 0.25f;
 		g_aEnemy.move.z += (0.0f - g_aEnemy.move.z) * 0.25f;
 		g_aEnemy.move.y += (0.0f - g_aEnemy.move.y) * 0.1f;
 
-		//‘O‰ñ‚ÌˆÊ’u‚ğXV
+		//å‰å›ã®ä½ç½®ã‚’æ›´æ–°
 		g_aEnemy.posOld = g_aEnemy.pos;
 
-		//ˆÊ’u‚ğXV
+		//ä½ç½®ã‚’æ›´æ–°
 		g_aEnemy.pos.x += g_aEnemy.move.x;
 		g_aEnemy.pos.z += g_aEnemy.move.z;
 		g_aEnemy.pos.y += g_aEnemy.move.y;
@@ -284,9 +284,9 @@ void UpdateEnemy(void)
 		CollisionBlock(&g_aEnemy.pos,&g_aEnemy.posOld,&g_aEnemy.move,&g_aEnemy.size);
 
 
-		D3DXVECTOR3 PlayerRadius(20.0f, 20.0f, 20.0f);				// •ß‚Ü‚é‹——£
-		D3DXVECTOR3 PlayerInsightRadius(50.0f, 50.0f, 50.0f);		// ƒoƒŒ‚é‹——£
-		D3DXVECTOR3 SoundRadius1(500.0f, 500.0f, 500.0f);			// S‰¹‚Ì–Â‚é‹——£
+		D3DXVECTOR3 PlayerRadius(20.0f, 20.0f, 20.0f);				// æ•ã¾ã‚‹è·é›¢
+		D3DXVECTOR3 PlayerInsightRadius(50.0f, 50.0f, 50.0f);		// ãƒãƒ¬ã‚‹è·é›¢
+		D3DXVECTOR3 SoundRadius1(500.0f, 500.0f, 500.0f);			// å¿ƒéŸ³ã®é³´ã‚‹è·é›¢
 
 		float fDistance =
 			(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +
@@ -318,7 +318,7 @@ void UpdateEnemy(void)
 			(g_aEnemy.RadiusEnemy.y + SoundRadius1.y) * (g_aEnemy.RadiusEnemy.y + SoundRadius1.y) +
 			(g_aEnemy.RadiusEnemy.z + SoundRadius1.z) * (g_aEnemy.RadiusEnemy.z + SoundRadius1.z);
 
-		// •ß‚Ü‚Á‚½
+		// æ•ã¾ã£ãŸ
 		if (fDistance <= fRadius)
 		{
 			pPlayer->pos = pPlayer->posOld;
@@ -327,16 +327,16 @@ void UpdateEnemy(void)
 			g_bEnd = true;
 		}
 
-		// ’ÇÕƒ‚[ƒh‚É‚·‚é
+		// è¿½è·¡ãƒ¢ãƒ¼ãƒ‰ã«ã™ã‚‹
 		if (fDistance2 <= fRadius2)
 		{
 			g_aEnemy.state = ENEMYSTATE_CHASING;
 		}
 
-		// S‰¹1
+		// å¿ƒéŸ³1
 		if (fDistanceSound1 <= fRadiusSound1)
 		{
-			//PlaySound(SOUND_LABEL_HEART); // SE‚ğÄ¶
+			//PlaySound(SOUND_LABEL_HEART); // SEã‚’å†ç”Ÿ
 		}
 
 		D3DXVECTOR3 posPlayerRadius(1.0f, 1.0f, 1.0f);
@@ -371,7 +371,7 @@ void UpdateEnemy(void)
 		//SetPositionShadow(g_nIdxShadowEnemy, D3DXVECTOR3(g_aEnemy.pos.x, 0.0f, g_aEnemy.pos.z));
 
 
-		//“G‚Ì‘«‰¹
+		//æ•µã®è¶³éŸ³
 		if (g_aEnemy.enemymotion.EnemymotionType == ENEMYMOTIONTYPE_NEUTRAL && g_aEnemy.enemymotion.nKey == 1 && 
 			g_aEnemy.enemymotion.nCounterMotion == 9)
 		{
@@ -394,13 +394,13 @@ void UpdateEnemy(void)
 			//PlaySound(SOUND_LABEL_STEP2);
 		}
 
-		//‘Sƒ‚ƒfƒ‹‚ÌXV
+		//å…¨ãƒ¢ãƒ‡ãƒ«ã®æ›´æ–°
 		for (int nCntModel = 0; nCntModel < g_aEnemy.enemymotion.nNumModel; nCntModel++)
 		{
 
 			int nNextKey = (g_aEnemy.enemymotion.nKey + 1) % g_aEnemy.enemymotion.aEnemyMotionInfo[g_aEnemy.enemymotion.EnemymotionType].nNumKey;
 
-			// ‹«ŠEƒ`ƒFƒbƒN
+			// å¢ƒç•Œãƒã‚§ãƒƒã‚¯
 			if (g_aEnemy.enemymotion.nKey >= g_aEnemy.enemymotion.aEnemyMotionInfo[g_aEnemy.enemymotion.EnemymotionType].nNumKey ||
 				nNextKey >= g_aEnemy.enemymotion.aEnemyMotionInfo[g_aEnemy.enemymotion.EnemymotionType].nNumKey)
 			{
@@ -408,9 +408,9 @@ void UpdateEnemy(void)
 			}
 
 			D3DXVECTOR3 Mpos, Mrot;
-			D3DXVECTOR3 MAnswer, MAnswer2;//ŒvZŒ‹‰Ê—p
+			D3DXVECTOR3 MAnswer, MAnswer2;//è¨ˆç®—çµæœç”¨
 
-			//ƒL[î•ñ‚©‚çˆÊ’uEŒü‚«‚ğZo
+			//ã‚­ãƒ¼æƒ…å ±ã‹ã‚‰ä½ç½®ãƒ»å‘ãã‚’ç®—å‡º
 			Mpos.x = g_aEnemy.enemymotion.aEnemyMotionInfo[g_aEnemy.enemymotion.EnemymotionType].aEnemyKeyInfo[nNextKey].aKey[nCntModel].fPosX - 
 				g_aEnemy.enemymotion.aEnemyMotionInfo[g_aEnemy.enemymotion.EnemymotionType].aEnemyKeyInfo[g_aEnemy.enemymotion.nKey].aKey[nCntModel].fPosX;
 			Mpos.y = g_aEnemy.enemymotion.aEnemyMotionInfo[g_aEnemy.enemymotion.EnemymotionType].aEnemyKeyInfo[nNextKey].aKey[nCntModel].fPosY -
@@ -425,10 +425,10 @@ void UpdateEnemy(void)
 			Mrot.z = g_aEnemy.enemymotion.aEnemyMotionInfo[g_aEnemy.enemymotion.EnemymotionType].aEnemyKeyInfo[nNextKey].aKey[nCntModel].fRotZ -
 				g_aEnemy.enemymotion.aEnemyMotionInfo[g_aEnemy.enemymotion.EnemymotionType].aEnemyKeyInfo[g_aEnemy.enemymotion.nKey].aKey[nCntModel].fRotZ;
 
-			//•âŠÔŒW”‚ğŒvZ
+			//è£œé–“ä¿‚æ•°ã‚’è¨ˆç®—
 			float t = (float)g_aEnemy.enemymotion.nCounterMotion / g_aEnemy.enemymotion.aEnemyMotionInfo[g_aEnemy.enemymotion.EnemymotionType].aEnemyKeyInfo[g_aEnemy.enemymotion.nKey].nFrame;
 
-			//‹‚ß‚é’l
+			//æ±‚ã‚ã‚‹å€¤
 			MAnswer.x = g_aEnemy.enemymotion.aEnemyMotionInfo[g_aEnemy.enemymotion.EnemymotionType].aEnemyKeyInfo[g_aEnemy.enemymotion.nKey].aKey[nCntModel].fPosX + Mpos.x * t;
 			MAnswer.y = g_aEnemy.enemymotion.aEnemyMotionInfo[g_aEnemy.enemymotion.EnemymotionType].aEnemyKeyInfo[g_aEnemy.enemymotion.nKey].aKey[nCntModel].fPosY + Mpos.y * t;
 			MAnswer.z = g_aEnemy.enemymotion.aEnemyMotionInfo[g_aEnemy.enemymotion.EnemymotionType].aEnemyKeyInfo[g_aEnemy.enemymotion.nKey].aKey[nCntModel].fPosZ + Mpos.z * t;
@@ -438,14 +438,14 @@ void UpdateEnemy(void)
 			MAnswer2.z = g_aEnemy.enemymotion.aEnemyMotionInfo[g_aEnemy.enemymotion.EnemymotionType].aEnemyKeyInfo[g_aEnemy.enemymotion.nKey].aKey[nCntModel].fRotZ + Mrot.z * t;
 
 
-			//‘Sƒp[ƒc‚ÌˆÊ’uEŒü‚«‚ğİ’è
+			//å…¨ãƒ‘ãƒ¼ãƒ„ã®ä½ç½®ãƒ»å‘ãã‚’è¨­å®š
 			g_aEnemy.enemymotion.aModel[nCntModel].pos = g_aEnemy.enemymotion.aModel[nCntModel].Offpos + MAnswer;
 
 			g_aEnemy.enemymotion.aModel[nCntModel].rot = g_aEnemy.enemymotion.aModel[nCntModel].Offrot + MAnswer2;
 
 		}
 
-		g_aEnemy.enemymotion.nCounterMotion++;//Ä¶ƒtƒŒ[ƒ€”‚É’B‚µ‚½‚çŒ»İ‚ÌƒL[‚ğ1‚Âi‚ß‚é
+		g_aEnemy.enemymotion.nCounterMotion++;//å†ç”Ÿãƒ•ãƒ¬ãƒ¼ãƒ æ•°ã«é”ã—ãŸã‚‰ç¾åœ¨ã®ã‚­ãƒ¼ã‚’1ã¤é€²ã‚ã‚‹
 
 		if (g_aEnemy.enemymotion.nCounterMotion >= g_aEnemy.enemymotion.aEnemyMotionInfo[g_aEnemy.enemymotion.EnemymotionType].aEnemyKeyInfo[g_aEnemy.enemymotion.nKey].nFrame)
 		{
@@ -458,8 +458,8 @@ void UpdateEnemy(void)
 		float distanceToTarget	  = 0.0f;
 		float angleToTarget       = 0.0f;
 		float fAngle              = 0.0f;
-		static int lostSightTimer = 0;				// ‹ŠEŠOƒ^ƒCƒ}[
-		static int patrolTimer    = 0;				// ‘{õƒ^ƒCƒ}[
+		static int lostSightTimer = 0;				// è¦–ç•Œå¤–ã‚¿ã‚¤ãƒãƒ¼
+		static int patrolTimer    = 0;				// æœç´¢ã‚¿ã‚¤ãƒãƒ¼
 
 		D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
 
@@ -469,7 +469,7 @@ void UpdateEnemy(void)
 
 			g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_NEUTRAL;
 
-			// Œ»İ‚Ì„‰ñƒ|ƒCƒ“ƒg‚ÉŒü‚©‚¤
+			// ç¾åœ¨ã®å·¡å›ãƒã‚¤ãƒ³ãƒˆã«å‘ã‹ã†
 			target = patrolPoints[currentPatrolPoint];
 
 			distanceToTarget = sqrtf
@@ -481,14 +481,14 @@ void UpdateEnemy(void)
 
 			if (currentPatrolPoint < 0 || currentPatrolPoint >= sizeof(patrolPoints) / sizeof(patrolPoints[0]))
 			{
-				currentPatrolPoint = 0; // ”ÍˆÍŠOƒAƒNƒZƒX‚ğ–h‚®
+				currentPatrolPoint = 0; // ç¯„å›²å¤–ã‚¢ã‚¯ã‚»ã‚¹ã‚’é˜²ã
 			}
 
-			// ‹ß‚Ã‚­
-			moveSpeed = 0.4f; // „‰ñ‘¬“x
+			// è¿‘ã¥ã
+			moveSpeed = 0.4f; // å·¡å›é€Ÿåº¦
 
 			if (distanceToTarget > 5.0f)
-			{ // “’B”»’è
+			{ // åˆ°é”åˆ¤å®š
 				angleToTarget	 = atan2f(target.x - g_aEnemy.pos.x, target.z - g_aEnemy.pos.z);
 				g_aEnemy.move.x += sinf(angleToTarget) * moveSpeed;
 				g_aEnemy.move.z += cosf(angleToTarget) * moveSpeed;
@@ -497,13 +497,13 @@ void UpdateEnemy(void)
 			}
 			else
 			{
-				// ˆê’èŠm—¦‚Å‹t‰ñ‚è‚ÉØ‚è‘Ö‚¦‚é
-				if (rand() % 100 < 25) // 25%‚ÌŠm—¦‚Å•ûŒü‚ğØ‚è‘Ö‚¦‚é
+				// ä¸€å®šç¢ºç‡ã§é€†å›ã‚Šã«åˆ‡ã‚Šæ›¿ãˆã‚‹
+				if (rand() % 100 < 25) // 25%ã®ç¢ºç‡ã§æ–¹å‘ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
 				{
 					isReversePatrol = !isReversePatrol;
 				}
 
-				// „‰ñƒ|ƒCƒ“ƒg‚ÌXV
+				// å·¡å›ãƒã‚¤ãƒ³ãƒˆã®æ›´æ–°
 				if (isReversePatrol)
 				{
 					currentPatrolPoint = (currentPatrolPoint - 1 + (sizeof(patrolPoints) / sizeof(patrolPoints[0]))) % (sizeof(patrolPoints) / sizeof(patrolPoints[0]));
@@ -514,7 +514,7 @@ void UpdateEnemy(void)
 				}
 			}
 
-			// ƒvƒŒƒCƒ„[‚ğ‹ŠE“à‚ÅŒŸo‚µ‚½‚ç’ÇÕ‚ÉØ‚è‘Ö‚¦‚é
+			// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’è¦–ç•Œå†…ã§æ¤œå‡ºã—ãŸã‚‰è¿½è·¡ã«åˆ‡ã‚Šæ›¿ãˆã‚‹
 			if (isPlayerInSight())
 			{
 				g_aEnemy.state = ENEMYSTATE_CHASING;
@@ -534,10 +534,10 @@ void UpdateEnemy(void)
 			g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_MOVE;
 
 
-			// ƒvƒŒƒCƒ„[‚ª‹ŠEŠO‚Éo‚½‚ç‘{õó‘Ô‚ÉØ‚è‘Ö‚¦‚é
+			// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒè¦–ç•Œå¤–ã«å‡ºãŸã‚‰æœç´¢çŠ¶æ…‹ã«åˆ‡ã‚Šæ›¿ãˆã‚‹
 			if (!isPlayerInSight())
 			{
-				g_aEnemy.state = ENEMYSTATE_SEARCHING; // ‘{õó‘Ô‚Ö
+				g_aEnemy.state = ENEMYSTATE_SEARCHING; // æœç´¢çŠ¶æ…‹ã¸
 			}
 
 			if (!isPlayerInSight())
@@ -545,17 +545,17 @@ void UpdateEnemy(void)
 				lostSightTimer++;
 
 				if (lostSightTimer > 180)
-				{ // 180ƒtƒŒ[ƒ€Œo‰ß
+				{ // 180ãƒ•ãƒ¬ãƒ¼ãƒ çµŒé
 					currentPatrolPoint = GetNearestPatrolPoint(g_aEnemy.pos);
 
 					g_aEnemy.state = ENEMYSTATE_PATROLLING;
 
-					lostSightTimer = 0; // ƒ^ƒCƒ}[‚ğƒŠƒZƒbƒg
+					lostSightTimer = 0; // ã‚¿ã‚¤ãƒãƒ¼ã‚’ãƒªã‚»ãƒƒãƒˆ
 				}
 			}
 			else
 			{
-				lostSightTimer = 0; // ‹ŠE“à‚É–ß‚Á‚½‚çƒ^ƒCƒ}[‚ğƒŠƒZƒbƒg
+				lostSightTimer = 0; // è¦–ç•Œå†…ã«æˆ»ã£ãŸã‚‰ã‚¿ã‚¤ãƒãƒ¼ã‚’ãƒªã‚»ãƒƒãƒˆ
 			}
 
 			break;
@@ -569,7 +569,7 @@ void UpdateEnemy(void)
 				g_aEnemy.state = ENEMYSTATE_CHASING;
 			}
 
-			// ˆê’èŠÔŒo‰ßŒã„‰ñ‚É–ß‚é
+			// ä¸€å®šæ™‚é–“çµŒéå¾Œå·¡å›ã«æˆ»ã‚‹
 			patrolTimer++;
 
 			if (patrolTimer > 180)
@@ -585,102 +585,102 @@ void UpdateEnemy(void)
 	}
 }
 //=============================
-// “G‚Ì•`‰æˆ—
+// æ•µã®æç”»å‡¦ç†
 //=============================
 void DrawEnemy(void)
 {
 
-	//ƒfƒoƒCƒX‚Ìæ“¾
+	//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	if (g_aEnemy.bUse == true)
 	{
-		//ŒvZ—pƒ}ƒgƒŠƒbƒNƒX
+		//è¨ˆç®—ç”¨ãƒãƒˆãƒªãƒƒã‚¯ã‚¹
 		D3DXMATRIX mtxRot, mtxTrans, mtxSize;
 
-		D3DMATERIAL9 matDef;//Œ»İ‚Ìƒ}ƒeƒŠƒAƒ‹•Û‘¶—p
+		D3DMATERIAL9 matDef;//ç¾åœ¨ã®ãƒãƒ†ãƒªã‚¢ãƒ«ä¿å­˜ç”¨
 
-		D3DXMATERIAL* pMat;//ƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^
+		D3DXMATERIAL* pMat;//ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 
-		//ƒ[ƒ‹ƒhƒ}ƒgƒŠƒbƒNƒX‚Ì‰Šú‰»
+		//ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒãƒˆãƒªãƒƒã‚¯ã‚¹ã®åˆæœŸåŒ–
 		D3DXMatrixIdentity(&g_aEnemy.mtxWorld);
 
-		//Œü‚«‚ğ”½‰f
+		//å‘ãã‚’åæ˜ 
 		D3DXMatrixRotationYawPitchRoll(&mtxRot, g_aEnemy.rot.y, g_aEnemy.rot.x, g_aEnemy.rot.z);
 		D3DXMatrixMultiply(&g_aEnemy.mtxWorld, &g_aEnemy.mtxWorld, &mtxRot);
 
-		//ˆÊ’u‚ğ”½‰f
+		//ä½ç½®ã‚’åæ˜ 
 		D3DXMatrixTranslation(&mtxTrans, g_aEnemy.pos.x, g_aEnemy.pos.y, g_aEnemy.pos.z);
 		D3DXMatrixMultiply(&g_aEnemy.mtxWorld, &g_aEnemy.mtxWorld, &mtxTrans);
 
-		//ƒ[ƒ‹ƒhƒ}ƒgƒŠƒbƒNƒX‚ğİ’è
+		//ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒãƒˆãƒªãƒƒã‚¯ã‚¹ã‚’è¨­å®š
 		pDevice->SetTransform(D3DTS_WORLD, &g_aEnemy.mtxWorld);
 
-		//Œ»İ‚Ìƒ}ƒeƒŠƒAƒ‹‚Ìæ“¾
+		//ç¾åœ¨ã®ãƒãƒ†ãƒªã‚¢ãƒ«ã®å–å¾—
 		pDevice->GetMaterial(&matDef);
 
-		//‘Sƒ‚ƒfƒ‹(ƒp[ƒc)‚Ì•`‰æ
+		//å…¨ãƒ¢ãƒ‡ãƒ«(ãƒ‘ãƒ¼ãƒ„)ã®æç”»
 		for (int nCntModel = 0; nCntModel < g_aEnemy.enemymotion.nNumModel; nCntModel++)
 		{
 
-			D3DXMATRIX mtxRotModel, mtxTransModel;//ŒvZ—pƒ}ƒgƒŠƒbƒNƒX
+			D3DXMATRIX mtxRotModel, mtxTransModel;//è¨ˆç®—ç”¨ãƒãƒˆãƒªãƒƒã‚¯ã‚¹
 
-			D3DXMATRIX mtxParent;//e‚Ìƒ}ƒgƒŠƒbƒNƒX
+			D3DXMATRIX mtxParent;//è¦ªã®ãƒãƒˆãƒªãƒƒã‚¯ã‚¹
 
-			//ƒp[ƒc‚Ìƒ[ƒ‹ƒhƒ}ƒgƒŠƒbƒNƒX‚à‰Šú‰»
+			//ãƒ‘ãƒ¼ãƒ„ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒãƒˆãƒªãƒƒã‚¯ã‚¹ã‚‚åˆæœŸåŒ–
 			D3DXMatrixIdentity(&g_aEnemy.enemymotion.aModel[nCntModel].mtxWorld);
 
-			//Œü‚«‚ğ”½‰f
+			//å‘ãã‚’åæ˜ 
 			D3DXMatrixRotationYawPitchRoll(&mtxRotModel, g_aEnemy.enemymotion.aModel[nCntModel].rot.y, g_aEnemy.enemymotion.aModel[nCntModel].rot.x, g_aEnemy.enemymotion.aModel[nCntModel].rot.z);
 			D3DXMatrixMultiply(&g_aEnemy.enemymotion.aModel[nCntModel].mtxWorld, &g_aEnemy.enemymotion.aModel[nCntModel].mtxWorld, &mtxRotModel);
 
-			//ˆÊ’u‚ğ”½‰f
+			//ä½ç½®ã‚’åæ˜ 
 			D3DXMatrixTranslation(&mtxTransModel, g_aEnemy.enemymotion.aModel[nCntModel].pos.x, g_aEnemy.enemymotion.aModel[nCntModel].pos.y, g_aEnemy.enemymotion.aModel[nCntModel].pos.z);
 			D3DXMatrixMultiply(&g_aEnemy.enemymotion.aModel[nCntModel].mtxWorld, &g_aEnemy.enemymotion.aModel[nCntModel].mtxWorld, &mtxTransModel);
 
-			//ƒp[ƒc‚Ìe‚Ìƒ}ƒgƒŠƒbƒNƒX‚ğİ’è
+			//ãƒ‘ãƒ¼ãƒ„ã®è¦ªã®ãƒãƒˆãƒªãƒƒã‚¯ã‚¹ã‚’è¨­å®š
 			if (g_aEnemy.enemymotion.aModel[nCntModel].nIdxModelParent != -1)
-			{//eƒ‚ƒfƒ‹‚ª‚ ‚éê‡
+			{//è¦ªãƒ¢ãƒ‡ãƒ«ãŒã‚ã‚‹å ´åˆ
 
 				mtxParent = g_aEnemy.enemymotion.aModel[g_aEnemy.enemymotion.aModel[nCntModel].nIdxModelParent].mtxWorld;
 			}
 			else
-			{//eƒ‚ƒfƒ‹‚ª‚È‚¢ê‡
+			{//è¦ªãƒ¢ãƒ‡ãƒ«ãŒãªã„å ´åˆ
 
 				mtxParent = g_aEnemy.mtxWorld;
 			}
 
-			//Zo‚µ‚½ƒp[ƒc‚Ìƒ[ƒ‹ƒhƒ}ƒgƒŠƒbƒNƒX‚Æe‚Ìƒ}ƒgƒŠƒbƒNƒX‚ğ‚©‚¯‡‚í‚¹‚é
+			//ç®—å‡ºã—ãŸãƒ‘ãƒ¼ãƒ„ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒãƒˆãƒªãƒƒã‚¯ã‚¹ã¨è¦ªã®ãƒãƒˆãƒªãƒƒã‚¯ã‚¹ã‚’ã‹ã‘åˆã‚ã›ã‚‹
 			D3DXMatrixMultiply(&g_aEnemy.enemymotion.aModel[nCntModel].mtxWorld, &g_aEnemy.enemymotion.aModel[nCntModel].mtxWorld, &mtxParent);
 
-			//ƒp[ƒc‚Ìƒ[ƒ‹ƒhƒ}ƒgƒŠƒbƒNƒX‚Ìİ’è
+			//ãƒ‘ãƒ¼ãƒ„ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒãƒˆãƒªãƒƒã‚¯ã‚¹ã®è¨­å®š
 			pDevice->SetTransform(D3DTS_WORLD, &g_aEnemy.enemymotion.aModel[nCntModel].mtxWorld);
 
-			//ƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğæ“¾
+			//ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—
 			pMat = (D3DXMATERIAL*)g_aEnemy.enemymotion.aModel[nCntModel].pBuffMat->GetBufferPointer();
 
 			for (int nCntMat = 0; nCntMat < (int)g_aEnemy.enemymotion.aModel[nCntModel].dwNumMat; nCntMat++)
 			{
 
-				//ƒ}ƒeƒŠƒAƒ‹‚Ìİ’è
+				//ãƒãƒ†ãƒªã‚¢ãƒ«ã®è¨­å®š
 				pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 
-				//ƒeƒNƒXƒ`ƒƒ‚Ìİ’è
+				//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®è¨­å®š
 				pDevice->SetTexture(0, g_aEnemy.enemymotion.aModel[nCntModel].apTexture[nCntMat]);
 
-				//ƒ‚ƒfƒ‹(ƒp[ƒc)‚Ì•`‰æ
+				//ãƒ¢ãƒ‡ãƒ«(ãƒ‘ãƒ¼ãƒ„)ã®æç”»
 				g_aEnemy.enemymotion.aModel[nCntModel].pMesh->DrawSubset(nCntMat);
 
 			}
 
 		}
 
-		//•Û‘¶‚µ‚Ä‚¢‚½ƒ}ƒeƒŠƒAƒ‹‚ğ–ß‚·
+		//ä¿å­˜ã—ã¦ã„ãŸãƒãƒ†ãƒªã‚¢ãƒ«ã‚’æˆ»ã™
 		pDevice->SetMaterial(&matDef);
 	}
 }
 //=============================
-// “G‚Ìİ’èˆ—
+// æ•µã®è¨­å®šå‡¦ç†
 //=============================
 void SetEnemy(D3DXVECTOR3 pos)
 {
@@ -691,46 +691,46 @@ void SetEnemy(D3DXVECTOR3 pos)
 	}
 }
 //============================================
-// “G‚Ìæ“¾
+// æ•µã®å–å¾—
 //============================================
 Enemy* GetEnemy(void)
 {
 	return &g_aEnemy;
 }
 //=============================
-// ‹ŠE“à”»’è
+// è¦–ç•Œå†…åˆ¤å®š
 //=============================
 bool isPlayerInSight(void) 
 {
 	Player* pPlayer = GetPlayer();
 
-	// “G‚Ì³–ÊƒxƒNƒgƒ‹‚ğŒvZ
+	// æ•µã®æ­£é¢ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—
 	D3DXVECTOR3 enemyFront;
 
 	enemyFront.x = -sinf(g_aEnemy.rot.y);
 	enemyFront.y = 0.0f;
 	enemyFront.z = -cosf(g_aEnemy.rot.y);
 
-	// ƒvƒŒƒCƒ„[‚Æ‚Ì•ûŒüƒxƒNƒgƒ‹
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
 	D3DXVECTOR3 toPlayer;
 
 	toPlayer.x = pPlayer->pos.x - g_aEnemy.pos.x;
 	toPlayer.y = 0.0f;
 	toPlayer.z = pPlayer->pos.z - g_aEnemy.pos.z;
 
-	// ƒvƒŒƒCƒ„[•ûŒüƒxƒNƒgƒ‹‚ğ³‹K‰»
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ­£è¦åŒ–
 	D3DXVec3Normalize(&toPlayer, &toPlayer);
 
-	// “G‚Ì³–ÊƒxƒNƒgƒ‹‚à³‹K‰»
+	// æ•µã®æ­£é¢ãƒ™ã‚¯ãƒˆãƒ«ã‚‚æ­£è¦åŒ–
 	D3DXVec3Normalize(&enemyFront, &enemyFront);
 
-	// ƒxƒNƒgƒ‹‚Ì“àÏ‚ğŒvZ
+	// ãƒ™ã‚¯ãƒˆãƒ«ã®å†…ç©ã‚’è¨ˆç®—
 	float dotProduct = D3DXVec3Dot(&enemyFront, &toPlayer);
 
-	// “àÏ‚©‚ç‹–ì“à‚©”»’è(0.5f‚Í‚µ‚«‚¢’l)
-	if (dotProduct > cosf(g_aEnemy.sightAngle * 0.5f)) // ‹–ìŠp‚Ì”¼•ª‚Å”»’è 1 ¨ Š®‘S‚É“¯‚¶•ûŒüi³–Êj0 ¨ ’¼Špi^‰¡j- 1 ¨ ^‹ti”wŒãj
+	// å†…ç©ã‹ã‚‰è¦–é‡å†…ã‹åˆ¤å®š(0.5fã¯ã—ãã„å€¤)
+	if (dotProduct > cosf(g_aEnemy.sightAngle * 0.5f)) // è¦–é‡è§’ã®åŠåˆ†ã§åˆ¤å®š 1 â†’ å®Œå…¨ã«åŒã˜æ–¹å‘ï¼ˆæ­£é¢ï¼‰0 â†’ ç›´è§’ï¼ˆçœŸæ¨ªï¼‰- 1 â†’ çœŸé€†ï¼ˆèƒŒå¾Œï¼‰
 	{
-		// ƒvƒŒƒCƒ„[‚Æ‚Ì‹——£‚ğŒvZ
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®è·é›¢ã‚’è¨ˆç®—
 		float distanceSquared =
 			(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +
 			(g_aEnemy.pos.y - pPlayer->pos.y) * (g_aEnemy.pos.y - pPlayer->pos.y) +
@@ -738,18 +738,18 @@ bool isPlayerInSight(void)
 
 		if (distanceSquared <= g_aEnemy.sightRange * g_aEnemy.sightRange)
 		{
-			return true; // ƒvƒŒƒCƒ„[‚Í‹ŠE“à
+			return true; // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯è¦–ç•Œå†…
 		}
 	}
 
-	return false; // ‹ŠEŠO
+	return false; // è¦–ç•Œå¤–
 }
 //======================================================
-// ˆê”Ô‹ß‚¢„‰ñƒ|ƒCƒ“ƒg‚ÌZoˆ—
+// ä¸€ç•ªè¿‘ã„å·¡å›ãƒã‚¤ãƒ³ãƒˆã®ç®—å‡ºå‡¦ç†
 //======================================================
 int GetNearestPatrolPoint(D3DXVECTOR3 currentPos) 
 {
-	float minDistance = FLT_MAX; // ”ñí‚É‘å‚«‚È’l‚Å‰Šú‰»
+	float minDistance = FLT_MAX; // éå¸¸ã«å¤§ããªå€¤ã§åˆæœŸåŒ–
 	int nearestPoint = 0;
 
 	for (int nCnt = 0; nCnt < sizeof(patrolPoints) / sizeof(patrolPoints[0]); nCnt++)
@@ -768,17 +768,17 @@ int GetNearestPatrolPoint(D3DXVECTOR3 currentPos)
 		}
 	}
 
-	return nearestPoint; // Å‚à‹ß‚¢„‰ñƒ|ƒCƒ“ƒg‚ÌƒCƒ“ƒfƒbƒNƒX‚ğ•Ô‚·
+	return nearestPoint; // æœ€ã‚‚è¿‘ã„å·¡å›ãƒã‚¤ãƒ³ãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’è¿”ã™
 }
 //======================================================
-// •ß‚Ü‚Á‚½”»’è
+// æ•ã¾ã£ãŸåˆ¤å®š
 //======================================================
 bool GetEnd(void)
 {
 	return g_bEnd;
 }
 //======================================================
-// ‹ŠE‚É“ü‚Á‚½‚©”»’è
+// è¦–ç•Œã«å…¥ã£ãŸã‹åˆ¤å®š
 //======================================================
 bool GetInside(void)
 {

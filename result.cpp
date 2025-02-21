@@ -472,17 +472,17 @@ void UpdateResult(void)
 			float centerY = 600.0f + nCnt * 150.0f; // 中心Y座標
 
 			// 領域の計算
-			float left = centerX - 78.0f * scale;
-			float right = centerX + 78.0f * scale;
-			float top = centerY - 10.0f * scale;
-			float bottom = centerY + 10.0f * scale;
+			float left = centerX - 80.0f * scale;
+			float right = centerX + 80.0f * scale;
+			float top = centerY - 12.0f * scale;
+			float bottom = centerY + 12.0f * scale;
 
 			// 範囲内判定
 			if (mouseX >= left && mouseX <= right &&
 				mouseY >= top && mouseY <= bottom)
 			{
 				selectedByMouse = nCnt; // 項目のインデックスを記録
-				g_clearMenu = static_cast<CLEAR_MENU>(nCnt); // 選択状態を更新
+				g_clearMenu = (CLEAR_MENU)(nCnt); // 選択状態を更新
 			}
 		}
 
@@ -536,10 +536,10 @@ void UpdateResult(void)
 			float centerY = 600.0f + nCntClear * 150.0f;
 
 			// 頂点座標を設定
-			pVtx[0].pos = D3DXVECTOR3(centerX - 78.0f * scale, centerY - 10.0f * scale, 0.0f);
-			pVtx[1].pos = D3DXVECTOR3(centerX + 78.0f * scale, centerY - 10.0f * scale, 0.0f);
-			pVtx[2].pos = D3DXVECTOR3(centerX - 78.0f * scale, centerY + 10.0f * scale, 0.0f);
-			pVtx[3].pos = D3DXVECTOR3(centerX + 78.0f * scale, centerY + 10.0f * scale, 0.0f);
+			pVtx[0].pos = D3DXVECTOR3(centerX - 80.0f * scale, centerY - 12.0f * scale, 0.0f);
+			pVtx[1].pos = D3DXVECTOR3(centerX + 80.0f * scale, centerY - 12.0f * scale, 0.0f);
+			pVtx[2].pos = D3DXVECTOR3(centerX - 80.0f * scale, centerY + 12.0f * scale, 0.0f);
+			pVtx[3].pos = D3DXVECTOR3(centerX + 80.0f * scale, centerY + 12.0f * scale, 0.0f);
 
 			// カラー設定
 			D3DXCOLOR color = D3DXCOLOR(1.0f, 1.0f, 1.0f, clearAlphas[nCntClear]);
@@ -597,7 +597,7 @@ void UpdateResult(void)
 				mouseY >= top && mouseY <= bottom)
 			{
 				selectedByMouse = nCnt; // 項目のインデックスを記録
-				g_gameoverMenu = static_cast<GAMEOVER_MENU>(nCnt); // 選択状態を更新
+				g_gameoverMenu = (GAMEOVER_MENU)(nCnt); // 選択状態を更新
 			}
 		}
 

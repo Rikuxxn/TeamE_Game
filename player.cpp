@@ -483,10 +483,6 @@ void UpdatePlayer(void)
 		g_player.pos.z += g_player.move.z;
 		CollisionBlock(&g_player.pos, &g_player.posOld, &g_player.move, &g_player.size);
 
-		//BlockInteraction();
-
-		//CollisionModel();
-
 	}
 
 	if (g_player.bDush == false || GetKeyboardPress(DIK_W) == false)

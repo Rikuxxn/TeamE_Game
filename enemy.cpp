@@ -368,7 +368,6 @@ void UpdateEnemy(void)
 			g_aEnemy.pos.y = 0.0f;
 		}
 
-
 		//SetPositionShadow(g_nIdxShadowEnemy, D3DXVECTOR3(g_aEnemy.pos.x, 0.0f, g_aEnemy.pos.z));
 
 		//敵の足音

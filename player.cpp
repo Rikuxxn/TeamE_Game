@@ -528,22 +528,30 @@ void UpdatePlayer(void)
 	{// 走っているとき
 		if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 1 && g_player.motion.nCounterMotion == 9)
 		{
-			PlaySound(SOUND_LABEL_STEP1);
+			//PlaySound(SOUND_LABEL_STEP1);
+			// 足音をプレイヤーの後ろに配置
+			PlaySound3D(SOUND_LABEL_STEP1, 0.0f, 0.0f, 0.0f);
 		}
 		else if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 3 && g_player.motion.nCounterMotion == 5)
 		{
-			PlaySound(SOUND_LABEL_STEP2);
+			//PlaySound(SOUND_LABEL_STEP2);
+			PlaySound3D(SOUND_LABEL_STEP2, 0.0f, 0.0f, 0.0f);
+
 		}
 	}
 	else
 	{// 歩いているとき
 		if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 1 && g_player.motion.nCounterMotion == 9)
 		{
-			PlaySound(SOUND_LABEL_STEP1);
+			//PlaySound(SOUND_LABEL_STEP1);
+			PlaySound3D(SOUND_LABEL_STEP1, 0.0f, 0.0f, 0.0f);
+
 		}
 		else if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 3 && g_player.motion.nCounterMotion == 12)
 		{
-			PlaySound(SOUND_LABEL_STEP2);
+			//PlaySound(SOUND_LABEL_STEP2);
+			PlaySound3D(SOUND_LABEL_STEP2, 0.0f, 0.0f, 0.0f);
+
 		}
 	}
 

@@ -23,7 +23,7 @@
 #pragma comment(lib,"winmm.lib")											// システム時刻取得に必要
 #pragma comment(lib,"dinput8.lib")											// 入力処理に必要
 #pragma comment(lib,"xinput.lib")											// ジョイパッド処理に必要
-
+#pragma comment(lib, "X3DAudio.lib")										// 3Dサウンド処理に必要
 
 //マクロ定義
 #define CLASS_NAME "WindowClass"											//ウィンドウクラスの名前

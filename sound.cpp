@@ -5,6 +5,7 @@
 //
 //=============================================================================
 #include "sound.h"
+#include<x3daudio.h>
 
 //*****************************************************************************
 // サウンド情報の構造体定義
@@ -30,6 +31,10 @@ IXAudio2SourceVoice *g_apSourceVoice[SOUND_LABEL_MAX] = {};	// ソースボイス
 BYTE *g_apDataAudio[SOUND_LABEL_MAX] = {};					// オーディオデータ
 DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// オーディオデータサイズ
 
+// 3Dオーディオ用の変数
+X3DAUDIO_HANDLE g_X3DInstance;       // X3DAudio インスタンス
+X3DAUDIO_LISTENER g_Listener = {};   // リスナー（プレイヤーの位置）
+X3DAUDIO_EMITTER g_Emitters[SOUND_LABEL_MAX] = {}; // 各サウンドの音源
 
 // サウンドの情報
 SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
@@ -110,6 +115,20 @@ HRESULT InitSound(HWND hWnd)
 
 		return E_FAIL;
 	}
+
+	// スピーカー設定を取得
+	XAUDIO2_VOICE_DETAILS details;
+	g_pMasteringVoice->GetVoiceDetails(&details);
+	UINT32 numChannels = details.InputChannels; // スピーカーのチャンネル数を取得
+
+	// X3DAudio の初期化
+	X3DAudioInitialize(numChannels, X3DAUDIO_SPEED_OF_SOUND, g_X3DInstance);
+
+	// リスナー（プレイヤーの初期位置）
+	g_Listener.Position = { 0.0f, 0.0f, 0.0f };   // 中央
+	g_Listener.OrientFront = { 0.0f, 0.0f, 1.0f }; // 前方向
+	g_Listener.OrientTop = { 0.0f, 1.0f, 0.0f };   // 上方向
+	g_Listener.Velocity = { 0.0f, 0.0f, 0.0f };
 
 	// サウンドデータの初期化
 	for(int nCntSound = 0; nCntSound < SOUND_LABEL_MAX; nCntSound++)
@@ -250,7 +269,6 @@ void UninitSound(void)
 	// COMライブラリの終了処理
 	CoUninitialize();
 }
-
 //=============================================================================
 // セグメント再生(再生中なら停止)
 //=============================================================================
@@ -278,13 +296,78 @@ HRESULT PlaySound(SOUND_LABEL label)
 	}
 
 	// オーディオバッファの登録
-
 	g_apSourceVoice[label]->SubmitSourceBuffer(&buffer);
 
 	// 再生
 	g_apSourceVoice[label]->Start(0);
 
 	return S_OK;
+}
+//=============================================================================
+// セグメント3D再生(再生中なら停止)
+//=============================================================================
+HRESULT PlaySound3D(SOUND_LABEL label, float x, float y, float z)
+{
+	XAUDIO2_VOICE_STATE xa2state;
+	XAUDIO2_BUFFER buffer;
+
+	// エミッターの位置をリセット
+	memset(&g_Emitters[label], 0, sizeof(X3DAUDIO_EMITTER));
+
+	// 音源の位置を設定
+	g_Emitters[label].Position = { x, y, z };
+	g_Emitters[label].Velocity = { 0.0f, 0.0f, 0.0f };
+	g_Emitters[label].ChannelCount = 1; // モノラル音源
+	g_Emitters[label].CurveDistanceScaler = 1.0f;
+
+	// 3Dオーディオ計算用のバッファ
+	X3DAUDIO_DSP_SETTINGS dspSettings = {};
+	FLOAT32 matrix[2]; // ステレオ出力
+	dspSettings.SrcChannelCount = 1; // モノラル音源
+	dspSettings.DstChannelCount = 2; // ステレオ出力
+	dspSettings.pMatrixCoefficients = matrix;
+
+	// 3D音響計算を実行
+	X3DAudioCalculate(
+		g_X3DInstance,
+		&g_Listener,
+		&g_Emitters[label],
+		X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_LPF_DIRECT,
+		&dspSettings
+	);
+
+	// 計算結果を適用
+	g_apSourceVoice[label]->SetOutputMatrix(NULL, 1,2,matrix);
+
+	// バッファの値設定
+	memset(&buffer, 0, sizeof(XAUDIO2_BUFFER));
+	buffer.AudioBytes = g_aSizeAudio[label];
+	buffer.pAudioData = g_apDataAudio[label];
+	buffer.Flags = XAUDIO2_END_OF_STREAM;
+	buffer.LoopCount = g_aSoundInfo[label].nCntLoop;
+
+	// 状態取得
+	g_apSourceVoice[label]->GetState(&xa2state);
+	if (xa2state.BuffersQueued != 0)
+	{// 再生中
+		// 一時停止
+		g_apSourceVoice[label]->Stop(0);
+
+		// オーディオバッファの削除
+		g_apSourceVoice[label]->FlushSourceBuffers();
+	}
+
+	// オーディオバッファの登録
+	g_apSourceVoice[label]->SubmitSourceBuffer(&buffer);
+
+	// 再生
+	g_apSourceVoice[label]->Start(0);
+
+	return S_OK;
+}
+void UpdateListenerPosition(float x, float y, float z)
+{
+	g_Listener.Position = { x, y, z };
 }
 //=============================================================================
 // セグメント停止(ラベル指定)
@@ -304,7 +387,6 @@ void StopSound(SOUND_LABEL label)
 		g_apSourceVoice[label]->FlushSourceBuffers();
 	}
 }
-
 //=============================================================================
 // セグメント停止(全て)
 //=============================================================================
@@ -320,7 +402,6 @@ void StopSound(void)
 		}
 	}
 }
-
 //=============================================================================
 // チャンクのチェック
 //=============================================================================

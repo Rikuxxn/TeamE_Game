@@ -258,6 +258,7 @@ void UpdateEnemy(void)
 		{
 			// プレイヤーが視界に入った瞬間
 			PlaySound(SOUND_LABEL_INSIGHT); // SEを再生
+
 		}
 		
 		// フラグを更新して次のフレームに備える
@@ -370,7 +371,6 @@ void UpdateEnemy(void)
 
 		//SetPositionShadow(g_nIdxShadowEnemy, D3DXVECTOR3(g_aEnemy.pos.x, 0.0f, g_aEnemy.pos.z));
 
-
 		//敵の足音
 		if (g_aEnemy.enemymotion.EnemymotionType == ENEMYMOTIONTYPE_NEUTRAL && g_aEnemy.enemymotion.nKey == 1 && 
 			g_aEnemy.enemymotion.nCounterMotion == 9)
@@ -393,6 +393,7 @@ void UpdateEnemy(void)
 		{
 			//PlaySound(SOUND_LABEL_STEP2);
 		}
+
 
 		//全モデルの更新
 		for (int nCntModel = 0; nCntModel < g_aEnemy.enemymotion.nNumModel; nCntModel++)

@@ -91,6 +91,13 @@ bool isReversePatrol;				// 巡回の方向（false: 順回り, true: 逆回り�
 int currentPatrolPoint;				// 現在の巡回ポイント
 int g_nIdxShadowEnemy;
 
+bool SoundRange = false;			// 前フレームで範囲内だったか
+float soundTimer = 0.0f;			// 心音のタイマー
+const float minInterval = 0.67f;	// 心音の最速間隔（プレイヤーが超接近時）
+const float maxInterval = 1.2f;		// 心音の最遅間隔（遠い時）
+const float closeDistance = 320.0f; // 近いと判定する距離（ここに近づくと最速の心音）
+const float farDistance = 700.0f;   // 遠いと判定する距離（ここでは最遅の心音）
+
 //=============================
 // 敵の初期化処理
 //=============================
@@ -216,6 +223,8 @@ void InitEnemy(void)
 void UninitEnemy(void)
 {
 	StopSound(SOUND_LABEL_INSIGHT);
+	StopSound(SOUND_LABEL_ENEMYSTEP1);
+	StopSound(SOUND_LABEL_ENEMYSTEP2);
 
 	for (int nCntModel = 0; nCntModel < MAX_PARTS; nCntModel++)
 	{
@@ -287,7 +296,7 @@ void UpdateEnemy(void)
 
 		D3DXVECTOR3 PlayerRadius(20.0f, 20.0f, 20.0f);				// 捕まる距離
 		D3DXVECTOR3 PlayerInsightRadius(50.0f, 50.0f, 50.0f);		// バレる距離
-		D3DXVECTOR3 SoundRadius1(500.0f, 500.0f, 500.0f);			// 心音の鳴る距離
+		D3DXVECTOR3 SoundRadius1(420.0f, 420.0f, 420.0f);			// 心音の鳴る距離
 
 		float fDistance =
 			(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +
@@ -299,6 +308,16 @@ void UpdateEnemy(void)
 			(g_aEnemy.RadiusEnemy.y + PlayerRadius.y) * (g_aEnemy.RadiusEnemy.y + PlayerRadius.y) +
 			(g_aEnemy.RadiusEnemy.z + PlayerRadius.z) * (g_aEnemy.RadiusEnemy.z + PlayerRadius.z);
 
+
+		// 捕まった
+		if (fDistance <= fRadius)
+		{
+			pPlayer->pos = pPlayer->posOld;
+			g_aEnemy.pos = g_aEnemy.posOld;
+			g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_ACTION;
+			g_bEnd = true;
+		}
+
 		float fDistance2 =
 			(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +
 			(g_aEnemy.pos.y - pPlayer->pos.y) * (g_aEnemy.pos.y - pPlayer->pos.y) +
@@ -308,6 +327,13 @@ void UpdateEnemy(void)
 			(g_aEnemy.RadiusEnemy.x + PlayerInsightRadius.x) * (g_aEnemy.RadiusEnemy.x + PlayerInsightRadius.x) +
 			(g_aEnemy.RadiusEnemy.y + PlayerInsightRadius.y) * (g_aEnemy.RadiusEnemy.y + PlayerInsightRadius.y) +
 			(g_aEnemy.RadiusEnemy.z + PlayerInsightRadius.z) * (g_aEnemy.RadiusEnemy.z + PlayerInsightRadius.z);
+
+
+		// 追跡モードにする
+		if (fDistance2 <= fRadius2)
+		{
+			g_aEnemy.state = ENEMYSTATE_CHASING;
+		}
 
 		float fDistanceSound1 =
 			(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +
@@ -319,26 +345,42 @@ void UpdateEnemy(void)
 			(g_aEnemy.RadiusEnemy.y + SoundRadius1.y) * (g_aEnemy.RadiusEnemy.y + SoundRadius1.y) +
 			(g_aEnemy.RadiusEnemy.z + SoundRadius1.z) * (g_aEnemy.RadiusEnemy.z + SoundRadius1.z);
 
-		// 捕まった
-		if (fDistance <= fRadius)
+		// 2乗距離を通常の距離に変換
+		float distance = sqrtf(fDistanceSound1);
+
+		bool SoundRangeNow = (fDistanceSound1 <= fRadiusSound1);
+
+		// intervalを距離に応じて変化させる
+		float dynamicInterval = maxInterval;
+
+		if (distance < farDistance)
 		{
-			pPlayer->pos = pPlayer->posOld;
-			g_aEnemy.pos = g_aEnemy.posOld;
-			g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_ACTION;
-			g_bEnd = true;
+			float t = (distance - closeDistance) / (farDistance - closeDistance);	// 0.0 ~ 1.0 の範囲に正規化
+			t = max(0.0f, min(1.0f, t));											// 範囲を超えないように
+			dynamicInterval = minInterval + (maxInterval - minInterval) * t;		// 線形補間
 		}
 
-		// 追跡モードにする
-		if (fDistance2 <= fRadius2)
+		// 範囲内にいる間は一定間隔で音を鳴らす
+		if (SoundRangeNow)
 		{
-			g_aEnemy.state = ENEMYSTATE_CHASING;
+			soundTimer += 0.016f;						// 前フレームからの経過時間を加算
+
+			if (soundTimer >= dynamicInterval)
+			{
+				PlaySound(SOUND_LABEL_HEART);
+				soundTimer = 0.0f;						// タイマーをリセット
+			}
 		}
 
-		// 心音1
-		if (fDistanceSound1 <= fRadiusSound1)
+		// 範囲外に出た瞬間はタイマーをリセット（SEを鳴らさない
+		if (!SoundRangeNow && SoundRange)
 		{
-			//PlaySound(SOUND_LABEL_HEART); // SEを再生
+			soundTimer = 0.0f;							// タイマーをリセット
 		}
+
+		// フラグを更新
+		SoundRange = SoundRangeNow;
+
 
 		D3DXVECTOR3 posPlayerRadius(1.0f, 1.0f, 1.0f);
 
@@ -374,30 +416,34 @@ void UpdateEnemy(void)
 		if (g_aEnemy.enemymotion.EnemymotionType == ENEMYMOTIONTYPE_NEUTRAL && g_aEnemy.enemymotion.nKey == 1 && 
 			g_aEnemy.enemymotion.nCounterMotion == 9)
 		{
-			//PlaySound(SOUND_LABEL_STEP1);
+			PlaySound3D(SOUND_LABEL_ENEMYSTEP1);
 		}
 		else if (g_aEnemy.enemymotion.EnemymotionType == ENEMYMOTIONTYPE_NEUTRAL && g_aEnemy.enemymotion.nKey == 3 &&
 			g_aEnemy.enemymotion.nCounterMotion == 5)
 		{
-			//PlaySound(SOUND_LABEL_STEP2);
+			PlaySound3D(SOUND_LABEL_ENEMYSTEP2);
 		}
 
 		if (g_aEnemy.enemymotion.EnemymotionType == ENEMYMOTIONTYPE_MOVE && g_aEnemy.enemymotion.nKey == 1 &&
 			g_aEnemy.enemymotion.nCounterMotion == 8)
 		{
-			//PlaySound(SOUND_LABEL_STEP1);
+			PlaySound3D(SOUND_LABEL_ENEMYSTEP1);
 		}
 		else if (g_aEnemy.enemymotion.EnemymotionType == ENEMYMOTIONTYPE_MOVE && g_aEnemy.enemymotion.nKey == 3 && 
 			g_aEnemy.enemymotion.nCounterMotion == 5)
 		{
-			//PlaySound(SOUND_LABEL_STEP2);
+			PlaySound3D(SOUND_LABEL_ENEMYSTEP2);
 		}
 
+		//if (g_aEnemy.enemymotion.EnemymotionType == ENEMYMOTIONTYPE_MOVE)
+		//{
+		//	UpdateSoundPosition(SOUND_LABEL_ENEMYSTEP1);
+		//	UpdateSoundPosition(SOUND_LABEL_ENEMYSTEP2);
+		//}
 
 		//全モデルの更新
 		for (int nCntModel = 0; nCntModel < g_aEnemy.enemymotion.nNumModel; nCntModel++)
 		{
-
 			int nNextKey = (g_aEnemy.enemymotion.nKey + 1) % g_aEnemy.enemymotion.aEnemyMotionInfo[g_aEnemy.enemymotion.EnemymotionType].nNumKey;
 
 			// 境界チェック
@@ -454,131 +500,24 @@ void UpdateEnemy(void)
 			g_aEnemy.enemymotion.nKey++;
 		}
 
-		float moveSpeed           = 0.0f;
-		float distanceToTarget	  = 0.0f;
-		float angleToTarget       = 0.0f;
-		float fAngle              = 0.0f;
-		static int lostSightTimer = 0;				// 視界外タイマー
-		static int patrolTimer    = 0;				// 捜索タイマー
-
-		D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
-
+		// 状態遷移
 		switch (g_aEnemy.state)
 		{
 		case ENEMYSTATE_PATROLLING:
-
-			g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_NEUTRAL;
-
-			// 現在の巡回ポイントに向かう
-			target = patrolPoints[currentPatrolPoint];
-
-			distanceToTarget = sqrtf
-			(
-				(target.x - g_aEnemy.pos.x) * (target.x - g_aEnemy.pos.x) +
-				(target.y - g_aEnemy.pos.y) * (target.y - g_aEnemy.pos.y) +
-				(target.z - g_aEnemy.pos.z) * (target.z - g_aEnemy.pos.z)
-			);
-
-			if (currentPatrolPoint < 0 || currentPatrolPoint >= sizeof(patrolPoints) / sizeof(patrolPoints[0]))
-			{
-				currentPatrolPoint = 0; // 範囲外アクセスを防ぐ
-			}
-
-			// 近づく
-			moveSpeed = 0.4f; // 巡回速度
-
-			if (distanceToTarget > 5.0f)
-			{ // 到達判定
-				angleToTarget	 = atan2f(target.x - g_aEnemy.pos.x, target.z - g_aEnemy.pos.z);
-				g_aEnemy.move.x += sinf(angleToTarget) * moveSpeed;
-				g_aEnemy.move.z += cosf(angleToTarget) * moveSpeed;
-
-				g_aEnemy.rot.y = angleToTarget + D3DX_PI;
-			}
-			else
-			{
-				// 一定確率で逆回りに切り替える
-				if (rand() % 100 < 25) // 25%の確率で方向を切り替える
-				{
-					isReversePatrol = !isReversePatrol;
-				}
-
-				// 巡回ポイントの更新
-				if (isReversePatrol)
-				{
-					currentPatrolPoint = (currentPatrolPoint - 1 + (sizeof(patrolPoints) / sizeof(patrolPoints[0]))) % (sizeof(patrolPoints) / sizeof(patrolPoints[0]));
-				}
-				else
-				{
-					currentPatrolPoint = (currentPatrolPoint + 1) % (sizeof(patrolPoints) / sizeof(patrolPoints[0]));
-				}
-			}
-
-			// プレイヤーを視界内で検出したら追跡に切り替える
-			if (isPlayerInSight())
-			{
-				g_aEnemy.state = ENEMYSTATE_CHASING;
-			}
+			// 巡回モード
+			Patrol();
 
 			break;
 
 		case ENEMYSTATE_CHASING:
-
-			fAngle = atan2f(pPlayer->pos.x - g_aEnemy.pos.x, pPlayer->pos.z - g_aEnemy.pos.z);
-
-			g_aEnemy.move.x += sinf(fAngle) * 1.151f;
-			g_aEnemy.move.z += cosf(fAngle) * 1.151f;
-
-			g_aEnemy.rot.y = fAngle + D3DX_PI;
-
-			g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_MOVE;
-
-
-			// プレイヤーが視界外に出たら捜索状態に切り替える
-			if (!isPlayerInSight())
-			{
-				g_aEnemy.state = ENEMYSTATE_SEARCHING; // 捜索状態へ
-			}
-
-			if (!isPlayerInSight())
-			{
-				lostSightTimer++;
-
-				if (lostSightTimer > 180)
-				{ // 180フレーム経過
-					currentPatrolPoint = GetNearestPatrolPoint(g_aEnemy.pos);
-
-					g_aEnemy.state = ENEMYSTATE_PATROLLING;
-
-					lostSightTimer = 0; // タイマーをリセット
-				}
-			}
-			else
-			{
-				lostSightTimer = 0; // 視界内に戻ったらタイマーをリセット
-			}
+			// 追跡モード
+			Chase();
 
 			break;
 
 		case ENEMYSTATE_SEARCHING:
-
-			g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_SEARCH;
-
-			if (isPlayerInSight())
-			{
-				g_aEnemy.state = ENEMYSTATE_CHASING;
-			}
-
-			// 一定時間経過後巡回に戻る
-			patrolTimer++;
-
-			if (patrolTimer > 180)
-			{
-				currentPatrolPoint = GetNearestPatrolPoint(g_aEnemy.pos);
-
-				g_aEnemy.state = ENEMYSTATE_PATROLLING;
-				patrolTimer = 0;
-			}
+			// 探索モード
+			Search();
 
 			break;
 		}
@@ -589,7 +528,6 @@ void UpdateEnemy(void)
 //=============================
 void DrawEnemy(void)
 {
-
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
@@ -769,6 +707,139 @@ int GetNearestPatrolPoint(D3DXVECTOR3 currentPos)
 	}
 
 	return nearestPoint; // 最も近い巡回ポイントのインデックスを返す
+}
+//======================================================
+// 巡回処理
+//======================================================
+void Patrol(void)
+{
+	g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_NEUTRAL;
+
+	float moveSpeed = 0.0f;
+	float distanceToTarget = 0.0f;
+	float angleToTarget = 0.0f;
+	float fAngle = 0.0f;
+
+	D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
+
+	// 現在の巡回ポイントに向かう
+	target = patrolPoints[currentPatrolPoint];
+
+	distanceToTarget = sqrtf
+	(
+		(target.x - g_aEnemy.pos.x) * (target.x - g_aEnemy.pos.x) +
+		(target.y - g_aEnemy.pos.y) * (target.y - g_aEnemy.pos.y) +
+		(target.z - g_aEnemy.pos.z) * (target.z - g_aEnemy.pos.z)
+	);
+
+	if (currentPatrolPoint < 0 || currentPatrolPoint >= sizeof(patrolPoints) / sizeof(patrolPoints[0]))
+	{
+		currentPatrolPoint = 0; // 範囲外アクセスを防ぐ
+	}
+
+	// 近づく
+	moveSpeed = 0.4f; // 巡回速度
+
+	if (distanceToTarget > 5.0f)
+	{ // 到達判定
+		angleToTarget = atan2f(target.x - g_aEnemy.pos.x, target.z - g_aEnemy.pos.z);
+		g_aEnemy.move.x += sinf(angleToTarget) * moveSpeed;
+		g_aEnemy.move.z += cosf(angleToTarget) * moveSpeed;
+
+		g_aEnemy.rot.y = angleToTarget + D3DX_PI;
+	}
+	else
+	{
+		// 一定確率で逆回りに切り替える
+		if (rand() % 100 < 25) // 25%の確率で方向を切り替える
+		{
+			isReversePatrol = !isReversePatrol;
+		}
+
+		// 巡回ポイントの更新
+		if (isReversePatrol)
+		{
+			currentPatrolPoint = (currentPatrolPoint - 1 + (sizeof(patrolPoints) / sizeof(patrolPoints[0]))) % (sizeof(patrolPoints) / sizeof(patrolPoints[0]));
+		}
+		else
+		{
+			currentPatrolPoint = (currentPatrolPoint + 1) % (sizeof(patrolPoints) / sizeof(patrolPoints[0]));
+		}
+	}
+
+	// プレイヤーを視界内で検出したら追跡に切り替える
+	if (isPlayerInSight())
+	{
+		g_aEnemy.state = ENEMYSTATE_CHASING;
+	}
+}
+//======================================================
+// 追跡処理
+//======================================================
+void Chase(void)
+{
+	Player* pPlayer = GetPlayer();
+
+	g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_MOVE;
+
+	float fAngle = 0.0f;
+	static int lostSightTimer = 0;				// 視界外タイマー
+
+	fAngle = atan2f(pPlayer->pos.x - g_aEnemy.pos.x, pPlayer->pos.z - g_aEnemy.pos.z);
+
+	g_aEnemy.move.x += sinf(fAngle) * 1.151f;
+	g_aEnemy.move.z += cosf(fAngle) * 1.151f;
+
+	g_aEnemy.rot.y = fAngle + D3DX_PI;
+
+	// プレイヤーが視界外に出たら捜索状態に切り替える
+	if (!isPlayerInSight())
+	{
+		g_aEnemy.state = ENEMYSTATE_SEARCHING; // 捜索状態へ
+	}
+
+	if (!isPlayerInSight())
+	{
+		lostSightTimer++;
+
+		if (lostSightTimer > 180)
+		{ // 180フレーム経過
+			currentPatrolPoint = GetNearestPatrolPoint(g_aEnemy.pos);
+
+			g_aEnemy.state = ENEMYSTATE_PATROLLING;
+
+			lostSightTimer = 0; // タイマーをリセット
+		}
+	}
+	else
+	{
+		lostSightTimer = 0; // 視界内に戻ったらタイマーをリセット
+	}
+}
+//======================================================
+// 探索処理
+//======================================================
+void Search(void)
+{
+	g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_SEARCH;
+
+	static int patrolTimer = 0;				// 捜索タイマー
+
+	if (isPlayerInSight())
+	{
+		g_aEnemy.state = ENEMYSTATE_CHASING;
+	}
+
+	// 一定時間経過後巡回に戻る
+	patrolTimer++;
+
+	if (patrolTimer > 180)
+	{
+		currentPatrolPoint = GetNearestPatrolPoint(g_aEnemy.pos);
+
+		g_aEnemy.state = ENEMYSTATE_PATROLLING;
+		patrolTimer = 0;
+	}
 }
 //======================================================
 // 捕まった判定

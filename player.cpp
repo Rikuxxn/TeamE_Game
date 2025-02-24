@@ -155,8 +155,8 @@ void InitPlayer(void)
 //=============================
 void UninitPlayer(void)
 {
-	StopSound(SOUND_LABEL_STEP1);
-	StopSound(SOUND_LABEL_STEP2);
+	StopSound(SOUND_LABEL_PLAYERSTEP1);
+	StopSound(SOUND_LABEL_PLAYERSTEP2);
 
 	for (int nCntModel = 0; nCntModel < MAX_PARTS; nCntModel++)
 	{
@@ -201,6 +201,8 @@ void UpdatePlayer(void)
 
 	bool bEnd = GetEnd();
 	bool bFirstPerson = GetFirstPerson();
+
+	UpdateListenerPosition(g_player.pos.x, g_player.pos.y + 75.0f, g_player.pos.z);
 
 	g_player.motion.motionType = MOTIONTYPE_NEUTRAL;
 
@@ -524,14 +526,13 @@ void UpdatePlayer(void)
 	{// 走っているとき
 		if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 1 && g_player.motion.nCounterMotion == 9)
 		{
-			//PlaySound(SOUND_LABEL_STEP1);
-			// 足音をプレイヤーの後ろに配置
-			PlaySound3D(SOUND_LABEL_STEP1, 0.0f, 0.0f, 0.0f);
+			PlaySound(SOUND_LABEL_PLAYERSTEP1);
+			//PlaySound3D(SOUND_LABEL_PLAYERSTEP1);
 		}
 		else if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 3 && g_player.motion.nCounterMotion == 5)
 		{
-			//PlaySound(SOUND_LABEL_STEP2);
-			PlaySound3D(SOUND_LABEL_STEP2, 0.0f, 0.0f, 0.0f);
+			PlaySound(SOUND_LABEL_PLAYERSTEP2);
+			//PlaySound3D(SOUND_LABEL_PLAYERSTEP2);
 
 		}
 	}
@@ -539,14 +540,14 @@ void UpdatePlayer(void)
 	{// 歩いているとき
 		if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 1 && g_player.motion.nCounterMotion == 9)
 		{
-			//PlaySound(SOUND_LABEL_STEP1);
-			PlaySound3D(SOUND_LABEL_STEP1, 0.0f, 0.0f, 0.0f);
+			PlaySound(SOUND_LABEL_PLAYERSTEP1);
+			//PlaySound3D(SOUND_LABEL_PLAYERSTEP1);
 
 		}
 		else if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 3 && g_player.motion.nCounterMotion == 12)
 		{
-			//PlaySound(SOUND_LABEL_STEP2);
-			PlaySound3D(SOUND_LABEL_STEP2, 0.0f, 0.0f, 0.0f);
+			PlaySound(SOUND_LABEL_PLAYERSTEP2);
+			//PlaySound3D(SOUND_LABEL_PLAYERSTEP2);
 
 		}
 	}

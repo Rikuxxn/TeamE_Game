@@ -1,10 +1,13 @@
 //=============================================================================
 //
 // サウンド処理 [sound.cpp]
-// Author : 高宮祐翔
+// Author : TANEKAWA RIKU
 //
 //=============================================================================
 #include "sound.h"
+#include<x3daudio.h>
+#include "enemy.h"
+#include "player.h"
 
 //*****************************************************************************
 // サウンド情報の構造体定義
@@ -30,6 +33,10 @@ IXAudio2SourceVoice *g_apSourceVoice[SOUND_LABEL_MAX] = {};	// ソースボイス
 BYTE *g_apDataAudio[SOUND_LABEL_MAX] = {};					// オーディオデータ
 DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// オーディオデータサイズ
 
+// 3Dオーディオ用の変数
+X3DAUDIO_HANDLE g_X3DInstance;       // X3DAudio インスタンス
+X3DAUDIO_LISTENER g_Listener = {};   // リスナー（プレイヤーの位置）
+X3DAUDIO_EMITTER g_Emitters[SOUND_LABEL_MAX] = {}; // 各サウンドの音源
 
 // サウンドの情報
 SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
@@ -67,6 +74,8 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/SE/ok.wav", 0},				// 決定
 	{"data/SE/gamestart.wav", 0},		// ゲームスタート
 	{"data/SE/clear.wav", 0},			// ミニゲームクリア
+	{"data/SE/footstep_1.wav", 0},		// 足音SE
+	{"data/SE/footstep_2.wav", 0},		// 足音SE2
 
 };
 
@@ -110,6 +119,20 @@ HRESULT InitSound(HWND hWnd)
 
 		return E_FAIL;
 	}
+
+	// スピーカー設定を取得
+	XAUDIO2_VOICE_DETAILS details;
+	g_pMasteringVoice->GetVoiceDetails(&details);
+	UINT32 numChannels = details.InputChannels; // スピーカーのチャンネル数を取得
+
+	// X3DAudio の初期化
+	X3DAudioInitialize(numChannels, X3DAUDIO_SPEED_OF_SOUND, g_X3DInstance);
+
+	// リスナー（プレイヤーの初期位置）
+	g_Listener.Position = { 0.0f, 0.0f, 0.0f };   // 中央
+	g_Listener.OrientFront = { 0.0f, 0.0f, 1.0f }; // 前方向
+	g_Listener.OrientTop = { 0.0f, 1.0f, 0.0f };   // 上方向
+	g_Listener.Velocity = { 0.0f, 0.0f, 0.0f };
 
 	// サウンドデータの初期化
 	for(int nCntSound = 0; nCntSound < SOUND_LABEL_MAX; nCntSound++)
@@ -212,7 +235,6 @@ HRESULT InitSound(HWND hWnd)
 
 	return S_OK;
 }
-
 //=============================================================================
 // 終了処理
 //=============================================================================
@@ -250,7 +272,6 @@ void UninitSound(void)
 	// COMライブラリの終了処理
 	CoUninitialize();
 }
-
 //=============================================================================
 // セグメント再生(再生中なら停止)
 //=============================================================================
@@ -278,13 +299,139 @@ HRESULT PlaySound(SOUND_LABEL label)
 	}
 
 	// オーディオバッファの登録
-
 	g_apSourceVoice[label]->SubmitSourceBuffer(&buffer);
 
 	// 再生
 	g_apSourceVoice[label]->Start(0);
 
 	return S_OK;
+}
+//=============================================================================
+// セグメント3D再生(再生中なら停止)
+//=============================================================================
+HRESULT PlaySound3D(SOUND_LABEL label)
+{
+	Enemy* pEnemy = GetEnemy();
+
+	if (!g_apSourceVoice[label])
+	{
+		return E_FAIL;
+	}
+
+	// 敵の位置を取得して音源（エミッター）に設定
+	g_Emitters[label].Position = { 0.0f, 0.0f, 0.0f };
+	g_Emitters[label].Velocity = { 0.0f, 0.0f, 0.0f };
+	g_Emitters[label].ChannelCount = 1;
+	g_Emitters[label].CurveDistanceScaler = 100.0f;  // 適切な距離減衰を設定
+
+	// 3Dオーディオ計算用のバッファ
+	X3DAUDIO_DSP_SETTINGS dspSettings = {};
+	FLOAT32 matrix[2];
+	dspSettings.SrcChannelCount = 1;
+	dspSettings.DstChannelCount = 2;
+	dspSettings.pMatrixCoefficients = matrix;
+
+	// 3D音響計算を実行
+	X3DAudioCalculate(
+		g_X3DInstance,
+		&g_Listener,
+		&g_Emitters[label],
+		X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_LPF_DIRECT | X3DAUDIO_CALCULATE_DOPPLER,
+		&dspSettings
+	);
+
+	// パンニング値をクリップ
+	for (int i = 0; i < 2; i++)
+	{
+		if (matrix[i] > 1.0f)
+		{
+			matrix[i] = 1.0f;
+		}
+		if (matrix[i] < 0.5f)
+		{
+			matrix[i] = 0.5f;
+		}
+	}
+
+	// 計算結果を適用
+	g_apSourceVoice[label]->SetOutputMatrix(NULL, 1, 2, matrix);
+
+	// バッファ設定
+	XAUDIO2_VOICE_STATE xa2state;
+	XAUDIO2_BUFFER buffer = {};
+	buffer.AudioBytes = g_aSizeAudio[label];
+	buffer.pAudioData = g_apDataAudio[label];
+	buffer.Flags = XAUDIO2_END_OF_STREAM;
+	buffer.LoopCount = 0;
+
+	// 状態取得
+	g_apSourceVoice[label]->GetState(&xa2state);
+	if (xa2state.BuffersQueued != 0)
+	{
+		return S_OK; // すでに鳴っているなら何もしない
+	}
+
+	// オーディオバッファの登録
+	g_apSourceVoice[label]->SubmitSourceBuffer(&buffer);
+
+	// 再生
+	g_apSourceVoice[label]->Start(0);
+
+	return S_OK;
+}
+//=============================================================================
+// 音源の位置更新
+//=============================================================================
+void UpdateSoundPosition(SOUND_LABEL label)
+{
+	Enemy* pEnemy = GetEnemy();
+
+	if (label < 0 || label >= SOUND_LABEL_MAX)
+	{
+		return;
+	}
+
+	// 敵の現在位置を適用
+	g_Emitters[label].Position = { pEnemy->pos.x, pEnemy->pos.y, pEnemy->pos.z };
+
+	// 3Dオーディオ計算
+	X3DAUDIO_DSP_SETTINGS dspSettings = {};
+	FLOAT32 matrix[2];
+	dspSettings.SrcChannelCount = 1;
+	dspSettings.DstChannelCount = 2;
+	dspSettings.pMatrixCoefficients = matrix;
+
+	X3DAudioCalculate(
+		g_X3DInstance,
+		&g_Listener,
+		&g_Emitters[label],
+		X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_LPF_DIRECT,
+		&dspSettings
+	);
+
+	// パンニング値をクリップ
+	for (int i = 0; i < 2; i++)
+	{
+		if (matrix[i] > 1.0f)
+		{
+			matrix[i] = 1.0f;
+		}
+		if (matrix[i] < 0.1f)
+		{
+			matrix[i] = 0.1f;
+		}
+	}
+
+	// 音のパンニングを更新
+	g_apSourceVoice[label]->SetOutputMatrix(NULL, 1, 2, matrix);
+}
+//=============================================================================
+// リスナー(プレイヤー)の位置更新
+//=============================================================================
+void UpdateListenerPosition(float x, float y, float z)
+{
+	// リスナー(プレイヤー)の位置
+	g_Listener.Position = { x, y, z };
 }
 //=============================================================================
 // セグメント停止(ラベル指定)
@@ -304,7 +451,6 @@ void StopSound(SOUND_LABEL label)
 		g_apSourceVoice[label]->FlushSourceBuffers();
 	}
 }
-
 //=============================================================================
 // セグメント停止(全て)
 //=============================================================================
@@ -320,7 +466,6 @@ void StopSound(void)
 		}
 	}
 }
-
 //=============================================================================
 // チャンクのチェック
 //=============================================================================

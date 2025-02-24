@@ -155,8 +155,8 @@ void InitPlayer(void)
 //=============================
 void UninitPlayer(void)
 {
-	StopSound(SOUND_LABEL_STEP1);
-	StopSound(SOUND_LABEL_STEP2);
+	StopSound(SOUND_LABEL_PLAYERSTEP1);
+	StopSound(SOUND_LABEL_PLAYERSTEP2);
 
 	for (int nCntModel = 0; nCntModel < MAX_PARTS; nCntModel++)
 	{
@@ -201,6 +201,8 @@ void UpdatePlayer(void)
 
 	bool bEnd = GetEnd();
 	bool bFirstPerson = GetFirstPerson();
+
+	UpdateListenerPosition(g_player.pos.x, g_player.pos.y + 75.0f, g_player.pos.z);
 
 	g_player.motion.motionType = MOTIONTYPE_NEUTRAL;
 
@@ -483,10 +485,6 @@ void UpdatePlayer(void)
 		g_player.pos.z += g_player.move.z;
 		CollisionBlock(&g_player.pos, &g_player.posOld, &g_player.move, &g_player.size);
 
-		//BlockInteraction();
-
-		//CollisionModel();
-
 	}
 
 	if (g_player.bDush == false || GetKeyboardPress(DIK_W) == false)
@@ -528,22 +526,29 @@ void UpdatePlayer(void)
 	{// ‘–‚Á‚Ä‚¢‚é‚Æ‚«
 		if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 1 && g_player.motion.nCounterMotion == 9)
 		{
-			PlaySound(SOUND_LABEL_STEP1);
+			PlaySound(SOUND_LABEL_PLAYERSTEP1);
+			//PlaySound3D(SOUND_LABEL_PLAYERSTEP1);
 		}
 		else if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 3 && g_player.motion.nCounterMotion == 5)
 		{
-			PlaySound(SOUND_LABEL_STEP2);
+			PlaySound(SOUND_LABEL_PLAYERSTEP2);
+			//PlaySound3D(SOUND_LABEL_PLAYERSTEP2);
+
 		}
 	}
 	else
 	{// •à‚¢‚Ä‚¢‚é‚Æ‚«
 		if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 1 && g_player.motion.nCounterMotion == 9)
 		{
-			PlaySound(SOUND_LABEL_STEP1);
+			PlaySound(SOUND_LABEL_PLAYERSTEP1);
+			//PlaySound3D(SOUND_LABEL_PLAYERSTEP1);
+
 		}
 		else if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 3 && g_player.motion.nCounterMotion == 12)
 		{
-			PlaySound(SOUND_LABEL_STEP2);
+			PlaySound(SOUND_LABEL_PLAYERSTEP2);
+			//PlaySound3D(SOUND_LABEL_PLAYERSTEP2);
+
 		}
 	}
 

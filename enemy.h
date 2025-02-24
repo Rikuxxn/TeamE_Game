@@ -11,6 +11,10 @@
 #include "model.h"
 #include "motion.h"
 
+#define GRID_WIDTH  (24)   // (2400 / 50)
+#define GRID_HEIGHT (20)   // (2000 / 50)
+#define TILE_SIZE   (100)   // 1マスのサイズ（50x50）
+
 typedef enum 
 {
     ENEMYSTATE_PATROLLING,     // 巡回中
@@ -37,7 +41,6 @@ typedef struct
     bool bUse;
 }Enemy;
 
-
 //プロトタイプ宣言
 void InitEnemy(void);
 void UninitEnemy(void);
@@ -45,6 +48,9 @@ void UpdateEnemy(void);
 void DrawEnemy(void);
 void SetEnemy(D3DXVECTOR3 pos);
 int GetNearestPatrolPoint(D3DXVECTOR3 currentPos);
+void Patrol(void);
+void Chase(void);
+void Search(void);
 Enemy* GetEnemy(void);
 
 bool isPlayerInSight(void);

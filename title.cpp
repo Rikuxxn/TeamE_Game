@@ -291,7 +291,7 @@ void UpdateTitle(void)
 			mouseY >= top && mouseY <= bottom)
 		{
 			selectedByMouse = nCnt; // 項目のインデックスを記録
-			g_titleMenu = static_cast<TITLE_MENU>(nCnt); // 選択状態を更新
+			g_titleMenu = (TITLE_MENU)(nCnt); // 選択状態を更新
 		}
 	}
 

@@ -183,7 +183,7 @@ void UpdateCamera(void)
 			GetCursorPos(&cursorPos);
 
 			// 移動量を計算
-			static POINT prevCursorPos = { SCREEN_WIDTH / 1.5f, SCREEN_HEIGHT / 1.5f };
+			static POINT prevCursorPos = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
 			float deltaX = (float)(cursorPos.x - prevCursorPos.x);
 			float deltaY = (float)(cursorPos.y - prevCursorPos.y);
 
@@ -217,7 +217,7 @@ void UpdateCamera(void)
 			}
 
 			// カーソルを画面中央に戻す
-			SetCursorPos(SCREEN_WIDTH / 1.5f, SCREEN_HEIGHT / 1.5f);
+			SetCursorPos((int)SCREEN_WIDTH / 2, (int)SCREEN_HEIGHT / 2);
 		}
 
 		// WASDキーによるカメラの移動

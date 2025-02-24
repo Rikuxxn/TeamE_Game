@@ -361,6 +361,7 @@ void UpdateGame(void)
 	BALLGAMESTATE pBallState = GetBallGameState();
 	PASSWORDGAMESTATE pPassState = GetPasswordGameState();
 	Player* pPlayer = GetPlayer();//プレイヤーの情報へのポインタにプレイヤーの先頭アドレスが代入される
+	Enemy* pEnemy = GetEnemy();
 	Block* pBlock = GetBlock();
 
 	bool bEnd = GetEnd();

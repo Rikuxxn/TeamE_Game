@@ -22,7 +22,7 @@
 //グローバル
 LPDIRECT3DTEXTURE9 g_pTexturePlayer1 = NULL;	 // テクスチャへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPlayer1 = NULL;// 頂点バッファへのポインタ
-ShootingPlayer g_player;						 // レイヤーの情報
+ShootingPlayer g_player;						 // プレイヤーの情報
 
 // プレイヤーの初期化処理
 void InitShootingPlayer(void)

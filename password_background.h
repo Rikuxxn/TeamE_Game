@@ -13,8 +13,8 @@
 #define PASSWORDFIELD_UNDER (PASSWORDFIELD_TOP + 320.0f)
 
 //プロト
-void InitPasswordBackGround(void);
-void UninitPasswordBackGround(void);
-void UpdatePasswordBackGround(void);
-void DrawPasswordBackGround(void);
+void InitPasswordBackGround(void);		// 初期化
+void UninitPasswordBackGround(void);	// 終了
+void UpdatePasswordBackGround(void);	// 更新
+void DrawPasswordBackGround(void);		// 描画
 #endif

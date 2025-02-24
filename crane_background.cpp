@@ -13,11 +13,11 @@
 
 // グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureCraneBG[NUM_BG] = { NULL };// テクスチャへのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureCraneBG3 = NULL;			// テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureCraneBG3 = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffCraneBG = NULL;		// 頂点バッファへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffCraneBG2 = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffCraneBG3 = NULL;
-float g_aPosCraneTexU[NUM_BG];// テクスチャ座標の開始位置（U値）
+float g_aPosCraneTexU[NUM_BG];							// テクスチャ座標の開始位置（U値）
 
 // 背景の初期化処理
 void InitCraneBackGround(void)

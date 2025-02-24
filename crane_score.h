@@ -20,11 +20,11 @@ typedef struct
 }CranePass;
 
 //プロト
-void InitCranePass(void);				//パスワードの初期化
-void UninitCranePass(void);				//終了
-void UpdateCranePass(void);				//更新
-void DrawCranePass(void);				//描画
-void SetCranePass(int nCraneAPass);		//設置
-int CranePassCounter(int nCranePass);	//カウンター
+void InitCranePass(void);				//　パスワードの初期化
+void UninitCranePass(void);				//　終了
+void UpdateCranePass(void);				//　更新
+void DrawCranePass(void);				//　描画
+void SetCranePass(int nCraneAPass);		//　設置
+int CranePassCounter(int nCranePass);	//　カウンター
 
 #endif // !_SCORE_H_

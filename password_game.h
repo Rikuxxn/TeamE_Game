@@ -10,9 +10,9 @@
 
 typedef enum
 {
-	PASSWORDGAMESTATE_NONE = 0,	//何もしていない状態
-	PASSWORDGAMESTATE_NORMAL,	//通常状態（ゲーム進行中）
-	PASSWORDGAMESTATE_END,		//終了状態（敵全滅、プレイヤー減、タイムオーバーなど）
+	PASSWORDGAMESTATE_NONE = 0,	// 何もしていない状態
+	PASSWORDGAMESTATE_NORMAL,	// 通常状態（ゲーム進行中）
+	PASSWORDGAMESTATE_END,		// 終了状態（敵全滅、プレイヤー減、タイムオーバーなど）
 	PASSWORDGAMESTATE_MAX
 }PASSWORDGAMESTATE;
 

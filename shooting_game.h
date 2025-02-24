@@ -5,9 +5,9 @@
 
 typedef enum
 {
-	STGSTATE_NONE = 0,//何もしていない状態
-	STGSTATE_NORMAL,//通常状態（ゲーム進行中）
-	STGSTATE_END,//終了状態（敵全滅、プレイヤー減、タイムオーバーなど）
+	STGSTATE_NONE = 0,	// 何もしていない状態
+	STGSTATE_NORMAL,	// 通常状態（ゲーム進行中）
+	STGSTATE_END,		// 終了状態（敵全滅、プレイヤー減、タイムオーバーなど）
 	STGSTATE_MAX
 }STGSTATE;
 

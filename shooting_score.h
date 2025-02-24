@@ -7,24 +7,24 @@
 
 #include "main.h"
 
-//マクロ
+// マクロ定義
 #define MAX_NUM_SCORE (4)
 #define PASSPOSX (540.0f)
 #define PASSPOSY (180.0f)
 
-//パスワードの構造体
+// パスワードの構造体
 typedef struct
 {
 	bool buse;
 	int nCountSTPassCounter;
 }STPass;
 
-//プロト
-void InitSTPass(void);				//パスワードの初期化
-void UninitSTPass(void);				//終了
-void UpdateSTPass(void);				//更新
-void DrawSTPass(void);				//描画
-void SetSTPass(int nSTAPass);		//設置
-int STPassCounter(int nSTPass);	//カウンター
+// プロトタイプ宣言
+void InitSTPass(void);				// パスワードの初期化
+void UninitSTPass(void);			// 終了
+void UpdateSTPass(void);			// 更新
+void DrawSTPass(void);				// 描画
+void SetSTPass(int nSTAPass);		// 設置
+int STPassCounter(int nSTPass);		// カウンター
 
 #endif // !_SCORE_H_

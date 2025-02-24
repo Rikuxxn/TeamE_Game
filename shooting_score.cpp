@@ -9,8 +9,8 @@
 // グローバル
 LPDIRECT3DTEXTURE9 g_pTextureSTPass = { NULL };			// テクスチャへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffSTPass = NULL;		// 頂点バッファへのポインタ
+STPass g_aSTPass[MAX_NUM_SCORE] = {};					// パスワードの情報
 int g_nSTPass;											// パスワードの値
-STPass g_aSTPass[MAX_NUM_SCORE] = {};
 
 //=========================
 //|| パスワードの初期化  ||

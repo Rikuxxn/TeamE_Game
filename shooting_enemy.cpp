@@ -12,7 +12,7 @@
 // マクロ
 #define NUM_ENEMY (3)// 敵の種類
 
-//gu-baru
+// グローバル宣言
 LPDIRECT3DTEXTURE9 g_apTextureEnemy[NUM_ENEMY] = {};
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffEnemy = NULL;
 Enemy g_aEnemy[MAX_ENEMY];

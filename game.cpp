@@ -367,7 +367,7 @@ void UpdateGame(void)
 	bool bEnd = GetEnd();
 
 	// ミニゲーム中はポーズを開けないようにする
-	if (/*g_Game.bMini == false &&*/ g_Game.bMap == false && (KeyboardTrigger(DIK_P) == true || JoyPadTrigger(JOYKEY_START) == true))
+	if (/*g_Game.bMini == false &&*/ g_Game.bMap == false && (KeyboardTrigger(DIK_TAB) == true || JoyPadTrigger(JOYKEY_START) == true))
 	{
 		g_bPause = g_bPause ? false : true;
 

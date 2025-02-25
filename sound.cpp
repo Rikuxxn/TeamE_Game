@@ -75,11 +75,10 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/SE/ok.wav", 0},				// 決定
 	{"data/SE/gamestart.wav", 0},		// ゲームスタート
 	{"data/SE/clear.wav", 0},			// ミニゲームクリア
-	{"data/SE/footstep_1.wav", 0},		// 足音SE
-	{"data/SE/footstep_2.wav", 0},		// 足音SE2
+	{"data/SE/footstep_enemy.wav", 0},	// 敵の足音SE
+	{"data/SE/footstep_enemy2.wav", 0},	// 敵の足音SE2
 
 };
-
 //=============================================================================
 // 初期化処理
 //=============================================================================
@@ -324,8 +323,8 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 
 	// 敵の位置を取得して音源（エミッター）に設定
 	//g_Emitters[label].Position = { 0.0f, 0.0f, 0.0f };
-	UpdateSoundPosition(SOUND_LABEL_ENEMYSTEP2,pEnemy->pos.x,pEnemy->pos.y,pEnemy->pos.z);
 	UpdateSoundPosition(SOUND_LABEL_ENEMYSTEP1,pEnemy->pos.x,pEnemy->pos.y,pEnemy->pos.z);
+	UpdateSoundPosition(SOUND_LABEL_ENEMYSTEP2,pEnemy->pos.x,pEnemy->pos.y,pEnemy->pos.z);
 
 	g_Emitters[label].Velocity = { 0.0f, 0.0f, 0.0f };
 	g_Emitters[label].ChannelCount = 1;

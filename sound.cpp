@@ -8,6 +8,7 @@
 #include<x3daudio.h>
 #include "enemy.h"
 #include "player.h"
+#include "camera.h"
 
 //*****************************************************************************
 // サウンド情報の構造体定義
@@ -130,7 +131,7 @@ HRESULT InitSound(HWND hWnd)
 
 	// リスナー（プレイヤーの初期位置）
 	g_Listener.Position = { 0.0f, 0.0f, 0.0f };   // 中央
-	g_Listener.OrientFront = { 0.0f, 0.0f, 1.0f }; // 前方向
+	g_Listener.OrientFront = { 0.0f, 0.0f, 0.0f }; // 前方向
 	g_Listener.OrientTop = { 0.0f, 1.0f, 0.0f };   // 上方向
 	g_Listener.Velocity = { 0.0f, 0.0f, 0.0f };
 
@@ -313,16 +314,22 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 {
 	Enemy* pEnemy = GetEnemy();
 
+	g_apSourceVoice[label]->Stop(0);
+	g_apSourceVoice[label]->FlushSourceBuffers();
+
 	if (!g_apSourceVoice[label])
 	{
 		return E_FAIL;
 	}
 
 	// 敵の位置を取得して音源（エミッター）に設定
-	g_Emitters[label].Position = { 0.0f, 0.0f, 0.0f };
+	//g_Emitters[label].Position = { 0.0f, 0.0f, 0.0f };
+	UpdateSoundPosition(SOUND_LABEL_ENEMYSTEP2,pEnemy->pos.x,pEnemy->pos.y,pEnemy->pos.z);
+	UpdateSoundPosition(SOUND_LABEL_ENEMYSTEP1,pEnemy->pos.x,pEnemy->pos.y,pEnemy->pos.z);
+
 	g_Emitters[label].Velocity = { 0.0f, 0.0f, 0.0f };
 	g_Emitters[label].ChannelCount = 1;
-	g_Emitters[label].CurveDistanceScaler = 100.0f;  // 適切な距離減衰を設定
+	g_Emitters[label].CurveDistanceScaler = 90.0f;  // 適切な距離減衰を設定
 
 	// 3Dオーディオ計算用のバッファ
 	X3DAUDIO_DSP_SETTINGS dspSettings = {};
@@ -336,7 +343,8 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 		g_X3DInstance,
 		&g_Listener,
 		&g_Emitters[label],
-		X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_LPF_DIRECT | X3DAUDIO_CALCULATE_DOPPLER,
+		X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_LPF_DIRECT | X3DAUDIO_CALCULATE_DOPPLER |
+		X3DAUDIO_CALCULATE_REVERB,
 		&dspSettings
 	);
 
@@ -347,9 +355,9 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 		{
 			matrix[i] = 1.0f;
 		}
-		if (matrix[i] < 0.5f)
+		if (matrix[i] < 0.0f)
 		{
-			matrix[i] = 0.5f;
+			matrix[i] = 0.0f;
 		}
 	}
 
@@ -382,7 +390,7 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 //=============================================================================
 // 音源の位置更新
 //=============================================================================
-void UpdateSoundPosition(SOUND_LABEL label)
+void UpdateSoundPosition(SOUND_LABEL label,float x, float y, float z)
 {
 	Enemy* pEnemy = GetEnemy();
 
@@ -392,7 +400,7 @@ void UpdateSoundPosition(SOUND_LABEL label)
 	}
 
 	// 敵の現在位置を適用
-	g_Emitters[label].Position = { pEnemy->pos.x, pEnemy->pos.y, pEnemy->pos.z };
+	g_Emitters[label].Position = { x, y, z };
 
 	// 3Dオーディオ計算
 	X3DAUDIO_DSP_SETTINGS dspSettings = {};
@@ -405,7 +413,8 @@ void UpdateSoundPosition(SOUND_LABEL label)
 		g_X3DInstance,
 		&g_Listener,
 		&g_Emitters[label],
-		X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_LPF_DIRECT,
+		X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_LPF_DIRECT | X3DAUDIO_CALCULATE_DOPPLER |
+		X3DAUDIO_CALCULATE_REVERB,
 		&dspSettings
 	);
 
@@ -416,22 +425,32 @@ void UpdateSoundPosition(SOUND_LABEL label)
 		{
 			matrix[i] = 1.0f;
 		}
-		if (matrix[i] < 0.1f)
+		if (matrix[i] < 0.0f)
 		{
-			matrix[i] = 0.1f;
+			matrix[i] = 0.0f;
 		}
 	}
 
 	// 音のパンニングを更新
 	g_apSourceVoice[label]->SetOutputMatrix(NULL, 1, 2, matrix);
+
 }
 //=============================================================================
-// リスナー(プレイヤー)の位置更新
+// リスナー(プレイヤー)の更新
 //=============================================================================
-void UpdateListenerPosition(float x, float y, float z)
+void UpdateListener(float x, float y, float z)
 {
-	// リスナー(プレイヤー)の位置
-	g_Listener.Position = { x, y, z };
+	Camera* pCamera = GetCamera();
+
+	// カメラの向き（rot.y は水平方向の回転、rot.x は垂直方向の回転）
+	g_Listener.OrientFront.x = -sinf(pCamera->rot.y) * cosf(pCamera->rot.x);
+	g_Listener.OrientFront.y = -sinf(pCamera->rot.x);
+	g_Listener.OrientFront.z = -cosf(pCamera->rot.y) * cosf(pCamera->rot.x);
+
+	// 上方向ベクトル（基本的に Y 軸固定）
+	g_Listener.OrientTop = { 0.0f, 1.0f, 0.0f };
+
+	g_Listener.Position = { x, y, z };				// リスナー(プレイヤー)の位置
 }
 //=============================================================================
 // セグメント停止(ラベル指定)

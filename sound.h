@@ -59,8 +59,8 @@ HRESULT InitSound(HWND hWnd);
 void UninitSound(void);
 HRESULT PlaySound(SOUND_LABEL label);
 HRESULT PlaySound3D(SOUND_LABEL label);
-void UpdateSoundPosition(SOUND_LABEL label);
-void UpdateListenerPosition(float x, float y, float z);
+void UpdateSoundPosition(SOUND_LABEL label, float x, float y, float z);
+void UpdateListener(float x, float y, float z);
 void StopSound(SOUND_LABEL label);
 void StopSound(void);
 

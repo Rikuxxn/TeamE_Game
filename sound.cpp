@@ -374,8 +374,12 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 	// 状態取得
 	g_apSourceVoice[label]->GetState(&xa2state);
 	if (xa2state.BuffersQueued != 0)
-	{
-		return S_OK; // すでに鳴っているなら何もしない
+	{// 再生中
+		// 一時停止
+		g_apSourceVoice[label]->Stop(0);
+
+		// オーディオバッファの削除
+		g_apSourceVoice[label]->FlushSourceBuffers();
 	}
 
 	// オーディオバッファの登録

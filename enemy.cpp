@@ -246,7 +246,7 @@ void UninitEnemy(void)
 		}
 
 		//マテリアルの破棄
-		if (g_aEnemy.enemymotion.aModel[nCntModel].pBuffMat != NULL)
+		if (g_aEnemy.enemymotion.aModel[nCntModel].pBuffMat != NULL)	
 		{
 			g_aEnemy.enemymotion.aModel[nCntModel].pBuffMat->Release();
 			g_aEnemy.enemymotion.aModel[nCntModel].pBuffMat = NULL;

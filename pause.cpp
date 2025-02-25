@@ -115,20 +115,17 @@ void InitPause(void)
 		pVtx[2].pos = D3DXVECTOR3(500.0f, (250.0f + nCntPause * 150), 0.0f);
 		pVtx[3].pos = D3DXVECTOR3(800.0f, (250.0f + nCntPause * 150), 0.0f);
 
-
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;
 		pVtx[2].rhw = 1.0f;
 		pVtx[3].rhw = 1.0f;
 
-
 		//頂点カラーの設定
 		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
 
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -151,8 +148,8 @@ void InitPause(void)
 void UninitPause(void)
 {
 
-	//StopSound(SOUND_LABEL_PAUSE);
-	//StopSound(SOUND_LABEL_PAUSE2);
+	StopSound(SOUND_LABEL_SELECT);
+	StopSound(SOUND_LABEL_OK);
 
 	//テクスチャの破棄
 	if (g_apTexturePauseBG != NULL)

@@ -22,10 +22,10 @@ PAUSE_MENU g_pauseMenu;										//ポーズメニュー
 bool g_bPauseSelect;										//選ばれているか
 
 // ポーズ項目の拡大率を管理する配列
-float pauseScales[MAX_PAUSE] = { PAUSE_MIN_SCALE, PAUSE_MIN_SCALE, PAUSE_MIN_SCALE };
+float pauseScales[MAX_PAUSE] = { PAUSE_MIN_SCALE, PAUSE_MIN_SCALE, PAUSE_MIN_SCALE, PAUSE_MIN_SCALE };
 
 // 項目ごとの透明度を保持する配列
-float pauseAlphas[MAX_PAUSE] = { 0.3f, 0.3f, 0.3f };		// 初期は全て半透明（範囲外状態）
+float pauseAlphas[MAX_PAUSE] = { 0.3f, 0.3f, 0.3f, 0.3f};		// 初期は全て半透明（範囲外状態）
 
 //===============================================================
 // ポーズの初期化処理
@@ -97,14 +97,12 @@ void InitPause(void)
 	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
 	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
-
 	//頂点バッファをアンロックする
 	g_pVtxBuffPauseBG->Unlock();
 
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffPause->Lock(0, 0, (void**)&pVtx, 0);
-
 
 	for (nCntPause = 0; nCntPause < MAX_PAUSE; nCntPause++)
 	{
@@ -225,7 +223,7 @@ void UpdatePause(void)
 	{
 		float scale = pauseScales[nCnt];
 		float centerX = 660.0f;					// 中心X座標
-		float centerY = 230.0f + nCnt * 160.0f; // 中心Y座標
+		float centerY = 180.0f + nCnt * 150.0f; // 中心Y座標
 
 		// 領域の計算
 		float left = centerX - 140.0f * scale;
@@ -289,7 +287,7 @@ void UpdatePause(void)
 	{
 		float scale = pauseScales[nCntPause];
 		float centerX = 660.0f;
-		float centerY = 230.0f + nCntPause * 160.0f;
+		float centerY = 180.0f + nCntPause * 150.0f;
 
 		// 頂点座標を設定
 		pVtx[0].pos = D3DXVECTOR3(centerX - 140.0f * scale, centerY - 40.0f * scale, 0.0f);
@@ -321,15 +319,20 @@ void UpdatePause(void)
 			// 範囲内の項目がクリックされた場合
 			switch (g_pauseMenu) 
 			{
-			case PAUSE_MENU_CONTINUE:
+			case PAUSE_MENU_CONTINUE:		// 続ける
 				SetEnablePause(false);
 				PlaySound(SOUND_LABEL_OK);
 				break;
-			case PAUSE_MENU_RETRY:
+			case PAUSE_MENU_RETRY:			// リトライ
 				SetFade(MODE_GAME);
 				PlaySound(SOUND_LABEL_OK);
 				break;
-			case PAUSE_MENU_QUIT:
+			case PAUSE_MENU_TUTORIAL:		// 操作確認
+
+
+				PlaySound(SOUND_LABEL_OK);
+				break;
+			case PAUSE_MENU_QUIT:			// やめる
 				SetFade(MODE_TITLE);
 				PlaySound(SOUND_LABEL_OK);
 				break;

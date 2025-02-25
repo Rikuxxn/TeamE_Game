@@ -373,7 +373,14 @@ void DrawBlock(void)
 
 				if (g_aBlock[nCntBlock].bInsight == true && g_aBlock[nCntBlock].nType != BLOCKTYPE_UFOCATCHER1 &&
 					g_aBlock[nCntBlock].nType != BLOCKTYPE_BALLPOOL && g_aBlock[nCntBlock].nType != BLOCKTYPE_ARCADE1 &&
-					g_aBlock[nCntBlock].nType != BLOCKTYPE_KEYPAD)
+					g_aBlock[nCntBlock].nType != BLOCKTYPE_KEYPAD && g_aBlock[nCntBlock].nType != BLOCKTYPE_FUSEBOX)
+				{
+					matHighlight.Emissive.r = 0.2f;
+					matHighlight.Emissive.g = 0.2f;
+					matHighlight.Emissive.b = 0.2f;
+				}
+				else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSEBOX &&
+					g_flag.bFuseGet == true && g_aBlock[nCntBlock].bInsight == true)
 				{
 					matHighlight.Emissive.r = 0.2f;
 					matHighlight.Emissive.g = 0.2f;

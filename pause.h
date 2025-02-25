@@ -38,6 +38,8 @@ void InitPause(void);
 void UninitPause(void);
 void UpdatePause(void);
 void DrawPause(void);
+void SetDraw(bool bDraw);
+bool GetTutoDraw(void);
 
 #endif
 

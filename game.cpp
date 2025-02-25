@@ -41,6 +41,7 @@
 #include "sound.h"
 #include "crane_hint.h"
 #include "recommendation.h"
+#include "pause_tutorial.h"
 
 //グローバル変数
 GAMESTATE g_gameState = GAMESTATE_NONE;		// ゲームの状態
@@ -192,6 +193,10 @@ void InitGame(void)
 	InitPause();
 
 
+	//ポーズ中の操作確認の初期化
+	InitPTutorial();
+
+
 	//マップの初期化処理
 	InitMap();
 
@@ -308,6 +313,10 @@ void UninitGame(void)
 	UninitPause();
 
 
+	//ポーズ中の操作確認の終了処理
+	UninitPTutorial();
+
+
 	//マップの終了処理
 	UninitMap();
 
@@ -345,6 +354,7 @@ void UninitGame(void)
 void UpdateGame(void)
 {
 	Flags* pFlag = GetFlag();
+	bool bTutoDraw = GetTutoDraw();
 
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -379,6 +389,12 @@ void UpdateGame(void)
 
 		//ポーズの更新処理
 		UpdatePause();
+
+		if (bTutoDraw == true)
+		{
+			// ポーズ中の操作確認の更新処理
+			UpdatePTutorial();
+		}
 
 		// カーソルを表示する
 		SetCursorVisibility(true);
@@ -725,6 +741,7 @@ void DrawGame(void)
 	pDevice = GetDevice();
 
 	Player* pPlayer = GetPlayer();	//プレイヤー取得
+	bool bTutoDraw = GetTutoDraw();
 
 	//プレイヤーの描画処理
 	DrawPlayer();
@@ -830,6 +847,10 @@ void DrawGame(void)
 	{//ポーズ中
 		//ポーズの描画処理
 		DrawPause();
+		if (bTutoDraw == true)
+		{//操作確認
+			DrawPTutorial();
+		}
 	}
 
 	// 霧の有効化

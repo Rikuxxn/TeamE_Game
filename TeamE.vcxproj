@@ -194,6 +194,7 @@
     <ClCompile Include="password_particle.cpp" />
     <ClCompile Include="password_score.cpp" />
     <ClCompile Include="pause.cpp" />
+    <ClCompile Include="pause_tutorial.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="recommendation.cpp" />
     <ClCompile Include="result.cpp" />
@@ -267,6 +268,7 @@
     <ClInclude Include="password_particle.h" />
     <ClInclude Include="password_score.h" />
     <ClInclude Include="pause.h" />
+    <ClInclude Include="pause_tutorial.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="recommendation.h" />
     <ClInclude Include="result.h" />

@@ -72,6 +72,7 @@
     <ClCompile Include="ball_tutorial.cpp" />
     <ClCompile Include="recommendation.cpp" />
     <ClCompile Include="tutorial2.cpp" />
+    <ClCompile Include="pause_tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
@@ -145,5 +146,6 @@
     <ClInclude Include="recommendation.h" />
     <ClInclude Include="tutorial2.h" />
     <ClInclude Include="shooting_background.h" />
+    <ClInclude Include="pause_tutorial.h" />
   </ItemGroup>
 </Project>

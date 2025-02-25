@@ -20,6 +20,8 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPauseBG = NULL;			//頂点バッファへのポインタ
 
 PAUSE_MENU g_pauseMenu;										//ポーズメニュー
 bool g_bPauseSelect;										//選ばれているか
+bool g_bTutoDraw;											//チュートリアル描画用
+bool g_bDraw;												// 
 
 // ポーズ項目の拡大率を管理する配列
 float pauseScales[MAX_PAUSE] = { PAUSE_MIN_SCALE, PAUSE_MIN_SCALE, PAUSE_MIN_SCALE, PAUSE_MIN_SCALE };
@@ -37,6 +39,8 @@ void InitPause(void)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	int nCntPause;
+	g_bTutoDraw = false;
+	g_bDraw = false;
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -240,105 +244,109 @@ void UpdatePause(void)
 		}
 	}
 
-	// 項目の透明度を更新
-	for (int nCnt = 0; nCnt < MAX_PAUSE; nCnt++) 
+	if (g_bTutoDraw == false)
 	{
-		if (selectedByMouse == -1) 
+		// 項目の透明度を更新
+		for (int nCnt = 0; nCnt < MAX_PAUSE; nCnt++) 
 		{
-			// 範囲外ならすべて半透明
-			pauseAlphas[nCnt] -= 0.1f; // 徐々に薄く
-			if (pauseAlphas[nCnt] < 0.3f) pauseAlphas[nCnt] = 0.3f;
-			else
+			if (selectedByMouse == -1) 
 			{
-				g_bPauseSelect = false;
+				// 範囲外ならすべて半透明
+				pauseAlphas[nCnt] -= 0.1f; // 徐々に薄く
+				if (pauseAlphas[nCnt] < 0.3f) pauseAlphas[nCnt] = 0.3f;
+				else
+				{
+					g_bPauseSelect = false;
+				}
+			}
+			else if (nCnt == g_pauseMenu) 
+			{
+				// 選択中の項目は濃く
+				pauseAlphas[nCnt] += 0.1f; // 徐々に濃く
+				if (pauseAlphas[nCnt] > 1.0f)
+				{
+					pauseAlphas[nCnt] = 1.0f;
+				}
+				if (g_bPauseSelect == false)
+				{
+					PlaySound(SOUND_LABEL_SELECT);
+					g_bPauseSelect = true;
+				}
+			}
+			else 
+			{
+				// 非選択の項目は薄く
+				pauseAlphas[nCnt] -= 0.1f; // 徐々に薄く
+
+				if (pauseAlphas[nCnt] < 0.3f)
+				{
+					pauseAlphas[nCnt] = 0.3f;
+				}
 			}
 		}
-		else if (nCnt == g_pauseMenu) 
+
+		// 頂点バッファのロック
+		g_pVtxBuffPause->Lock(0, 0, (void**)&pVtx, 0);
+
+		// 項目の描画設定
+		for (int nCntPause = 0; nCntPause < MAX_PAUSE; nCntPause++) 
 		{
-			// 選択中の項目は濃く
-			pauseAlphas[nCnt] += 0.1f; // 徐々に濃く
-			if (pauseAlphas[nCnt] > 1.0f)
+			float scale = pauseScales[nCntPause];
+			float centerX = 660.0f;
+			float centerY = 180.0f + nCntPause * 150.0f;
+
+			// 頂点座標を設定
+			pVtx[0].pos = D3DXVECTOR3(centerX - 140.0f * scale, centerY - 40.0f * scale, 0.0f);
+			pVtx[1].pos = D3DXVECTOR3(centerX + 140.0f * scale, centerY - 40.0f * scale, 0.0f);
+			pVtx[2].pos = D3DXVECTOR3(centerX - 140.0f * scale, centerY + 40.0f * scale, 0.0f);
+			pVtx[3].pos = D3DXVECTOR3(centerX + 140.0f * scale, centerY + 40.0f * scale, 0.0f);
+
+			// カラー設定
+			D3DXCOLOR color = D3DXCOLOR(1.0f, 1.0f, 1.0f, pauseAlphas[nCntPause]);
+
+			// 頂点カラーを設定
+			for (int nCntPause2 = 0; nCntPause2 < 4; nCntPause2++) 
 			{
-				pauseAlphas[nCnt] = 1.0f;
+				pVtx[nCntPause2].col = color;
 			}
-			if (g_bPauseSelect == false)
-			{
-				PlaySound(SOUND_LABEL_SELECT);
-				g_bPauseSelect = true;
-			}
-		}
-		else 
-		{
-			// 非選択の項目は薄く
-			pauseAlphas[nCnt] -= 0.1f; // 徐々に薄く
 
-			if (pauseAlphas[nCnt] < 0.3f)
-			{
-				pauseAlphas[nCnt] = 0.3f;
-			}
-		}
-	}
-
-	// 頂点バッファのロック
-	g_pVtxBuffPause->Lock(0, 0, (void**)&pVtx, 0);
-
-	// 項目の描画設定
-	for (int nCntPause = 0; nCntPause < MAX_PAUSE; nCntPause++) 
-	{
-		float scale = pauseScales[nCntPause];
-		float centerX = 660.0f;
-		float centerY = 180.0f + nCntPause * 150.0f;
-
-		// 頂点座標を設定
-		pVtx[0].pos = D3DXVECTOR3(centerX - 140.0f * scale, centerY - 40.0f * scale, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(centerX + 140.0f * scale, centerY - 40.0f * scale, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(centerX - 140.0f * scale, centerY + 40.0f * scale, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(centerX + 140.0f * scale, centerY + 40.0f * scale, 0.0f);
-
-		// カラー設定
-		D3DXCOLOR color = D3DXCOLOR(1.0f, 1.0f, 1.0f, pauseAlphas[nCntPause]);
-
-		// 頂点カラーを設定
-		for (int nCntPause2 = 0; nCntPause2 < 4; nCntPause2++) 
-		{
-			pVtx[nCntPause2].col = color;
+			// 頂点ポインタを次の項目に進める
+			pVtx += 4;
 		}
 
-		// 頂点ポインタを次の項目に進める
-		pVtx += 4;
-	}
+		// 頂点バッファのアンロック
+		g_pVtxBuffPause->Unlock();
 
-	// 頂点バッファのアンロック
-	g_pVtxBuffPause->Unlock();
-
-	// 範囲内クリックの場合のみ処理を実行
-	if (g_fade == FADE_NONE && GetMouseButtonTrigger(0)) 
-	{
-		if (selectedByMouse != -1) 
+		// 範囲内クリックの場合のみ処理を実行
+		if (g_fade == FADE_NONE && GetMouseButtonTrigger(0)) 
 		{
-			// 範囲内の項目がクリックされた場合
-			switch (g_pauseMenu) 
+			if (selectedByMouse != -1) 
 			{
-			case PAUSE_MENU_CONTINUE:		// 続ける
-				SetEnablePause(false);
-				PlaySound(SOUND_LABEL_OK);
-				break;
-			case PAUSE_MENU_RETRY:			// リトライ
-				SetFade(MODE_GAME);
-				PlaySound(SOUND_LABEL_OK);
-				break;
-			case PAUSE_MENU_TUTORIAL:		// 操作確認
-
-
-				PlaySound(SOUND_LABEL_OK);
-				break;
-			case PAUSE_MENU_QUIT:			// やめる
-				SetFade(MODE_TITLE);
-				PlaySound(SOUND_LABEL_OK);
-				break;
+				// 範囲内の項目がクリックされた場合
+				switch (g_pauseMenu) 
+				{
+				case PAUSE_MENU_CONTINUE:		// 続ける
+					SetEnablePause(false);
+					PlaySound(SOUND_LABEL_OK);
+					break;
+				case PAUSE_MENU_RETRY:			// リトライ
+					SetFade(MODE_GAME);
+					PlaySound(SOUND_LABEL_OK);
+					break;
+				case PAUSE_MENU_TUTORIAL:		// 操作確認
+					g_bTutoDraw = true;
+					SetDraw(true);
+					PlaySound(SOUND_LABEL_OK);
+					break;
+				case PAUSE_MENU_QUIT:			// やめる
+					SetFade(MODE_TITLE);
+					PlaySound(SOUND_LABEL_OK);
+					break;
+				}
 			}
+			// 範囲外をクリックした場合は何もしない
 		}
-		// 範囲外をクリックした場合は何もしない
+
 	}
 }
 //===============================================================
@@ -385,4 +393,14 @@ void DrawPause(void)
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCntPause*4, 2);
 
 	}
+}
+
+void SetDraw(bool bDraw)
+{
+	g_bTutoDraw = bDraw;
+}
+
+bool GetTutoDraw(void)
+{
+	return g_bTutoDraw;
 }

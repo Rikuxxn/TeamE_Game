@@ -121,8 +121,8 @@ void InitGame(void)
 
 
 	// UIを表示
-	SetUI(D3DXVECTOR3(140.0f, 670.0f, 0.0f), 90.0f, 25.0f, UITYPE_MAP);
-
+	SetUI(D3DXVECTOR3(140.0f, 685.0f, 0.0f), 90.0f, 25.0f, UITYPE_MAP);
+	SetUI(D3DXVECTOR3(1150.0f, 680.0f, 0.0f), 90.0f, 25.0f, UITYPE_PAUSE);
 
 	//タスクUIの初期化処理
 	InitTask();
@@ -373,6 +373,7 @@ void UpdateGame(void)
 	Player* pPlayer = GetPlayer();//プレイヤーの情報へのポインタにプレイヤーの先頭アドレスが代入される
 	Enemy* pEnemy = GetEnemy();
 	Block* pBlock = GetBlock();
+	Camera* pCamera = GetCamera();
 
 	bool bEnd = GetEnd();
 
@@ -629,6 +630,8 @@ void UpdateGame(void)
 		{
 			//カメラの更新処理
 			UpdateCamera();
+
+			UpdateListener(pCamera->posV.x, pCamera->posV.y + 75.0f, pCamera->posV.z);
 		}
 
 

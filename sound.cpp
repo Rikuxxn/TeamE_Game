@@ -9,6 +9,7 @@
 #include "enemy.h"
 #include "player.h"
 #include "camera.h"
+#include <stdio.h>
 
 //*****************************************************************************
 // サウンド情報の構造体定義
@@ -313,9 +314,6 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 {
 	Enemy* pEnemy = GetEnemy();
 
-	g_apSourceVoice[label]->Stop(0);
-	g_apSourceVoice[label]->FlushSourceBuffers();
-
 	if (!g_apSourceVoice[label])
 	{
 		return E_FAIL;
@@ -323,16 +321,16 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 
 	// 敵の位置を取得して音源（エミッター）に設定
 	//g_Emitters[label].Position = { 0.0f, 0.0f, 0.0f };
-	UpdateSoundPosition(SOUND_LABEL_ENEMYSTEP1,pEnemy->pos.x,pEnemy->pos.y,pEnemy->pos.z);
-	UpdateSoundPosition(SOUND_LABEL_ENEMYSTEP2,pEnemy->pos.x,pEnemy->pos.y,pEnemy->pos.z);
+	UpdateSoundPosition(SOUND_LABEL_ENEMYSTEP1, pEnemy->pos.x, pEnemy->pos.y, pEnemy->pos.z);
+	UpdateSoundPosition(SOUND_LABEL_ENEMYSTEP2, pEnemy->pos.x, pEnemy->pos.y, pEnemy->pos.z);
 
 	g_Emitters[label].Velocity = { 0.0f, 0.0f, 0.0f };
 	g_Emitters[label].ChannelCount = 1;
-	g_Emitters[label].CurveDistanceScaler = 90.0f;  // 適切な距離減衰を設定
+	g_Emitters[label].CurveDistanceScaler = 80.0f;  // 距離減衰を設定
 
 	// 3Dオーディオ計算用のバッファ
 	X3DAUDIO_DSP_SETTINGS dspSettings = {};
-	FLOAT32 matrix[2];
+	FLOAT32 matrix[2] = { 0.0f, 0.0f };
 	dspSettings.SrcChannelCount = 1;
 	dspSettings.DstChannelCount = 2;
 	dspSettings.pMatrixCoefficients = matrix;
@@ -342,7 +340,7 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 		g_X3DInstance,
 		&g_Listener,
 		&g_Emitters[label],
-		X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_LPF_DIRECT | X3DAUDIO_CALCULATE_DOPPLER |
+		X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_LPF_DIRECT |
 		X3DAUDIO_CALCULATE_REVERB,
 		&dspSettings
 	);
@@ -359,6 +357,9 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 			matrix[i] = 0.0f;
 		}
 	}
+
+	matrix[0] *= 1.8f;
+	matrix[1] *= 1.8f;
 
 	// 計算結果を適用
 	g_apSourceVoice[label]->SetOutputMatrix(NULL, 1, 2, matrix);
@@ -407,7 +408,7 @@ void UpdateSoundPosition(SOUND_LABEL label,float x, float y, float z)
 
 	// 3Dオーディオ計算
 	X3DAUDIO_DSP_SETTINGS dspSettings = {};
-	FLOAT32 matrix[2];
+	FLOAT32 matrix[2] = { 0.0f, 0.0f };
 	dspSettings.SrcChannelCount = 1;
 	dspSettings.DstChannelCount = 2;
 	dspSettings.pMatrixCoefficients = matrix;
@@ -416,7 +417,7 @@ void UpdateSoundPosition(SOUND_LABEL label,float x, float y, float z)
 		g_X3DInstance,
 		&g_Listener,
 		&g_Emitters[label],
-		X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_LPF_DIRECT | X3DAUDIO_CALCULATE_DOPPLER |
+		X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_LPF_DIRECT |
 		X3DAUDIO_CALCULATE_REVERB,
 		&dspSettings
 	);
@@ -434,6 +435,9 @@ void UpdateSoundPosition(SOUND_LABEL label,float x, float y, float z)
 		}
 	}
 
+	matrix[0] *= 1.8f;
+	matrix[1] *= 1.8f;
+
 	// 音のパンニングを更新
 	g_apSourceVoice[label]->SetOutputMatrix(NULL, 1, 2, matrix);
 
@@ -445,13 +449,25 @@ void UpdateListener(float x, float y, float z)
 {
 	Camera* pCamera = GetCamera();
 
-	// カメラの向き（rot.y は水平方向の回転、rot.x は垂直方向の回転）
-	g_Listener.OrientFront.x = -sinf(pCamera->rot.y) * cosf(pCamera->rot.x);
-	g_Listener.OrientFront.y = -sinf(pCamera->rot.x);
-	g_Listener.OrientFront.z = -cosf(pCamera->rot.y) * cosf(pCamera->rot.x);
+	// カメラの向きベクトルを計算
+	D3DXVECTOR3 forward;
+	forward.x = sinf(pCamera->rot.y) * cosf(pCamera->rot.x);
+	forward.y = sinf(pCamera->rot.x);
+	forward.z = cosf(pCamera->rot.y) * cosf(pCamera->rot.x);
 
-	// 上方向ベクトル（基本的に Y 軸固定）
-	g_Listener.OrientTop = { 0.0f, 1.0f, 0.0f };
+	D3DXVECTOR3 orientfront = g_Listener.OrientFront;
+
+	// 正規化して g_Listener.OrientFront に代入
+	D3DXVec3Normalize(&orientfront, &forward);
+
+	D3DXVECTOR3 orienttop;
+	orienttop.x = 0.0f;
+	orienttop.y = 1.0f;
+	orienttop.z = 0.0f;
+
+	D3DXVec3Normalize(&orienttop, &orienttop);
+
+	g_Listener.OrientTop = orienttop;
 
 	g_Listener.Position = { x, y, z };				// リスナー(プレイヤー)の位置
 }

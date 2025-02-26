@@ -20,6 +20,7 @@ typedef enum
 	UITYPE_MAP,
 	UITYPE_USE,
 	UITYPE_DROP,
+	UITYPE_PAUSE,
 
 	UITYPE_MAX
 }UITYPE;
@@ -44,7 +45,7 @@ static const char* UI_TEXTURE[UITYPE_MAX] =		// UIのテクスチャの設定
 	"data/TEXTURE/UI4.png",						// マップ
 	"data/TEXTURE/UI5.png",						// 使う
 	"data/TEXTURE/画像1.png",					// 何かが落ちてきた
-
+	"data/TEXTURE/pause.png",					// ポーズ
 };
 
 //プロトタイプ宣言

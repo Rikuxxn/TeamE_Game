@@ -334,7 +334,6 @@ void UpdatePause(void)
 					PlaySound(SOUND_LABEL_OK);
 					break;
 				case PAUSE_MENU_TUTORIAL:		// ëÄçÏämîF
-					g_bTutoDraw = true;
 					SetDraw(true);
 					PlaySound(SOUND_LABEL_OK);
 					break;

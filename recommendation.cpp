@@ -7,6 +7,7 @@
 #include "main.h"
 #include "recommendation.h"
 #include "fade.h"
+#include "input.h"
 
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureRecommend = NULL;			// テクスチャへのポインタ
@@ -100,7 +101,8 @@ void UpdateRecommendation(void)
 
 	g_fadeCount++;		// カウント加算
 
-	if (g_fadeCount >= 180)
+	if (g_fadeCount >= 180 ||
+		g_fadeCount >= 60 && GetMouseButtonTrigger(0))
 	{
 		//時間経過
 		SetFade(MODE_TITLE);

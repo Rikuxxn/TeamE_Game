@@ -8,6 +8,10 @@
 
 #include "main.h"
 
+// マクロ定義
+#define CLEARPOSX (640.0f)
+#define CLEARPOSY (200.0f)
+
 //プロト
 void InitClear(void);
 void UninitClear(void);

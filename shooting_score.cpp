@@ -22,7 +22,7 @@ void InitSTPass(void)
 
 	// テクスチャ1の読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\ballnumber.png",// テクスチャのファイル名
+		"data\\TEXTURE\\shooting_ballnum.png",// テクスチャのファイル名
 		&g_pTextureSTPass);
 
 	// 頂点バッファの生成
@@ -42,9 +42,9 @@ void InitSTPass(void)
 	{
 		// 頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(PASSPOSX + nCntSTPass * 20.0f, PASSPOSY, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(PASSPOSX + nCntSTPass * 20.0f + 80.0f, PASSPOSY, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(PASSPOSX + nCntSTPass * 20.0f + 90.0f, PASSPOSY, 0.0f);
 		pVtx[2].pos = D3DXVECTOR3(PASSPOSX + nCntSTPass * 20.0f, PASSPOSY + 150.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(PASSPOSX + nCntSTPass * 20.0f + 80.0f, PASSPOSY + 150.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(PASSPOSX + nCntSTPass * 20.0f + 90.0f, PASSPOSY + 150.0f, 0.0f);
 		// rhwの設定
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;

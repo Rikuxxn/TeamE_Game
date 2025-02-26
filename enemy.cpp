@@ -367,7 +367,7 @@ void UpdateEnemy(void)
 
 			if (soundTimer >= dynamicInterval)
 			{
-				PlaySound(SOUND_LABEL_HEART);
+				//PlaySound(SOUND_LABEL_HEART);
 				soundTimer = 0.0f;						// タイマーをリセット
 			}
 		}
@@ -425,7 +425,7 @@ void UpdateEnemy(void)
 		}
 
 		if (g_aEnemy.enemymotion.EnemymotionType == ENEMYMOTIONTYPE_MOVE && g_aEnemy.enemymotion.nKey == 1 &&
-			g_aEnemy.enemymotion.nCounterMotion == 8)
+			g_aEnemy.enemymotion.nCounterMotion == 9)
 		{
 			PlaySound3D(SOUND_LABEL_ENEMYSTEP1);
 		}

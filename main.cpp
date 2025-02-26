@@ -215,6 +215,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg)
 	{
 	case WM_DESTROY:  //ウィンドウ破棄のメッセージ
+		UninitLight();
+
 		//WM_QUITメッセージを送る
 		PostQuitMessage(0);
 

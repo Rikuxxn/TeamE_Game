@@ -202,8 +202,6 @@ void UpdatePlayer(void)
 	bool bEnd = GetEnd();
 	bool bFirstPerson = GetFirstPerson();
 
-	UpdateListener(g_player.pos.x, g_player.pos.y + 75.0f, g_player.pos.z);
-
 	g_player.motion.motionType = MOTIONTYPE_NEUTRAL;
 
 	if (bEnd == true)
@@ -526,12 +524,12 @@ void UpdatePlayer(void)
 	{// ‘–‚Á‚Ä‚¢‚é‚Æ‚«
 		if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 1 && g_player.motion.nCounterMotion == 9)
 		{
-			//PlaySound(SOUND_LABEL_PLAYERSTEP1);
+			PlaySound(SOUND_LABEL_PLAYERSTEP1);
 			//PlaySound3D(SOUND_LABEL_PLAYERSTEP1);
 		}
 		else if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 3 && g_player.motion.nCounterMotion == 5)
 		{
-			//PlaySound(SOUND_LABEL_PLAYERSTEP2);
+			PlaySound(SOUND_LABEL_PLAYERSTEP2);
 			//PlaySound3D(SOUND_LABEL_PLAYERSTEP2);
 		}
 	}
@@ -539,12 +537,12 @@ void UpdatePlayer(void)
 	{// •à‚¢‚Ä‚¢‚é‚Æ‚«
 		if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 1 && g_player.motion.nCounterMotion == 9)
 		{
-			//PlaySound(SOUND_LABEL_PLAYERSTEP1);
+			PlaySound(SOUND_LABEL_PLAYERSTEP1);
 			//PlaySound3D(SOUND_LABEL_PLAYERSTEP1);
 		}
 		else if (g_player.motion.motionType == MOTIONTYPE_MOVE && g_player.motion.nKey == 3 && g_player.motion.nCounterMotion == 12)
 		{
-			//PlaySound(SOUND_LABEL_PLAYERSTEP2);
+			PlaySound(SOUND_LABEL_PLAYERSTEP2);
 			//PlaySound3D(SOUND_LABEL_PLAYERSTEP2);
 		}
 	}

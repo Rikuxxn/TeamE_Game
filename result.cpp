@@ -41,6 +41,7 @@ float g_fAlphaRank;												// ランク用のアルファ値
 int g_nRankCnt;
 int g_nTimeCnt;
 bool g_bResulutSelect;
+bool g_bRankSound;
 
 LPDIRECT3DTEXTURE9 g_pTextureResultTimeMinute = NULL;			// テクスチャへのポインタ
 LPDIRECT3DTEXTURE9 g_pTextureResultTimeSecond = NULL;			// テクスチャへのポインタ
@@ -78,6 +79,7 @@ void InitResult(void)
 	int nTimeMinutes = GetTimeMinutes();
 	int nTimeSeconds = GetTimeSeconds();
 	g_bResulutSelect = false;
+	g_bRankSound = false;
 
 	if (pFlag->bExit == true)
 	{//脱出したら
@@ -445,9 +447,10 @@ void UpdateResult(void)
 			}
 		}
 	}
-	if (g_nRankCnt <= 300 && pFlag->bExit == true)
+	if (g_nRankCnt >= 300 && pFlag->bExit == true && g_bRankSound == false)
 	{
-		//PlaySound(SOUND_LABEL_RANK);
+		PlaySound(SOUND_LABEL_RANK);
+		g_bRankSound = true;
 	}
 	
 	// ウィンドウスケールを計算

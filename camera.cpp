@@ -68,7 +68,7 @@ void UpdateCamera(void)
 	XINPUT_STATE* pStick;
 	pStick = GetJoyStickAngle();
 
-	if (pMode == MODE_GAME && (pFlag->bExit == false || bEnd == false))
+	if (pMode == MODE_GAME && pFlag->bExit == false && bEnd == false)
 	{
 
 		//if (pStick != NULL) 
@@ -161,18 +161,38 @@ void UpdateCamera(void)
 
 	}
 
+	// 滑らかに補間するための補間係数
+	const float smoothFactor = 0.004f;
+
 	// 敵に捕まった
-	if (bEnd == true)
+	if (pMode == MODE_GAME && bEnd == true)
 	{
-		//g_camera.rot.x = pEnemy->pos.x;
-		//if (g_camera.rot.y == pEnemy->pos.y)
-		//{
-		//	g_camera.rot.y = 0.0f;
-		//}
-		//else
-		//{
-			//g_camera.rot.y += g_camera.posR.y - sinf(pEnemy->pos.y);
-		//}
+		Enemy* pEnemy = GetEnemy();
+
+		// カメラの位置（プレイヤーの視点を少し高く）
+		g_camera.posV = pPlayer->pos;
+		g_camera.posV.y += 70.0f;  // ← ここを調整
+
+		// 敵の位置を注視点の目標値にする（少し上にする）
+		D3DXVECTOR3 targetPosR = pEnemy->pos;
+		targetPosR.y += 100.0f;  // ← ここを調整
+
+		// 敵の方向ベクトルを計算
+		D3DXVECTOR3 direction = targetPosR - g_camera.posV;
+		D3DXVec3Normalize(&direction, &direction);
+
+		// 目標回転角度を計算
+		float targetRotY = atan2f(direction.x, direction.z);
+		float targetRotX = -atan2f(direction.y, sqrtf(direction.x * direction.x + direction.z * direction.z));
+
+		// 現在の回転と目標回転を補間
+		g_camera.rot.y += (targetRotY - g_camera.rot.y) * smoothFactor;
+		g_camera.rot.x += (targetRotX - g_camera.rot.x) * smoothFactor;
+
+		// 注視点を滑らかに補間
+		g_camera.posR.x += (targetPosR.x - g_camera.posR.x) * smoothFactor;
+		g_camera.posR.y += (targetPosR.y - g_camera.posR.y) * smoothFactor;
+		g_camera.posR.z += (targetPosR.z - g_camera.posR.z) * smoothFactor;
 	}
 
 	if (pMode == MODE_TITLE)

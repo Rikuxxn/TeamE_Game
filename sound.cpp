@@ -125,10 +125,9 @@ HRESULT InitSound(HWND hWnd)
 	// スピーカー設定を取得
 	XAUDIO2_VOICE_DETAILS details;
 	g_pMasteringVoice->GetVoiceDetails(&details);
-	UINT32 numChannels = details.InputChannels; // スピーカーのチャンネル数を取得
 
-	// X3DAudio の初期化
-	X3DAudioInitialize(numChannels, X3DAUDIO_SPEED_OF_SOUND, g_X3DInstance);
+	UINT32 speakerConfig = details.InputChannels; // 現在のスピーカー設定
+	X3DAudioInitialize(speakerConfig, X3DAUDIO_SPEED_OF_SOUND, g_X3DInstance);
 
 	// リスナー（プレイヤーの初期位置）
 	g_Listener.Position = { 0.0f, 0.0f, 0.0f };   // 中央
@@ -321,7 +320,6 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 	}
 
 	// 敵の位置を取得して音源（エミッター）に設定
-	//g_Emitters[label].Position = { 0.0f, 0.0f, 0.0f };
 	UpdateSoundPosition(SOUND_LABEL_ENEMYSTEP1, pEnemy->pos.x, pEnemy->pos.y, pEnemy->pos.z);
 	UpdateSoundPosition(SOUND_LABEL_ENEMYSTEP2, pEnemy->pos.x, pEnemy->pos.y, pEnemy->pos.z);
 
@@ -336,15 +334,12 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 	dspSettings.DstChannelCount = 2;
 	dspSettings.pMatrixCoefficients = matrix;
 
-	// 3D音響計算を実行
-	X3DAudioCalculate(
-		g_X3DInstance,
-		&g_Listener,
-		&g_Emitters[label],
-		X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_LPF_DIRECT |
-		X3DAUDIO_CALCULATE_REVERB,
-		&dspSettings
-	);
+	// カスタムパンニング計算
+	CalculateCustomPanning(label, matrix);
+
+	// パンニング値をクリップ（0.0 ～ 0.5 の範囲に収める）
+	matrix[0] = max(0.0f, min(0.5f, matrix[0]));
+	matrix[1] = max(0.0f, min(0.5f, matrix[1]));
 
 	// パンニング値をクリップ
 	for (int i = 0; i < 2; i++)
@@ -359,8 +354,8 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 		}
 	}
 
-	matrix[0] *= 1.8f;
-	matrix[1] *= 1.8f;
+	matrix[0] *= 1.0f;
+	matrix[1] *= 1.0f;
 
 	// 計算結果を適用
 	g_apSourceVoice[label]->SetOutputMatrix(NULL, 1, 2, matrix);
@@ -393,6 +388,60 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 	return S_OK;
 }
 //=============================================================================
+// カスタムパンニング
+//=============================================================================
+void CalculateCustomPanning(SOUND_LABEL label, FLOAT32* matrix)
+{
+	// プレイヤーの向き（前方向ベクトル）
+	D3DXVECTOR3 front = g_Listener.OrientFront;
+	D3DXVec3Normalize(&front, &front);
+
+	// 上方向ベクトル（通常は (0, 1, 0)）
+	D3DXVECTOR3 up = g_Listener.OrientTop;
+	D3DXVec3Normalize(&up, &up);
+
+	// 右方向ベクトル = front × up（外積で求める）
+	D3DXVECTOR3 right;
+	D3DXVec3Cross(&right, &up, &front);
+	D3DXVec3Normalize(&right, &right);
+
+	// プレイヤー → 音源のベクトル
+	D3DXVECTOR3 toEmitter = 
+	{
+		g_Emitters[label].Position.x - g_Listener.Position.x,
+		g_Emitters[label].Position.y - g_Listener.Position.y,
+		g_Emitters[label].Position.z - g_Listener.Position.z
+	};
+
+	// 音源までの距離を計算
+	float distance = D3DXVec3Length(&toEmitter);
+
+	// 最小距離を設定（これより近いと音量最大）
+	float minDistance = 450.0f;  // 450m以内なら最大音量
+	float maxDistance = 1050.0f; // 1050m以上なら最小音量
+
+	// 距離減衰計算
+	float volumeScale = 1.0f - ((distance - minDistance) / (maxDistance - minDistance));
+	volumeScale = max(0.0f, min(1.0f, volumeScale)); // 0.0 ～ 1.0 に制限
+
+	// 方向ベクトルを正規化
+	D3DXVec3Normalize(&toEmitter, &toEmitter);
+
+	// 右方向ベクトルと音源方向ベクトルの内積を計算（-1.0 ～ 1.0 の範囲）
+	FLOAT32 panFactor = D3DXVec3Dot(&right, &toEmitter);
+
+	// sinf() で滑らかにする
+	FLOAT32 panCurve = (sinf(panFactor * D3DX_PI * 0.5f)); // -1.0 ～ 1.0 の範囲を変換
+
+	// 左右の音量を決定
+	FLOAT32 leftVolume = (0.5f - max(0.0f, panCurve)) * volumeScale;
+	FLOAT32 rightVolume = (0.5f - max(0.0f, -panCurve)) * volumeScale;
+
+	// 音量をセット（matrix[0] が左耳、matrix[1] が右耳）
+	matrix[0] = leftVolume;
+	matrix[1] = rightVolume;
+}
+//=============================================================================
 // 音源の位置更新
 //=============================================================================
 void UpdateSoundPosition(SOUND_LABEL label,float x, float y, float z)
@@ -418,8 +467,7 @@ void UpdateSoundPosition(SOUND_LABEL label,float x, float y, float z)
 		g_X3DInstance,
 		&g_Listener,
 		&g_Emitters[label],
-		X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_LPF_DIRECT |
-		X3DAUDIO_CALCULATE_REVERB,
+		X3DAUDIO_CALCULATE_MATRIX,
 		&dspSettings
 	);
 
@@ -436,8 +484,8 @@ void UpdateSoundPosition(SOUND_LABEL label,float x, float y, float z)
 		}
 	}
 
-	matrix[0] *= 1.8f;
-	matrix[1] *= 1.8f;
+	matrix[0] *= 1.0f;
+	matrix[1] *= 1.0f;
 
 	// 音のパンニングを更新
 	g_apSourceVoice[label]->SetOutputMatrix(NULL, 1, 2, matrix);
@@ -452,14 +500,14 @@ void UpdateListener(float x, float y, float z)
 
 	// カメラの向きベクトルを計算
 	D3DXVECTOR3 forward;
-	forward.x = sinf(pCamera->rot.y) * cosf(pCamera->rot.x);
-	forward.y = sinf(pCamera->rot.x);
-	forward.z = cosf(pCamera->rot.y) * cosf(pCamera->rot.x);
-
-	D3DXVECTOR3 orientfront = g_Listener.OrientFront;
+	forward.x = -sinf(pCamera->rot.y) * cosf(pCamera->rot.x);
+	forward.y = -sinf(pCamera->rot.x);
+	forward.z = -cosf(pCamera->rot.y) * cosf(pCamera->rot.x);
 
 	// 正規化して g_Listener.OrientFront に代入
-	D3DXVec3Normalize(&orientfront, &forward);
+	D3DXVec3Normalize(&forward, &forward);
+
+	g_Listener.OrientFront = forward;
 
 	D3DXVECTOR3 orienttop;
 	orienttop.x = 0.0f;

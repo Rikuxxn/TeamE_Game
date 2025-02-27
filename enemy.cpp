@@ -367,7 +367,7 @@ void UpdateEnemy(void)
 
 			if (soundTimer >= dynamicInterval)
 			{
-				//PlaySound(SOUND_LABEL_HEART);
+				PlaySound(SOUND_LABEL_HEART);
 				soundTimer = 0.0f;						// タイマーをリセット
 			}
 		}
@@ -434,12 +434,6 @@ void UpdateEnemy(void)
 		{
 			PlaySound3D(SOUND_LABEL_ENEMYSTEP2);
 		}
-
-		//if (g_aEnemy.enemymotion.EnemymotionType == ENEMYMOTIONTYPE_MOVE)
-		//{
-		//	UpdateSoundPosition(SOUND_LABEL_ENEMYSTEP1);
-		//	UpdateSoundPosition(SOUND_LABEL_ENEMYSTEP2);
-		//}
 
 		//全モデルの更新
 		for (int nCntModel = 0; nCntModel < g_aEnemy.enemymotion.nNumModel; nCntModel++)

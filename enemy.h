@@ -10,10 +10,7 @@
 #include "main.h"
 #include "model.h"
 #include "motion.h"
-
-#define GRID_WIDTH  (24)   // (2400 / 50)
-#define GRID_HEIGHT (20)   // (2000 / 50)
-#define TILE_SIZE   (100)   // 1マスのサイズ（50x50）
+#include "meshfield.h"
 
 typedef enum 
 {

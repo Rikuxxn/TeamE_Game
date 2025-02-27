@@ -60,6 +60,7 @@ void UninitSound(void);
 HRESULT PlaySound(SOUND_LABEL label);
 HRESULT PlaySound3D(SOUND_LABEL label);
 void UpdateSoundPosition(SOUND_LABEL label, float x, float y, float z);
+void CalculateCustomPanning(SOUND_LABEL label, FLOAT32* matrix);
 void UpdateListener(float x, float y, float z);
 void StopSound(SOUND_LABEL label);
 void StopSound(void);

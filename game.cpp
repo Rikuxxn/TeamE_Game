@@ -631,7 +631,7 @@ void UpdateGame(void)
 			//ƒJƒƒ‰‚ÌXVˆ—
 			UpdateCamera();
 
-			UpdateListener(pCamera->posV.x, pCamera->posV.y + 75.0f, pCamera->posV.z);
+			UpdateListener(pCamera->posV.x, pCamera->posV.y + 70.0f, pCamera->posV.z);
 		}
 
 

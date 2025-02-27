@@ -105,7 +105,7 @@ HRESULT InitSound(HWND hWnd)
 	}
 	
 	// マスターボイスの生成
-	hr = g_pXAudio2->CreateMasteringVoice(&g_pMasteringVoice);
+	hr = g_pXAudio2->CreateMasteringVoice(&g_pMasteringVoice, 4, 44100, 0, NULL, NULL);
 	if(FAILED(hr))
 	{
 		MessageBox(hWnd, "マスターボイスの生成に失敗！", "警告！", MB_ICONWARNING);
@@ -330,9 +330,9 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 
 	// 3Dオーディオ計算用のバッファ
 	X3DAUDIO_DSP_SETTINGS dspSettings = {};
-	FLOAT32 matrix[2] = { 0.0f, 0.0f };
+	FLOAT32 matrix[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	dspSettings.SrcChannelCount = 1;
-	dspSettings.DstChannelCount = 2;
+	dspSettings.DstChannelCount = 4;
 	dspSettings.pMatrixCoefficients = matrix;
 
 	// カスタムパンニング計算
@@ -355,11 +355,8 @@ HRESULT PlaySound3D(SOUND_LABEL label)
 		}
 	}
 
-	matrix[0] *= 1.0f;
-	matrix[1] *= 1.0f;
-
 	// 計算結果を適用
-	g_apSourceVoice[label]->SetOutputMatrix(NULL, 1, 2, matrix);
+	g_apSourceVoice[label]->SetOutputMatrix(NULL, 1, 4, matrix);
 
 	// バッファ設定
 	XAUDIO2_VOICE_STATE xa2state;
@@ -407,40 +404,46 @@ void CalculateCustomPanning(SOUND_LABEL label, FLOAT32* matrix)
 	D3DXVec3Normalize(&right, &right);
 
 	// プレイヤー → 音源のベクトル
-	D3DXVECTOR3 toEmitter = 
+	D3DXVECTOR3 toEmitter =
 	{
 		g_Emitters[label].Position.x - g_Listener.Position.x,
 		g_Emitters[label].Position.y - g_Listener.Position.y,
 		g_Emitters[label].Position.z - g_Listener.Position.z
 	};
 
-	// 音源までの距離を計算
+	// 距離を計算
 	float distance = D3DXVec3Length(&toEmitter);
 
-	// 最小距離を設定（これより近いと音量最大）
-	float minDistance = 450.0f;  // 450m以内なら最大音量
-	float maxDistance = 1050.0f; // 1050m以上なら最小音量
+	// 最小距離と最大距離（距離減衰の範囲）
+	float minDistance = 450.0f;
+	float maxDistance = 1050.0f;
 
 	// 距離減衰計算
 	float volumeScale = 1.0f - ((distance - minDistance) / (maxDistance - minDistance));
-	volumeScale = max(0.0f, min(1.0f, volumeScale)); // 0.0 ～ 1.0 に制限
+	volumeScale = max(0.0f, min(1.0f, volumeScale));
 
 	// 方向ベクトルを正規化
 	D3DXVec3Normalize(&toEmitter, &toEmitter);
 
-	// 右方向ベクトルと音源方向ベクトルの内積を計算（-1.0 ～ 1.0 の範囲）
-	FLOAT32 panFactor = D3DXVec3Dot(&right, &toEmitter);
+	// 左右パンニング
+	FLOAT32 panFactorLR = D3DXVec3Dot(&right, &toEmitter);
+	FLOAT32 panCurveLR = sinf(panFactorLR * D3DX_PI * 0.5f); // -1.0 ～ 1.0 の範囲
 
-	// sinf() で滑らかにする
-	FLOAT32 panCurve = (sinf(panFactor * D3DX_PI * 0.5f)); // -1.0 ～ 1.0 の範囲を変換
+	// 前後パンニング
+	FLOAT32 panFactorFB = D3DXVec3Dot(&front, &toEmitter);
+	FLOAT32 panCurveFB = sinf(panFactorFB * D3DX_PI * 0.5f); // -1.0 ～ 1.0 の範囲
 
-	// 左右の音量を決定
-	FLOAT32 leftVolume = (0.5f - max(0.0f, panCurve)) * volumeScale;
-	FLOAT32 rightVolume = (0.5f - max(0.0f, -panCurve)) * volumeScale;
+	// チャンネルごとの音量計算
+	FLOAT32 frontLeft = (0.5f - max(0.0f, panCurveLR)) * (1.0f + panCurveFB) * 0.5f * volumeScale;
+	FLOAT32 frontRight = (0.5f - max(0.0f, -panCurveLR)) * (1.0f + panCurveFB) * 0.5f * volumeScale;
+	FLOAT32 rearLeft = (0.5f - max(0.0f, panCurveLR)) * (1.0f - panCurveFB) * 0.5f * volumeScale;
+	FLOAT32 rearRight = (0.5f - max(0.0f, -panCurveLR)) * (1.0f - panCurveFB) * 0.5f * volumeScale;
 
-	// 音量をセット（matrix[0] が左耳、matrix[1] が右耳）
-	matrix[0] = leftVolume;
-	matrix[1] = rightVolume;
+	// 音量マトリクスにセット（4ch: FL, FR, RL, RR）
+	matrix[0] = frontLeft;
+	matrix[1] = frontRight;
+	matrix[2] = rearLeft;
+	matrix[3] = rearRight;
 }
 //=============================================================================
 // 音源の位置更新
@@ -459,9 +462,9 @@ void UpdateSoundPosition(SOUND_LABEL label,float x, float y, float z)
 
 	// 3Dオーディオ計算
 	X3DAUDIO_DSP_SETTINGS dspSettings = {};
-	FLOAT32 matrix[2] = { 0.0f, 0.0f };
+	FLOAT32 matrix[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	dspSettings.SrcChannelCount = 1;
-	dspSettings.DstChannelCount = 2;
+	dspSettings.DstChannelCount = 4;
 	dspSettings.pMatrixCoefficients = matrix;
 
 	X3DAudioCalculate(
@@ -485,11 +488,8 @@ void UpdateSoundPosition(SOUND_LABEL label,float x, float y, float z)
 		}
 	}
 
-	matrix[0] *= 1.0f;
-	matrix[1] *= 1.0f;
-
 	// 音のパンニングを更新
-	g_apSourceVoice[label]->SetOutputMatrix(NULL, 1, 2, matrix);
+	g_apSourceVoice[label]->SetOutputMatrix(NULL, 1, 4, matrix);
 
 }
 //=============================================================================

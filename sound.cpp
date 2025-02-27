@@ -72,6 +72,7 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/SE/opendoor.wav", 0},		// ドアが開く
 	{"data/SE/enemychase.wav", 0},		// ピエロに追われている
 	{"data/SE/Check.wav", 0},			// タスク完了
+	{"data/SE/menu.wav", 0},			// メニューオープン
 	{"data/SE/select.wav", 0},			// 選択
 	{"data/SE/ok.wav", 0},				// 決定
 	{"data/SE/gamestart.wav", 0},		// ゲームスタート

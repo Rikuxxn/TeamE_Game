@@ -10,6 +10,7 @@
 #include "player.h"
 #include "fade.h"
 #include "block.h"
+#include "enemy.h"
 
 //グローバル変数
 Camera g_camera;//カメラ情報
@@ -59,13 +60,15 @@ void UpdateCamera(void)
 	Player* pPlayer = GetPlayer();
 	Block* pBlock = GetBlock();
 	Flags* pFlag = GetFlag();
+	Enemy* pEnemy = GetEnemy();
+	bool bEnd = GetEnd();
 
 	float fAngleA = sqrtf(((g_camera.posR.x - pPlayer->pos.x) * (g_camera.posR.x - pPlayer->pos.x)) + ((g_camera.posR.y - pPlayer->pos.y) * (g_camera.posR.y - pPlayer->pos.y)) + ((g_camera.posR.z - pPlayer->pos.z) * (g_camera.posR.z - pPlayer->pos.z)));
 
 	XINPUT_STATE* pStick;
 	pStick = GetJoyStickAngle();
 
-	if (pMode == MODE_GAME && pFlag->bExit == false)
+	if (pMode == MODE_GAME && (pFlag->bExit == false || bEnd == false))
 	{
 
 		//if (pStick != NULL) 
@@ -92,6 +95,7 @@ void UpdateCamera(void)
 		//	// カメラ回転の更新
 		//	RotateCameraWithGamepad(stickX, stickY);
 		//}
+
 
 		// マウスの状態を取得
 		DIMOUSESTATE mouseState;
@@ -155,6 +159,20 @@ void UpdateCamera(void)
 		g_camera.posR.y = g_camera.posV.y - sinf(g_camera.rot.x);
 		g_camera.posR.z = g_camera.posV.z - cosf(g_camera.rot.y) * cosf(g_camera.rot.x);
 
+	}
+
+	// 敵に捕まった
+	if (bEnd == true)
+	{
+		//g_camera.rot.x = pEnemy->pos.x;
+		//if (g_camera.rot.y == pEnemy->pos.y)
+		//{
+		//	g_camera.rot.y = 0.0f;
+		//}
+		//else
+		//{
+			//g_camera.rot.y += g_camera.posR.y - sinf(pEnemy->pos.y);
+		//}
 	}
 
 	if (pMode == MODE_TITLE)

@@ -6,6 +6,7 @@
 #include "pause_tutorial.h"
 #include "pause.h"
 #include "input.h"
+#include "sound.h"
 
 // グローバル
 LPDIRECT3DTEXTURE9 g_pTexturePTutorial = NULL;		// テクスチャへのポインタ
@@ -88,6 +89,7 @@ void UpdatePTutorial(void)
 		if (GetMouseButtonTrigger(0))
 		{// 左クリック
 			SetDraw(false);
+			PlaySound(SOUND_LABEL_OK);
 		}
 	}
 }

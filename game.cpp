@@ -382,7 +382,7 @@ void UpdateGame(void)
 	{
 		g_bPause = g_bPause ? false : true;
 
-		// PlaySound(SOUND_LABEL_PAUSE); // ポーズ音の再生
+		 PlaySound(SOUND_LABEL_MENUOPEN); // ポーズ音の再生
 	}
 
 	if (g_bPause == true)

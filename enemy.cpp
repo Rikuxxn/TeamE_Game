@@ -294,8 +294,8 @@ void UpdateEnemy(void)
 		CollisionBlock(&g_aEnemy.pos,&g_aEnemy.posOld,&g_aEnemy.move,&g_aEnemy.size);
 
 
-		D3DXVECTOR3 PlayerRadius(20.0f, 20.0f, 20.0f);				// 捕まる距離
-		D3DXVECTOR3 PlayerInsightRadius(50.0f, 50.0f, 50.0f);		// バレる距離
+		D3DXVECTOR3 PlayerRadius(50.0f, 50.0f, 50.0f);				// 捕まる距離
+		D3DXVECTOR3 PlayerInsightRadius(70.0f, 70.0f, 70.0f);		// バレる距離
 		D3DXVECTOR3 SoundRadius1(420.0f, 420.0f, 420.0f);			// 心音の鳴る距離
 
 		float fDistance =

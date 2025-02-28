@@ -224,8 +224,14 @@ void UpdatePlayer(void)
 			// デッドゾーン処理
 			const float DEADZONE = 10922.0f;
 
-			if (fabsf(stickX) < DEADZONE) stickX = 0.0f;
-			if (fabsf(stickY) < DEADZONE) stickY = 0.0f;
+			if (fabsf(stickX) < DEADZONE)
+			{
+				stickX = 0.0f;
+			}
+			if (fabsf(stickY) < DEADZONE)
+			{
+				stickY = 0.0f;
+			}
 
 			// 正規化
 			float magnitude = sqrtf(stickX * stickX + stickY * stickY);
@@ -260,7 +266,7 @@ void UpdatePlayer(void)
 
 			if (GetKeyboardPress(DIK_W) == true /*|| GetJoypadPress(JOYKEY_UP) == true*/)
 			{//Wキーが押された
-				if (GetKeyboardPress(DIK_LSHIFT) == true && g_player.fDush >= 0 &&
+				if ((GetKeyboardPress(DIK_LSHIFT) == true/* || GetJoypadPress(JOYKEY_RB) == true*/ )&& g_player.fDush >= 0 &&
 					g_player.fDush > 0 && g_player.bEmpty == false)
 				{// ダッシュ時
 					g_player.fDush--;
@@ -319,7 +325,7 @@ void UpdatePlayer(void)
 			if (GetKeyboardPress(DIK_W) == true /*|| GetJoypadPress(JOYKEY_UP) == true*/)
 			{//Wキーが押された
 				// ダッシュ時
-				if (GetKeyboardPress(DIK_LSHIFT) == true && g_player.fDush >= 0 &&
+				if ((GetKeyboardPress(DIK_LSHIFT) == true /*|| GetJoypadPress(JOYKEY_RB) == true*/) && g_player.fDush >= 0 &&
 					g_player.fDush > 0 && g_player.bEmpty == false)
 				{
 					g_player.fDush--;
@@ -374,7 +380,7 @@ void UpdatePlayer(void)
 		else if (GetKeyboardPress(DIK_W) == true /*|| GetJoypadPress(JOYKEY_UP) == true*/)
 		{//Wキーが押された	
 			// ダッシュ時
-			if (GetKeyboardPress(DIK_LSHIFT) == true && g_player.fDush >= 0 &&
+			if ((GetKeyboardPress(DIK_LSHIFT) == true /*|| GetJoypadPress(JOYKEY_RB) == true*/) && g_player.fDush >= 0 &&
 				g_player.fDush > 0 && g_player.bEmpty == false)
 			{
 				g_player.fDush--;
@@ -435,13 +441,13 @@ void UpdatePlayer(void)
 		}
 
 		//ダッシュしていない時
-		if (GetKeyboardPress(DIK_LSHIFT) == false)
+		if ((GetKeyboardPress(DIK_LSHIFT) == false /*|| GetJoypadPress(JOYKEY_RB) == false*/))
 		{
 			g_player.bDush = false;
 		}
 
 		if (g_player.fDush >= PLAYER_STAMINA &&
-			GetKeyboardPress(DIK_LSHIFT) == false)
+			(GetKeyboardPress(DIK_LSHIFT) == false /*|| GetJoypadPress(JOYKEY_RB) == false*/))
 		{
 			g_player.nDrawDush++;
 		}

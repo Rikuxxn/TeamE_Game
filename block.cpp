@@ -247,7 +247,7 @@ void UpdateBlock(void)
 			CheckBlocksInCenter();
 
 			// ヒューズを手に入れた
-			if (g_flag.bFuse == true && KeyboardTrigger(DIK_E) == true && g_aBlock[nCntBlock].bInsight == true)
+			if (g_flag.bFuse == true && (KeyboardTrigger(DIK_E) == true || JoyPadTrigger(JOYKEY_A) == true )&& g_aBlock[nCntBlock].bInsight == true)
 			{
 				if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE)
 				{
@@ -258,7 +258,7 @@ void UpdateBlock(void)
 			}
 
 			// ヒューズボックスにヒューズをはめた
-			if (g_flag.bFuseGet == true && KeyboardTrigger(DIK_E) == true && g_aBlock[nCntBlock].bInsight == true)
+			if (g_flag.bFuseGet == true && (KeyboardTrigger(DIK_E) == true || JoyPadTrigger(JOYKEY_A) == true) && g_aBlock[nCntBlock].bInsight == true)
 			{
 				if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSEBOX)
 				{
@@ -452,7 +452,11 @@ void SetBlock(D3DXVECTOR3 pos, D3DXVECTOR3 rot,int nType)
 			g_aBlock[nCntBlock].nType = nType;
 			g_aBlock[nCntBlock].bUse = true;
 
-			AddPointlightToBlock();
+			// タイトルボードだったら
+			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_TITLEBOARD)
+			{
+				AddPointlightToBlock();
+			}
 
 			break;
 		}
@@ -879,7 +883,7 @@ bool GetBlockPosition(D3DXVECTOR3* outPosition)
 			return true; // 位置が取得できた
 		}
 	}
-	return false; // チュートリアルボードが見つからなかった
+	return false; // タイトルボードが見つからなかった
 }
 //============================================
 // ブロックの取得

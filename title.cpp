@@ -277,8 +277,8 @@ void UpdateTitle(void)
 	for (int nCnt = 0; nCnt < MAX_TITLE; nCnt++)
 	{
 		float scale = titleScales[nCnt];
-		float centerX = 780.0f; // 中心X座標
-		float centerY = 300.0f + nCnt * 150.0f; // 中心Y座標
+		float centerX = 1060.0f; // 中心X座標
+		float centerY = 450.0f + nCnt * 120.0f; // 中心Y座標
 
 		// 領域の計算
 		float left = centerX - 150.0f * scale;
@@ -341,8 +341,8 @@ void UpdateTitle(void)
 	for (int nCntTitle = 0; nCntTitle < MAX_TITLE; nCntTitle++)
 	{
 		float scale = titleScales[nCntTitle];
-		float centerX = 780.0f;
-		float centerY = 300.0f + nCntTitle * 150.0f;
+		float centerX = 1060.0f;
+		float centerY = 450.0f + nCntTitle * 120.0f;
 
 		// 頂点座標を設定
 		pVtx[0].pos = D3DXVECTOR3(centerX - 150.0f * scale, centerY - 30.0f * scale, 0.0f);

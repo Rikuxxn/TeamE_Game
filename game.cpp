@@ -405,7 +405,7 @@ void UpdateGame(void)
 	{//ポーズ中ではない
 
 		// ミニゲーム（シューティング）のトリガー
-		if (KeyboardTrigger(DIK_E) == true && 
+		if ((KeyboardTrigger(DIK_E) == true || JoyPadTrigger(JOYKEY_A) == true)&& 
 			pFlag->bArcade == true &&
 			g_Game.bMap == false &&
 			pFlag->bFuseCmp == true)
@@ -416,7 +416,7 @@ void UpdateGame(void)
 
 
 		// ミニゲーム（クレーン）のトリガー
-		if (KeyboardTrigger(DIK_E) == true &&
+		if ((KeyboardTrigger(DIK_E) == true || JoyPadTrigger(JOYKEY_A) == true) &&
 			pCraneState != CRANEGAMESTATE_END &&
 			pFlag->bCatcher == true &&
 			g_Game.bMap == false &&
@@ -428,7 +428,7 @@ void UpdateGame(void)
 
 
 		// パスワード(クレーン)のヒント
-		if (KeyboardTrigger(DIK_E) == true &&
+		if ((KeyboardTrigger(DIK_E) == true || JoyPadTrigger(JOYKEY_A) == true) &&
 			pFlag->bHintBear == true &&
 			g_Game.bMap == false &&
 			pFlag->bFuseCmp == true)
@@ -438,7 +438,7 @@ void UpdateGame(void)
 
 
 		// ボールプールのトリガー
-		if (KeyboardTrigger(DIK_E) == true && 
+		if ((KeyboardTrigger(DIK_E) == true || JoyPadTrigger(JOYKEY_A) == true) &&
 			pBallState != BALLGAMESTATE_END && 
 			pFlag->bBall == true &&
 			g_Game.bMap == false &&
@@ -450,7 +450,7 @@ void UpdateGame(void)
 
 
 		// パスワード(ball)のヒント
-		if (KeyboardTrigger(DIK_E) == true &&
+		if ((KeyboardTrigger(DIK_E) == true || JoyPadTrigger(JOYKEY_A) == true) &&
 			pFlag->bHintBall == true &&
 			g_Game.bMap == false &&
 			pFlag->bFuseCmp == true)
@@ -460,7 +460,7 @@ void UpdateGame(void)
 
 
 		// キーパッドのトリガー
-		if (KeyboardTrigger(DIK_E) == true && 
+		if ((KeyboardTrigger(DIK_E) == true || JoyPadTrigger(JOYKEY_A) == true) &&
 			pPassState != PASSWORDGAMESTATE_END &&
 			pFlag->bKeypad == true &&
 			g_Game.bMap == false &&

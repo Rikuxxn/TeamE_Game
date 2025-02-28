@@ -86,7 +86,7 @@ void UpdatePTutorial(void)
 	bool bTutoDraw = GetTutoDraw();
 	if (bTutoDraw == true)
 	{// •`‰æ’†
-		if (GetMouseButtonTrigger(0))
+		if (GetMouseButtonTrigger(0) || JoyPadTrigger(JOYKEY_A) == true)
 		{// ¶ƒNƒŠƒbƒN
 			SetDraw(false);
 			PlaySound(SOUND_LABEL_OK);

@@ -8,6 +8,7 @@
 
 //マクロ定義
 #define NUM_KEY_MAX (256)						// キーの最大数
+#define CURSOR_SPEED (0.8f)  // カーソル移動速度
 
 //グローバル変数
 XINPUT_STATE g_joyKeyState;						// ジョイパッドのプレス情報
@@ -489,6 +490,35 @@ int GetMouseWheel(void)
 	}
 
 	return wheelValue; // 正（上スクロール）、負（下スクロール）、0（スクロールなし）
+}
+//=====================================================
+// ゲームパッドでマウス移動処理
+//=====================================================
+void UpdateCursorWithGamepad(void)
+{
+	XINPUT_STATE* pStick;
+	pStick = GetJoyStickAngle();
+
+	// マウスカーソルの現在位置を取得
+	POINT cursorPos;
+	GetCursorPos(&cursorPos);
+
+	// 左スティックの入力値を取得 (-1000 ～ 1000 の範囲)
+	float moveX = pStick->Gamepad.sThumbLX / 1000.0f;
+	float moveY = pStick->Gamepad.sThumbLY / 1000.0f;
+
+	//// デッドゾーン処理
+	//const float DEADZONE = 10922.0f;
+
+	// 一定の閾値を超えた場合にカーソルを移動
+	if (fabs(moveX) > 0.1f || fabs(moveY) > 0.1f)
+	{
+		cursorPos.x += (LONG)(moveX * CURSOR_SPEED);
+		cursorPos.y -= (LONG)(moveY * CURSOR_SPEED);
+
+		// カーソル位置を更新
+		SetCursorPos(cursorPos.x, cursorPos.y);
+	}
 }
 //=====================================================
 // マウスカーソル表示処理

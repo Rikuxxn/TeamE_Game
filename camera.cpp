@@ -70,36 +70,33 @@ void UpdateCamera(void)
 
 	if (pMode == MODE_GAME && pFlag->bExit == false && bEnd == false)
 	{
-
-		//if (pStick != NULL) 
-		//{
-		//	// 右スティックの値を取得
-		//	float stickX = pStick->Gamepad.sThumbRX;
-		//	float stickY = pStick->Gamepad.sThumbRY;
-
-		//	// デッドゾーン処理
-		//	const float DEADZONE = 10922.0f;
-		//	if (fabsf(stickX) < DEADZONE)
-		//	{
-		//		stickX = 0.0f;
-		//	}
-		//	if (fabsf(stickY) < DEADZONE)
-		//	{
-		//		stickY = 0.0f;
-		//	}
-
-		//	// 正規化
-		//	stickX /= 32768.0f;
-		//	stickY /= 32768.0f;
-
-		//	// カメラ回転の更新
-		//	RotateCameraWithGamepad(stickX, stickY);
-		//}
-
-
 		// マウスの状態を取得
 		DIMOUSESTATE mouseState;
 
+		if (pStick != NULL) 
+		{
+			// 右スティックの値を取得
+			float stickX = pStick->Gamepad.sThumbRX;
+			float stickY = pStick->Gamepad.sThumbRY;
+
+			// デッドゾーン処理
+			const float DEADZONE = 10922.0f;
+			if (fabsf(stickX) < DEADZONE)
+			{
+				stickX = 0.0f;
+			}
+			if (fabsf(stickY) < DEADZONE)
+			{
+				stickY = 0.0f;
+			}
+
+			// 正規化
+			stickX /= 32768.0f;
+			stickY /= 32768.0f;
+
+			// カメラ回転の更新
+			RotateCameraWithGamepad(stickX, stickY);
+		}
 		if (GetMouseState(&mouseState))
 		{
 			// 前フレームのカーソル位置を記録する静的変数

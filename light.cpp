@@ -86,10 +86,12 @@ int AddLight(D3DLIGHTTYPE type, D3DXCOLOR diffuse, D3DXVECTOR3 direction, D3DXVE
     // ライトの種類ごとの設定
     if (type == D3DLIGHT_POINT)
     {
-        newLight->light.Attenuation0 = 0.1f;    // 減衰なしで光を強くする
-        newLight->light.Attenuation1 = 0.2f;
+        newLight->light.Attenuation0 = 0.0f;
+        newLight->light.Attenuation1 = 0.02f;
         newLight->light.Attenuation2 = 0.0f;
-        newLight->light.Range = 100.0f;         // 光の届く範囲
+        newLight->light.Range = 105.0f;
+
+        // ポイントライトは方向を持たないから Direction は設定しない
     }
     else if (type == D3DLIGHT_SPOT)
     {
@@ -217,12 +219,21 @@ void UpdateLightBlinking(float deltaTime)
     {
         g_bLightOn = !g_bLightOn; // フラグを反転
 
-        pDevice->LightEnable(g_BlinkingLightIndex, g_bLightOn); // ライトのON/OFFを切り替え
+        pDevice->SetLight(g_BlinkingLightIndex, &g_Lights[g_BlinkingLightIndex].light);
+        pDevice->LightEnable(g_BlinkingLightIndex, g_bLightOn);
 
         g_LightTimer = 0.0f; // タイマーをリセット
 
-        // 次の点滅時間をランダムに設定（0.2〜2秒）
-        g_NextBlinkTime = (rand() % 1800 + 200) / 1000.0f; // 0.2〜2.0秒
+        // ONの時間（点滅時）は短くする
+        if (g_bLightOn)
+        {
+            g_NextBlinkTime = (rand() % 950 + 100) / 1000.0f; // 0.05〜0.2秒
+        }
+        // OFFの時間（消灯時）は長めにする
+        else
+        {
+            g_NextBlinkTime = (rand() % 900 + 300) / 1000.0f; // 0.3〜1.0秒
+        }
     }
 }
 //=============================
@@ -259,7 +270,6 @@ void AddLightPlayer(D3DLIGHTTYPE type, D3DXCOLOR diffuse)
 
     // ライトを追加
     AddLight(type, diffuse, playerDir, lightPos);
-
 }
 //=============================
 // ポイントライトの設定処理
@@ -270,7 +280,7 @@ void AddPointlightToBlock(void)
 
     if (!GetBlockPosition(&boardPosition))
     {
-        return; // チュートリアルボードが見つからなければ何もしない
+        return; // タイトルボードが見つからなければ何もしない
     }
 
     // ポイントライトの向きを設定
@@ -280,17 +290,19 @@ void AddPointlightToBlock(void)
     D3DXCOLOR lightColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
     // ポイントライトの位置（ボードの上に配置）
-    D3DXVECTOR3 lightPosition = boardPosition + D3DXVECTOR3(-50.0f, 100.0f, 0.0f);
+    D3DXVECTOR3 lightPosition = boardPosition + D3DXVECTOR3(-80.0f, 80.0f, 0.0f);
 
     // AddLight の戻り値を g_BlinkingLightIndex に設定
-    int newLightIndex = AddLight(D3DLIGHT_POINT, lightColor, lightPosition,lightPosition);
+    int newLightIndex = AddLight(D3DLIGHT_POINT, lightColor, D3DXVECTOR3(0, -1, 0), lightPosition);
 
-    // 新しいライトが追加されたか確認
     if (newLightIndex != -1)
     {
         g_BlinkingLightIndex = newLightIndex;
-    }
 
-    // 最初の点滅時間をランダムに設定
-    g_NextBlinkTime = (rand() % 2000) / 1000.0f; // 0.0〜2.0秒の間でランダム
+        g_NextBlinkTime = (rand() % 2000) / 1000.0f; // 0.0〜2.0秒の間でランダム
+    }
+    else
+    {
+        g_BlinkingLightIndex = -1; // 追加に失敗した場合、無効なインデックスにする
+    }
 }

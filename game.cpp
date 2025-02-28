@@ -381,8 +381,8 @@ void UpdateGame(void)
 	if (/*g_Game.bMini == false &&*/ g_Game.bMap == false && (KeyboardTrigger(DIK_TAB) == true || JoyPadTrigger(JOYKEY_START) == true))
 	{
 		g_bPause = g_bPause ? false : true;
-
-		 PlaySound(SOUND_LABEL_MENUOPEN); // ポーズ音の再生
+		SetDraw(false);
+		PlaySound(SOUND_LABEL_MENUOPEN); // ポーズ音の再生
 	}
 
 	if (g_bPause == true)

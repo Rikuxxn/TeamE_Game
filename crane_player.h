@@ -46,6 +46,7 @@ typedef struct
 	bool bLanding;			// 着地しているか
 	bool bGetItem;			// アイテム取得
 	bool bFall;				// アイテムが落ちているか
+	bool bMoveSound;		// 移動音を鳴らす
 }CranePlayer;
 
 //プロト

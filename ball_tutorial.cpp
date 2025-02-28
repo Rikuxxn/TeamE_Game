@@ -175,7 +175,6 @@ void DrawBallTutorial(void)
 	g_pVtxBuffBallTutorial2->Unlock();
 
 
-
 	// 頂点バッファをデータストリーム
 	pDevice->SetStreamSource(0, g_pVtxBuffBallTutorial, 0, sizeof(VERTEX_2D));
 	// 頂点フォーマットの設定

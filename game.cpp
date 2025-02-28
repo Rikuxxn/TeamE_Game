@@ -416,11 +416,11 @@ void UpdateGame(void)
 
 
 		// ミニゲーム（クレーン）のトリガー
-		if (KeyboardTrigger(DIK_E) == true &&
+		if (KeyboardTrigger(DIK_E) == true /*&&
 			pCraneState != CRANEGAMESTATE_END &&
 			pFlag->bCatcher == true &&
 			g_Game.bMap == false &&
-			pFlag->bFuseCmp == true)
+			pFlag->bFuseCmp == true*/)
 		{
 			g_Game.bDraw2 = g_Game.bDraw2 ? false : true;
 			g_Game.bMini = g_Game.bMini ? false : true;

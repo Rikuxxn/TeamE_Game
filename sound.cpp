@@ -56,9 +56,10 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/SE/ballcatch.wav", 0},		// ボールを掴む
 	{"data/SE/ballget.wav", 0},			// ボールを手に入れる
 	{"data/SE/ballclear.wav", 0},		// ボールプールクリア
-	{"data/SE/ClaneDown.wav", 0},		// クレーンを下げる
-	{"data/SE/ClaneUP.wav", 0},			// クレーンを上げる
-	{"data/SE/Claneget.wav", 0},		// 景品ゲット
+	{"data/SE/Crane_move.wav", -1},		// クレーンの移動
+	{"data/SE/Crane_Down.wav", 0},		// クレーンを下げる
+	{"data/SE/Crane_UP.wav", 0},		// クレーンを上げる
+	{"data/SE/Crane_get.wav", 0},		// 景品ゲット
 	{"data/SE/stshot.wav", 0},			// シューティング射撃
 	{"data/SE/sthit.wav", 0},			// ヒット音
 	{"data/SE/stdead.wav", 0},			// 撃破音
@@ -75,7 +76,7 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/SE/menu.wav", 0},			// メニューオープン
 	{"data/SE/select.wav", 0},			// 選択
 	{"data/SE/ok.wav", 0},				// 決定
-	{"data/SE/resultrank2.wav", 0},		// リザルトのランク表示
+	{"data/SE/resultrank4.wav", 0},		// リザルトのランク表示
 	{"data/SE/gamestart.wav", 0},		// ゲームスタート
 	{"data/SE/clear.wav", 0},			// ミニゲームクリア
 	{"data/SE/footstep_enemy.wav", 0},	// 敵の足音SE

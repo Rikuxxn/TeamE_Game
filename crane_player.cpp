@@ -37,6 +37,7 @@ void InitCranePlayer(void)
 	g_player.pos = D3DXVECTOR3(CLANEFIELD_LEFT + 75.0f, 70.0f, 0.0f);	// 位置を初期化する SCREEN_HEIGHT-HEIGHT
 	g_player.move = D3DXVECTOR3(0.0f,0.0f,0.0f);						// 移動量を初期化する
 	g_player.rot = D3DXVECTOR3(0.0f,0.0f,0.0f);							// 向きを初期化する、今回はZ軸（3番目）
+	g_player.pBlock = NULL;
 	g_player.nCntAnimState = 0;
 	g_player.bUse = true;
 	g_player.bMove = true;
@@ -45,7 +46,7 @@ void InitCranePlayer(void)
 	g_player.bUpSound = false;
 	g_player.bLanding = false;
 	g_player.bGetItem = false;
-	g_player.pBlock = NULL;
+	g_player.bMoveSound = false;
 
 	// 対角線の長さを算出する
 	g_player.Length = sqrtf(50.0f * 50.0f + 100.0f * 100.0f) / 2.0f;
@@ -96,12 +97,6 @@ void InitCranePlayer(void)
 	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 
-	////テクスチャ座標の設定
-	//pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)
-	//pVtx[1].tex = D3DXVECTOR2(0.25f, 0.0f);//(u,v)
-	//pVtx[2].tex = D3DXVECTOR2(0.0f, 0.5f);//(u,v)
-	//pVtx[3].tex = D3DXVECTOR2(0.25f, 0.5f);//(u,v)
-
 	// テクスチャ座標の設定
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);//(u,v)
 	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
@@ -139,8 +134,7 @@ void UpdateCranePlayer(void)
 	{
 		if (g_player.bMove == true &&
 			(GetKeyboardPress(DIK_D) == true || GetJoypadPress(JOYKEY_RIGHT) == true))
-		{
-			//g_nCounterAnimPlayer++;//カウンターを加算
+		{// Dキーが押されている
 			// 移動量を更新（増加）
 			if (g_player.move.x <= MAX_SPEED_R)
 			{ 
@@ -150,6 +144,18 @@ void UpdateCranePlayer(void)
 			{
 				g_player.move.x = MAX_SPEED_R;
 			}
+
+			// 移動音の再生
+			if (g_player.bMoveSound == false)
+			{
+				PlaySound(SOUND_LABEL_CRANEMOVE);
+				g_player.bMoveSound = true;
+			}
+		}
+		else if (KeyboardRelease(DIK_D) == true)
+		{// Dキーが押されていない
+			StopSound(SOUND_LABEL_CRANEMOVE);
+			g_player.bMoveSound = false;
 		}
 
 		if (g_player.bMove == true &&
@@ -176,8 +182,13 @@ void UpdateCranePlayer(void)
 
 	if (g_player.bLeft == true &&
 		g_player.bMove == false)
-	{
+	{// 左に戻る
 		StopSound(SOUND_LABEL_CRANEUP);
+		if (g_player.bMoveSound == false)
+		{// 移動音の再生
+			PlaySound(SOUND_LABEL_CRANEMOVE);
+			g_player.bMoveSound = true;
+		}
 		g_player.move.y = 0.0f;
 		g_player.move.x = MAX_SPEED_L;
 	}
@@ -215,12 +226,14 @@ void UpdateCranePlayer(void)
 	}
 	if (g_player.pos.x <= CLANEFIELD_LEFT + 75.0f + WIDTH)// 左
 	{
+		StopSound(SOUND_LABEL_CRANEMOVE);
 		g_player.pos.x = CLANEFIELD_LEFT + 75.0f + WIDTH;
 		g_player.bMove = true;
 		g_player.bLeft = false;
 		g_player.bFall = true;
 		g_player.bUpSound = false;
 		g_player.bLanding = false;
+		g_player.bMoveSound = false;
 		g_player.move.x = 0;
 	}
 
@@ -281,95 +294,6 @@ void UpdateCranePlayer(void)
 
 	// 頂点バッファをアンロックする
 	g_pVtxBuffCranePlayer->Unlock();
-
-	////テクスチャ座標の更新0.125
-	//if (g_player.bRightMove == true && g_player.bJamp1st == false)
-	//{//右向き
-	//	//テクスチャ座標の設定
-	//	pVtx[0].tex = D3DXVECTOR2(0.5f, 0.0f);//(u,v)
-	//	pVtx[1].tex = D3DXVECTOR2(0.5f + 0.25f, 0.0f);//(u,v)
-	//	pVtx[2].tex = D3DXVECTOR2(0.5f, 0.5f);//(u,v)
-	//	pVtx[3].tex = D3DXVECTOR2(0.5f + 0.25f, 0.5f);//(u,v)
-	//}
-	//else if (g_player.bRightMove == false && g_player.bJamp1st == false)
-	//{//左向き
-	//	//テクスチャ座標の設定
-	//	pVtx[0].tex = D3DXVECTOR2(0.5f, 0.5f);//(u,v)
-	//	pVtx[1].tex = D3DXVECTOR2(0.5f + 0.25f, 0.5f);
-	//	pVtx[2].tex = D3DXVECTOR2(0.5f, 1.0f);
-	//	pVtx[3].tex = D3DXVECTOR2(0.5f + 0.25f, 1.0f);
-	//}
-
-	//if (g_player.bRightMove == true && g_player.bJamp1st == false && KeyboardRepeat(DIK_LSHIFT) == true || g_player.bRightMove == true && g_player.bJamp1st == false && GetJoypadPress(JOYKEY_LB) == true)
-	//{//右向き
-	//	//テクスチャ座標の設定
-	//	pVtx[0].tex = D3DXVECTOR2(0.25f, 0.0f);//(u,v)
-	//	pVtx[1].tex = D3DXVECTOR2(0.25f + 0.25f, 0.0f);
-	//	pVtx[2].tex = D3DXVECTOR2(0.25f, 0.5f);
-	//	pVtx[3].tex = D3DXVECTOR2(0.25f + 0.25f, 0.5f);
-	//}
-	//else if (g_player.bRightMove == false && g_player.bJamp1st == false && KeyboardRepeat(DIK_LSHIFT) == true || g_player.bRightMove == false && g_player.bJamp1st == false && GetJoypadPress(JOYKEY_LB) == true)
-	//{//左向き
-	//	//テクスチャ座標の設定
-	//	pVtx[0].tex = D3DXVECTOR2(0.25f, 0.5f);//(u,v)
-	//	pVtx[1].tex = D3DXVECTOR2(0.25f + 0.25f, 0.5f);
-	//	pVtx[2].tex = D3DXVECTOR2(0.25f, 1.0f);
-	//	pVtx[3].tex = D3DXVECTOR2(0.25f + 0.25f, 1.0f);
-	//}
-
-	//if (g_player.bStop == true && g_player.bRightMove == true)//ストップ
-	//{//右向き
-	//	//テクスチャ座標の設定
-	//	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	//	pVtx[1].tex = D3DXVECTOR2(0.25f, 0.0f);
-	//	pVtx[2].tex = D3DXVECTOR2(0.0f, 0.5f);
-	//	pVtx[3].tex = D3DXVECTOR2(0.25f, 0.5f);
-	//}
-	//else if (g_player.bStop == true && g_player.bRightMove == false)
-	//{//左向き
-	//	//テクスチャ座標の設定
-	//	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.5f);
-	//	pVtx[1].tex = D3DXVECTOR2(0.25f, 0.5f);
-	//	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	//	pVtx[3].tex = D3DXVECTOR2(0.25f, 1.0f);
-	//}
-
-	//if (g_player.bStop == true && g_player.bRightMove == true && KeyboardRepeat(DIK_LSHIFT) == true || g_player.bRightMove == true && g_player.bJamp1st == false && GetJoypadPress(JOYKEY_LB) == true)//ストップ
-	//{//右向き
-	//	//テクスチャ座標の設定
-	//	pVtx[0].tex = D3DXVECTOR2(0.25f, 0.0f);
-	//	pVtx[1].tex = D3DXVECTOR2(0.5f, 0.0f);
-	//	pVtx[2].tex = D3DXVECTOR2(0.25f, 0.5f);
-	//	pVtx[3].tex = D3DXVECTOR2(0.5f, 0.5f);
-	//}
-	//else if (g_player.bStop == true && g_player.bRightMove == false && KeyboardRepeat(DIK_LSHIFT) == true || g_player.bRightMove == false && g_player.bJamp1st == false && GetJoypadPress(JOYKEY_LB) == true)
-	//{//左向き
-	//	//テクスチャ座標の設定
-	//	pVtx[0].tex = D3DXVECTOR2(0.25f, 0.5f);
-	//	pVtx[1].tex = D3DXVECTOR2(0.5f, 0.5f);
-	//	pVtx[2].tex = D3DXVECTOR2(0.25f, 1.0f);
-	//	pVtx[3].tex = D3DXVECTOR2(0.5f, 1.0f);
-	//}
-
-	//if (g_player.bJamp1st == true)//ジャンプ中
-	//{
-	//	if (g_player.bRightMove == true && g_player.bJamp1st == true)
-	//	{//右向き
-	//		//テクスチャ座標の設定
-	//		pVtx[0].tex = D3DXVECTOR2(0.75f, 0.0f);
-	//		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	//		pVtx[2].tex = D3DXVECTOR2(0.75f, 0.5f);
-	//		pVtx[3].tex = D3DXVECTOR2(1.0f, 0.5f);
-	//	}
-	//	else if (g_player.bRightMove == false && g_player.bJamp1st == true)
-	//	{//左向き
-	//		//テクスチャ座標の設定
-	//		pVtx[0].tex = D3DXVECTOR2(0.75f, 0.5f);
-	//		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.5f);
-	//		pVtx[2].tex = D3DXVECTOR2(0.75f, 1.0f);
-	//		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-	//	}
-	//}
 }
 // プレイヤーの描画処理
 void DrawCranePlayer(void)

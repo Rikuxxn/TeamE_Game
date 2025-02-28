@@ -10,6 +10,7 @@
 #include "block.h"
 #include "enemy.h"
 #include "sound.h"
+#include "game.h"
 
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureTimeMinute = NULL;			// テクスチャへのポインタ
@@ -246,7 +247,7 @@ void UpdateTime(void)
 {
 	Block* pBlock = GetBlock();
 	Flags* pFlag = GetFlag();
-
+	GAME* pGame = GetGame();
 	bool bEnd = GetEnd();
 
 	VERTEX_2D* pVtx;
@@ -255,7 +256,7 @@ void UpdateTime(void)
 
 	nCntTimeSecond++;
 
-	if (pFlag->bExit == false && bEnd == false)
+	if (pFlag->bExit == false && bEnd == false && pGame->bMap == false)
 	{
 		if (nCntTimeSecond >= 60)			// 1秒ごとに処理
 		{

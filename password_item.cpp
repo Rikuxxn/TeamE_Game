@@ -146,6 +146,7 @@ void UninitPasswordItem(void)
 void UpdatePasswordItem(void)
 {
 	VERTEX_2D* pVtx = 0;
+	PASSWORDGAMESTATE pState = GetPasswordGameState();
 	g_bJudgment = GetJudge();
 
 	// マウスカーソルの位置を取得
@@ -185,7 +186,8 @@ void UpdatePasswordItem(void)
 			if (mouseX >= itemLeft && mouseX <= itemRight &&
 				mouseY >= itemTop && mouseY <= itemBottom)
 			{
-				if (GetMouseButtonTrigger(0) == true)
+				if (GetMouseButtonTrigger(0) == true &&
+					pState != PASSWORDGAMESTATE_END)
 				{// ボタンを押した
 					PlaySound(SOUND_LABEL_PASSPUSH);
 					switch (g_item[nCntItem].type)

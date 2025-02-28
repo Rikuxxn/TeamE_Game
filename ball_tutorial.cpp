@@ -123,11 +123,11 @@ void UpdateBallTutorial(void)
 	if (g_nTutoCnt <= 60)
 	{
 		g_nTutoCnt++;
-		if (g_bTutoSound == false)
-		{
-			PlaySound(SOUND_LABEL_BALLTUTO);
-			g_bTutoSound = true;
-		}
+		//if (g_bTutoSound == false)
+		//{
+		//	//PlaySound(SOUND_LABEL_BALLTUTO);
+		//	g_bTutoSound = true;
+		//}
 	}
 	else if (g_nTutoCnt >= 60)
 	{

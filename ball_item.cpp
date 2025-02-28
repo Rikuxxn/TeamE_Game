@@ -146,6 +146,9 @@ void UpdateBallItem(void)
 	float mouseX = cursorPos.x * scaleX;
 	float mouseY = cursorPos.y * scaleY;
 
+	// ゲームパッドでマウスカーソルを動かす
+	UpdateCursorWithGamepad();
+
 	// 頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffBallItem->Lock(0, 0, (void**)&pVtx, 0);
 
@@ -161,7 +164,7 @@ void UpdateBallItem(void)
 			if (mouseX >= itemLeft && mouseX <= itemRight &&
 				mouseY >= itemTop && mouseY <= itemBottom)
 			{
-				if (!bHoldingItem && GetMouseButtonPress(0))
+				if (!bHoldingItem && (GetMouseButtonPress(0) || GetJoypadPress(JOYKEY_B) == true))
 				{
 					if (g_ballitem[nCntItem].bGet == false)
 					{
@@ -175,7 +178,7 @@ void UpdateBallItem(void)
 					g_ballitem[nCntItem].dragOffset.x = g_ballitem[nCntItem].pos.x - mouseX;
 					g_ballitem[nCntItem].dragOffset.y = g_ballitem[nCntItem].pos.y - mouseY;
 				}				
-				if (GetMouseButtonRelease(0))
+				if (GetMouseButtonRelease(0) || JoyPadRelease(JOYKEY_B) == true)
 				{
 					g_ballitem[nCntItem].bcatch = false;
 					g_ballitem[nCntItem].bGet = false;

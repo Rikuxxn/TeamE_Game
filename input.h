@@ -62,6 +62,7 @@ bool KeyboardRepeat(int nKey);
 HRESULT InitMouse(HINSTANCE hInstance, HWND hWnd);
 void UninitMouse(void);
 void UpdateMouse(void);
+void UpdateCursorWithGamepad(void);
 bool GetMouseState(DIMOUSESTATE* mouseState);
 LPDIRECTINPUTDEVICE8 GetMouseDevice(void);
 

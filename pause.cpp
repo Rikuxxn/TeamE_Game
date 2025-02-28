@@ -220,6 +220,9 @@ void UpdatePause(void)
 	float mouseX = cursorPos.x * scaleX;
 	float mouseY = cursorPos.y * scaleY;
 
+	// ゲームパッドでマウスカーソルを動かす
+	UpdateCursorWithGamepad();
+
 	// マウスカーソルが当たっている項目を探す
 	int selectedByMouse = -1; // -1は未選択
 
@@ -318,7 +321,7 @@ void UpdatePause(void)
 		g_pVtxBuffPause->Unlock();
 
 		// 範囲内クリックの場合のみ処理を実行
-		if (g_fade == FADE_NONE && GetMouseButtonTrigger(0)) 
+		if (g_fade == FADE_NONE && (GetMouseButtonTrigger(0) || JoyPadTrigger(JOYKEY_A) == true)) 
 		{
 			if (selectedByMouse != -1) 
 			{

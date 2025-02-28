@@ -3,6 +3,7 @@
 // Author:Yoshida Atsushi
 //---------------------------------------------------------
 #include "ball_tutorial.h"
+#include "sound.h"
 
 // グローバル
 LPDIRECT3DTEXTURE9 g_apTextureBallTutorial = {};		// テクスチャへのポインタ
@@ -11,6 +12,8 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBallTutorial2 = NULL;
 int g_nTutoCnt = 0;										// チュートリアル表示カウンター
 float g_fAlpha1, g_fAlpha2;								// アルファ値
 bool g_bStart;											// ゲーム開始フラグ
+bool g_bTutoSound;										// 開始時の音声用
+bool g_bFadeSound;										// フェード時の音声用
 
 // チュートリアルの初期化処理
 void InitBallTutorial(void)
@@ -27,6 +30,9 @@ void InitBallTutorial(void)
 	g_fAlpha1 = 255.0f;
 	g_fAlpha2 = 230.0f;
 	g_bStart = false;
+	g_bTutoSound = false;
+	g_bFadeSound = false;
+
 	// 頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * 3,
 		D3DUSAGE_WRITEONLY,
@@ -117,6 +123,11 @@ void UpdateBallTutorial(void)
 	if (g_nTutoCnt <= 60)
 	{
 		g_nTutoCnt++;
+		if (g_bTutoSound == false)
+		{
+			PlaySound(SOUND_LABEL_BALLTUTO);
+			g_bTutoSound = true;
+		}
 	}
 	else if (g_nTutoCnt >= 60)
 	{
@@ -139,6 +150,11 @@ void UpdateBallTutorial(void)
 				g_fAlpha2 = 0.0f;
 			}
 
+		}
+		if (g_bFadeSound == false)
+		{
+			PlaySound(SOUND_LABEL_BALLFADE);
+			g_bFadeSound = true;
 		}
 	}
 	if (g_fAlpha1 <= 0.0f && g_fAlpha2 <= 0.0f)

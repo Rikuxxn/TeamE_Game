@@ -105,7 +105,7 @@ HRESULT InitSound(HWND hWnd)
 	}
 	
 	// マスターボイスの生成
-	hr = g_pXAudio2->CreateMasteringVoice(&g_pMasteringVoice, 4, 44100, 0, NULL, NULL);
+	hr = g_pXAudio2->CreateMasteringVoice(&g_pMasteringVoice, 4, 48000, 0, NULL, NULL);
 	if(FAILED(hr))
 	{
 		MessageBox(hWnd, "マスターボイスの生成に失敗！", "警告！", MB_ICONWARNING);
@@ -434,12 +434,12 @@ void CalculateCustomPanning(SOUND_LABEL label, FLOAT32* matrix)
 	FLOAT32 panCurveFB = sinf(panFactorFB * D3DX_PI * 0.5f); // -1.0 ～ 1.0 の範囲
 
 	// チャンネルごとの音量計算
-	FLOAT32 frontLeft = (0.5f - max(0.0f, panCurveLR)) * (1.0f + panCurveFB) * 0.5f * volumeScale;
-	FLOAT32 frontRight = (0.5f - max(0.0f, -panCurveLR)) * (1.0f + panCurveFB) * 0.5f * volumeScale;
-	FLOAT32 rearLeft = (0.5f - max(0.0f, panCurveLR)) * (1.0f - panCurveFB) * 0.5f * volumeScale;
-	FLOAT32 rearRight = (0.5f - max(0.0f, -panCurveLR)) * (1.0f - panCurveFB) * 0.5f * volumeScale;
+	FLOAT32 frontLeft = (0.8f - max(0.0f, panCurveLR)) * (1.0f + panCurveFB) * 0.5f * volumeScale;
+	FLOAT32 frontRight = (0.8f - max(0.0f, -panCurveLR)) * (1.0f + panCurveFB) * 0.5f * volumeScale;
+	FLOAT32 rearLeft = (0.8f - max(0.0f, panCurveLR)) * (1.0f - panCurveFB) * 0.5f * volumeScale;
+	FLOAT32 rearRight = (0.8f - max(0.0f, -panCurveLR)) * (1.0f - panCurveFB) * 0.5f * volumeScale;
 
-	// 音量マトリクスにセット（4ch: FL, FR, RL, RR）
+	// 音量マトリックスにセット（4ch: FL, FR, RL, RR）
 	matrix[0] = frontLeft;
 	matrix[1] = frontRight;
 	matrix[2] = rearLeft;

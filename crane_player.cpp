@@ -160,7 +160,7 @@ void UpdateCranePlayer(void)
 
 		if (g_player.bMove == true &&
 			g_player.pos.x > CLANEFIELD_LEFT + 75.0f + WIDTH &&
-			(GetMouseButtonTrigger(0) /*|| JoypadTrigger(JOYKEY_A) == true*/))
+			(GetMouseButtonTrigger(0) || JoyPadTrigger(JOYKEY_X) == true))
 		{// ƒNƒŒ[ƒ“‚ğ‰º‚·
 			g_player.move.y = DOWN;
 			g_player.bMove = false;

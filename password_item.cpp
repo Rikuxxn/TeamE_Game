@@ -173,20 +173,24 @@ void UpdatePasswordItem(void)
 	float mouseX = cursorPos.x * scaleX;
 	float mouseY = cursorPos.y * scaleY;
 
+	// ゲームパッドでマウスカーソルを動かす
+	UpdateCursorWithGamepad();
+
 	for (int nCntItem = 0; nCntItem < MAX_ITEM; nCntItem++)
 	{
 		if (g_item[nCntItem].bUse == true)
 		{// 使用しているアイテムを全てチェックする
 
-			float itemLeft = g_item[nCntItem].pos.x - g_item[nCntItem].fWidth / 1.5f;
-			float itemRight = g_item[nCntItem].pos.x + g_item[nCntItem].fWidth / 1.5f;
-			float itemTop = g_item[nCntItem].pos.y - g_item[nCntItem].fHeight / 1.5f;
-			float itemBottom = g_item[nCntItem].pos.y + g_item[nCntItem].fHeight / 1.5f;
+			float scaleFactor = 1.5f;  // 1.5倍の範囲にする
+			float itemLeft = g_item[nCntItem].pos.x - (g_item[nCntItem].fWidth * scaleFactor) / 2.0f;
+			float itemRight = g_item[nCntItem].pos.x + (g_item[nCntItem].fWidth * scaleFactor) / 2.0f;
+			float itemTop = g_item[nCntItem].pos.y - (g_item[nCntItem].fHeight * scaleFactor) / 2.0f;
+			float itemBottom = g_item[nCntItem].pos.y + (g_item[nCntItem].fHeight * scaleFactor) / 2.0f;
 
 			if (mouseX >= itemLeft && mouseX <= itemRight &&
 				mouseY >= itemTop && mouseY <= itemBottom)
 			{
-				if (GetMouseButtonTrigger(0) == true &&
+				if ((GetMouseButtonTrigger(0) == true || JoyPadTrigger(JOYKEY_X) == true) &&
 					pState != PASSWORDGAMESTATE_END)
 				{// ボタンを押した
 					PlaySound(SOUND_LABEL_PASSPUSH);

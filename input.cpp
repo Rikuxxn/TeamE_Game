@@ -8,7 +8,7 @@
 
 //マクロ定義
 #define NUM_KEY_MAX (256)						// キーの最大数
-#define CURSOR_SPEED (0.8f)  // カーソル移動速度
+#define CURSOR_SPEED (0.7f)						// カーソル移動速度
 
 //グローバル変数
 XINPUT_STATE g_joyKeyState;						// ジョイパッドのプレス情報
@@ -207,82 +207,76 @@ void UpdateJoypad(void)
 	}
 }
 //=====================================================
-// ジョイパッドのプレス情報を取得
+// ジョイパッドのプレス
 //=====================================================
 bool GetJoypadPress(JOYKEY Key)
 {
-
 	return (g_joyKeyState.Gamepad.wButtons & (0x01 << Key)) ? true : false;
-
 }
 bool JoyPadTrigger(JOYKEY Key)
 {
-
 	return (g_joyKeyStateTrigger.Gamepad.wButtons & (0x01 << Key)) ? true : false;
-
 }
 bool JoyPadRelease(JOYKEY Key)
 {
-
 	return (g_joyKeyStateRelease.Gamepad.wButtons & (0x01 << Key)) ? true : false;
-
 }
-//====================================================
-// L2,R2の処理
-//====================================================
-bool GetJoyTrigger(JOYKEY key)
-{
-	if (key == JOYKEY_LT)
-	{
-		return (g_joyKeyState.Gamepad.bLeftTrigger) ? true : false;
-	}
-	else if (key == JOYKEY_RT)
-	{
-		return (g_joyKeyState.Gamepad.bRightTrigger) ? true : false;
-	}
-}
-bool GeyJoyTriggerTrigger(JOYKEY key)//押したとき
-{
-	bool JoyStick = false;
-
-	if (key == JOYKEY_LT)
-	{
-		if ((g_joyKeyState.Gamepad.bLeftTrigger > 0) && !(g_aOldJoyKeyState.Gamepad.bLeftTrigger > 0))
-		{
-			JoyStick = true;
-		}
-	}
-	else if (key == JOYKEY_RT)
-	{
-		if ((g_joyKeyState.Gamepad.bRightTrigger > 0) && !(g_aOldJoyKeyState.Gamepad.bRightTrigger > 0))
-		{
-			JoyStick = true;
-		}
-
-	}
-	return JoyStick;
-}
-bool GetJoyTriggerRelease(JOYKEY key)
-{
-	bool JoyStick = false;
-	if (key == JOYKEY_LT)
-	{
-		if ((g_aOldJoyKeyState.Gamepad.bLeftTrigger > 0) && !(g_joyKeyState.Gamepad.bLeftTrigger > 0))
-		{
-			JoyStick = true;
-		}
-	}
-	else if (key == JOYKEY_RT)
-	{
-		if ((g_aOldJoyKeyState.Gamepad.bRightTrigger > 0) && !(g_joyKeyState.Gamepad.bRightTrigger > 0))
-		{
-			JoyStick = true;
-		}
-
-	}
-	return JoyStick;
-
-}
+////====================================================
+//// L2,R2の処理
+////====================================================
+//bool GetJoyTrigger(JOYKEY key)
+//{
+//	if (key == JOYKEY_LT)
+//	{
+//		return (g_joyKeyState.Gamepad.bLeftTrigger) ? true : false;
+//	}
+//	else if (key == JOYKEY_RT)
+//	{
+//		return (g_joyKeyState.Gamepad.bRightTrigger) ? true : false;
+//	}
+//}
+//bool GeyJoyTriggerTrigger(JOYKEY key)//押したとき
+//{
+//	bool JoyStick = false;
+//
+//	if (key == JOYKEY_LT)
+//	{
+//		if ((g_joyKeyState.Gamepad.bLeftTrigger > 0) && !(g_aOldJoyKeyState.Gamepad.bLeftTrigger > 0))
+//		{
+//			JoyStick = true;
+//		}
+//	}
+//	else if (key == JOYKEY_RT)
+//	{
+//		if ((g_joyKeyState.Gamepad.bRightTrigger > 0) && !(g_aOldJoyKeyState.Gamepad.bRightTrigger > 0))
+//		{
+//			JoyStick = true;
+//		}
+//
+//	}
+//	return JoyStick;
+//}
+//bool GetJoyTriggerRelease(JOYKEY key)
+//{
+//	bool JoyStick = false;
+//	if (key == JOYKEY_LT)
+//	{
+//		if ((g_aOldJoyKeyState.Gamepad.bLeftTrigger > 0) && !(g_joyKeyState.Gamepad.bLeftTrigger > 0))
+//		{
+//			JoyStick = true;
+//		}
+//	}
+//	else if (key == JOYKEY_RT)
+//	{
+//		if ((g_aOldJoyKeyState.Gamepad.bRightTrigger > 0) && !(g_joyKeyState.Gamepad.bRightTrigger > 0))
+//		{
+//			JoyStick = true;
+//		}
+//
+//	}
+//	return JoyStick;
+//
+//}
 //====================================================
 // スティック処理
 //====================================================
@@ -506,9 +500,6 @@ void UpdateCursorWithGamepad(void)
 	// 左スティックの入力値を取得 (-1000 ～ 1000 の範囲)
 	float moveX = pStick->Gamepad.sThumbLX / 1000.0f;
 	float moveY = pStick->Gamepad.sThumbLY / 1000.0f;
-
-	//// デッドゾーン処理
-	//const float DEADZONE = 10922.0f;
 
 	// 一定の閾値を超えた場合にカーソルを移動
 	if (fabs(moveX) > 0.1f || fabs(moveY) > 0.1f)

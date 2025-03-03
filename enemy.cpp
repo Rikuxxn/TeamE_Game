@@ -96,8 +96,8 @@ bool SoundRange = false;			// 前フレームで範囲内だったか
 float soundTimer = 0.0f;			// 心音のタイマー
 const float minInterval = 0.67f;	// 心音の最速間隔（プレイヤーが超接近時）
 const float maxInterval = 1.2f;		// 心音の最遅間隔（遠い時）
-const float closeDistance = 320.0f; // 近いと判定する距離（ここに近づくと最速の心音）
-const float farDistance = 700.0f;   // 遠いと判定する距離（ここでは最遅の心音）
+const float closeDistance = 420.0f; // 近いと判定する距離（ここに近づくと最速の心音）
+const float farDistance = 900.0f;   // 遠いと判定する距離（ここでは最遅の心音）
 
 //=============================
 // 敵の初期化処理
@@ -296,7 +296,7 @@ void UpdateEnemy(void)
 
 		D3DXVECTOR3 PlayerRadius(40.0f, 40.0f, 40.0f);				// 捕まる距離
 		D3DXVECTOR3 PlayerInsightRadius(80.0f, 80.0f, 80.0f);		// バレる距離
-		D3DXVECTOR3 SoundRadius1(420.0f, 420.0f, 420.0f);			// 心音の鳴る距離
+		D3DXVECTOR3 SoundRadius1(600.0f, 600.0f, 600.0f);			// 心音の鳴る距離
 
 		float fDistance =
 			(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +

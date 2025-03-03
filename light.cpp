@@ -8,6 +8,7 @@
 #include "light.h"
 #include "player.h"
 #include "block.h"
+#include "camera.h"
 
 #define MAX_LIGHT (10)                  // ライトの最大数
 
@@ -95,7 +96,7 @@ int AddLight(D3DLIGHTTYPE type, D3DXCOLOR diffuse, D3DXVECTOR3 direction, D3DXVE
     }
     else if (type == D3DLIGHT_SPOT)
     {
-        newLight->light.Range = 500.0f;
+        newLight->light.Range = 100.0f;
         newLight->light.Theta = D3DXToRadian(30.0f);
         newLight->light.Phi = D3DXToRadian(45.0f);
         newLight->light.Falloff = 1.0f;
@@ -242,55 +243,85 @@ void UpdateLightBlinking(float deltaTime)
 void AddLightPlayer(D3DLIGHTTYPE type, D3DXCOLOR diffuse)
 {
     LPDIRECT3DDEVICE9 pDevice = GetDevice();
-
     Player* pPlayer = GetPlayer();
+    Camera* pCamera = GetCamera();
+
 
     if (!pPlayer)
     {
         return;
     }
 
-    // プレイヤーの位置と視線方向を取得
-    D3DXVECTOR3 playerPos = pPlayer->pos;  // プレイヤーの現在位置
-    D3DXVECTOR3 playerDir = pPlayer->forward; // プレイヤーの視線方向
+    // プレイヤーの視点位置（目の高さ）を設定
+    D3DXVECTOR3 playerPos = pCamera->posV;
+    playerPos.y += 75.0f; // 身長に合わせて調整
 
-    // プレイヤーの目の高さにライトを設定
-    playerPos.y += 75.0f;
+    // 視線方向を取得
+    D3DXVECTOR3 playerDir = pPlayer->forward;
 
-    // 目線方向がゼロベクトルでないか確認し、正規化
+    // 視線方向がゼロベクトルの場合の対策
     if (D3DXVec3Length(&playerDir) == 0.0f)
     {
-        playerDir = D3DXVECTOR3(0, 0, 1); // デフォルトの視線方向
+        playerDir = D3DXVECTOR3(0, 0, 1); // デフォルトで前方を向く
     }
 
     D3DXVec3Normalize(&playerDir, &playerDir);
 
-    // プレイヤーの視線方向に少し前方にライトを配置
-    D3DXVECTOR3 lightPos = playerPos + (playerDir);
+    // ライトの位置をプレイヤーの視点にセット
+    D3DXVECTOR3 lightPos = playerPos; // 目の位置
 
-    // ライトを追加
-    AddLight(type, diffuse, playerDir, lightPos);
+    // 一人称視点なので、ライトを視線方向に向ける
+    int lightIndex = AddLight(type, diffuse, playerDir, lightPos);
+
+    // スポットライトの場合はさらに角度を設定
+    if (lightIndex != -1 && type == D3DLIGHT_SPOT)
+    {
+        g_Lights[lightIndex].light.Range = 450.0f;  // スポットライトの到達距離
+        g_Lights[lightIndex].light.Theta = D3DXToRadian(20.0f); // コア部分の光の広がり
+        g_Lights[lightIndex].light.Phi = D3DXToRadian(40.0f); // 外側の光の広がり
+        g_Lights[lightIndex].light.Falloff = 1.0f; // フォールオフ（光の減衰率）
+
+        // ライトを更新
+        pDevice->SetLight(lightIndex, &g_Lights[lightIndex].light);
+    }
 }
 //=============================
 // ポイントライトの設定処理
 //=============================
-void AddPointlightToBlock(void)
+void AddPointlightToBlock(BLOCKTYPE nType)
 {
-    D3DXVECTOR3 boardPosition;
+    D3DXVECTOR3 blockPosition;
 
-    if (!GetBlockPosition(&boardPosition))
+    if (!GetBlockPosition(&blockPosition))
     {
-        return; // タイトルボードが見つからなければ何もしない
+        return; // タイトルボード または 非常口 が見つからなければ何もしない
     }
 
-    // ポイントライトの向きを設定
-    D3DXVECTOR3 lightDirection = D3DXVECTOR3(0, -1, 0);
+    D3DXVECTOR3 lightDirection;
+    D3DXVECTOR3 lightOffset;
+    D3DXCOLOR lightColor;
 
-    // ライトの色を設定
-    D3DXCOLOR lightColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+    // ブロックの種類に応じてライトの設定を変更
+    switch (nType)
+    {
+    case BLOCKTYPE_TITLEBOARD:
+        lightDirection = D3DXVECTOR3(0, -1, 0);  // 真下に向ける
+        lightOffset = D3DXVECTOR3(-80.0f, 80.0f, 0.0f);
+        lightColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+        break;
 
-    // ポイントライトの位置（ボードの上に配置）
-    D3DXVECTOR3 lightPosition = boardPosition + D3DXVECTOR3(-80.0f, 80.0f, 0.0f);
+    case BLOCKTYPE_EXIT_SIGN:
+        lightDirection = D3DXVECTOR3(0, 0, 1);
+        lightOffset = D3DXVECTOR3(0.0f, 30.0f, -50.0f);
+        lightColor = D3DXCOLOR(0.0f, 0.8f, 0.0f, 0.5f);
+        break;
+
+    default:
+        break;
+    }
+
+    // ライトの位置をブロックの位置にオフセットを加えて決定
+    D3DXVECTOR3 lightPosition = blockPosition + lightOffset;
 
     // AddLight の戻り値を g_BlinkingLightIndex に設定
     int newLightIndex = AddLight(D3DLIGHT_POINT, lightColor, D3DXVECTOR3(0, -1, 0), lightPosition);

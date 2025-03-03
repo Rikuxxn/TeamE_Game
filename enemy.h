@@ -12,10 +12,10 @@
 #include "motion.h"
 #include "meshfield.h"
 
-#define MAP_WIDTH (48)   // 2400 / 50 (グリッドの幅)
-#define MAP_HEIGHT (40)  // 2000 / 50 (グリッドの高さ)
-#define GRID_SIZE (50)   // 1セルのサイズ（ピクセル）
-#define MAX_NODES (100) // A* のノード上限
+//#define MAP_WIDTH (48)   // 2400 / 50 (グリッドの幅)
+//#define MAP_HEIGHT (40)  // 2000 / 50 (グリッドの高さ)
+//#define GRID_SIZE (50.0f)   // 1セルのサイズ（ピクセル）
+//#define MAX_NODES (1000) // A* のノード上限
 
 typedef enum 
 {
@@ -57,11 +57,6 @@ void UninitEnemy(void);
 void UpdateEnemy(void);
 void DrawEnemy(void);
 void SetEnemy(D3DXVECTOR3 pos);
-void pixelToGrid(int px, int py, int* gx, int* gy);
-void gridToPixel(int gx, int gy, int* px, int* py);
-float heuristic(int x1, int y1, int x2, int y2);
-Node* find_path(int startX, int startY, int goalX, int goalY);
-
 int GetNearestPatrolPoint(D3DXVECTOR3 currentPos);
 void Patrol(void);
 void Chase(void);

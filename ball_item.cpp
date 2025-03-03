@@ -156,10 +156,11 @@ void UpdateBallItem(void)
 	{
 		if (g_ballitem[nCntItem].bUse)
 		{
-			float itemLeft = g_ballitem[nCntItem].pos.x - g_ballitem[nCntItem].fWidth / 1.5f;
-			float itemRight = g_ballitem[nCntItem].pos.x + g_ballitem[nCntItem].fWidth / 1.5f;
-			float itemTop = g_ballitem[nCntItem].pos.y - g_ballitem[nCntItem].fHeight / 1.5f;
-			float itemBottom = g_ballitem[nCntItem].pos.y + g_ballitem[nCntItem].fHeight / 1.5f;
+			float scaleFactor = 1.5f;  // 1.5倍の範囲にする
+			float itemLeft = g_ballitem[nCntItem].pos.x - (g_ballitem[nCntItem].fWidth * scaleFactor) / 2.0f;
+			float itemRight = g_ballitem[nCntItem].pos.x + (g_ballitem[nCntItem].fWidth * scaleFactor) / 2.0f;
+			float itemTop = g_ballitem[nCntItem].pos.y - (g_ballitem[nCntItem].fHeight * scaleFactor) / 2.0f;
+			float itemBottom = g_ballitem[nCntItem].pos.y + (g_ballitem[nCntItem].fHeight * scaleFactor) / 2.0f;
 
 			if (mouseX >= itemLeft && mouseX <= itemRight &&
 				mouseY >= itemTop && mouseY <= itemBottom)
@@ -177,6 +178,7 @@ void UpdateBallItem(void)
 					// マウスのどこを掴んだかを記録
 					g_ballitem[nCntItem].dragOffset.x = g_ballitem[nCntItem].pos.x - mouseX;
 					g_ballitem[nCntItem].dragOffset.y = g_ballitem[nCntItem].pos.y - mouseY;
+
 				}				
 				if (GetMouseButtonRelease(0) || JoyPadRelease(JOYKEY_B) == true)
 				{
@@ -243,7 +245,9 @@ void UpdateBallItem(void)
 			&& g_ballitem[nCntItem].bUse == true)
 		{// ボールを片づけた
 			PlaySound(SOUND_LABEL_BALLGET);
+			g_ballitem[nCntItem].bcatch = false;
 			g_ballitem[nCntItem].bUse = false;
+			bHoldingItem = false;
 			g_nBallItem--;
 		}
 

@@ -18,6 +18,7 @@
 // マクロ
 #define MAX_MAX (400.0f)	//最大でかい
 #define MAX_MIN (10.0f)		//最小ちいさい
+#define STPlayer_SPEED (0.8f)// 移動スピード
 
 //グローバル
 LPDIRECT3DTEXTURE9 g_pTexturePlayer1 = NULL;	 // テクスチャへのポインタ
@@ -126,30 +127,32 @@ void UpdateShootingPlayer(void)
 {
 	VERTEX_2D* pVtx;// 頂点情報へのポインタ
 	GAME* pGame = GetGame();
+	XINPUT_STATE* pStick = GetJoyStickAngle();
 
 	if (g_player.bUse == true && pGame->bSTClear == false)
 	{
-		//if (GetJoypadPress(JOYKEY_UP) == true)
-		//{//上キー
-		//	g_player.move.x += 0.0f;
-		//	g_player.move.y -= 1.0f;
-		//}
-		//else if (GetJoypadPress(JOYKEY_DOWN) == true)
-		//{//下キー
-		//	g_player.move.x += 0.0f;
-		//	g_player.move.y += 1.0f;
-		//}
-		//else if (GetJoypadPress(JOYKEY_LEFT) == true)
-		//{
-		//	//移動量を更新（増加）
-		//	g_player.move.x -= 1.0f;
-		//	g_player.move.y += 0.0f;
-		//}
-		//else if (GetJoypadPress(JOYKEY_RIGHT) == true)
-		//{
-		//	g_player.move.x += 1.0f;
-		//	g_player.move.y += 0.0f;
-		//}
+		//左スティック移動処理
+		if (GetJoyStick() == true)
+		{
+			float stickX = pStick->Gamepad.sThumbLX;
+			float stickY = pStick->Gamepad.sThumbLY;
+
+			// デッドゾーン外のスケーリング処理
+			float deadzone = 10922.0f;
+			float magnitude = sqrtf(stickX * stickX + stickY * stickY);
+
+			if (magnitude > deadzone)
+			{
+				float adjustedMagnitude = (magnitude - deadzone) / (32768.0f - deadzone); // 0.0～1.0 にスケーリング
+				float normalizedX = (stickX / magnitude) * adjustedMagnitude;
+				float normalizedY = (stickY / magnitude) * adjustedMagnitude;
+
+				// スティック方向に移動
+				g_player.move.x += normalizedX * STPlayer_SPEED;
+				g_player.move.y -= normalizedY * STPlayer_SPEED;
+
+			}
+		}
 
 		if (GetKeyboardPress(DIK_A) == true)
 		{
@@ -223,7 +226,7 @@ void UpdateShootingPlayer(void)
 		switch (g_player.nBulletType)
 		{
 		case 0:
-			if (/*GetKeyboardPress(DIK_SPACE) == true ||*/ GetMouseButtonPress(0)/*|| GetJoypadPress(JOYKEY_A) == true*/)
+			if (/*GetKeyboardPress(DIK_SPACE) == true ||*/ GetMouseButtonPress(0)|| GetJoypadPress(JOYKEY_X) == true)
 			{// SPACE
 				g_player.nBulletCnt++;
 				if (g_player.nBulletCnt >= BULLET_INTERVAL/* && g_player.nBulletMax < BULLETMAX*/)

@@ -8,6 +8,7 @@
 #define _LIGHT_H_//2重インクルード防止のマクロ定義
 
 #include "main.h"
+#include "block.h"
 
 //プロトタイプ宣言
 void InitLight(void);
@@ -17,7 +18,7 @@ void UninitLight(void);
 void UpdateLight(int index, D3DXVECTOR3 newPosition, D3DXVECTOR3 newDirection);
 void UpdateLightBlinking(float deltaTime);
 void AddLightPlayer(D3DLIGHTTYPE type, D3DXCOLOR diffuse);
-void AddPointlightToBlock(void);
+void AddPointlightToBlock(BLOCKTYPE nType);
 
 #endif
 

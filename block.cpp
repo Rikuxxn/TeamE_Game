@@ -455,7 +455,11 @@ void SetBlock(D3DXVECTOR3 pos, D3DXVECTOR3 rot,int nType)
 			// タイトルボードだったら
 			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_TITLEBOARD)
 			{
-				AddPointlightToBlock();
+				AddPointlightToBlock(BLOCKTYPE_TITLEBOARD);
+			}
+			else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_EXIT_SIGN)
+			{
+				AddPointlightToBlock(BLOCKTYPE_EXIT_SIGN);
 			}
 
 			break;
@@ -877,7 +881,8 @@ bool GetBlockPosition(D3DXVECTOR3* outPosition)
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
 		// 対象のブロックの位置を取得する
-		if (g_aBlock[nCntBlock].bUse == true && g_aBlock[nCntBlock].nType == BLOCKTYPE_TITLEBOARD)
+		if (g_aBlock[nCntBlock].bUse == true && 
+			(g_aBlock[nCntBlock].nType == BLOCKTYPE_TITLEBOARD || g_aBlock[nCntBlock].nType == BLOCKTYPE_EXIT_SIGN))
 		{
 			*outPosition = g_aBlock[nCntBlock].pos;
 			return true; // 位置が取得できた

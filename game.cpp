@@ -185,6 +185,11 @@ void InitGame(void)
 		D3DXVECTOR3(0.0f, 260.0f, 0.0f)       // 天井の位置（無視される）
 	);
 
+
+	//// === プレイヤーの目線からライトを出す ===
+	//AddLightPlayer(D3DLIGHT_SPOT, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+
+
 	// 敵
 	SetEnemy(D3DXVECTOR3(1000.0f, 0.0f, 160.0f));
 
@@ -641,7 +646,11 @@ void UpdateGame(void)
 
 
 		////ライトの更新処理
-		//UpdateLight(0, D3DXVECTOR3(0.0f, 5.0f, -400.0f), D3DXVECTOR3(0.0f, -1.0f, 0.0f));
+		//UpdateLight(6, D3DXVECTOR3(pPlayer->pos.x, pPlayer->pos.y, pPlayer->pos.z), D3DXVECTOR3(0.0f, -1.0f, 0.0f));
+
+
+		// ライトの点滅更新処理
+		UpdateLightBlinking(0.016f);
 
 
 		//ブロックの更新処理

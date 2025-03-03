@@ -515,6 +515,12 @@ void UpdatePlayer(void)
 
 	// 視線方向を正規化
 	D3DXVec3Normalize(&g_player.forward, &g_player.forward);
+	
+	//// ライトの位置と向きを更新
+	//UpdateLight(5, g_player.pos , g_player.forward);
+
+	////ライトの更新処理
+	//UpdateLight(6, D3DXVECTOR3(g_player.pos.x, g_player.pos.y + 75.0f, g_player.pos.z), g_player.forward);
 
 	if (g_player.pos.y <= 0)
 	{

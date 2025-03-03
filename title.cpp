@@ -67,8 +67,8 @@ void InitTitle(void)
 	// エディット読み込み
 	LoadTitleData();
 
-	// エディット読み込み
-	LoadWallData();
+	//// エディット読み込み
+	//LoadWallData();
 
 
 	AddLight(

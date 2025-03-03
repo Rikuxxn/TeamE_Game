@@ -78,7 +78,7 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/SE/menu.wav", 0},				// メニューオープン
 	{"data/SE/select.wav", 0},				// 選択
 	{"data/SE/ok.wav", 0},					// 決定
-	{"data/SE/resultrank4.wav", 0},			// リザルトのランク表示
+	{"data/SE/resultrank5.wav", 0},			// リザルトのランク表示
 	{"data/SE/gamestart.wav", 0},			// ゲームスタート
 	{"data/SE/clear.wav", 0},				// ミニゲームクリア
 	{"data/SE/footstep_enemy.wav", 0},		// 敵の足音SE

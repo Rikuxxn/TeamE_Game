@@ -45,6 +45,7 @@ void InitShootingGame(void)
 // 終了処理
 void UninitShootingGame(void)
 {
+	StopSound();
 	// 各種オブジェクトの終了処理
 	UninitBackGround();		// 背景の終了処理
 	UninitShootingPlayer();	// プレイヤーの終了処理

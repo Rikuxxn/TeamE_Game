@@ -6,7 +6,6 @@
 #include "crane_block.h"
 #include "crane_player.h"
 #include "main.h"
-#include "crane_particle.h"
 
 // マクロ
 #define MAX_BLOCK (512)	// ブロックの最大数

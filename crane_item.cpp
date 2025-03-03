@@ -6,7 +6,6 @@
 #include "main.h"
 #include "crane_item.h"
 #include "crane_player.h"
-#include "crane_particle.h"
 #include "crane_block.h"
 #include "sound.h"
 #include "crane_background.h"

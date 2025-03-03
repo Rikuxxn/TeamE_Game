@@ -275,7 +275,7 @@ void UpdateBlock(void)
 			if (pGame->bBallClear == true && g_flag.bSet == false)
 			{
 				SetBlock(D3DXVECTOR3(805.0f, 0.0f, -165.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), BLOCKTYPE_BALL);
-
+				PlaySound(SOUND_LABEL_DROPHINT);
 				g_flag.bSet = true;
 			}
 
@@ -283,7 +283,7 @@ void UpdateBlock(void)
 			if (pGame->bACClear == true && g_flag.bSet2 == false)
 			{
 				SetBlock(D3DXVECTOR3(-520.0f, 0.0f, -785.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), BLOCKTYPE_BEAR);
-
+				PlaySound(SOUND_LABEL_DROPHINT);
 				g_flag.bSet2 = true;
 			}
 
@@ -291,7 +291,7 @@ void UpdateBlock(void)
 			if (pGame->bPassClear == true && g_flag.bSet3 == false)
 			{
 				SetBlock(D3DXVECTOR3(0.0f, 0.0f, 1010.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), BLOCKTYPE_CLEAR);
-
+				PlaySound(SOUND_LABEL_OPENDOOR);
 				g_flag.bSet3 = true;
 			}
 			if (pGame->bPassClear == true && g_aBlock[nCntBlock].nType == BLOCKTYPE_EXIT)

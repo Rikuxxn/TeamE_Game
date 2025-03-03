@@ -424,6 +424,9 @@ void UpdateGame(void)
 		{
 			g_Game.bDraw2 = g_Game.bDraw2 ? false : true;
 			g_Game.bMini = g_Game.bMini ? false : true;
+			StopSound(SOUND_LABEL_CRANEMOVE);
+			StopSound(SOUND_LABEL_CRANEDOWN);
+			StopSound(SOUND_LABEL_CRANEUP);
 		}
 
 
@@ -434,6 +437,7 @@ void UpdateGame(void)
 			pFlag->bFuseCmp == true)
 		{
 			g_Game.bCraneHint = g_Game.bCraneHint ? false : true;
+			PlaySound(SOUND_LABEL_HINTWATCH);
 		}
 
 
@@ -456,6 +460,7 @@ void UpdateGame(void)
 			pFlag->bFuseCmp == true)
 		{
 			g_Game.bBallHint = g_Game.bBallHint ? false : true;
+			PlaySound(SOUND_LABEL_HINTWATCH);
 		}
 
 

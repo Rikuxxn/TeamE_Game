@@ -39,7 +39,6 @@
     <ClCompile Include="crane_fade.cpp" />
     <ClCompile Include="crane_game.cpp" />
     <ClCompile Include="crane_item.cpp" />
-    <ClCompile Include="crane_particle.cpp" />
     <ClCompile Include="crane_player.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="ball_background.cpp" />
@@ -112,7 +111,6 @@
     <ClInclude Include="crane_fade.h" />
     <ClInclude Include="crane_game.h" />
     <ClInclude Include="crane_item.h" />
-    <ClInclude Include="crane_particle.h" />
     <ClInclude Include="crane_player.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="ball_background.h" />

@@ -55,6 +55,7 @@ void InitBallGame(void)
 }
 void UninitBallGame(void)
 {
+	StopSound();
 	// 各種オブジェクトの終了処理
 	UninitBallBackGround();	// 背景の終了処理
 	UninitBallParticle();	// パーティクルの終了処理

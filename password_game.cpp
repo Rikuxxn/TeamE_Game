@@ -67,8 +67,8 @@ void InitPasswordGame(void)
 //=======================
 void UninitPasswordGame(void)
 {
-	////サウンドの停止
-	//StopSound(SOUND_LABEL_GAMEBGM);
+	//サウンドの停止
+	StopSound();
 
 	// 各種オブジェクトの終了処理
 	UninitPasswordBackGround();	// 背景の終了処理

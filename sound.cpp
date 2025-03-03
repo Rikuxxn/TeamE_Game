@@ -48,7 +48,7 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/BGM/gameoverBGM.wav", -1},		// ゲームオーバーBGM
 	{"data/BGM/titleBGM.wav", -1},			// タイトルBGM
 	{"data/SE/insight.wav", 0},				// プレイヤーを発見
-	{"data/SE/wandering.wav", 0},			// 敵の徘徊
+	{"data/SE/wandering.wav", 0},			// 敵が徘徊しているときの音
 	{"data/SE/footstep_1.wav", 0},			// 足音SE
 	{"data/SE/footstep_2.wav", 0},			// 足音SE2
 	{"data/SE/heart.wav", 0},				// 心音
@@ -62,6 +62,8 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/SE/Crane_Down.wav", 0},			// クレーンを下げる
 	{"data/SE/Crane_UP.wav", 0},			// クレーンを上げる
 	{"data/SE/Crane_get.wav", 0},			// 景品ゲット
+	{"data/SE/drophint.wav", 0},			// ヒントが落ちた
+	{"data/SE/hintopen.wav", 0},			// ヒントの確認
 	{"data/SE/stshot.wav", 0},				// シューティング射撃
 	{"data/SE/sthit.wav", 0},				// ヒット音
 	{"data/SE/stdead.wav", 0},				// 撃破音
@@ -78,7 +80,7 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/SE/menu.wav", 0},				// メニューオープン
 	{"data/SE/select.wav", 0},				// 選択
 	{"data/SE/ok.wav", 0},					// 決定
-	{"data/SE/resultrank6.wav", 0},			// リザルトのランク表示
+	{"data/SE/resultrank.wav", 0},			// リザルトのランク表示
 	{"data/SE/gamestart.wav", 0},			// ゲームスタート
 	{"data/SE/clear.wav", 0},				// ミニゲームクリア
 	{"data/SE/footstep_enemy.wav", 0},		// 敵の足音SE

@@ -167,7 +167,6 @@
     <ClCompile Include="crane_hint.cpp" />
     <ClCompile Include="crane_hint_bg.cpp" />
     <ClCompile Include="crane_item.cpp" />
-    <ClCompile Include="crane_particle.cpp" />
     <ClCompile Include="crane_player.cpp" />
     <ClCompile Include="crane_score.cpp" />
     <ClCompile Include="edit.cpp" />
@@ -241,7 +240,6 @@
     <ClInclude Include="crane_hint.h" />
     <ClInclude Include="crane_hint_bg.h" />
     <ClInclude Include="crane_item.h" />
-    <ClInclude Include="crane_particle.h" />
     <ClInclude Include="crane_player.h" />
     <ClInclude Include="crane_score.h" />
     <ClInclude Include="edit.h" />

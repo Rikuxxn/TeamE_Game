@@ -9,8 +9,8 @@
 // グローバル
 LPDIRECT3DTEXTURE9 g_pTextureCranePass = { NULL };			// テクスチャへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffCranePass = NULL;			// 頂点バッファへのポインタ
+CranePass g_aCranePass[MAX_NUM_SCORE] = {};					// クレーン
 int g_nCranePass;											// パスワードの値
-CranePass g_aCranePass[MAX_NUM_SCORE] = {};
 
 //=========================
 //|| パスワードの初期化  ||

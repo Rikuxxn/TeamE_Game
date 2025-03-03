@@ -26,17 +26,16 @@ void InitCraneBackGround(void)
 	LPDIRECT3DDEVICE9 	pDevice = GetDevice();// デバイスへのポインタ
 	int nCntBG;
 
-	// テクスチャ(ゲーム画面)の読み込み
+	// テクスチャ(背景)の読み込み
 	D3DXCreateTextureFromFile(pDevice,
 		"data\\TEXTURE\\Clane_Back.jpg",// テクスチャのファイル名
 		&g_pTextureCraneBG[0]);
 
-	// テクスチャ1の読み込み
+	// テクスチャ(ゲーム画面)の読み込み
 	D3DXCreateTextureFromFile(pDevice,
 		"data\\TEXTURE\\Clane_Board.jpg",// テクスチャのファイル名
 		&g_pTextureCraneBG3);
 
-	//
 	for (nCntBG = 0; nCntBG < NUM_BG; nCntBG++)
 	{
 		g_aPosCraneTexU[nCntBG] = 0.0f;

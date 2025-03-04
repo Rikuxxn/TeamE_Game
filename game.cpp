@@ -617,11 +617,6 @@ void UpdateGame(void)
 			UpdateCraneHint();
 		}
 
-
-		//敵の更新処理
-		UpdateEnemy();
-
-
 		//メッシュフィールドの更新処理
 		UpdateMeshfield();
 
@@ -632,6 +627,12 @@ void UpdateGame(void)
 
 		//メッシュシリンダーの更新処理
 		UpdateMeshcylinder();
+
+		if (g_Game.bMap == false)
+		{
+			//敵の更新処理
+			UpdateEnemy();
+		}
 
 		if (g_Game.bDraw == false && g_Game.bDraw2 == false && g_Game.bDraw3 == false && g_Game.bDraw4 == false &&
 			g_Game.bBallHint == false && g_Game.bCraneHint == false && g_Game.bMap == false)

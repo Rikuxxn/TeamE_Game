@@ -213,20 +213,20 @@ void DrawBallBackGround(void)
 		0,									   // 描画する最初の頂点インデックス
 		2);                                    // 描画するプリミティブ数
 
-	// チュートリアル
-	// 頂点バッファをデータストリーム
-	pDevice->SetStreamSource(0, g_pVtxBuffBallBG3, 0, sizeof(VERTEX_2D));
+	//// チュートリアル
+	//// 頂点バッファをデータストリーム
+	//pDevice->SetStreamSource(0, g_pVtxBuffBallBG3, 0, sizeof(VERTEX_2D));
 
-	// 頂点フォーマットの設定
-	pDevice->SetFVF(FVF_VERTEX_2D);
+	//// 頂点フォーマットの設定
+	//pDevice->SetFVF(FVF_VERTEX_2D);
 
-	// テクスチャの設定
-	pDevice->SetTexture(0, g_pTextureBallBG3);
+	//// テクスチャの設定
+	//pDevice->SetTexture(0, g_pTextureBallBG3);
 
-	// 背景の描画
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,// プリミティブの種類
-		0,									   // 描画する最初の頂点インデックス
-		2);                                    // 描画するプリミティブ数
+	//// 背景の描画
+	//pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,// プリミティブの種類
+	//	0,									   // 描画する最初の頂点インデックス
+	//	2);                                    // 描画するプリミティブ数
 
 	// 3枚目
 	// 頂点バッファをデータストリーム

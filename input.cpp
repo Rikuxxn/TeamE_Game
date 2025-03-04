@@ -181,29 +181,19 @@ void UninitJoypad(void)
 //=====================================================
 void UpdateJoypad(void)
 {
-	int nCntJoy;
+	XINPUT_STATE joyKeyState;
 
-	XINPUT_STATE joyKeyState;//ジョイパッドの入力情報
+	g_aOldJoyKeyState = g_joyKeyState; // 前フレームの状態を保存
 
-	g_aOldJoyKeyState = g_joyKeyState;
-
-	//ジョイパッドの状態を取得
 	if (XInputGetState(0, &joyKeyState) == ERROR_SUCCESS)
 	{
 		WORD Button = joyKeyState.Gamepad.wButtons;
-
 		WORD OldButton = g_joyKeyState.Gamepad.wButtons;
 
-		g_joyKeyStateTrigger.Gamepad.wButtons=Button&~OldButton;
-		g_joyKeyStateRelease.Gamepad.wButtons = OldButton & ~Button;
+		g_joyKeyStateTrigger.Gamepad.wButtons = (Button & ~OldButton); // 新しく押されたボタン
+		g_joyKeyStateRelease.Gamepad.wButtons = (OldButton & ~Button); // 離されたボタン
 
-		g_joyKeyState = joyKeyState;//ジョイパッドのプレス情報を保存
-	}
-
-	//Press
-	for (nCntJoy = 0; nCntJoy < JOYKEY_MAX; nCntJoy++)
-	{
-		g_joyKeyFlag[nCntJoy] = (g_joyKeyState.Gamepad.wButtons & (0x01 << nCntJoy)) ? true : false;
+		g_joyKeyState = joyKeyState;
 	}
 }
 //=====================================================
@@ -219,7 +209,9 @@ bool JoyPadTrigger(JOYKEY Key)
 }
 bool JoyPadRelease(JOYKEY Key)
 {
-	return (g_joyKeyStateRelease.Gamepad.wButtons & (0x01 << Key)) ? true : false;
+	bool released = (g_joyKeyStateRelease.Gamepad.wButtons & (0x01 << Key)) ? true : false;
+
+	return released;
 }
 ////====================================================
 //// L2,R2の処理

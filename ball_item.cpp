@@ -261,6 +261,15 @@ void UpdateBallItem(void)
 
 	}
 
+	if (!GetMouseButtonPress(0) && !GetJoypadPress(JOYKEY_B))
+	{
+		for (int i = 0; i < MAX_ITEM; i++)
+		{
+			g_ballitem[i].bcatch = false;
+		}
+		bHoldingItem = false;
+	}
+
 	// 頂点バッファをアンロック
 	g_pVtxBuffBallItem->Unlock();
 

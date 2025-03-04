@@ -29,6 +29,11 @@ static float g_LightTimer = 0.0f;       // タイマー
 static float g_NextBlinkTime = 0.0f;    // 次に点滅する時間
 static int g_BlinkingLightIndex = -1;   // 点滅するライトのインデックス
 
+static int g_PlayerBlinkLightIndex = -1;  // プレイヤーライトの点滅用
+static bool g_PlayerLightOn = true;       // 点滅状態
+static float g_PlayerLightTimer = 0.0f;
+static float g_PlayerNextBlinkTime = 0.0f;
+
 //=============================
 // ライトの初期化処理
 //=============================
@@ -96,10 +101,15 @@ int AddLight(D3DLIGHTTYPE type, D3DXCOLOR diffuse, D3DXVECTOR3 direction, D3DXVE
     }
     else if (type == D3DLIGHT_SPOT)
     {
-        newLight->light.Range = 100.0f;
-        newLight->light.Theta = D3DXToRadian(30.0f);
-        newLight->light.Phi = D3DXToRadian(45.0f);
-        newLight->light.Falloff = 1.0f;
+        newLight->light.Range = 1000.0f;  // ライトの最大距離を適切に設定
+        newLight->light.Theta = D3DXToRadian(90.0f); // 中心光の角度
+        newLight->light.Phi = D3DXToRadian(40.0f);   // 外側の光の角度
+        newLight->light.Falloff = 1.0f;  // フォールオフ（光の減衰率）
+
+        // 減衰（Attenuation）の設定
+        newLight->light.Attenuation0 = 1.0f;   // 定数減衰（基本0）
+        newLight->light.Attenuation1 = 0.00002f; // 線形減衰（数値を下げると光が遠くまで届く）
+        newLight->light.Attenuation2 = 0.0005f; // 二次減衰
     }
 
     pDevice->SetLight(newIndex, &newLight->light);
@@ -137,6 +147,24 @@ void RemoveLight(int index)
 
     // ライト数を減少
     g_LightCount--;
+}
+//=============================
+// ライトの点滅解除処理
+//=============================
+void ResetLight(void)
+{
+    LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+    if (g_BlinkingLightIndex == -1)
+    {
+        return; // 点滅させるライトがない場合は何もしない
+    }
+
+    g_bLightOn = true; // 常にONにする
+    pDevice->LightEnable(g_BlinkingLightIndex, g_bLightOn);
+
+    g_LightTimer = 0.0f;       // タイマーをリセット
+    g_NextBlinkTime = 0.0f;    // 次の点滅時間をリセット
 }
 //=============================
 // ライトの終了処理
@@ -188,10 +216,15 @@ void UpdateLight(int index, D3DXVECTOR3 newPosition, D3DXVECTOR3 newDirection)
     // スポットライトの場合、レンジや角度を再設定する
     if (light->light.Type == D3DLIGHT_SPOT) 
     {
-        light->light.Range = 100.0f;
-        light->light.Theta = D3DXToRadian(30.0f);
-        light->light.Phi = D3DXToRadian(45.0f);
-        light->light.Falloff = 1.0f;
+        light->light.Range = 700.0f;                // ライトの最大距離を適切に設定
+        light->light.Theta = D3DXToRadian(40.0f);   // 中心光の角度
+        light->light.Phi = D3DXToRadian(90.0f);     // 外側の光の角度
+        light->light.Falloff = 1.0f;                // フォールオフ（光の減衰率）
+
+        // 減衰（Attenuation）の設定
+        light->light.Attenuation0 = 1.0f;           // 定数減衰（基本0）
+        light->light.Attenuation1 = 0.005f;         // 線形減衰（数値を下げると光が遠くまで届く）
+        light->light.Attenuation2 = 0.0f;           // 二次減衰
     }
 
     // ライトを再設定
@@ -238,6 +271,78 @@ void UpdateLightBlinking(float deltaTime)
     }
 }
 //=============================
+// 一人称ライト点滅の更新処理
+//=============================
+void UpdateLightPlayerBlinking(float deltaTime)
+{
+    LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+    if (g_PlayerBlinkLightIndex == -1)
+    {
+        return;
+    }
+
+    g_PlayerLightTimer += deltaTime;
+
+    if (g_PlayerLightTimer > g_PlayerNextBlinkTime)
+    {
+        g_PlayerLightOn = !g_PlayerLightOn;  // ON/OFF 切り替え
+
+        pDevice->LightEnable(g_PlayerBlinkLightIndex, g_PlayerLightOn);
+
+        g_PlayerLightTimer = 0.0f;
+
+        // ONの時間（点滅時）は短くする
+        if (g_PlayerLightOn)
+        {
+            g_PlayerNextBlinkTime = (rand() % 500 + 100) / 1000.0f;
+        }
+        // OFFの時間（消灯時）は長めにする
+        else
+        {
+            g_PlayerNextBlinkTime = (rand() % 900 + 100) / 1000.0f;
+        }
+    }
+}
+//=======================================
+// 一人称ライト(スポット)の更新処理
+//=======================================
+void UpdateLightPlayer(void)
+{
+    Player* pPlayer = GetPlayer();
+    Camera* pCamera = GetCamera();
+
+    if (!pPlayer || g_LightCount == 0)
+    {
+        return;
+    }
+
+    // プレイヤー用ライトのインデックス
+    int lightIndex = 5;
+
+    // プレイヤーの視点位置（目の高さに合わせる）
+    D3DXVECTOR3 playerPos = pCamera->posV;
+
+    // プレイヤーの視線方向を取得
+    D3DXVECTOR3 playerDir = pPlayer->forward;
+
+    // 視線方向がゼロベクトルでないかチェック
+    if (D3DXVec3Length(&playerDir) == 0.0f)
+    {
+        playerDir = D3DXVECTOR3(0, 0, 1); // デフォルトで前方を向く
+    }
+    D3DXVec3Normalize(&playerDir, &playerDir);
+
+    // スポットライトの位置を視線方向に前方オフセット
+    D3DXVECTOR3 lightPos = playerPos + playerDir /** 20.0f*/;
+
+    // ライトの位置と向きを更新
+    UpdateLight(lightIndex, lightPos, playerDir);
+
+    //// 一人称ライトの点滅を更新
+    //UpdateLightPlayerBlinking(0.016f);
+}
+//=============================
 // プレイヤーライトの設定処理
 //=============================
 void AddLightPlayer(D3DLIGHTTYPE type, D3DXCOLOR diffuse)
@@ -246,7 +351,6 @@ void AddLightPlayer(D3DLIGHTTYPE type, D3DXCOLOR diffuse)
     Player* pPlayer = GetPlayer();
     Camera* pCamera = GetCamera();
 
-
     if (!pPlayer)
     {
         return;
@@ -254,7 +358,6 @@ void AddLightPlayer(D3DLIGHTTYPE type, D3DXCOLOR diffuse)
 
     // プレイヤーの視点位置（目の高さ）を設定
     D3DXVECTOR3 playerPos = pCamera->posV;
-    playerPos.y += 75.0f; // 身長に合わせて調整
 
     // 視線方向を取得
     D3DXVECTOR3 playerDir = pPlayer->forward;
@@ -270,19 +373,17 @@ void AddLightPlayer(D3DLIGHTTYPE type, D3DXCOLOR diffuse)
     // ライトの位置をプレイヤーの視点にセット
     D3DXVECTOR3 lightPos = playerPos; // 目の位置
 
-    // 一人称視点なので、ライトを視線方向に向ける
-    int lightIndex = AddLight(type, diffuse, playerDir, lightPos);
+    // ライトを視線方向に向ける
+    int newLightIndex = AddLight(type, diffuse, playerDir, lightPos);
 
-    // スポットライトの場合はさらに角度を設定
-    if (lightIndex != -1 && type == D3DLIGHT_SPOT)
+    if (newLightIndex != -1)
     {
-        g_Lights[lightIndex].light.Range = 450.0f;  // スポットライトの到達距離
-        g_Lights[lightIndex].light.Theta = D3DXToRadian(20.0f); // コア部分の光の広がり
-        g_Lights[lightIndex].light.Phi = D3DXToRadian(40.0f); // 外側の光の広がり
-        g_Lights[lightIndex].light.Falloff = 1.0f; // フォールオフ（光の減衰率）
-
-        // ライトを更新
-        pDevice->SetLight(lightIndex, &g_Lights[lightIndex].light);
+        g_PlayerBlinkLightIndex = newLightIndex;  // プレイヤー用点滅ライト
+        g_PlayerNextBlinkTime = (rand() % 2000) / 1000.0f; // 0.5〜1.5秒
+    }
+    else
+    {
+        g_PlayerBlinkLightIndex = -1;
     }
 }
 //=============================

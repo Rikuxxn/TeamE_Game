@@ -186,8 +186,8 @@ void InitGame(void)
 	);
 
 
-	//// === プレイヤーの目線からライトを出す ===
-	//AddLightPlayer(D3DLIGHT_SPOT, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	// === プレイヤーの目線からライトを出す ===
+	AddLightPlayer(D3DLIGHT_SPOT, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 
 	// 敵
@@ -255,10 +255,8 @@ void InitGame(void)
 //============================================
 void UninitGame(void)
 {
-	LPDIRECT3DDEVICE9 pDevice; // 事前に作成・初期化されているデバイス
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice(); // 事前に作成・初期化されているデバイス
 
 	// 霧の無効化
 	pDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
@@ -647,6 +645,10 @@ void UpdateGame(void)
 
 		////ライトの更新処理
 		//UpdateLight(6, D3DXVECTOR3(pPlayer->pos.x, pPlayer->pos.y, pPlayer->pos.z), D3DXVECTOR3(0.0f, -1.0f, 0.0f));
+
+
+		//ライトの更新処理
+		UpdateLightPlayer();
 
 
 		// ライトの点滅更新処理

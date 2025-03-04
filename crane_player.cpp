@@ -151,7 +151,7 @@ void UpdateCranePlayer(void)
 				g_player.bMoveSound = true;
 			}
 		}
-		else if (KeyboardRelease(DIK_D) == true)
+		else if (KeyboardRelease(DIK_D) == true || JoyPadRelease(JOYKEY_RIGHT) == true)
 		{// DÉLÅ[Ç™âüÇ≥ÇÍÇƒÇ¢Ç»Ç¢
 			StopSound(SOUND_LABEL_CRANEMOVE);
 			g_player.bMoveSound = false;

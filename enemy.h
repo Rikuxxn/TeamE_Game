@@ -41,6 +41,7 @@ typedef struct
     D3DXVECTOR3 move;						    // ˆÚ“®—Ê
     D3DXVECTOR3 RadiusEnemy, posRadiusEnemy;
     bool bUse;
+    bool bCaughtSound;
 }Enemy;
 
 // A*‚Ìƒm[ƒh\‘¢‘Ì

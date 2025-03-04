@@ -119,6 +119,7 @@ void InitEnemy(void)
 	g_aEnemy.posRadiusEnemy = D3DXVECTOR3(50.0f, 50.0f, 50.0f);
 	g_aEnemy.state = ENEMYSTATE_PATROLLING;
 	g_aEnemy.bUse = false;
+	g_aEnemy.bCaughtSound = false;
 	g_aEnemy.sightRange = 310.0f;							//視界距離
 	g_aEnemy.sightAngle = D3DXToRadian(90.0f);				//視界範囲
 	g_bEnd = false;
@@ -312,6 +313,11 @@ void UpdateEnemy(void)
 		// 捕まった
 		if (fDistance <= fRadius)
 		{
+			if (g_aEnemy.bCaughtSound == false)
+			{
+				PlaySound(SOUND_LABEL_ENEMYCAUGHT);
+				g_aEnemy.bCaughtSound = true;
+			}
 			pPlayer->pos = pPlayer->posOld;
 			g_aEnemy.pos = g_aEnemy.posOld;
 			g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_ACTION;

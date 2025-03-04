@@ -45,7 +45,7 @@ typedef enum
 	SOUND_LABEL_FUSESET,		// ヒューズをセット
 	SOUND_LABEL_EMPTYBREATH,	// 息切れ
 	SOUND_LABEL_OPENDOOR,		// ドアが開く
-	SOUND_LABEL_ENEMYCHASE,		// ピエロに追われている
+	SOUND_LABEL_ENEMYCAUGHT,	// ピエロに捕まった
 	SOUND_LABEL_TASKOK,			// タスク完了
 	SOUND_LABEL_MENUOPEN,		// メニューオープン
 	SOUND_LABEL_SELECT,			// 選択

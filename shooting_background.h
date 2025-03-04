@@ -8,7 +8,6 @@
 
 #define BACKGROUND_WIDTH (200.0f)
 #define BACKGROUND_HEIGHT (530.0f)
-#define BACKGROUNDTUTORIAL_WIDTH (250.0f)
 
 void InitBackGround(void);
 void UninitBackGround(void);

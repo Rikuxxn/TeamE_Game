@@ -3,8 +3,10 @@
 // Author:Yoshida Atsushi
 //---------------------------------------------------------
 
-#include "shooting_game.h"
+#include "sound.h"
 #include "input.h"
+#include "password_game.h"
+#include "shooting_game.h"
 #include "shooting_player.h"
 #include "shooting_bullet.h"
 #include "shooting_enemy.h"
@@ -13,8 +15,7 @@
 #include "shooting_clear.h"
 #include "shooting_score.h"
 #include "shooting_background.h"
-#include "password_game.h"
-#include "sound.h"
+#include "shooting_background2.h"
 
 // グローバル
 STGSTATE g_gameState = STGSTATE_NONE;	// ゲームの状態
@@ -26,6 +27,7 @@ void InitShootingGame(void)
 	// 各種オブジェクトの初期化処理
 
 	InitBackGround();		// 背景の初期化処理
+	InitBackGround2();		// 背景(操作画面)の初期化処理
 	InitShootingPlayer();	// プレイヤーの初期化処理
 	InitBullet();			// 弾の初期化処理
 	InitEffect();			// エフェクトの初期化
@@ -48,6 +50,7 @@ void UninitShootingGame(void)
 	StopSound();
 	// 各種オブジェクトの終了処理
 	UninitBackGround();		// 背景の終了処理
+	UninitBackGround2();	// 背景(操作画面)の終了処理
 	UninitShootingPlayer();	// プレイヤーの終了処理
 	UninitBullet();			// 弾の終了処理
 	UninitEffect();			// エフェクトの終了処理
@@ -65,6 +68,7 @@ void UpdateShootingGame(void)
 
 	// 各種オブジェクトの更新処理
 	UpdateBackGround();		// 背景の更新処理
+	UpdateBackGround2();	// 背景(操作画面)の更新処理
 	UpdateParticle();		// パーティクルの更新処理
 	UpdateShootingPlayer();	// プレイヤーの更新処理
 	UpdateShootingEnemy();	// 敵の更新処理
@@ -106,6 +110,7 @@ void DrawShootingGame(void)
 	DrawShootingEnemy();	// 敵の描画処理
 	DrawEffect();			// エフェクトの描画処理
 	DrawParticle();			// パーティクルの描画処理
+	DrawBackGround2();		// 背景(操作画面)の描画処理
 
 	if (g_nCntShootingGameState >= 60)
 	{

@@ -71,7 +71,7 @@ void UpdateParticle(void)
 					fRadius = 15.0f;
 
 					//寿命の設定
-					nLife = 50;
+					nLife = 30;
 
 					//エフェクトの設定
 					SetEffect(pos, move, col, fRadius, nLife,0);

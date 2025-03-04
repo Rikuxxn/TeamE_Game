@@ -75,7 +75,7 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/SE/fuseset.wav", 0},				// ヒューズをセット
 	{"data/SE/ikigire.wav", 0},				// 息切れ
 	{"data/SE/opendoor.wav", 0},			// ドアが開く
-	{"data/SE/enemychase.wav", 0},			// ピエロに追われている
+	{"data/SE/enemycaught.wav", 0},			// ピエロに捕まった
 	{"data/SE/Check.wav", 0},				// タスク完了
 	{"data/SE/menu.wav", 0},				// メニューオープン
 	{"data/SE/select.wav", 0},				// 選択

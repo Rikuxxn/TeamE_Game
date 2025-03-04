@@ -39,11 +39,10 @@ static float g_PlayerNextBlinkTime = 0.0f;
 //=============================
 void InitLight(void)
 {
-    Player* pPlayer = GetPlayer();
-
     // 初期容量でライトリストを確保
     g_LightCapacity = MAX_LIGHT;
     g_Lights = (LightInfo*)malloc(sizeof(LightInfo) * g_LightCapacity);
+
     if (!g_Lights) 
     {
         // メモリ確保失敗
@@ -52,7 +51,6 @@ void InitLight(void)
     }
 
     g_LightCount = 0; // 現在のライト数をリセット
-
 }
 //=============================
 // ライトの追加処理
@@ -261,12 +259,12 @@ void UpdateLightBlinking(float deltaTime)
         // ONの時間（点滅時）は短くする
         if (g_bLightOn)
         {
-            g_NextBlinkTime = (rand() % 950 + 100) / 1000.0f; // 0.05〜0.2秒
+            g_NextBlinkTime = (rand() % 950 + 100) / 1000.0f;
         }
         // OFFの時間（消灯時）は長めにする
         else
         {
-            g_NextBlinkTime = (rand() % 900 + 300) / 1000.0f; // 0.3〜1.0秒
+            g_NextBlinkTime = (rand() % 900 + 300) / 1000.0f; 
         }
     }
 }

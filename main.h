@@ -23,10 +23,10 @@
 #pragma comment(lib,"winmm.lib")											// システム時刻取得に必要
 #pragma comment(lib,"dinput8.lib")											// 入力処理に必要
 #pragma comment(lib,"xinput.lib")											// ジョイパッド処理に必要
-#pragma comment(lib, "X3DAudio.lib")										// 3Dサウンド処理に必要
+#pragma comment(lib,"X3DAudio.lib")											// 3Dサウンド処理に必要
 
 //マクロ定義
-#define CLASS_NAME "WindowClass"											//ウィンドウクラスの名前
+#define CLASS_NAME "WindowClass"												//ウィンドウクラスの名前
 #define WINDOW_NAME "ARCADE NIGHTMARE"											//ウィンドウの名前(キャプションに表示)
 #define SCREEN_WIDTH (1280.0f)													//ウィンドウの幅
 #define SCREEN_HEIGHT (720.0f)													//ウィンドウの高さ

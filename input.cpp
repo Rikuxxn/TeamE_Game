@@ -59,6 +59,7 @@ HRESULT InitKeyboard(HINSTANCE hInstance, HWND hWnd)
 		return S_OK;
 	}
 
+	return S_OK;
 }
 //=====================================================
 // ジョイパッドの初期化処理

@@ -11,6 +11,7 @@
 #include "block.h"
 #include "sound.h"
 #include "shadow.h"
+#include "light.h"
 
 // 巡回ポイント配列
 D3DXVECTOR3 patrolPoints[] =
@@ -356,6 +357,16 @@ void UpdateEnemy(void)
 
 		bool SoundRangeNow = (fDistanceSound1 <= fRadiusSound1);
 
+		//// 一人称ライトを点滅させる
+		//if (fDistanceSound1 <= fRadiusSound1)
+		//{
+		//	UpdateLightPlayerBlinking(0.016f);
+		//}
+		//else
+		//{
+		//	ResetLight();
+		//}
+
 		// intervalを距離に応じて変化させる
 		float dynamicInterval = maxInterval;
 
@@ -364,6 +375,7 @@ void UpdateEnemy(void)
 			float t = (distance - closeDistance) / (farDistance - closeDistance);	// 0.0 ~ 1.0 の範囲に正規化
 			t = max(0.0f, min(1.0f, t));											// 範囲を超えないように
 			dynamicInterval = minInterval + (maxInterval - minInterval) * t;		// 線形補間
+
 		}
 
 		// 範囲内にいる間は一定間隔で音を鳴らす

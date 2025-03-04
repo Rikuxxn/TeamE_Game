@@ -267,7 +267,7 @@ void UpdateBlock(void)
 					g_aBlock[nCntBlock].bUse = false;
 					SetBlock(D3DXVECTOR3(1140.0f, 80.0f, 250.0f), D3DXVECTOR3(0.0f, 1.57f, 0.0f), BLOCKTYPE_FUSEBOX_CMP);
 
-					g_flag.bFog = false; // フラグを変更
+					//g_flag.bFog = false; // フラグを変更
 				}
 			}
 

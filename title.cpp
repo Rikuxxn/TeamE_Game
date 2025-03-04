@@ -172,10 +172,8 @@ void InitTitle(void)
 //========================
 void UninitTitle(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice(); // 事前に作成・初期化されているデバイス
 
 	// 霧の無効化
 	pDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
@@ -454,6 +452,6 @@ void DrawTitle(void)
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCntTitle * 4, 2);
 	}
 
-	// 霧の無効化
+	// 霧の有効化
 	pDevice->SetRenderState(D3DRS_FOGENABLE, TRUE);
 }

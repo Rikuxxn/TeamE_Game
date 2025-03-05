@@ -82,6 +82,9 @@ void UpdateCraneGame(void)
 
 		if (g_nCounterCraneGameState == 45 && nNum == 0 && pPlayer->bUse == true)
 		{
+			StopSound(SOUND_LABEL_CRANEMOVE);
+			StopSound(SOUND_LABEL_CRANEDOWN);
+			StopSound(SOUND_LABEL_CRANEUP);
 			PlaySound(SOUND_LABEL_MINICLEAR);
 		}
 		break;

@@ -10,6 +10,7 @@
 #include "crane_item.h"
 #include "sound.h"
 #include "crane_background.h"
+#include "crane_game.h"
 
 // マクロ
 #define MAX_MAX (400.0f)	// 最大でかい
@@ -127,9 +128,10 @@ void UpdateCranePlayer(void)
 {
 	VERTEX_2D* pVtx;// 頂点情報へのポインタ
 	CRANEITEM pItem = GetItem();
+	CRANEGAMESTATE pCrane = GetCraneGameState();
 	int nBulletCnt = 0;
 
-	if (g_player.bUse == true)
+	if (g_player.bUse == true && pCrane != CRANEGAMESTATE_END)
 	{
 		if (g_player.bMove == true &&
 			(GetKeyboardPress(DIK_D) == true || GetJoypadPress(JOYKEY_RIGHT) == true))

@@ -49,6 +49,9 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/BGM/titleBGM.wav", -1},			// タイトルBGM
 	{"data/SE/insight.wav", 0},				// プレイヤーを発見
 	{"data/SE/wandering.wav", 0},			// 敵が徘徊しているときの音
+	{"data/SE/enemycaught.wav", 0},			// 敵に捕まった
+	{"data/SE/footstep_enemy.wav", 0},		// 敵の足音SE
+	{"data/SE/footstep_enemy2.wav", 0},		// 敵の足音SE2
 	{"data/SE/footstep_1.wav", 0},			// 足音SE
 	{"data/SE/footstep_2.wav", 0},			// 足音SE2
 	{"data/SE/heart.wav", 0},				// 心音
@@ -75,7 +78,6 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/SE/fuseset.wav", 0},				// ヒューズをセット
 	{"data/SE/ikigire.wav", 0},				// 息切れ
 	{"data/SE/opendoor.wav", 0},			// ドアが開く
-	{"data/SE/enemycaught.wav", 0},			// ピエロに捕まった
 	{"data/SE/Check.wav", 0},				// タスク完了
 	{"data/SE/menu.wav", 0},				// メニューオープン
 	{"data/SE/select.wav", 0},				// 選択
@@ -83,8 +85,6 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/SE/resultrank.wav", 0},			// リザルトのランク表示
 	{"data/SE/gamestart.wav", 0},			// ゲームスタート
 	{"data/SE/clear.wav", 0},				// ミニゲームクリア
-	{"data/SE/footstep_enemy.wav", 0},		// 敵の足音SE
-	{"data/SE/footstep_enemy2.wav", 0},		// 敵の足音SE2
 
 };
 //=============================================================================

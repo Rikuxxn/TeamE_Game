@@ -212,6 +212,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	const RECT rect = { 0,0,SCREEN_WIDTH,SCREEN_HEIGHT };
 
+	int nID;
+
 	switch (uMsg)
 	{
 	case WM_DESTROY:  //ウィンドウ破棄のメッセージ
@@ -225,11 +227,19 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case VK_ESCAPE://[ESC]キーが押された
-			// ライトの初期化
-			UninitLight();
 
-			//ウィンドウを破棄する
-			DestroyWindow(hWnd);
+			nID = MessageBox(hWnd, "終了しますか?", "終了メッセージ", MB_YESNO);
+			if (nID == IDYES)
+			{
+				// ライトの初期化
+				UninitLight();
+
+				DestroyWindow(hWnd);//ウインドウ破棄メッセージ
+			}
+			else
+			{
+				return 0;            //返す
+			}
 
 			break;
 		case VK_F11:

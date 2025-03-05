@@ -223,6 +223,7 @@ void UpdateCranePlayer(void)
 	}
 	if (g_player.pos.x >= CLANEFIELD_RIGHT - WIDTH)// ‰E
 	{
+		StopSound(SOUND_LABEL_CRANEMOVE);
 		g_player.pos.x = CLANEFIELD_RIGHT - WIDTH;
 	}
 	if (g_player.pos.x <= CLANEFIELD_LEFT + 75.0f + WIDTH)// ¶

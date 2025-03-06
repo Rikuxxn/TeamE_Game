@@ -159,6 +159,7 @@
     <ClCompile Include="block.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="crane_background.cpp" />
+    <ClCompile Include="crane_background2.cpp" />
     <ClCompile Include="crane_block.cpp" />
     <ClCompile Include="crane_clear.cpp" />
     <ClCompile Include="crane_effect.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="block.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="crane_background.h" />
+    <ClInclude Include="crane_background2.h" />
     <ClInclude Include="crane_block.h" />
     <ClInclude Include="crane_clear.h" />
     <ClInclude Include="crane_effect.h" />

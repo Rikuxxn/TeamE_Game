@@ -11,6 +11,7 @@
 #include "crane_block.h"
 #include "crane_item.h"
 #include "crane_background.h"
+#include "crane_background2.h"
 #include "time.h"
 #include "game.h"
 #include "sound.h"
@@ -27,6 +28,7 @@ void InitCraneGame(void)
 {
 	// 各種オブジェクトの初期化処理
 	InitCraneBackGround();	// 背景の初期化処理
+	InitCraneBackGround2();	// 背景の初期化処理
 	InitCranePlayer();		// プレイヤーの初期化処理
 	InitCraneBlock();		// ブロックの初期化処理
 	InitCraneEffect();		// エフェクトの初期化
@@ -46,6 +48,7 @@ void UninitCraneGame(void)
 	StopSound();
 	//各種オブジェクトの終了処理
 	UninitCraneBackGround();	// 背景の終了処理
+	UninitCraneBackGround2();	// 背景の終了処理
 	UninitCranePlayer();		// プレイヤーの終了処理
 	UninitCraneBlock();			// ブロックの終了処理
 	UninitCraneEffect();		// エフェクトの終了処理
@@ -60,6 +63,7 @@ void UpdateCraneGame(void)
 
 	// 各種オブジェクトの更新処理
 	UpdateCraneBackGround();	// 背景の更新処理
+	UpdateCraneBackGround2();	// 背景の更新処理
 	UpdateCranePlayer();		// プレイヤーの更新処理
 	UpdateCraneEffect();		// エフェクトの更新処理
 	UpdateCraneItem();			// アイテムの更新処理
@@ -99,6 +103,7 @@ void DrawCraneGame(void)
 	DrawCraneItem();		// アイテムの描画処理
 	DrawCraneBlock();		// ブロックの描画処理
 	DrawCraneEffect();		// エフェクトの描画処理
+	DrawCraneBackGround2();	// 背景の描画処理
 }
 void SetCraneGameState(CRANEGAMESTATE state)
 {

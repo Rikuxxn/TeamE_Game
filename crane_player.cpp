@@ -31,10 +31,10 @@ void InitCranePlayer(void)
 
 	// テクスチャ2の読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\crane.png",					 // テクスチャのファイル名
+		"data\\TEXTURE\\crane_long2.png",					 // テクスチャのファイル名
 		&g_pTextureCranePlayer);
 
-	g_player.pos = D3DXVECTOR3(CLANEFIELD_LEFT + 75.0f, 70.0f, 0.0f);	// 位置を初期化する SCREEN_HEIGHT-HEIGHT
+	g_player.pos = D3DXVECTOR3(CLANEFIELD_LEFT + 75.0f, -70.0f, 0.0f);	// 位置を初期化する SCREEN_HEIGHT-HEIGHT
 	g_player.move = D3DXVECTOR3(0.0f,0.0f,0.0f);						// 移動量を初期化する
 	g_player.rot = D3DXVECTOR3(0.0f,0.0f,0.0f);							// 向きを初期化する、今回はZ軸（3番目）
 	g_player.pBlock = NULL;
@@ -216,9 +216,9 @@ void UpdateCranePlayer(void)
 		g_player.pos.y = CLANEFIELD_UNDER;
 		g_player.bLanding = true;
 	}
-	if (g_player.pos.y <= CLANEFIELD_TOP + HEIGHT)// 天井
+	if (g_player.pos.y <= CLANEFIELD_TOP + HEIGHT - 300.0f)// 天井
 	{
-		g_player.pos.y = CLANEFIELD_TOP + HEIGHT;
+		g_player.pos.y = CLANEFIELD_TOP + HEIGHT - 300.0f;
 		g_player.bLeft = true;
 	}
 	if (g_player.pos.x >= CLANEFIELD_RIGHT - WIDTH)// 右

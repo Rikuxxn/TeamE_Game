@@ -6,7 +6,7 @@
 #define _CRANEPLAYER_H_//２重インクルード防止のマクロ定義
 
 #define WIDTH (50.0f)		// プレイヤー幅
-#define HEIGHT (100.0f)		// プレイヤー高さ
+#define HEIGHT (400.0f)		// プレイヤー高さ
 #define DOWN (3.0f)			// 降りる速さ
 #define UP (-3.0f)			// 上る速さ
 #define MAX_SPEED_L (-3.0f)	// 最速左

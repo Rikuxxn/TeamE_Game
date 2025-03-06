@@ -23,9 +23,9 @@ typedef enum
 	BLOCKTYPE_BALLPOOL,
 	BLOCKTYPE_ARCADE1,
 	BLOCKTYPE_ARCADE2,
-	BLOCKTYPE_SWEETLAND,
-	BLOCKTYPE_SWEETLAND_PANEL1,
-	BLOCKTYPE_SWEETLAND_PANEL2,
+	BLOCKTYPE_ARCADE_BOARD,
+	BLOCKTYPE_CRANE_BOARD,
+	BLOCKTYPE_PARK_BOARD,
 	BLOCKTYPE_GASYAPON1,
 	BLOCKTYPE_RACEGAME,
 	BLOCKTYPE_EXCHANGE,
@@ -122,9 +122,9 @@ static const char* BLOCK[BLOCKTYPE_MAX] =
 	"data/MODEL/Ball_pool.x",							// ボールプール
 	"data/MODEL/arcade.x",								// アーケード1
 	"data/MODEL/Fightng_game000.x",						// アーケード2
-	"data/MODEL/sweetland_000.x",						// スイートランド本体
-	"data/MODEL/sweetland_001.x",						// スイートランドパネル1
-	"data/MODEL/sweetland_002.x",						// スイートランドパネル2
+	"data/MODEL/arcade_board.x",						// アーケードエリア看板
+	"data/MODEL/crane_board.x",							// クレーンエリア看板
+	"data/MODEL/park_board.x",							// キッズパーク看板
 	"data/MODEL/gasyapon00.x",							// ガシャポン
 	"data/MODEL/Racing_game.x",							// レースゲーム
 	"data/MODEL/ExChange.x",							// 両替機

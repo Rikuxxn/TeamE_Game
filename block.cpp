@@ -274,7 +274,7 @@ void UpdateBlock(void)
 			// ボールプールをクリアしたら
 			if (pGame->bBallClear == true && g_flag.bSet == false)
 			{
-				SetBlock(D3DXVECTOR3(805.0f, 0.0f, -165.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), BLOCKTYPE_BALL);
+				SetBlock(D3DXVECTOR3(885.0f, 0.0f, -125.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), BLOCKTYPE_BALL);
 				PlaySound(SOUND_LABEL_DROPHINT);
 				g_flag.bSet = true;
 			}
@@ -282,7 +282,7 @@ void UpdateBlock(void)
 			// クレーンゲームをクリアしたら
 			if (pGame->bACClear == true && g_flag.bSet2 == false)
 			{
-				SetBlock(D3DXVECTOR3(-520.0f, 0.0f, -785.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), BLOCKTYPE_BEAR);
+				SetBlock(D3DXVECTOR3(-515.0f, 0.0f, -875.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), BLOCKTYPE_BEAR);
 				PlaySound(SOUND_LABEL_DROPHINT);
 				g_flag.bSet2 = true;
 			}
@@ -536,7 +536,7 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 			else
 			{
 				if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BEAR || g_aBlock[nCntBlock].nType == BLOCKTYPE_BALL ||
-					g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE)
+					g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE || g_aBlock[nCntBlock].nType == BLOCKTYPE_PARK_BOARD)
 				{
 					continue;
 				}
@@ -803,7 +803,16 @@ void CheckBlocksInCenter(void)
 
 		// adjustedForwardのY成分を調整（視線を少し下げる）
 		D3DXVECTOR3 adjustedForward = forward;
-		adjustedForward.y -= 0.2f;
+
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSEBOX)
+		{
+			adjustedForward.y -= 0.1f;
+		}
+		else
+		{
+			adjustedForward.y -= 0.2f;
+		}
+
 		D3DXVec3Normalize(&adjustedForward, &adjustedForward);
 
 		// 視線との角度を計算

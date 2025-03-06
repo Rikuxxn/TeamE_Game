@@ -64,7 +64,6 @@ void InitPlayer(void)
 	//// 影の設定
 	//g_nIdxShadow = SetShadow(D3DXVECTOR3(g_player.pos.x, g_player.pos.y, g_player.pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-
 	//オフセット考慮
 	for (int nCntOff = 0; nCntOff < g_player.motion.nNumModel; nCntOff++)
 	{
@@ -192,6 +191,7 @@ void UninitPlayer(void)
 //=============================
 void UpdatePlayer(void)
 {
+	MODE pMode = GetMode();
 
 	XINPUT_STATE* pStick = GetJoyStickAngle();
 	Block* pBlock = GetBlock();
@@ -200,7 +200,6 @@ void UpdatePlayer(void)
 	Flags* pFlag = GetFlag();
 
 	bool bEnd = GetEnd();
-	bool bFirstPerson = GetFirstPerson();
 
 	g_player.motion.motionType = MOTIONTYPE_NEUTRAL;
 

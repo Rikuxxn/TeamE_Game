@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include "edit.h"
 #include "meshcylinder.h"
+#include "meshceiling.h"
 
 //グローバル変数
 Editinfo g_Editinfo[MAX_BLOCK];
@@ -36,6 +37,9 @@ void InitEdit(void)
 
     // メッシュフィールドの初期化処理
     InitMeshfield();
+
+    // メッシュシーリングの初期化処理
+    InitMeshCeiling();
 
     // メッシュシリンダーの初期化処理
     InitMeshcylinder();
@@ -150,6 +154,9 @@ void UninitEdit(void)
     //メッシュフィールドの終了処理
     UninitMeshfield();
 
+    //メッシュシーリングの終了処理
+    UninitMeshCeiling();
+
     //メッシュシリンダーの終了処理
     UninitMeshcylinder();
 
@@ -223,6 +230,9 @@ void UpdateEdit(void)
 
     // メッシュフィールドの更新処理
     UpdateMeshfield();
+
+    //メッシュシーリングの更新処理
+    UpdateMeshCeiling();
 
     // メッシュシリンダーの更新処理
     UpdateMeshcylinder();
@@ -434,6 +444,9 @@ void DrawEdit(void)
 
     //メッシュフィールドの描画
     DrawMeshfield();
+
+    //メッシュシーリングの描画処理
+    DrawMeshCeiling();
 
     //メッシュシリンダーの描画
     DrawMeshcylinder();

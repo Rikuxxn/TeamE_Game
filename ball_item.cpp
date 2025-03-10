@@ -165,7 +165,7 @@ void UpdateBallItem(void)
 			if (mouseX >= itemLeft && mouseX <= itemRight &&
 				mouseY >= itemTop && mouseY <= itemBottom)
 			{
-				if (!bHoldingItem && (GetMouseButtonPress(0) || GetJoypadPress(JOYKEY_B) == true))
+				if (!bHoldingItem && (GetMouseButtonTrigger(0) || GetJoypadPress(JOYKEY_B) == true))
 				{
 					if (g_ballitem[nCntItem].bGet == false)
 					{

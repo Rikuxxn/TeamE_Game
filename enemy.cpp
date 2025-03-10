@@ -16,76 +16,124 @@
 // 巡回ポイント配列
 D3DXVECTOR3 patrolPoints[] =
 {
-	D3DXVECTOR3(1000.0f, 0.0f, 110.0f),
-	D3DXVECTOR3(850.0f, 0.0f, 475.0f),
-	D3DXVECTOR3(520.0f, 0.0f, 490.0f),
-	D3DXVECTOR3(220.0f, 0.0f, 675.0f),
-	D3DXVECTOR3(12.0f, 0.0f, 590.0f),
-	D3DXVECTOR3(-190.0f, 0.0f, 635.0f),
 
-	D3DXVECTOR3(-125.0f, 0.0f, 830.0f),
-	D3DXVECTOR3(-225.0f, 0.0f, 830.0f),
-	D3DXVECTOR3(-325.0f, 0.0f, 830.0f),
-	D3DXVECTOR3(-425.0f, 0.0f, 830.0f),
-	D3DXVECTOR3(500.0f, 0.0f, 830.0f),
-	D3DXVECTOR3(550.0f, 0.0f, 830.0f),
-	D3DXVECTOR3(600.0f, 0.0f, 830.0f),
-	D3DXVECTOR3(650.0f, 0.0f, 830.0f),
-	D3DXVECTOR3(700.0f, 0.0f, 830.0f),
+	D3DXVECTOR3(-1050.0f, 0.0f, -800.0f),	// 0
+	D3DXVECTOR3(-1070.0f, 0.0f, -610.0f),	// 1
+	D3DXVECTOR3(-1040.0f, 0.0f, -420.0f),	// 2
+	D3DXVECTOR3(-1030.0f, 0.0f, -200.0f),	// 3
+	D3DXVECTOR3(-1035.0f, 0.0f, -40.0f),	// 4
+	D3DXVECTOR3(-1025.0f, 0.0f, 255.0f),	// 5
+	D3DXVECTOR3(-1015.0f, 0.0f, 515.0f),	// 6
+	D3DXVECTOR3(-975.0f, 0.0f, 805.0f),		// 7
+	D3DXVECTOR3(-750.0f, 0.0f, 855.0f),		// 8
+	D3DXVECTOR3(-485.0f, 0.0f, 850.0f),		// 9
+	D3DXVECTOR3(-180.0f, 0.0f, 850.0f),		// 10
+	D3DXVECTOR3(60.0f, 0.0f, 815.0f),		// 11
+	D3DXVECTOR3(310.0f, 0.0f, 800.0f),		// 12
+	D3DXVECTOR3(700.0f, 0.0f, 765.0f),		// 13
+	D3DXVECTOR3(850.0f, 0.0f, 665.0f),		// 14
+	D3DXVECTOR3(870.0f, 0.0f, 455.0f),		// 15
+	D3DXVECTOR3(970.0f, 0.0f, 430.0f),		// 16
+	D3DXVECTOR3(1000.0f, 0.0f, 270.0f),		// 17
+	D3DXVECTOR3(1000.0f, 0.0f, 110.0f),		// 18
+	D3DXVECTOR3(620.0f, 0.0f, 140.0f),		// 19
+	D3DXVECTOR3(345.0f, 0.0f, 200.0f),		// 20
+	D3DXVECTOR3(155.0f, 0.0f, 225.0f),		// 21
+	D3DXVECTOR3(105.0f, 0.0f, -40.0f),		// 22
+	D3DXVECTOR3(130.0f, 0.0f, -330.0f),		// 23
+	D3DXVECTOR3(-35.0f, 0.0f, -260.0f),		// 24
+	D3DXVECTOR3(-30.0f, 0.0f, -435.0f),		// 25
+	D3DXVECTOR3(20.0f, 0.0f, -655.0f),		// 26
+	D3DXVECTOR3(-15.0f, 0.0f, -790.0f),		// 27
+	D3DXVECTOR3(-320.0f, 0.0f, -815.0f),	// 28
+	D3DXVECTOR3(-525.0f, 0.0f, -805.0f),	// 29
+	D3DXVECTOR3(-795.0f, 0.0f, -795.0f),	// 30
+	D3DXVECTOR3(-705.0f, 0.0f, -435.0f),	// 31
+	D3DXVECTOR3(-520.0f, 0.0f, -405.0f),	// 32
+	D3DXVECTOR3(-435.0f, 0.0f, -410.0f),	// 33
+	D3DXVECTOR3(-230.0f, 0.0f, -430.0f),	// 34
+	D3DXVECTOR3(-695.0f, 0.0f, -40.0f),		// 35
+	D3DXVECTOR3(-460.0f, 0.0f, -50.0f),		// 36
+	D3DXVECTOR3(-225.0f, 0.0f, -50.0f),		// 37
+	D3DXVECTOR3(-230.0f, 0.0f, -185.0f),	// 38
+	D3DXVECTOR3(-875.0f, 0.0f, 240.0f),		// 39
+	D3DXVECTOR3(-690.0f, 0.0f, 305.0f),		// 40
+	D3DXVECTOR3(-690.0f, 0.0f, 505.0f),		// 41
+	D3DXVECTOR3(-565.0f, 0.0f, 505.0f),		// 42
+	D3DXVECTOR3(-430.0f, 0.0f, 490.0f),		// 43
+	D3DXVECTOR3(-360.0f, 0.0f, 290.0f),		// 44
+	D3DXVECTOR3(-555.0f, 0.0f, 315.0f),		// 45
+	D3DXVECTOR3(-120.0f, 0.0f, 265.0f),		// 46
+	D3DXVECTOR3(-120.0f, 0.0f, 455.0f),		// 47
+	D3DXVECTOR3(655.0f, 0.0f, 435.0f),		// 48
+	D3DXVECTOR3(360.0f, 0.0f, 480.0f),		// 49
+	D3DXVECTOR3(-225.0f, 0.0f, 580.0f),		// 50
+	D3DXVECTOR3(-520.0f, 0.0f, -615.0f),	// 51
 
-	D3DXVECTOR3(830.0f, 0.0f, 655.0f),
-	D3DXVECTOR3(850.0f, 0.0f, 475.0f),
-
-	D3DXVECTOR3(-975.0f, 0.0f, 860.0f),
-	D3DXVECTOR3(-1000.0f, 0.0f, 530.0f),
-	D3DXVECTOR3(-1015.0f, 0.0f, 260.0f),
-	D3DXVECTOR3(-1060.0f, 0.0f, 135.0f),
-
-	D3DXVECTOR3(-1055.0f, 0.0f, -25.0f),
-	D3DXVECTOR3(-1025.0f, 0.0f, -225.0f),
-	D3DXVECTOR3(-1025.0f, 0.0f, -420.0f),
-	D3DXVECTOR3(-1080.0f, 0.0f, -600.0f),
-	D3DXVECTOR3(-1075.0f, 0.0f, -805.0f),
-	D3DXVECTOR3(-785.0f, 0.0f, -800.0f),
-	D3DXVECTOR3(-525.0f, 0.0f, -800.0f),
-	D3DXVECTOR3(-335.0f, 0.0f, -800.0f),
-	D3DXVECTOR3(45.0f, 0.0f, -730.0f),
-	D3DXVECTOR3(378.0f, 0.0f, -705.0f),
-	D3DXVECTOR3(495.0f, 0.0f, -670.0f),
-	D3DXVECTOR3(475.0f, 0.0f, -420.0f),
-	D3DXVECTOR3(570.0f, 0.0f, -235.0f),
-	D3DXVECTOR3(830.0f, 0.0f, -140.0f),
-	D3DXVECTOR3(840.0f, 0.0f, -265.0f),
-	D3DXVECTOR3(935.0f, 0.0f, -365.0f),
-	D3DXVECTOR3(985.0f, 0.0f, -495.0f),
-	D3DXVECTOR3(1055.0f, 0.0f, -720.0f),
-	D3DXVECTOR3(765.0f, 0.0f, -715.0f),
-	D3DXVECTOR3(495.0f, 0.0f, -670.0f),
-	D3DXVECTOR3(45.0f, 0.0f, -730.0f),
-	D3DXVECTOR3(25.0f, 0.0f, -445.0f),
-	D3DXVECTOR3(-225.0f, 0.0f, -425.0f),
-
-	D3DXVECTOR3(-710.0f, 0.0f, -420.0f),
-	D3DXVECTOR3(-455.0f, 0.0f, -425.0f),
-	D3DXVECTOR3(-225.0f, 0.0f, -425.0f),
-	D3DXVECTOR3(-225.0f, 0.0f, -35.0f),
-	D3DXVECTOR3(-455.0f, 0.0f, -35.0f),
-	D3DXVECTOR3(-705.0f, 0.0f, -35.0f),
-	D3DXVECTOR3(-1055.0f, 0.0f, -25.0f),
-	D3DXVECTOR3(-1015.0f, 0.0f, 260.0f),
-	D3DXVECTOR3(-700.0f, 0.0f, 300.0f),
-	D3DXVECTOR3(-695.0f, 0.0f, 510.0f),
-	D3DXVECTOR3(-415.0f, 0.0f, 510.0f),
-	D3DXVECTOR3(-410.0f, 0.0f, 295.0f),
-	D3DXVECTOR3(30.0f, 0.0f, 270.0f),
-	D3DXVECTOR3(465.0f, 0.0f, 204.0f),
-	D3DXVECTOR3(680.0f, 0.0f, 115.0f),
 };
 
+// 各巡回ポイントから行ける次のポイント（-1 は接続なし）
+int patrolGraph[NUM_PATROL_POINTS][MAX_CONNECTIONS] = 
+{
+	{1, -1, -1},	// 0 → 1
+	{2, -1, -1},	// 1 → 2
+	{3, 31, -1},	// 2 → 3 or 31 (分岐)
+	{4, -1, -1},	// 3 → 4
+	{5, 35, -1},	// 4 → 5 or 35 (分岐)
+	{6, -1, -1},	// 5 → 6 or 39 (分岐)
+	{7, -1, -1},	// 6 → 7
+	{8, -1, -1},	// 7 → 8
+	{9, -1, -1},	// 8 → 9
+	{10, -1, -1},	// 9 → 10
+	{11, 50, -1},	// 10 → 11 or 50 (分岐)
+	{12, -1, -1},	// 11 → 12
+	{13, -1, -1},	// 12 → 13
+	{14, 49, -1},	// 13 → 14
+	{15, -1, -1},	// 14 → 15
+	{16, 48, -1},	// 15 → 16 or 48 (分岐)
+	{17, -1, -1},	// 16 → 17
+	{18, -1, -1},	// 17 → 18
+	{19, -1, -1},	// 18 → 19
+	{20, -1, -1},	// 19 → 20
+	{21, -1, -1},	// 20 → 21
+	{22, -1, -1},	// 21 → 22
+	{23, -1, -1},	// 22 → 23
+	{24, 25, -1},	// 23 → 24 or 25 (分岐)
+	{23, -1, -1},	// 24 → 23
+	{26, -1, -1},	// 25 → 26
+	{27, -1, -1},	// 26 → 27
+	{28, -1, -1},	// 27 → 28
+	{29, -1, -1},	// 28 → 29
+	{30, -1, -1},	// 29 → 30
+	{0, -1, -1},	// 30 → 0
+	{32, 32, -1},	// 31 → 32
+	{33, 51, -1},	// 32 → 33 or 51 (分岐)
+	{34, -1, -1},	// 33 → 34
+	{25, -1, -1},	// 34 → 25
+	{36, -1, -1},	// 35 → 36
+	{37, -1, -1},	// 36 → 37
+	{38, -1, -1},	// 37 → 38
+	{34, -1, -1},	// 38 → 34
+	{40, -1, -1},	// 39 → 40
+	{41, 45, -1},	// 40 → 41 or 45 (分岐)
+	{42, -1, -1},	// 41 → 42
+	{43, -1, -1},	// 42 → 43
+	{44, -1, -1},	// 43 → 44
+	{46, -1, -1},	// 44 → 46
+	{44, -1, -1},	// 45 → 44
+	{21, -1, -1},	// 46 → 21
+	{46, -1, -1},	// 47 → 46
+	{49, -1, -1},	// 48 → 49
+	{21, -1, -1},	// 49 → 21
+	{47, -1, -1},	// 50 → 47
+	{29, -1, -1},	// 51 → 29
+
+};
 
 // グローバル変数
 Enemy g_aEnemy;						// 敵情報
 bool g_bEnd;						// 捕まった判定
+bool g_bEndMotion;
 bool Inside;						// 視界に入ったか
 bool isPlayerInSightPrev;
 bool isReversePatrol;				// 巡回の方向（false: 順回り, true: 逆回り）
@@ -114,16 +162,18 @@ void InitEnemy(void)
     g_aEnemy.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	//前の位置を初期化する
 	g_aEnemy.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     g_aEnemy.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//移動量を初期化する
-    g_aEnemy.enemymotion.bLoopMotion = true;
+    g_aEnemy.enemymotion.bLoopMotion = false;
     g_aEnemy.enemymotion.nCounterMotion = 0;
 	g_aEnemy.RadiusEnemy = D3DXVECTOR3(10.0f, 10.0f, 10.0f);
 	g_aEnemy.posRadiusEnemy = D3DXVECTOR3(50.0f, 50.0f, 50.0f);
 	g_aEnemy.state = ENEMYSTATE_PATROLLING;
 	g_aEnemy.bUse = false;
 	g_aEnemy.bCaughtSound = false;
-	g_aEnemy.sightRange = 310.0f;							//視界距離
+	g_aEnemy.sightRange = 340.0f;							//視界距離
 	g_aEnemy.sightAngle = D3DXToRadian(90.0f);				//視界範囲
+	g_aEnemy.nEndCnt = 0;
 	g_bEnd = false;
+	g_bEndMotion = false;
 	Inside = false;
 	isPlayerInSightPrev = false;
 	isReversePatrol = false;
@@ -297,7 +347,7 @@ void UpdateEnemy(void)
 
 
 		D3DXVECTOR3 PlayerRadius(40.0f, 40.0f, 40.0f);				// 捕まる距離
-		D3DXVECTOR3 PlayerInsightRadius(80.0f, 80.0f, 80.0f);		// バレる距離
+		D3DXVECTOR3 PlayerInsightRadius(120.0f, 120.0f, 120.0f);		// バレる距離
 		D3DXVECTOR3 SoundRadius1(600.0f, 600.0f, 600.0f);			// 心音の鳴る距離
 
 		float fDistance =
@@ -321,8 +371,20 @@ void UpdateEnemy(void)
 			}
 			pPlayer->pos = pPlayer->posOld;
 			g_aEnemy.pos = g_aEnemy.posOld;
+			g_bEndMotion = true;
+		}
+
+		if (g_bEndMotion == true)
+		{
 			g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_ACTION;
-			g_bEnd = true;
+
+			g_aEnemy.nEndCnt++;
+
+			//キルモーションが終わったら
+			if (g_aEnemy.nEndCnt >= 240)
+			{
+				g_bEnd = true;
+			}
 		}
 
 		float fDistance2 =
@@ -357,16 +419,6 @@ void UpdateEnemy(void)
 
 		bool SoundRangeNow = (fDistanceSound1 <= fRadiusSound1);
 
-		//// 一人称ライトを点滅させる
-		//if (fDistanceSound1 <= fRadiusSound1)
-		//{
-		//	UpdateLightPlayerBlinking(0.016f);
-		//}
-		//else
-		//{
-		//	ResetLight();
-		//}
-
 		// intervalを距離に応じて変化させる
 		float dynamicInterval = maxInterval;
 
@@ -375,7 +427,6 @@ void UpdateEnemy(void)
 			float t = (distance - closeDistance) / (farDistance - closeDistance);	// 0.0 ~ 1.0 の範囲に正規化
 			t = max(0.0f, min(1.0f, t));											// 範囲を超えないように
 			dynamicInterval = minInterval + (maxInterval - minInterval) * t;		// 線形補間
-
 		}
 
 		// 範囲内にいる間は一定間隔で音を鳴らす
@@ -720,6 +771,29 @@ int GetNearestPatrolPoint(D3DXVECTOR3 currentPos)
 
 	return nearestPoint; // 最も近い巡回ポイントのインデックスを返す
 }
+//===========================================================
+// ランダムな次の巡回ポイントを取得
+//===========================================================
+int GetNextPatrolPoint(int currentPoint) 
+{
+	int options[MAX_CONNECTIONS];
+	int count = 0;
+
+	// 有効な巡回ポイントをリストアップ
+	for (int i = 0; i < MAX_CONNECTIONS; i++) {
+		if (patrolGraph[currentPoint][i] != -1) {
+			options[count++] = patrolGraph[currentPoint][i];
+		}
+	}
+
+	// ランダムで次のポイントを選択
+	if (count > 0) {
+		int randomIndex = rand() % count;
+		return options[randomIndex];
+	}
+
+	return currentPoint; // もし移動できるポイントがなければ現在地を返す
+}
 //======================================================
 // 巡回処理
 //======================================================
@@ -727,10 +801,11 @@ void Patrol(void)
 {
 	g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_NEUTRAL;
 
-	float moveSpeed = 0.0f;
+	float moveSpeed = 0.4f; // 巡回速度
 	float distanceToTarget = 0.0f;
 	float angleToTarget = 0.0f;
-	float fAngle = 0.0f;
+
+	float rotationSpeed = 0.1f; // 回転速度（0.1f ～ 0.2f くらいが適切）
 
 	D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
 
@@ -740,18 +815,16 @@ void Patrol(void)
 	distanceToTarget = sqrtf
 	(
 		(target.x - g_aEnemy.pos.x) * (target.x - g_aEnemy.pos.x) +
-		(target.y - g_aEnemy.pos.y) * (target.y - g_aEnemy.pos.y) +
 		(target.z - g_aEnemy.pos.z) * (target.z - g_aEnemy.pos.z)
 	);
 
-	if (currentPatrolPoint < 0 || currentPatrolPoint >= sizeof(patrolPoints) / sizeof(patrolPoints[0]))
-	{
-		currentPatrolPoint = 0; // 範囲外アクセスを防ぐ
-	}
+	//// 目標角度の計算
+	//float fAngleToTarget = atan2f(target.x - g_aEnemy.pos.x, target.z - g_aEnemy.pos.z);
+
+	//// **現在の角度を滑らかに補間する**
+	//g_aEnemy.rot.y += (fAngleToTarget - g_aEnemy.rot.y) * rotationSpeed;
 
 	// 近づく
-	moveSpeed = 0.4f; // 巡回速度
-
 	if (distanceToTarget > 5.0f)
 	{ // 到達判定
 		angleToTarget = atan2f(target.x - g_aEnemy.pos.x, target.z - g_aEnemy.pos.z);
@@ -759,24 +832,14 @@ void Patrol(void)
 		g_aEnemy.move.z += cosf(angleToTarget) * moveSpeed;
 
 		g_aEnemy.rot.y = angleToTarget + D3DX_PI;
+
+		//g_aEnemy.move.x += sinf(g_aEnemy.rot.y) * moveSpeed;
+		//g_aEnemy.move.z += cosf(g_aEnemy.rot.y) * moveSpeed;
 	}
 	else
 	{
-		// 一定確率で逆回りに切り替える
-		if (rand() % 100 < 25) // 25%の確率で方向を切り替える
-		{
-			isReversePatrol = !isReversePatrol;
-		}
-
-		// 巡回ポイントの更新
-		if (isReversePatrol)
-		{
-			currentPatrolPoint = (currentPatrolPoint - 1 + (sizeof(patrolPoints) / sizeof(patrolPoints[0]))) % (sizeof(patrolPoints) / sizeof(patrolPoints[0]));
-		}
-		else
-		{
-			currentPatrolPoint = (currentPatrolPoint + 1) % (sizeof(patrolPoints) / sizeof(patrolPoints[0]));
-		}
+		// 到達したら次のポイントをランダムに選択
+		currentPatrolPoint = GetNextPatrolPoint(currentPatrolPoint);
 	}
 
 	// プレイヤーを視界内で検出したら追跡に切り替える
@@ -859,6 +922,13 @@ void Search(void)
 bool GetEnd(void)
 {
 	return g_bEnd;
+}
+//======================================================
+// キルモーション判定
+//======================================================
+bool GetEndMotion(void)
+{
+	return g_bEndMotion;
 }
 //======================================================
 // 視界に入ったか判定

@@ -23,6 +23,8 @@ Block g_aBlock[MAX_BLOCK];		// ブロック情報
 Block g_info[BLOCKTYPE_MAX];	// ブロックの素材情報
 Flags g_flag;					// フラグ情報
 
+bool bSetEnemy;
+
 //=============================
 // ブロックの初期化処理
 //=============================
@@ -61,6 +63,8 @@ void InitBlock(void)
 	g_flag.bSet = false;
 	g_flag.bSet2 = false;
 	g_flag.bSet3 = false;
+
+	bSetEnemy = false;
 
 	for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
 	{
@@ -266,9 +270,28 @@ void UpdateBlock(void)
 					g_flag.bFuseCmp = true;
 					g_aBlock[nCntBlock].bUse = false;
 					SetBlock(D3DXVECTOR3(1140.0f, 80.0f, 250.0f), D3DXVECTOR3(0.0f, 1.57f, 0.0f), BLOCKTYPE_FUSEBOX_CMP);
-
 					//g_flag.bFog = false; // フラグを変更
 				}
+			}
+
+			//  ヒューズボックスにヒューズをはめたら ピエロ像を消して敵を設定
+			if (g_flag.bFuseCmp == true)
+			{
+				if (g_aBlock[nCntBlock].nType == BLOCKTYPE_CLOWN)
+				{
+					g_aBlock[nCntBlock].bUse = false;
+				}
+
+				if (bSetEnemy == false)
+				{
+					PlaySound(SOUND_LABEL_INSIGHT);
+
+					// 敵の設定
+					SetEnemy(D3DXVECTOR3(-1050.0f, 0.0f, -800.0f));
+
+					bSetEnemy = true;
+				}
+
 			}
 
 			// ボールプールをクリアしたら
@@ -536,7 +559,8 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 			else
 			{
 				if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BEAR || g_aBlock[nCntBlock].nType == BLOCKTYPE_BALL ||
-					g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE || g_aBlock[nCntBlock].nType == BLOCKTYPE_PARK_BOARD)
+					g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE || g_aBlock[nCntBlock].nType == BLOCKTYPE_SLIDE_TOP || 
+					g_aBlock[nCntBlock].nType == BLOCKTYPE_CLOWN)
 				{
 					continue;
 				}
@@ -807,6 +831,14 @@ void CheckBlocksInCenter(void)
 		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSEBOX)
 		{
 			adjustedForward.y -= 0.1f;
+		}
+		else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_UFOCATCHER1)
+		{
+			adjustedForward.y -= 0.5f;
+		}
+		else if (g_aBlock[nCntBlock].nType == BLOCKTYPE_ARCADE1)
+		{
+			adjustedForward.y -= 0.5f;
 		}
 		else
 		{

@@ -56,7 +56,7 @@ D3DXVECTOR3 patrolPoints[] =
 	D3DXVECTOR3(-460.0f, 0.0f, -50.0f),		// 36
 	D3DXVECTOR3(-225.0f, 0.0f, -50.0f),		// 37
 	D3DXVECTOR3(-230.0f, 0.0f, -185.0f),	// 38
-	D3DXVECTOR3(-875.0f, 0.0f, 240.0f),		// 39
+	D3DXVECTOR3(-895.0f, 0.0f, 240.0f),		// 39
 	D3DXVECTOR3(-690.0f, 0.0f, 305.0f),		// 40
 	D3DXVECTOR3(-690.0f, 0.0f, 505.0f),		// 41
 	D3DXVECTOR3(-565.0f, 0.0f, 505.0f),		// 42
@@ -69,6 +69,15 @@ D3DXVECTOR3 patrolPoints[] =
 	D3DXVECTOR3(360.0f, 0.0f, 480.0f),		// 49
 	D3DXVECTOR3(-225.0f, 0.0f, 580.0f),		// 50
 	D3DXVECTOR3(-520.0f, 0.0f, -615.0f),	// 51
+	D3DXVECTOR3(185.0f, 0.0f, -700.0f),		// 52
+	D3DXVECTOR3(380.0f, 0.0f, -710.0f),		// 53
+	D3DXVECTOR3(480.0f, 0.0f, -700.0f),		// 54
+	D3DXVECTOR3(470.0f, 0.0f, -465.0f),		// 55
+	D3DXVECTOR3(520.0f, 0.0f, -120.0f),		// 56
+	D3DXVECTOR3(690.0f, 0.0f, -120.0f),		// 57
+	D3DXVECTOR3(245.0f, 0.0f, -380.0f),		// 58
+	D3DXVECTOR3(280.0f, 0.0f, -130.0f),		// 59
+	D3DXVECTOR3(305.0f, 0.0f, -600.0f),		// 60
 
 };
 
@@ -127,6 +136,15 @@ int patrolGraph[NUM_PATROL_POINTS][MAX_CONNECTIONS] =
 	{21, -1, -1},	// 49 → 21
 	{47, -1, -1},	// 50 → 47
 	{29, -1, -1},	// 51 → 29
+	{26, -1, -1},	// 52 → 26
+	{52, -1, -1},	// 53 → 52
+	{53, -1, -1},	// 54 → 53
+	{54, -1, -1},	// 55 → 54
+	{55, -1, -1},	// 56 → 55
+	{57, -1, -1},	// 57 → 56
+	{25, -1, -1},	// 58 → 25
+	{22, -1, -1},	// 59 → 22
+	{52, -1, -1},	// 60 → 52
 
 };
 
@@ -780,14 +798,17 @@ int GetNextPatrolPoint(int currentPoint)
 	int count = 0;
 
 	// 有効な巡回ポイントをリストアップ
-	for (int i = 0; i < MAX_CONNECTIONS; i++) {
-		if (patrolGraph[currentPoint][i] != -1) {
+	for (int i = 0; i < MAX_CONNECTIONS; i++) 
+	{
+		if (patrolGraph[currentPoint][i] != -1) 
+		{
 			options[count++] = patrolGraph[currentPoint][i];
 		}
 	}
 
 	// ランダムで次のポイントを選択
-	if (count > 0) {
+	if (count > 0) 
+	{
 		int randomIndex = rand() % count;
 		return options[randomIndex];
 	}

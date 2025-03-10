@@ -12,7 +12,7 @@
 #include "motion.h"
 #include "meshfield.h"
 
-#define NUM_PATROL_POINTS (52)  // 巡回ポイントの最大数
+#define NUM_PATROL_POINTS (61)  // 巡回ポイントの最大数
 #define MAX_CONNECTIONS (3) // 分岐の数
 typedef enum 
 {

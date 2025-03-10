@@ -7,26 +7,21 @@
 #include "game.h"
 #include "player.h"
 #include "input.h"
-//#include "ranking.h"
 #include "title.h"
 #include "game.h"
 #include "result.h"
 #include "fade.h"
 #include "pause.h"
-//#include "particle.h"
-//#include "effect.h"
 #include "camera.h"
 #include "warning.h"
 #include "light.h"
 #include "meshfield.h"
-//#include "rankingscore.h"
 #include "model.h"
 #include "enemy.h"
 #include "meshcylinder.h"
 #include "block.h"
 #include "edit.h"
 #include "meshceiling.h"
-//#include "sound.h"
 #include "guage.h"
 #include "shooting_game.h"
 #include "password_game.h"
@@ -188,10 +183,6 @@ void InitGame(void)
 
 	// === プレイヤーの目線からライトを出す ===
 	AddLightPlayer(D3DLIGHT_SPOT, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
-
-	// 敵
-	SetEnemy(D3DXVECTOR3(1000.0f, 0.0f, 160.0f));
 
 
 	//ポーズの初期化処理
@@ -379,9 +370,10 @@ void UpdateGame(void)
 	Camera* pCamera = GetCamera();
 
 	bool bEnd = GetEnd();
+	bool bEndMotion = GetEndMotion();
 
 	// ミニゲーム中はポーズを開けないようにする
-	if (/*g_Game.bMini == false &&*/ g_Game.bMap == false && (KeyboardTrigger(DIK_TAB) == true || JoyPadTrigger(JOYKEY_START) == true))
+	if (bEndMotion == false && g_Game.bMap == false && (KeyboardTrigger(DIK_TAB) == true || JoyPadTrigger(JOYKEY_START) == true))
 	{
 		g_bPause = g_bPause ? false : true;
 		SetDraw(false);
@@ -481,7 +473,7 @@ void UpdateGame(void)
 
 
 		// マップを開けるのはミニゲームがどちらも動いていない場合のみ
-		if (g_Game.bMini == false && g_Game.bDraw == false && g_Game.bDraw2 == false &&
+		if (bEndMotion == false && g_Game.bMini == false && g_Game.bDraw == false && g_Game.bDraw2 == false &&
 			g_Game.bDraw3 == false && g_Game.bDraw4 == false &&
 			g_Game.bBallHint == false && g_Game.bCraneHint == false &&
 			(KeyboardTrigger(DIK_C) == true || JoyPadTrigger(JOYKEY_BACK) == true))
@@ -701,11 +693,8 @@ void UpdateGame(void)
 		UpdateMap();
 	}
 
-
-	if ((pPlayer->bDisp == false || pFlag->bExit == true || bEnd  == true) && g_gameState != GAMESTATE_NONE)
+	if (bEndMotion == true)
 	{
-		//モード設定(リザルト画面に移行)
- 		g_gameState = GAMESTATE_END;
 		g_Game.bDraw = false;
 		g_Game.bDraw2 = false;
 		g_Game.bDraw3 = false;
@@ -713,6 +702,19 @@ void UpdateGame(void)
 		g_Game.bMap = false;
 		g_Game.bBallHint = false;
 		g_Game.bCraneHint = false;
+	}
+
+	if ((pPlayer->bDisp == false || pFlag->bExit == true || bEnd  == true) && g_gameState != GAMESTATE_NONE)
+	{
+		//モード設定(リザルト画面に移行)
+ 		g_gameState = GAMESTATE_END;
+		//g_Game.bDraw = false;
+		//g_Game.bDraw2 = false;
+		//g_Game.bDraw3 = false;
+		//g_Game.bDraw4 = false;
+		//g_Game.bMap = false;
+		//g_Game.bBallHint = false;
+		//g_Game.bCraneHint = false;
 	}
 
 	//nTime = GetTime();

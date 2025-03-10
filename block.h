@@ -61,6 +61,10 @@ typedef enum
 	BLOCKTYPE_BEAR,
 	BLOCKTYPE_EXIT2,
 	BLOCKTYPE_CLEAR,
+	BLOCKTYPE_FENCE,
+	BLOCKTYPE_PEDESTAL,
+	BLOCKTYPE_CLOWN,
+	BLOCKTYPE_BLOCKS,
 
 	BLOCKTYPE_MAX
 }BLOCKTYPE;
@@ -158,6 +162,10 @@ static const char* BLOCK[BLOCKTYPE_MAX] =
 	"data/MODEL/bear.x",								// くまさん
 	"data/MODEL/exit.x",								// 出口ドア右
 	"data/MODEL/clear_block.x",							// クリア判定ブロック
+	"data/MODEL/fence.x",								// 柵
+	"data/MODEL/pedestal.x",							// 台座
+	"data/MODEL/clown_figure.x",						// ピエロ像
+	"data/MODEL/blocks.x",								// ブロックの塊
 
 };
 

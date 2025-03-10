@@ -12,11 +12,8 @@
 #include "motion.h"
 #include "meshfield.h"
 
-//#define MAP_WIDTH (48)   // 2400 / 50 (グリッドの幅)
-//#define MAP_HEIGHT (40)  // 2000 / 50 (グリッドの高さ)
-//#define GRID_SIZE (50.0f)   // 1セルのサイズ（ピクセル）
-//#define MAX_NODES (1000) // A* のノード上限
-
+#define NUM_PATROL_POINTS (52)  // 巡回ポイントの最大数
+#define MAX_CONNECTIONS (3) // 分岐の数
 typedef enum 
 {
     ENEMYSTATE_PATROLLING,     // 巡回中
@@ -42,6 +39,7 @@ typedef struct
     D3DXVECTOR3 RadiusEnemy, posRadiusEnemy;
     bool bUse;
     bool bCaughtSound;
+    int nEndCnt;
 }Enemy;
 
 // A*のノード構造体
@@ -66,6 +64,7 @@ Enemy* GetEnemy(void);
 
 bool isPlayerInSight(void);
 bool GetEnd(void);
+bool GetEndMotion(void);
 bool GetInside(void);
 
 #endif

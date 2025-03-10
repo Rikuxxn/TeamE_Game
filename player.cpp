@@ -199,16 +199,12 @@ void UpdatePlayer(void)
 	GAME* pGame = GetGame();
 	Flags* pFlag = GetFlag();
 
-	bool bEnd = GetEnd();
+	//bool bEnd = GetEnd();
+	bool bEndMotion = GetEndMotion();
 
 	g_player.motion.motionType = MOTIONTYPE_NEUTRAL;
 
-	if (bEnd == true)
-	{
-		g_player.motion.motionType = MOTIONTYPE_NEUTRAL;
-	}
-
-	if (pFlag->bExit == false && g_player.bDisp == true && bEnd == false && pGame->bDraw == false &&
+	if (pFlag->bExit == false && g_player.bDisp == true && bEndMotion == false && pGame->bDraw == false &&
 		pGame->bDraw2 == false && pGame->bDraw3 == false && pGame->bDraw4 == false && pGame->bBallHint == false && 
 		pGame->bCraneHint == false && pGame->bMap == false)
 	{

@@ -61,14 +61,15 @@ void UpdateCamera(void)
 	Block* pBlock = GetBlock();
 	Flags* pFlag = GetFlag();
 	Enemy* pEnemy = GetEnemy();
-	bool bEnd = GetEnd();
+	//bool bEnd = GetEnd();
+	bool bEndMotion = GetEndMotion();
 
 	float fAngleA = sqrtf(((g_camera.posR.x - pPlayer->pos.x) * (g_camera.posR.x - pPlayer->pos.x)) + ((g_camera.posR.y - pPlayer->pos.y) * (g_camera.posR.y - pPlayer->pos.y)) + ((g_camera.posR.z - pPlayer->pos.z) * (g_camera.posR.z - pPlayer->pos.z)));
 
 	XINPUT_STATE* pStick;
 	pStick = GetJoyStickAngle();
 
-	if (pMode == MODE_GAME && pFlag->bExit == false && bEnd == false)
+	if (pMode == MODE_GAME && pFlag->bExit == false && bEndMotion == false)
 	{
 		// マウスの状態を取得
 		DIMOUSESTATE mouseState;
@@ -159,16 +160,17 @@ void UpdateCamera(void)
 	}
 
 	// 滑らかに補間するための補間係数
-	const float smoothFactor = 0.004f;
+	const float smoothFactor = 0.005f;
 
 	// 敵に捕まった
-	if (pMode == MODE_GAME && bEnd == true)
+	if (pMode == MODE_GAME && pFlag->bExit == false && bEndMotion == true)
 	{
 		Enemy* pEnemy = GetEnemy();
 
 		// カメラの位置（プレイヤーの視点を少し高く）
 		g_camera.posV = pPlayer->pos;
-		g_camera.posV.y += 70.0f;  // ← ここを調整
+		g_camera.posV.y += 50.0f;  // ← ここを調整
+		//g_camera.posV.x -= 50.0f;  // ← ここを調整
 
 		// 敵の位置を注視点の目標値にする（少し上にする）
 		D3DXVECTOR3 targetPosR = pEnemy->pos;

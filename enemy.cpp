@@ -78,6 +78,7 @@ D3DXVECTOR3 patrolPoints[] =
 	D3DXVECTOR3(245.0f, 0.0f, -380.0f),		// 58
 	D3DXVECTOR3(280.0f, 0.0f, -130.0f),		// 59
 	D3DXVECTOR3(305.0f, 0.0f, -600.0f),		// 60
+	D3DXVECTOR3(-935.0f, 0.0f, 90.0f),		// 61
 
 };
 
@@ -145,6 +146,7 @@ int patrolGraph[NUM_PATROL_POINTS][MAX_CONNECTIONS] =
 	{25, -1, -1},	// 58 → 25
 	{22, -1, -1},	// 59 → 22
 	{52, -1, -1},	// 60 → 52
+	{4, -1, -1},	// 61 → 4
 
 };
 

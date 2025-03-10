@@ -61,7 +61,6 @@ void UpdateCamera(void)
 	Block* pBlock = GetBlock();
 	Flags* pFlag = GetFlag();
 	Enemy* pEnemy = GetEnemy();
-	//bool bEnd = GetEnd();
 	bool bEndMotion = GetEndMotion();
 
 	float fAngleA = sqrtf(((g_camera.posR.x - pPlayer->pos.x) * (g_camera.posR.x - pPlayer->pos.x)) + ((g_camera.posR.y - pPlayer->pos.y) * (g_camera.posR.y - pPlayer->pos.y)) + ((g_camera.posR.z - pPlayer->pos.z) * (g_camera.posR.z - pPlayer->pos.z)));
@@ -74,6 +73,7 @@ void UpdateCamera(void)
 		// マウスの状態を取得
 		DIMOUSESTATE mouseState;
 
+		// ゲームパッド右スティックカメラ操作
 		if (pStick != NULL) 
 		{
 			// 右スティックの値を取得
@@ -169,12 +169,12 @@ void UpdateCamera(void)
 
 		// カメラの位置（プレイヤーの視点を少し高く）
 		g_camera.posV = pPlayer->pos;
-		g_camera.posV.y += 50.0f;  // ← ここを調整
-		//g_camera.posV.x -= 50.0f;  // ← ここを調整
+		g_camera.posV.y += 50.0f;  //  ここを調整
+		//g_camera.posV.x -= 50.0f;  //  
 
-		// 敵の位置を注視点の目標値にする（少し上にする）
+		// 敵の位置を注視点の目標値にする
 		D3DXVECTOR3 targetPosR = pEnemy->pos;
-		targetPosR.y += 100.0f;  // ← ここを調整
+		targetPosR.y += 100.0f;  // ここを調整
 
 		// 敵の方向ベクトルを計算
 		D3DXVECTOR3 direction = targetPosR - g_camera.posV;

@@ -57,7 +57,7 @@ D3DXVECTOR3 patrolPoints[] =
 	D3DXVECTOR3(-225.0f, 0.0f, -50.0f),		// 37
 	D3DXVECTOR3(-230.0f, 0.0f, -185.0f),	// 38
 	D3DXVECTOR3(-895.0f, 0.0f, 240.0f),		// 39
-	D3DXVECTOR3(-690.0f, 0.0f, 305.0f),		// 40
+	D3DXVECTOR3(-710.0f, 0.0f, 305.0f),		// 40
 	D3DXVECTOR3(-690.0f, 0.0f, 505.0f),		// 41
 	D3DXVECTOR3(-565.0f, 0.0f, 505.0f),		// 42
 	D3DXVECTOR3(-430.0f, 0.0f, 490.0f),		// 43

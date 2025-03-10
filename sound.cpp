@@ -49,6 +49,7 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/BGM/titleBGM.wav", -1},			// ƒ^ƒCƒgƒ‹BGM
 	{"data/SE/insight.wav", 0},				// ƒvƒŒƒCƒ„[‚ğ”­Œ©
 	{"data/SE/wandering.wav", 0},			// “G‚ªœpœj‚µ‚Ä‚¢‚é‚Æ‚«‚Ì‰¹
+	{"data/SE/enemy_attack.wav", 0},		// “G‚ÌUŒ‚
 	{"data/SE/enemycaught.wav", 0},			// “G‚É•ß‚Ü‚Á‚½
 	{"data/SE/footstep_enemy.wav", 0},		// “G‚Ì‘«‰¹SE
 	{"data/SE/footstep_enemy2.wav", 0},		// “G‚Ì‘«‰¹SE2

@@ -246,9 +246,24 @@ void UpdatePlayer(void)
 			// 移動方向反転
 			moveZ = -moveZ;
 
-			// プレイヤーの移動更新
-			g_player.move.x += moveX * PLAYER_SPEED;
-			g_player.move.z += moveZ * PLAYER_SPEED;
+			if (GetJoypadPress(JOYKEY_RB) == true && g_player.fDush >= 0 &&
+				g_player.fDush > 0 && g_player.bEmpty == false)
+			{
+				g_player.fDush--;
+				g_player.bDush = true;
+				g_player.nDrawDush = 0;
+				g_player.bDrawDush = true;
+
+				// プレイヤーの移動更新
+				g_player.move.x += moveX * PLAYER_DUSHSPEED;
+				g_player.move.z += moveZ * PLAYER_DUSHSPEED;
+			}
+			else
+			{
+				// プレイヤーの移動更新
+				g_player.move.x += moveX * PLAYER_SPEED;
+				g_player.move.z += moveZ * PLAYER_SPEED;
+			}
 
 			// プレイヤーの向きを更新
 			g_player.rotDestPlayer.y = atan2f(-moveX, -moveZ);

@@ -13,7 +13,6 @@
 #include "fade.h"
 #include "pause.h"
 #include "camera.h"
-#include "warning.h"
 #include "light.h"
 #include "meshfield.h"
 #include "model.h"
@@ -695,6 +694,10 @@ void UpdateGame(void)
 
 	if (bEndMotion == true)
 	{
+		StopSound(SOUND_LABEL_CRANEMOVE);
+		StopSound(SOUND_LABEL_CRANEUP);
+		StopSound(SOUND_LABEL_CRANEDOWN);
+
 		g_Game.bDraw = false;
 		g_Game.bDraw2 = false;
 		g_Game.bDraw3 = false;
@@ -708,13 +711,6 @@ void UpdateGame(void)
 	{
 		//モード設定(リザルト画面に移行)
  		g_gameState = GAMESTATE_END;
-		//g_Game.bDraw = false;
-		//g_Game.bDraw2 = false;
-		//g_Game.bDraw3 = false;
-		//g_Game.bDraw4 = false;
-		//g_Game.bMap = false;
-		//g_Game.bBallHint = false;
-		//g_Game.bCraneHint = false;
 	}
 
 	//nTime = GetTime();

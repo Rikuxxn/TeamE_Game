@@ -104,14 +104,13 @@ void UpdateTutorial(void)
 
 	//if (nCnt >= 120)
 	//{
-		if (g_fade == FADE_NONE && (GetMouseButtonTrigger(0) || JoyPadTrigger(JOYKEY_A) == true) /*|| JoyPadTrigger(JOYKEY_A)==true*/)
+		if (g_fade == FADE_NONE && (GetMouseButtonTrigger(0) || JoyPadTrigger(JOYKEY_A) == true))
 		{//決定キー(ENTERキー)が押された
 
 			//nCnt = 0;
 			//モード設定(チュートリアル画面2に移行)
 			SetFade(MODE_TUTORIAL2);
 
-			//PlaySound(SOUND_LABEL_TUTORIAL);
 		}
 	//}
 }

@@ -11,7 +11,6 @@
 #include "shadow.h"
 #include "model.h"
 #include "motion.h"
-
 #include <stdio.h>
 #include <string.h>
 #include "enemy.h"

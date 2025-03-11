@@ -541,7 +541,6 @@ void SaveBlockData(void)
 
     if (pFile != NULL)
     {
-
         fwrite(&g_nCntEdit, sizeof(int), 0, pFile);
 
         for (int nCnt1 = 0; nCnt1 < g_nCntEdit; nCnt1++)
@@ -549,23 +548,19 @@ void SaveBlockData(void)
 
             if (g_Editinfo[nCnt1].bUse == true)
             {
-
                 fprintf(pFile, "SETBLOCK\n");
                 fprintf(pFile, "POS %.1f %.1f %.1f\n", g_Editinfo[nCnt1].pos.x, g_Editinfo[nCnt1].pos.y, g_Editinfo[nCnt1].pos.z);
                 fprintf(pFile, "ROT %.2f %.2f %.2f\n", g_Editinfo[nCnt1].rot.x, g_Editinfo[nCnt1].rot.y, g_Editinfo[nCnt1].rot.z);
                 fprintf(pFile, "BLOCKTYPE %d\n", g_Editinfo[nCnt1].nType);
                 fprintf(pFile, "END_BLOCKSET\n");
                 fprintf(pFile, "================\n");
-
             }
 
         }
-
         fprintf(pFile, "END_SCRIPT\n");
 
         //ファイルを閉じる
         fclose(pFile);
-
     }
     else
     {
@@ -584,7 +579,6 @@ void SaveWallData(void)
 
     if (pFile != NULL)
     {
-
         fwrite(&g_nCntEdit, sizeof(int), 0, pFile);
 
         for (int nCnt1 = 0; nCnt1 < g_nCntEdit; nCnt1++)
@@ -592,23 +586,19 @@ void SaveWallData(void)
 
             if (g_Editinfo[nCnt1].bUse == true)
             {
-
                 fprintf(pFile, "SETBLOCK\n");
                 fprintf(pFile, "POS %.1f %.1f %.1f\n", g_Editinfo[nCnt1].pos.x, g_Editinfo[nCnt1].pos.y, g_Editinfo[nCnt1].pos.z);
                 fprintf(pFile, "ROT %.2f %.2f %.2f\n", g_Editinfo[nCnt1].rot.x, g_Editinfo[nCnt1].rot.y, g_Editinfo[nCnt1].rot.z);
                 fprintf(pFile, "BLOCKTYPE %d\n", g_Editinfo[nCnt1].nType);
                 fprintf(pFile, "END_BLOCKSET\n");
                 fprintf(pFile, "================\n");
-
             }
 
         }
-
         fprintf(pFile, "END_SCRIPT\n");
 
         //ファイルを閉じる
         fclose(pFile);
-
     }
     else
     {
@@ -627,7 +617,6 @@ void SaveTitleData(void)
 
     if (pFile != NULL)
     {
-
         fwrite(&g_nCntEdit, sizeof(int), 0, pFile);
 
         for (int nCnt1 = 0; nCnt1 < g_nCntEdit; nCnt1++)
@@ -635,14 +624,12 @@ void SaveTitleData(void)
 
             if (g_Editinfo[nCnt1].bUse == true)
             {
-
                 fprintf(pFile, "SETBLOCK\n");
                 fprintf(pFile, "POS %.1f %.1f %.1f\n", g_Editinfo[nCnt1].pos.x, g_Editinfo[nCnt1].pos.y, g_Editinfo[nCnt1].pos.z);
                 fprintf(pFile, "ROT %.2f %.2f %.2f\n", g_Editinfo[nCnt1].rot.x, g_Editinfo[nCnt1].rot.y, g_Editinfo[nCnt1].rot.z);
                 fprintf(pFile, "BLOCKTYPE %d\n", g_Editinfo[nCnt1].nType);
                 fprintf(pFile, "END_BLOCKSET\n");
                 fprintf(pFile, "================\n");
-
             }
 
         }
@@ -651,7 +638,6 @@ void SaveTitleData(void)
 
         //ファイルを閉じる
         fclose(pFile);
-
     }
     else
     {
@@ -674,7 +660,6 @@ void LoadBlockData(void)
     }
 
     g_nCntEdit = 0; // 編集中のブロック数をリセット
-
 
     // ファイルを開く
     FILE* pFile = fopen(BLOCKPATH_1, "r");
@@ -699,7 +684,6 @@ void LoadBlockData(void)
 
     if (pFile != NULL)
     {
-
         while (1)
         {
 
@@ -710,10 +694,8 @@ void LoadBlockData(void)
             //一致したら
             if (strcmp(aStr, "SETBLOCK") == 0)
             {
-
                 while (1)
                 {
-
                     fscanf(pFile, "%s", &aStr[0]);
 
                     if (strcmp(aStr, "POS") == 0)
@@ -734,26 +716,19 @@ void LoadBlockData(void)
                     }
                     else if (strcmp(aStr, "END_BLOCKSET") == 0)
                     {
-
                         SetBlock(pos, rot,nType);
                         break;
-
                     }
-
                 }
-
             }
 
             if (strcmp(aStr, "END_SCRIPT") == 0)
             {
                 break;
             }
-
         }
-
         //ファイルを閉じる
         fclose(pFile);
-
     }
     else
     {
@@ -788,7 +763,6 @@ void LoadWallData(void)
 
     g_nCntEdit = 0; // 編集中のブロック数をリセット
 
-
     // ファイルを開く
     FILE* pFile = fopen(WALLPATH_1, "r");
 
@@ -812,7 +786,6 @@ void LoadWallData(void)
 
     if (pFile != NULL)
     {
-
         while (1)
         {
 
@@ -823,10 +796,8 @@ void LoadWallData(void)
             //一致したら
             if (strcmp(aStr, "SETBLOCK") == 0)
             {
-
                 while (1)
                 {
-
                     fscanf(pFile, "%s", &aStr[0]);
 
                     if (strcmp(aStr, "POS") == 0)
@@ -847,26 +818,19 @@ void LoadWallData(void)
                     }
                     else if (strcmp(aStr, "END_BLOCKSET") == 0)
                     {
-
                         SetBlock(pos, rot,nType);
                         break;
-
                     }
-
                 }
-
             }
 
             if (strcmp(aStr, "END_SCRIPT") == 0)
             {
                 break;
             }
-
         }
-
         //ファイルを閉じる
         fclose(pFile);
-
     }
     else
     {
@@ -900,7 +864,6 @@ void LoadTitleData(void)
 
     g_nCntEdit = 0; // 編集中のブロック数をリセット
 
-
     // ファイルを開く
     FILE* pFile = fopen(TITLEPATH_1, "r");
 
@@ -924,7 +887,6 @@ void LoadTitleData(void)
 
     if (pFile != NULL)
     {
-
         while (1)
         {
 
@@ -935,10 +897,8 @@ void LoadTitleData(void)
             //一致したら
             if (strcmp(aStr, "SETBLOCK") == 0)
             {
-
                 while (1)
                 {
-
                     fscanf(pFile, "%s", &aStr[0]);
 
                     if (strcmp(aStr, "POS") == 0)
@@ -959,14 +919,10 @@ void LoadTitleData(void)
                     }
                     else if (strcmp(aStr, "END_BLOCKSET") == 0)
                     {
-
                         SetBlock(pos, rot, nType);
                         break;
-
                     }
-
                 }
-
             }
 
             if (strcmp(aStr, "END_SCRIPT") == 0)
@@ -975,10 +931,8 @@ void LoadTitleData(void)
             }
 
         }
-
         //ファイルを閉じる
         fclose(pFile);
-
     }
     else
     {

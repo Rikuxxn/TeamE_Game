@@ -137,7 +137,23 @@ bool GetKeyboardPress(int nKey)
 {
 	return (g_aKeyState[nKey] & 0x80) ? true : false;
 }
-//
+//===========================================
+// 何かしらのキーが押されているかチェック
+//===========================================
+bool GetAnyKeyPresse(void)
+{
+	for (int i = 0; i < NUM_KEY_MAX; i++)
+	{
+		if (g_aKeyState[i] & 0x80) // キーが押されている
+		{
+			return true;
+		}
+	}
+	return false;
+}
+//=======================================
+// キーボードのトリガー情報を取得
+//=======================================
 bool KeyboardTrigger(int nKey)
 {
 	bool Trigger = false;
@@ -147,7 +163,23 @@ bool KeyboardTrigger(int nKey)
 	}
 	return Trigger;
 }
-//
+//============================================
+// 何かしらのキーが新しく押されたかチェック
+//============================================
+bool GetAnyKeyTrigger(void)
+{
+	for (int i = 0; i < NUM_KEY_MAX; i++)
+	{
+		if ((g_aKeyState[i] & 0x80) && !(g_aOldState[i] & 0x80)) // 新しく押されたキーがある
+		{
+			return true;
+		}
+	}
+	return false;
+}
+//=======================================
+// キーボードのリリース情報を取得
+//=======================================
 bool KeyboardRelease(int nKey)
 {
 	bool Trigger = false;
@@ -157,7 +189,20 @@ bool KeyboardRelease(int nKey)
 	}
 	return Trigger;
 }
-//
+//============================================
+// 何かしらのキーが離されたかチェック
+//============================================
+bool GetAnyKeyRelease(void)
+{
+	for (int i = 0; i < NUM_KEY_MAX; i++)
+	{
+		if ((g_aOldState[i] & 0x80) && !(g_aKeyState[i] & 0x80)) // 離されたキーがある
+		{
+			return true;
+		}
+	}
+	return false;
+}
 bool KeyboardRepeat(int nKey)
 {
 	bool Trigger = false;

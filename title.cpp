@@ -67,9 +67,6 @@ void InitTitle(void)
 	// エディット読み込み
 	LoadTitleData();
 
-	//// エディット読み込み
-	//LoadWallData();
-
 
 	AddLight(
 		D3DLIGHT_DIRECTIONAL,                  // ライトの種類

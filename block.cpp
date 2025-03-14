@@ -499,113 +499,115 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 
 	for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
 	{
-		if (g_aBlock[nCntBlock].bUse)
+		if (g_aBlock[nCntBlock].bUse == false)
 		{
-			// ブロック OBB の情報を取得
-			D3DXMATRIX blockWorld = g_aBlock[nCntBlock].mtxWorld;
-			D3DXVECTOR3 blockSize = g_aBlock[nCntBlock].size;
+			continue;
+		}
 
-			// プレイヤー OBB の情報を取得
-			D3DXMATRIX playerWorld;
-			D3DXMatrixTranslation(&playerWorld, pPos->x, pPos->y, pPos->z);
+		// ブロック OBB の情報を取得
+		D3DXMATRIX blockWorld = g_aBlock[nCntBlock].mtxWorld;
+		D3DXVECTOR3 blockSize = g_aBlock[nCntBlock].size;
 
-			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_CLEAR)
+		// プレイヤー OBB の情報を取得
+		D3DXMATRIX playerWorld;
+		D3DXMatrixTranslation(&playerWorld, pPos->x, pPos->y, pPos->z);
+
+		if (g_aBlock[nCntBlock].nType == BLOCKTYPE_CLEAR)
+		{
+			// OBB 衝突判定
+			if (CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 			{
-				// OBB 衝突判定
-				if (CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
+				// Z軸の衝突補正
+				pPos->z = pPosOld->z;
+				playerWorld._43 = pPos->z;
+
+				if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 				{
-					// Z軸の衝突補正
-					pPos->z = pPosOld->z;
-					playerWorld._43 = pPos->z;
+					// Z軸方向の移動量を滑らかに減衰
+					pMove->z *= 0.5f;
 
-					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
+					// ミニゲームをすべてクリアしていたら
+					if (pGame->bPassClear == true)
 					{
-						// Z軸方向の移動量を滑らかに減衰
-						pMove->z *= 0.5f;
-
-						// ミニゲームをすべてクリアしていたら
-						if (pGame->bPassClear == true)
-						{
-							g_flag.bExit = true;
-						}
-
-						continue;
+						g_flag.bExit = true;
 					}
 
-					// X軸の衝突補正
-					pPos->x = pPosOld->x;
-					playerWorld._41 = pPos->x;
-
-					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
-					{
-						// X軸方向の移動量を滑らかに減衰
-						pMove->x *= 0.5f;
-						continue;
-					}
-
-					// Y軸の衝突補正
-					pPos->y = pPosOld->y;
-					playerWorld._42 = pPos->y;
-
-					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
-					{
-						// Y軸方向の移動量を滑らかに減衰
-						pMove->y *= 0.5f;
-						continue;
-					}
-
-				}
-			}
-			else
-			{
-				if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BEAR || g_aBlock[nCntBlock].nType == BLOCKTYPE_BALL ||
-					g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE || g_aBlock[nCntBlock].nType == BLOCKTYPE_SLIDE_TOP || 
-					g_aBlock[nCntBlock].nType == BLOCKTYPE_CLOWN)
-				{
 					continue;
 				}
 
-				// OBB 衝突判定
-				if (CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
+				// X軸の衝突補正
+				pPos->x = pPosOld->x;
+				playerWorld._41 = pPos->x;
+
+				if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
 				{
-					// Z軸の衝突補正
-					pPos->z = pPosOld->z;
-					playerWorld._43 = pPos->z;
+					// X軸方向の移動量を滑らかに減衰
+					pMove->x *= 0.5f;
+					continue;
+				}
 
-					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
-					{
-						// Z軸方向の移動量を滑らかに減衰
-						pMove->z *= 0.5f;
-						continue;
-					}
+				// Y軸の衝突補正
+				pPos->y = pPosOld->y;
+				playerWorld._42 = pPos->y;
 
-					// X軸の衝突補正
-					pPos->x = pPosOld->x;
-					playerWorld._41 = pPos->x;
+				if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
+				{
+					// Y軸方向の移動量を滑らかに減衰
+					pMove->y *= 0.5f;
+					continue;
+				}
 
-					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
-					{
-						// X軸方向の移動量を滑らかに減衰
-						pMove->x *= 0.5f;
-						continue;
-					}
+			}
+		}
+		else
+		{
+			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BEAR || g_aBlock[nCntBlock].nType == BLOCKTYPE_BALL ||
+				g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE || g_aBlock[nCntBlock].nType == BLOCKTYPE_SLIDE_TOP || 
+				g_aBlock[nCntBlock].nType == BLOCKTYPE_CLOWN)
+			{
+				continue;
+			}
 
-					// Y軸の衝突補正
-					pPos->y = pPosOld->y;
-					playerWorld._42 = pPos->y;
+			// OBB 衝突判定
+			if (CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
+			{
+				// Z軸の衝突補正
+				pPos->z = pPosOld->z;
+				playerWorld._43 = pPos->z;
 
-					if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
-					{
-						// Y軸方向の移動量を滑らかに減衰
-						pMove->y *= 0.5f;
-						continue;
-					}
+				if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
+				{
+					// Z軸方向の移動量を滑らかに減衰
+					pMove->z *= 0.5f;
+					continue;
+				}
 
+				// X軸の衝突補正
+				pPos->x = pPosOld->x;
+				playerWorld._41 = pPos->x;
+
+				if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
+				{
+					// X軸方向の移動量を滑らかに減衰
+					pMove->x *= 0.5f;
+					continue;
+				}
+
+				// Y軸の衝突補正
+				pPos->y = pPosOld->y;
+				playerWorld._42 = pPos->y;
+
+				if (!CheckOBBCollision(blockWorld, blockSize, playerWorld, *pSize))
+				{
+					// Y軸方向の移動量を滑らかに減衰
+					pMove->y *= 0.5f;
+					continue;
 				}
 
 			}
 
 		}
+
 	}
 }
 //==================================================

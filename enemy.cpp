@@ -12,11 +12,11 @@
 #include "sound.h"
 #include "shadow.h"
 #include "light.h"
+#include <stdio.h>
 
 // 巡回ポイント配列
 D3DXVECTOR3 patrolPoints[] =
 {
-
 	D3DXVECTOR3(-1050.0f, 0.0f, -800.0f),	// 0
 	D3DXVECTOR3(-1070.0f, 0.0f, -610.0f),	// 1
 	D3DXVECTOR3(-1040.0f, 0.0f, -420.0f),	// 2
@@ -79,7 +79,8 @@ D3DXVECTOR3 patrolPoints[] =
 	D3DXVECTOR3(280.0f, 0.0f, -130.0f),		// 59
 	D3DXVECTOR3(305.0f, 0.0f, -600.0f),		// 60
 	D3DXVECTOR3(-935.0f, 0.0f, 90.0f),		// 61
-
+	D3DXVECTOR3(-145.0f, 0.0f, -590.0f),	// 62
+	D3DXVECTOR3(330.0f, 0.0f, 325.0f),		// 63
 };
 
 // 各巡回ポイントから行ける次のポイント（-1 は接続なし）
@@ -134,7 +135,7 @@ int patrolGraph[NUM_PATROL_POINTS][MAX_CONNECTIONS] =
 	{21, -1, -1},	// 46 → 21
 	{46, -1, -1},	// 47 → 46
 	{49, -1, -1},	// 48 → 49
-	{21, -1, -1},	// 49 → 21
+	{63, -1, -1},	// 49 → 63
 	{47, -1, -1},	// 50 → 47
 	{29, -1, -1},	// 51 → 29
 	{26, -1, -1},	// 52 → 26
@@ -147,8 +148,11 @@ int patrolGraph[NUM_PATROL_POINTS][MAX_CONNECTIONS] =
 	{22, -1, -1},	// 59 → 22
 	{52, -1, -1},	// 60 → 52
 	{4, -1, -1},	// 61 → 4
-
+	{26, -1, -1},	// 62 → 26
+	{21, -1, -1},	// 63 → 21
 };
+
+int map[GRID_WIDTH][GRID_HEIGHT]; // 0: 移動可能, 1: 障害物
 
 // グローバル変数
 Enemy g_aEnemy;						// 敵情報
@@ -367,7 +371,7 @@ void UpdateEnemy(void)
 
 
 		D3DXVECTOR3 PlayerRadius(40.0f, 40.0f, 40.0f);				// 捕まる距離
-		D3DXVECTOR3 PlayerInsightRadius(120.0f, 120.0f, 120.0f);		// バレる距離
+		D3DXVECTOR3 PlayerInsightRadius(120.0f, 120.0f, 120.0f);	// バレる距離
 		D3DXVECTOR3 SoundRadius1(600.0f, 600.0f, 600.0f);			// 心音の鳴る距離
 
 		float fDistance =
@@ -461,7 +465,7 @@ void UpdateEnemy(void)
 			}
 		}
 
-		// 範囲外に出た瞬間はタイマーをリセット（SEを鳴らさない
+		// 範囲外に出た瞬間はタイマーをリセット
 		if (!SoundRangeNow && SoundRange)
 		{
 			soundTimer = 0.0f;							// タイマーをリセット
@@ -728,9 +732,9 @@ bool isPlayerInSight(void)
 	// 敵の正面ベクトルを計算
 	D3DXVECTOR3 enemyFront;
 
-	enemyFront.x = -sinf(g_aEnemy.rot.y);
+	enemyFront.x = sinf(g_aEnemy.rot.y);
 	enemyFront.y = 0.0f;
-	enemyFront.z = -cosf(g_aEnemy.rot.y);
+	enemyFront.z = cosf(g_aEnemy.rot.y);
 
 	// プレイヤーとの方向ベクトル
 	D3DXVECTOR3 toPlayer;
@@ -749,8 +753,9 @@ bool isPlayerInSight(void)
 	float dotProduct = D3DXVec3Dot(&enemyFront, &toPlayer);
 
 	// 内積から視野内か判定(0.5fはしきい値)
-	if (dotProduct > cosf(g_aEnemy.sightAngle * 0.5f)) // 視野角の半分で判定 1 → 完全に同じ方向（正面）0 → 直角（真横）- 1 → 真逆（背後）
-	{
+	if (dotProduct > cosf(g_aEnemy.sightAngle * 0.5f)) 
+	{// 視野角の半分で判定 1 → 完全に同じ方向（正面）0 → 直角（真横）- 1 → 真逆（背後）
+
 		// プレイヤーとの距離を計算
 		float distanceSquared =
 			(g_aEnemy.pos.x - pPlayer->pos.x) * (g_aEnemy.pos.x - pPlayer->pos.x) +
@@ -771,7 +776,7 @@ bool isPlayerInSight(void)
 int GetNearestPatrolPoint(D3DXVECTOR3 currentPos) 
 {
 	float minDistance = FLT_MAX; // 非常に大きな値で初期化
-	int nearestPoint = 0;
+	int nearestPoint  = 0;
 
 	for (int nCnt = 0; nCnt < sizeof(patrolPoints) / sizeof(patrolPoints[0]); nCnt++)
 	{
@@ -824,40 +829,31 @@ void Patrol(void)
 {
 	g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_NEUTRAL;
 
-	float moveSpeed = 0.4f; // 巡回速度
-	float distanceToTarget = 0.0f;
-	float angleToTarget = 0.0f;
+	float moveSpeed			= 0.4f;		// 巡回速度
+	float distanceToTarget  = 0.0f;		// 目標までの距離
+	float rotationSpeed		= 0.07f;	// 回転速度
 
-	float rotationSpeed = 0.1f; // 回転速度（0.1f ～ 0.2f くらいが適切）
+	D3DXVECTOR3 target = patrolPoints[currentPatrolPoint];
 
-	D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
-
-	// 現在の巡回ポイントに向かう
-	target = patrolPoints[currentPatrolPoint];
-
-	distanceToTarget = sqrtf
-	(
+	distanceToTarget = sqrtf(
 		(target.x - g_aEnemy.pos.x) * (target.x - g_aEnemy.pos.x) +
 		(target.z - g_aEnemy.pos.z) * (target.z - g_aEnemy.pos.z)
 	);
 
-	//// 目標角度の計算
-	//float fAngleToTarget = atan2f(target.x - g_aEnemy.pos.x, target.z - g_aEnemy.pos.z);
+	// 目標角度を計算
+	float fAngleToTarget = atan2f(target.x - g_aEnemy.pos.x, target.z - g_aEnemy.pos.z);
 
-	//// **現在の角度を滑らかに補間する**
-	//g_aEnemy.rot.y += (fAngleToTarget - g_aEnemy.rot.y) * rotationSpeed;
+	// 角度の差分を正規化
+	float angleDiff = NormalizeAngle(fAngleToTarget - g_aEnemy.rot.y);
+
+	// 補間回転
+	g_aEnemy.rot.y += angleDiff * rotationSpeed;
 
 	// 近づく
 	if (distanceToTarget > 5.0f)
-	{ // 到達判定
-		angleToTarget = atan2f(target.x - g_aEnemy.pos.x, target.z - g_aEnemy.pos.z);
-		g_aEnemy.move.x += sinf(angleToTarget) * moveSpeed;
-		g_aEnemy.move.z += cosf(angleToTarget) * moveSpeed;
-
-		g_aEnemy.rot.y = angleToTarget + D3DX_PI;
-
-		//g_aEnemy.move.x += sinf(g_aEnemy.rot.y) * moveSpeed;
-		//g_aEnemy.move.z += cosf(g_aEnemy.rot.y) * moveSpeed;
+	{
+		g_aEnemy.move.x += sinf(g_aEnemy.rot.y) * moveSpeed;
+		g_aEnemy.move.z += cosf(g_aEnemy.rot.y) * moveSpeed;
 	}
 	else
 	{
@@ -880,15 +876,20 @@ void Chase(void)
 
 	g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_MOVE;
 
-	float fAngle = 0.0f;
 	static int lostSightTimer = 0;				// 視界外タイマー
+	float rotationSpeed		  = 0.1f;			// 回転速度
+	float chaseSpeed		  = 1.15f;			// 追跡速度
 
-	fAngle = atan2f(pPlayer->pos.x - g_aEnemy.pos.x, pPlayer->pos.z - g_aEnemy.pos.z);
+	float fAngleToTarget = atan2f(pPlayer->pos.x - g_aEnemy.pos.x, pPlayer->pos.z - g_aEnemy.pos.z);
 
-	g_aEnemy.move.x += sinf(fAngle) * 1.151f;
-	g_aEnemy.move.z += cosf(fAngle) * 1.151f;
+	// 角度の差分を正規化
+	float angleDiff = NormalizeAngle(fAngleToTarget - g_aEnemy.rot.y);
 
-	g_aEnemy.rot.y = fAngle + D3DX_PI;
+	// 補間回転
+	g_aEnemy.rot.y += angleDiff * rotationSpeed;
+
+	g_aEnemy.move.x += sinf(fAngleToTarget) * chaseSpeed;
+	g_aEnemy.move.z += cosf(fAngleToTarget) * chaseSpeed;
 
 	// プレイヤーが視界外に出たら捜索状態に切り替える
 	if (!isPlayerInSight())
@@ -937,6 +938,51 @@ void Search(void)
 
 		g_aEnemy.state = ENEMYSTATE_PATROLLING;
 		patrolTimer = 0;
+	}
+}
+//===========================================
+// 角度の正規化 (-π ～ π)
+//===========================================
+float NormalizeAngle(float angle)
+{
+	while (angle > D3DX_PI)
+	{
+		angle -= D3DX_PI * 2.0f;
+	}
+	while (angle < -D3DX_PI)
+	{
+		angle += D3DX_PI * 2.0f;
+	}
+
+	return angle;
+}
+//===========================================
+// マップデータの読み込み
+//===========================================
+void LoadMapInfo(const char* filename) 
+{
+	FILE* pFile = fopen(filename, "r");
+
+	if (pFile != NULL)
+	{
+		for (int y = 0; y < GRID_HEIGHT; y++)
+		{
+			for (int x = 0; x < GRID_WIDTH; x++) 
+			{
+				char c = fgetc(pFile);
+
+				if (c == '1') 
+				{
+					map[x][y] = 1; // 壁
+				}
+				else if (c == '0') 
+				{
+					map[x][y] = 0; // 移動可能
+				}
+			}
+			fgetc(pFile); // 改行を読み飛ばす
+		}
+		fclose(pFile);
 	}
 }
 //======================================================

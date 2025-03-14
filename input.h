@@ -43,7 +43,7 @@ HRESULT InitKeyboard(HINSTANCE hInstance, HWND hWnd);
 void UninitKeyboard(void);
 void UpdateKeyboard(void);
 bool GetKeyboardPress(int nKey);
-bool GetAnyKeyPresse(void);
+bool GetAnyKeyPress(void);
 bool GetAnyKeyTrigger(void);
 bool GetAnyKeyRelease(void);
 

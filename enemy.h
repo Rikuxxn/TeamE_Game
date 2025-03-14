@@ -12,8 +12,13 @@
 #include "motion.h"
 #include "meshfield.h"
 
-#define NUM_PATROL_POINTS (62)  // 巡回ポイントの最大数
+#define NUM_PATROL_POINTS (64)  // 巡回ポイントの最大数
 #define MAX_CONNECTIONS (3) // 分岐の数
+
+#define CELL_SIZE (50) // グリッド1マスの大きさ
+#define GRID_WIDTH  (MAX_WIDTH / CELL_SIZE)  // 48マス
+#define GRID_HEIGHT (MAX_HEIGHT / CELL_SIZE) // 40マス
+
 typedef enum 
 {
     ENEMYSTATE_PATROLLING,     // 巡回中
@@ -42,12 +47,12 @@ typedef struct
     int nEndCnt;
 }Enemy;
 
-// A*のノード構造体
+// ノード構造体
 typedef struct Node 
 {
-    int x, y;           // グリッド座標
-    float g, h, f;      // コスト値
-    struct Node* parent;// 経路復元用の親ノード
+    int x, y;
+    float g, h; // g: 開始地点からのコスト, h: ヒューリスティック(推定ゴールコスト)
+    struct Node* parent;
 } Node;
 
 //プロトタイプ宣言
@@ -60,6 +65,10 @@ int GetNearestPatrolPoint(D3DXVECTOR3 currentPos);
 void Patrol(void);
 void Chase(void);
 void Search(void);
+float NormalizeAngle(float angle);
+
+void LoadMapInfo(const char* filename);
+
 Enemy* GetEnemy(void);
 
 bool isPlayerInSight(void);

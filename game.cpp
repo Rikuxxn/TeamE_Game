@@ -83,9 +83,6 @@ void InitGame(void)
 	InitBlock();
 
 
-	//SetBlock(D3DXVECTOR3(200.0f, 0.0f, -120.0f), D3DXVECTOR3(0.0f, D3DX_PI *0.75f, 0.0f), BLOCKTYPE_TEST);
-
-
 	//影の初期化
 	InitShadow();
 
@@ -94,16 +91,16 @@ void InitGame(void)
 	InitPlayer();
 	
 
+	//// マップデータの読み込み
+	//LoadMapInfo("data/mapinfo.txt");
+
+
 	//敵の初期化
 	InitEnemy();
 
 
 	//タイムの初期化処理
 	InitTime();
-
-
-	////ビルボードの初期化処理
-	//InitBillboard();
 
 
 	//ゲージの初期化
@@ -286,10 +283,6 @@ void UninitGame(void)
 	UninitShadow();
 
 
-	////ビルボードの終了処理
-	//UninitBillboard();
-
-
 	//プレイヤーの終了処理
 	UninitPlayer();
 
@@ -312,6 +305,7 @@ void UninitGame(void)
 
 	//マップの終了処理
 	UninitMap();
+
 
 	////エフェクトの終了処理
 	//UninitEffect();
@@ -655,10 +649,6 @@ void UpdateGame(void)
 		UpdateShadow();
 
 
-		////ビルボードの更新処理
-		//UpdateBillboard();
-
-
 		////エフェクトの更新処理
 		//UpdateEffect();
 
@@ -799,10 +789,6 @@ void DrawGame(void)
 
 	////パーティクルの描画処理
 	//DrawParticle();
-
-
-	////ビルボードの描画処理
-	//DrawBillboard();
 
 
 	if (pPlayer->bDrawDush == true && g_Game.bMini == false &&

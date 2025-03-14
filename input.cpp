@@ -140,7 +140,7 @@ bool GetKeyboardPress(int nKey)
 //===========================================
 // 何かしらのキーが押されているかチェック
 //===========================================
-bool GetAnyKeyPresse(void)
+bool GetAnyKeyPress(void)
 {
 	for (int i = 0; i < NUM_KEY_MAX; i++)
 	{
@@ -203,6 +203,9 @@ bool GetAnyKeyRelease(void)
 	}
 	return false;
 }
+//=======================================
+// キーボードのリピート情報を取得
+//=======================================
 bool KeyboardRepeat(int nKey)
 {
 	bool Trigger = false;

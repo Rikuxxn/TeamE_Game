@@ -227,6 +227,9 @@ void UpdatePlayer(void)
 				stickY = 0.0f;
 			}
 
+			// スティックが前方向に倒されているかチェック
+			bool isStickForward = (stickY > DEADZONE);
+
 			// 正規化
 			float magnitude = sqrtf(stickX * stickX + stickY * stickY);
 			if (magnitude > 0.0f)
@@ -245,7 +248,8 @@ void UpdatePlayer(void)
 			// 移動方向反転
 			moveZ = -moveZ;
 
-			if (GetJoypadPress(JOYKEY_RB) == true && g_player.fDush >= 0 &&
+			// ダッシュ処理（RBボタンが押されていて、スティックが前方向）
+			if (GetJoypadPress(JOYKEY_RB) == true && isStickForward &&
 				g_player.fDush > 0 && g_player.bEmpty == false)
 			{
 				g_player.fDush--;
@@ -253,13 +257,13 @@ void UpdatePlayer(void)
 				g_player.nDrawDush = 0;
 				g_player.bDrawDush = true;
 
-				// プレイヤーの移動更新
+				// プレイヤーの移動更新（ダッシュ速度）
 				g_player.move.x += moveX * PLAYER_DUSHSPEED;
 				g_player.move.z += moveZ * PLAYER_DUSHSPEED;
 			}
 			else
 			{
-				// プレイヤーの移動更新
+				// プレイヤーの移動更新（通常速度）
 				g_player.move.x += moveX * PLAYER_SPEED;
 				g_player.move.z += moveZ * PLAYER_SPEED;
 			}
@@ -270,12 +274,12 @@ void UpdatePlayer(void)
 			g_player.motion.motionType = MOTIONTYPE_MOVE;
 		}
 
-		if (GetKeyboardPress(DIK_A) == true /*|| GetJoypadPress(JOYKEY_LEFT) == true*/)
+		if (GetKeyboardPress(DIK_A) == true)
 		{//Aキーが押された
 
-			if (GetKeyboardPress(DIK_W) == true /*|| GetJoypadPress(JOYKEY_UP) == true*/)
+			if (GetKeyboardPress(DIK_W) == true)
 			{//Wキーが押された
-				if ((GetKeyboardPress(DIK_LSHIFT) == true/* || GetJoypadPress(JOYKEY_RB) == true*/ )&& g_player.fDush >= 0 &&
+				if ((GetKeyboardPress(DIK_LSHIFT) == true)&& g_player.fDush >= 0 &&
 					g_player.fDush > 0 && g_player.bEmpty == false)
 				{// ダッシュ時
 					g_player.fDush--;
@@ -302,7 +306,7 @@ void UpdatePlayer(void)
 				}
 
 			}
-			else if (GetKeyboardPress(DIK_S) == true /*|| GetJoypadPress(JOYKEY_DOWN) == true*/)
+			else if (GetKeyboardPress(DIK_S) == true)
 			{//Sキーが押された
 
 				//移動量を更新(増加させる)
@@ -328,13 +332,13 @@ void UpdatePlayer(void)
 			}
 
 		}
-		else if (GetKeyboardPress(DIK_D) == true /*|| GetJoypadPress(JOYKEY_RIGHT) == true*/)
+		else if (GetKeyboardPress(DIK_D) == true)
 		{//Dキーが押された
 
-			if (GetKeyboardPress(DIK_W) == true /*|| GetJoypadPress(JOYKEY_UP) == true*/)
+			if (GetKeyboardPress(DIK_W) == true)
 			{//Wキーが押された
 				// ダッシュ時
-				if ((GetKeyboardPress(DIK_LSHIFT) == true /*|| GetJoypadPress(JOYKEY_RB) == true*/) && g_player.fDush >= 0 &&
+				if ((GetKeyboardPress(DIK_LSHIFT) == true) && g_player.fDush >= 0 &&
 					g_player.fDush > 0 && g_player.bEmpty == false)
 				{
 					g_player.fDush--;
@@ -360,7 +364,7 @@ void UpdatePlayer(void)
 					g_player.motion.motionType = MOTIONTYPE_MOVE;
 				}
 			}
-			else if (GetKeyboardPress(DIK_S) == true /*|| GetJoypadPress(JOYKEY_DOWN) == true*/)
+			else if (GetKeyboardPress(DIK_S) == true)
 			{//Sキーが押された
 
 				//移動量を更新(増加させる)
@@ -386,10 +390,10 @@ void UpdatePlayer(void)
 			}
 
 		}
-		else if (GetKeyboardPress(DIK_W) == true /*|| GetJoypadPress(JOYKEY_UP) == true*/)
+		else if (GetKeyboardPress(DIK_W) == true)
 		{//Wキーが押された	
 			// ダッシュ時
-			if ((GetKeyboardPress(DIK_LSHIFT) == true /*|| GetJoypadPress(JOYKEY_RB) == true*/) && g_player.fDush >= 0 &&
+			if ((GetKeyboardPress(DIK_LSHIFT) == true) && g_player.fDush >= 0 &&
 				g_player.fDush > 0 && g_player.bEmpty == false)
 			{
 				g_player.fDush--;
@@ -500,15 +504,14 @@ void UpdatePlayer(void)
 
 	}
 
-	if (g_player.bDush == false || GetKeyboardPress(DIK_W) == false)
-	{//スタミナ回復
-		if (g_player.fDush <= PLAYER_STAMINA)
+	if (!g_player.bDush || GetKeyboardPress(DIK_W) == false)
+	{// スタミナ回復
+		if (g_player.fDush < PLAYER_STAMINA)
 		{
 			g_player.fDush += STAMINA_RECOVERY;
 		}
-		else if (g_player.fDush >= PLAYER_STAMINA)
+		else
 		{
-			g_player.fDush += 0;
 			g_player.bEmpty = false;
 		}
 	}

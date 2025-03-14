@@ -454,49 +454,42 @@ void CalculateCustomPanning(SOUND_LABEL label, FLOAT32* matrix)
 //=============================================================================
 // 音源の位置更新
 //=============================================================================
-void UpdateSoundPosition(SOUND_LABEL label,float x, float y, float z)
+void UpdateSoundPosition(SOUND_LABEL label, float x, float y, float z)
 {
-	Enemy* pEnemy = GetEnemy();
-
-	if (label < 0 || label >= SOUND_LABEL_MAX)
-	{
-		return;
-	}
+	if (label < 0 || label >= SOUND_LABEL_MAX) return;
 
 	// 敵の現在位置を適用
 	g_Emitters[label].Position = { x, y, z };
 
-	// 3Dオーディオ計算
-	X3DAUDIO_DSP_SETTINGS dspSettings = {};
-	FLOAT32 matrix[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-	dspSettings.SrcChannelCount = 1;
-	dspSettings.DstChannelCount = 4;
-	dspSettings.pMatrixCoefficients = matrix;
+	// 音が再生されていないときのみ更新
+	XAUDIO2_VOICE_STATE xa2state;
+	g_apSourceVoice[label]->GetState(&xa2state);
 
-	X3DAudioCalculate(
-		g_X3DInstance,
-		&g_Listener,
-		&g_Emitters[label],
-		X3DAUDIO_CALCULATE_MATRIX,
-		&dspSettings
-	);
-
-	// パンニング値をクリップ
-	for (int i = 0; i < 2; i++)
+	if (xa2state.BuffersQueued == 0)
 	{
-		if (matrix[i] > 1.0f)
-		{
-			matrix[i] = 1.0f;
+		// 3Dオーディオ計算
+		X3DAUDIO_DSP_SETTINGS dspSettings = {};
+		FLOAT32 matrix[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+		dspSettings.SrcChannelCount = 1;
+		dspSettings.DstChannelCount = 4;
+		dspSettings.pMatrixCoefficients = matrix;
+
+		X3DAudioCalculate(
+			g_X3DInstance,
+			&g_Listener,
+			&g_Emitters[label],
+			X3DAUDIO_CALCULATE_MATRIX,
+			&dspSettings
+		);
+
+		// パンニング値をクリップ
+		for (int i = 0; i < 4; i++) {
+			matrix[i] = max(0.0f, min(1.0f, matrix[i]));
 		}
-		if (matrix[i] < 0.0f)
-		{
-			matrix[i] = 0.0f;
-		}
+
+		// 音のパンニングを更新（再生中は変更しない）
+		g_apSourceVoice[label]->SetOutputMatrix(NULL, 1, 4, matrix);
 	}
-
-	// 音のパンニングを更新
-	g_apSourceVoice[label]->SetOutputMatrix(NULL, 1, 4, matrix);
-
 }
 //=============================================================================
 // リスナー(プレイヤー)の更新

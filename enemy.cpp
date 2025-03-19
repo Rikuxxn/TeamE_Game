@@ -32,7 +32,7 @@ D3DXVECTOR3 patrolPoints[] =
 	D3DXVECTOR3(310.0f, 0.0f, 800.0f),		// 12
 	D3DXVECTOR3(700.0f, 0.0f, 765.0f),		// 13
 	D3DXVECTOR3(850.0f, 0.0f, 665.0f),		// 14
-	D3DXVECTOR3(870.0f, 0.0f, 455.0f),		// 15
+	D3DXVECTOR3(820.0f, 0.0f, 470.0f),		// 15
 	D3DXVECTOR3(970.0f, 0.0f, 430.0f),		// 16
 	D3DXVECTOR3(1000.0f, 0.0f, 270.0f),		// 17
 	D3DXVECTOR3(1000.0f, 0.0f, 110.0f),		// 18
@@ -152,25 +152,97 @@ int patrolGraph[NUM_PATROL_POINTS][MAX_CONNECTIONS] =
 	{21, -1, -1},	// 63 → 21
 };
 
-int map[GRID_WIDTH][GRID_HEIGHT]; // 0: 移動可能, 1: 障害物
-
 // グローバル変数
-Enemy g_aEnemy;						// 敵情報
-bool g_bEnd;						// 捕まった判定
+Enemy g_aEnemy;							// 敵情報
+bool g_bEnd;							// 捕まった判定
 bool g_bEndMotion;
-bool Inside;						// 視界に入ったか
+bool Inside;							// 視界に入ったか
 bool isPlayerInSightPrev;
-bool isReversePatrol;				// 巡回の方向（false: 順回り, true: 逆回り）
+bool isReversePatrol;					// 巡回の方向（false: 順回り, true: 逆回り）
 
-int currentPatrolPoint;				// 現在の巡回ポイント
+int currentPatrolPoint;					// 現在の巡回ポイント
 int g_nIdxShadowEnemy;
 
-bool SoundRange = false;			// 前フレームで範囲内だったか
-float soundTimer = 0.0f;			// 心音のタイマー
-const float minInterval = 0.67f;	// 心音の最速間隔（プレイヤーが超接近時）
-const float maxInterval = 1.2f;		// 心音の最遅間隔（遠い時）
-const float closeDistance = 420.0f; // 近いと判定する距離（ここに近づくと最速の心音）
-const float farDistance = 900.0f;   // 遠いと判定する距離（ここでは最遅の心音）
+bool SoundRange = false;				// 前フレームで範囲内だったか
+float soundTimer = 0.0f;				// 心音のタイマー
+const float minInterval = 0.67f;		// 心音の最速間隔（プレイヤーが超接近時）
+const float maxInterval = 1.2f;			// 心音の最遅間隔（遠い時）
+const float closeDistance = 420.0f;		// 近いと判定する距離（ここに近づくと最速の心音）
+const float farDistance = 900.0f;		// 遠いと判定する距離（ここでは最遅の心音）
+
+int chaseTimer = 0;
+PathNode openList[MAX_PATH_LENGTH];
+PathNode closedList[MAX_PATH_LENGTH];
+int map[GRID_X][GRID_Z] = // 0: 移動可能, 1: 障害物
+{
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+};
+
+Node path[MAX_PATH_LENGTH];				// A*で計算したルート
+int pathLength = 0;						// ルートの長さ
+
+// 近傍8方向の移動
+int dx[8] = { 1, -1,  0,  0,  1, -1,  1, -1 };
+int dz[8] = { 0,  0,  1, -1,  1, -1, -1,  1 };
 
 //=============================
 // 敵の初期化処理
@@ -497,7 +569,6 @@ void UpdateEnemy(void)
 			Inside = false;
 		}
 
-
 		if (g_aEnemy.pos.y <= 0)
 		{
 			g_aEnemy.pos.y = 0.0f;
@@ -796,10 +867,10 @@ int GetNearestPatrolPoint(D3DXVECTOR3 currentPos)
 
 	return nearestPoint; // 最も近い巡回ポイントのインデックスを返す
 }
-//===========================================================
+//======================================================
 // ランダムな次の巡回ポイントを取得
-//===========================================================
-int GetNextPatrolPoint(int currentPoint) 
+//======================================================
+int GetNextPatrolPoint(int currentPoint)
 {
 	int options[MAX_CONNECTIONS];
 	int count = 0;
@@ -870,49 +941,93 @@ void Patrol(void)
 //======================================================
 // 追跡処理
 //======================================================
+//void Chase(void)
+//{
+//	Player* pPlayer = GetPlayer();
+//
+//	g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_MOVE;
+//
+//	static int lostSightTimer = 0;				// 視界外タイマー
+//	float rotationSpeed		  = 0.1f;			// 回転速度
+//	float chaseSpeed		  = 1.15f;			// 追跡速度
+//
+//	float fAngleToTarget = atan2f(pPlayer->pos.x - g_aEnemy.pos.x, pPlayer->pos.z - g_aEnemy.pos.z);
+//	
+//	// 角度の差分を正規化
+//	float angleDiff = NormalizeAngle(fAngleToTarget - g_aEnemy.rot.y);
+//
+//	// 補間回転
+//	g_aEnemy.rot.y += angleDiff * rotationSpeed;
+//
+//	g_aEnemy.move.x += sinf(fAngleToTarget) * chaseSpeed;
+//	g_aEnemy.move.z += cosf(fAngleToTarget) * chaseSpeed;
+//
+//	// プレイヤーが視界外に出たら捜索状態に切り替える
+//	if (!isPlayerInSight())
+//	{
+//		g_aEnemy.state = ENEMYSTATE_SEARCHING; // 捜索状態へ
+//	}
+//
+//	if (!isPlayerInSight())
+//	{
+//		lostSightTimer++;
+//
+//		if (lostSightTimer > 180)
+//		{ // 180フレーム経過
+//			currentPatrolPoint = GetNearestPatrolPoint(g_aEnemy.pos);
+//
+//			g_aEnemy.state = ENEMYSTATE_PATROLLING;
+//
+//			lostSightTimer = 0; // タイマーをリセット
+//		}
+//	}
+//	else
+//	{
+//		lostSightTimer = 0; // 視界内に戻ったらタイマーをリセット
+//	}
+//}
 void Chase(void)
 {
 	Player* pPlayer = GetPlayer();
 
 	g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_MOVE;
 
-	static int lostSightTimer = 0;				// 視界外タイマー
-	float rotationSpeed		  = 0.1f;			// 回転速度
-	float chaseSpeed		  = 1.15f;			// 追跡速度
+	// CHASE モードになったらタイマーを増やす
+	chaseTimer++;
 
-	float fAngleToTarget = atan2f(pPlayer->pos.x - g_aEnemy.pos.x, pPlayer->pos.z - g_aEnemy.pos.z);
+	Node start = WorldToGrid(g_aEnemy.pos);
+	Node goal = WorldToGrid(pPlayer->pos);
 
-	// 角度の差分を正規化
-	float angleDiff = NormalizeAngle(fAngleToTarget - g_aEnemy.rot.y);
-
-	// 補間回転
-	g_aEnemy.rot.y += angleDiff * rotationSpeed;
-
-	g_aEnemy.move.x += sinf(fAngleToTarget) * chaseSpeed;
-	g_aEnemy.move.z += cosf(fAngleToTarget) * chaseSpeed;
-
-	// プレイヤーが視界外に出たら捜索状態に切り替える
-	if (!isPlayerInSight())
+	if (FindPath(start, goal) && pathLength > 0)
 	{
-		g_aEnemy.state = ENEMYSTATE_SEARCHING; // 捜索状態へ
+		Node next = path[pathLength - 1]; // 次の移動先
+
+		D3DXVECTOR3 nextPos = GridToWorld(next);
+
+		float rotationSpeed = 0.1f;
+		float chaseSpeed = 1.0f;
+
+		float fAngleToTarget = atan2f(nextPos.x - g_aEnemy.pos.x, nextPos.z - g_aEnemy.pos.z);
+
+		float angleDiff = NormalizeAngle(fAngleToTarget - g_aEnemy.rot.y);
+
+		g_aEnemy.rot.y += angleDiff * rotationSpeed;
+
+		g_aEnemy.move.x += sinf(fAngleToTarget) * chaseSpeed;
+		g_aEnemy.move.z += cosf(fAngleToTarget) * chaseSpeed;
 	}
 
-	if (!isPlayerInSight())
+	// 視界内ならタイマーをリセット
+	if (isPlayerInSight())
 	{
-		lostSightTimer++;
-
-		if (lostSightTimer > 180)
-		{ // 180フレーム経過
-			currentPatrolPoint = GetNearestPatrolPoint(g_aEnemy.pos);
-
-			g_aEnemy.state = ENEMYSTATE_PATROLLING;
-
-			lostSightTimer = 0; // タイマーをリセット
-		}
+		chaseTimer = 0;
 	}
-	else
+
+	// 視界外
+	if (!isPlayerInSight() && chaseTimer >= 240)
 	{
-		lostSightTimer = 0; // 視界内に戻ったらタイマーをリセット
+		chaseTimer = 0;  // タイマーリセット
+		g_aEnemy.state = ENEMYSTATE_SEARCHING;
 	}
 }
 //======================================================
@@ -922,27 +1037,27 @@ void Search(void)
 {
 	g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_SEARCH;
 
-	static int patrolTimer = 0;				// 捜索タイマー
+	static int searchTimer = 0;
 
-	if (isPlayerInSight())
+	// もしプレイヤーが視界に入ったら `CHASE` に戻る
+	if (isPlayerInSight()) 
 	{
 		g_aEnemy.state = ENEMYSTATE_CHASING;
+		return;
 	}
 
-	// 一定時間経過後巡回に戻る
-	patrolTimer++;
-
-	if (patrolTimer > 180)
-	{
+	// 一定時間探索したら `PATROL` に戻る
+	searchTimer++;
+	if (searchTimer > 180)
+	{  // 180フレーム（3秒）探索後に巡回に戻る
 		currentPatrolPoint = GetNearestPatrolPoint(g_aEnemy.pos);
-
 		g_aEnemy.state = ENEMYSTATE_PATROLLING;
-		patrolTimer = 0;
+		searchTimer = 0;
 	}
 }
-//===========================================
+//======================================================
 // 角度の正規化 (-π ～ π)
-//===========================================
+//======================================================
 float NormalizeAngle(float angle)
 {
 	while (angle > D3DX_PI)
@@ -956,18 +1071,18 @@ float NormalizeAngle(float angle)
 
 	return angle;
 }
-//===========================================
+//======================================================
 // マップデータの読み込み
-//===========================================
-void LoadMapInfo(const char* filename) 
+//======================================================
+void LoadMapInfo(const char* filename)
 {
 	FILE* pFile = fopen(filename, "r");
 
 	if (pFile != NULL)
 	{
-		for (int y = 0; y < GRID_HEIGHT; y++)
+		for (int y = 0; y < GRID_Z; y++)
 		{
-			for (int x = 0; x < GRID_WIDTH; x++) 
+			for (int x = 0; x < GRID_X; x++) 
 			{
 				char c = fgetc(pFile);
 
@@ -984,6 +1099,249 @@ void LoadMapInfo(const char* filename)
 		}
 		fclose(pFile);
 	}
+}
+//======================================================
+// ヒューリスティック関数
+//======================================================
+float Heuristic(Node a, Node b)
+{
+	return fabsf(a.x - b.x) + fabsf(a.z - b.z);
+}
+//======================================================
+// ワールド座標をグリッド座標に変換する関数
+//======================================================
+Node WorldToGrid(D3DXVECTOR3 pos) 
+{
+	Node grid;
+	grid.x = (int)((pos.x - MIN_X) / GRID_SIZE);
+	grid.z = (int)((pos.z - MIN_Z) / GRID_SIZE);
+
+	return grid;
+}
+//======================================================
+// グリッド座標をワールド座標に変換する関数
+//======================================================
+D3DXVECTOR3 GridToWorld(Node node)
+{
+	return
+	{
+		MIN_X + node.x * GRID_SIZE + GRID_SIZE * 0.5f,
+		0.0f,
+		MIN_Z + node.z * GRID_SIZE + GRID_SIZE * 0.5f
+	};
+}
+//======================================================
+// A* の経路探索処理
+//======================================================
+bool FindPath(Node start, Node goal) 
+{
+	int iterationCount = 0;
+
+	// 20グリッド以内を探索
+	if (abs(start.x - goal.x) > MAX_PATH_DISTANCE || abs(start.z - goal.z) > MAX_PATH_DISTANCE)
+	{
+		return false;
+	}
+
+	pathLength = 0;
+
+	int openCount = 0, closedCount = 0;
+
+	// Openリストに開始ノードを追加
+	openList[openCount++] = { start.x, start.z, 0, 0, Heuristic(start, goal), true, false, {-1, -1} };
+
+	while (openCount > 0)
+	{
+		// openListが大きくなりすぎた
+		if (iterationCount++ > MAX_SEARCH_ITERATIONS)
+		{
+			char msg[256];
+			sprintf(msg, "WARNING: openList too large!\nopenCount=%d", openCount);
+			MessageBoxA(NULL, msg, "A* Pathfinding Warning", MB_OK | MB_ICONWARNING);
+
+			return false;
+		}
+
+		// MAX_SEARCH_ITERATIONS に達したときに、最適なノードを使う
+		if (iterationCount++ > MAX_SEARCH_ITERATIONS) 
+		{
+			if (openCount > 0) 
+			{
+				// ゴールに最も近いノードを選ぶ
+				int bestIndex = 0;
+				for (int i = 1; i < openCount; i++)
+				{
+					if (openList[i].f < openList[bestIndex].f) 
+					{
+						bestIndex = i;
+					}
+				}
+
+				pathLength = 0;
+				PathNode current = openList[bestIndex];
+
+				while (current.parent.x != -1)
+				{
+					path[pathLength++] = { current.x, current.z };
+
+					for (int i = 0; i < closedCount; i++)
+					{
+						if (closedList[i].x == current.parent.x && closedList[i].z == current.parent.z)
+						{
+							current = closedList[i];
+							break;
+						}
+					}
+				}
+
+				return true;  // 途中までの経路を使う
+			}
+
+			return false;  // 経路が見つからなかった場合
+		}
+
+		// 最も f が小さいノードを探す
+		int bestIndex = 0;
+		for (int i = 1; i < openCount; i++) 
+		{
+			if (openList[i].f < openList[bestIndex].f) 
+			{
+				bestIndex = i;
+			}
+		}
+
+		// 現在のノードを取り出す
+		PathNode current = openList[bestIndex];
+
+		SortDirectionsGoal(goal.x, goal.z, current.x, current.z);
+
+		// ゴールに到達したら終了
+		if (current.x == goal.x && current.z == goal.z) 
+		{
+			pathLength = 0;
+			while (current.parent.x != -1) 
+			{
+				path[pathLength++] = { current.x, current.z };
+
+				for (int i = 0; i < closedCount; i++)
+				{
+					if (closedList[i].x == current.parent.x && closedList[i].z == current.parent.z)
+					{
+						current = closedList[i];
+						break;
+					}
+				}
+			}
+			return true;
+		}
+
+		// Openリストから削除し、Closedリストに追加
+		closedList[closedCount++] = current;
+
+		if (bestIndex != openCount - 1)
+		{
+			openList[bestIndex] = openList[openCount - 1]; // 最後の要素を現在の場所にコピー
+		}
+		openCount--; // カウントを減らす
+
+		// 近傍のノードを探索
+		for (int i = 0; i < 8; i++)
+		{
+			int nx = current.x + dx[i];
+			int nz = current.z + dz[i];
+
+			// マップ範囲外 or 壁ならスキップ
+			if (nx < 0 || nz < 0 || nx >= GRID_X || nz >= GRID_Z || map[nx][nz] == 1)
+			{
+				continue;
+			}
+
+			// 既に Closed にあるならスキップ
+			bool inClosed = false;
+			for (int j = 0; j < closedCount; j++) 
+			{
+				if (closedList[j].x == nx && closedList[j].z == nz)
+				{
+					inClosed = true;
+					break;
+				}
+			}
+			if (inClosed)
+			{
+				continue;
+			}
+
+			float g = current.g + ((i < 4) ? 1.0f : 1.414f); // 直線1.0, 斜め1.414
+			float h = Heuristic({ nx, nz }, goal);
+			float f = g + h;
+
+			// 既に Open にある場合、より良い経路なら更新
+			bool inOpen = false;
+			for (int j = 0; j < openCount; j++)
+			{
+				if (openList[j].x == nx && openList[j].z == nz)
+				{
+					inOpen = true;
+					if (g < openList[j].g)
+					{
+						openList[j].g = g;
+						openList[j].f = f;
+						openList[j].parent = { current.x, current.z };
+					}
+					break;
+				}
+			}
+			if (!inOpen) 
+			{
+				openList[openCount++] = { nx, nz, f, g, h, true, false, { current.x, current.z } };
+			}
+		}
+	}
+	return false; // 経路なし
+}
+//======================================================
+// 目標地点に近い方向を優先する処理(ソート)
+//======================================================
+void SortDirectionsGoal(int goalX, int goalZ, int currentX, int currentZ) 
+{
+	float distances[8];
+	int order[8] = { 0,1,2,3,4,5,6,7 };
+
+	for (int i = 0; i < 8; i++) 
+	{
+		int nx = currentX + dx[i];
+		int nz = currentZ + dz[i];
+		distances[i] = fabsf(nx - goalX) + fabsf(nz - goalZ);
+	}
+
+	// 近い順に並べ替え（バブルソート）
+	for (int i = 0; i < 7; i++)
+	{
+		for (int j = i + 1; j < 8; j++)
+		{
+			if (distances[i] > distances[j])
+			{
+				float tempDist = distances[i];
+				distances[i] = distances[j];
+				distances[j] = tempDist;
+
+				int tempOrder = order[i];
+				order[i] = order[j];
+				order[j] = tempOrder;
+			}
+		}
+	}
+
+	// 並び替えた結果を dx, dz に適用
+	int newDx[8], newDz[8];
+
+	for (int i = 0; i < 8; i++)
+	{
+		newDx[i] = dx[order[i]];
+		newDz[i] = dz[order[i]];
+	}
+	memcpy(dx, newDx, sizeof(dx));
+	memcpy(dz, newDz, sizeof(dz));
 }
 //======================================================
 // 捕まった判定

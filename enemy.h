@@ -12,12 +12,17 @@
 #include "motion.h"
 #include "meshfield.h"
 
-#define NUM_PATROL_POINTS (64)  // 巡回ポイントの最大数
-#define MAX_CONNECTIONS (3) // 分岐の数
+#define NUM_PATROL_POINTS (64)              // 巡回ポイントの最大数
+#define MAX_CONNECTIONS (3)                 // 分岐の数
 
-#define CELL_SIZE (50) // グリッド1マスの大きさ
-#define GRID_WIDTH  (MAX_WIDTH / CELL_SIZE)  // 48マス
-#define GRID_HEIGHT (MAX_HEIGHT / CELL_SIZE) // 40マス
+#define GRID_SIZE  (40)
+#define GRID_X     (MAX_WIDTH / GRID_SIZE)  // 60
+#define GRID_Z     (MAX_HEIGHT / GRID_SIZE) // 50
+#define MIN_X (-MAX_WIDTH * 0.5f)
+#define MIN_Z (-MAX_HEIGHT * 0.5f)
+#define MAX_PATH_LENGTH (GRID_X * GRID_Z)
+#define MAX_SEARCH_ITERATIONS (1000)  // 探索回数の上限
+#define MAX_PATH_DISTANCE (20)  // 最大探索距離（20グリッド以内）
 
 typedef enum 
 {
@@ -47,13 +52,18 @@ typedef struct
     int nEndCnt;
 }Enemy;
 
-// ノード構造体
-typedef struct Node 
+typedef struct 
 {
-    int x, y;
-    float g, h; // g: 開始地点からのコスト, h: ヒューリスティック(推定ゴールコスト)
-    struct Node* parent;
+    int x, z;
 } Node;
+
+typedef struct
+{
+    int x, z;
+    float f, g, h;
+    bool open, closed;
+    Node parent;
+} PathNode;
 
 //プロトタイプ宣言
 void InitEnemy(void);
@@ -68,6 +78,11 @@ void Search(void);
 float NormalizeAngle(float angle);
 
 void LoadMapInfo(const char* filename);
+float Heuristic(Node a, Node b);
+Node WorldToGrid(D3DXVECTOR3 pos);
+D3DXVECTOR3 GridToWorld(Node node);
+bool FindPath(Node start, Node goal);
+void SortDirectionsGoal(int goalX, int goalZ, int currentX, int currentZ);
 
 Enemy* GetEnemy(void);
 

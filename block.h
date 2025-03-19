@@ -66,6 +66,9 @@ typedef enum
 	BLOCKTYPE_CLOWN,
 	BLOCKTYPE_BLOCKS,
 
+	BLOCKTYPE_POSTER_01,
+	BLOCKTYPE_POSTER_02,
+
 	BLOCKTYPE_MAX
 }BLOCKTYPE;
 
@@ -166,6 +169,8 @@ static const char* BLOCK[BLOCKTYPE_MAX] =
 	"data/MODEL/pedestal.x",							// 台座
 	"data/MODEL/clown_figure.x",						// ピエロ像
 	"data/MODEL/blocks.x",								// ブロックの塊
+	"data/MODEL/nosmoking_poster.x",					// 禁煙ポスター
+	"data/MODEL/crane_poster.x",						// クレーンポスター
 
 };
 

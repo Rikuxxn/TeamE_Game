@@ -21,6 +21,7 @@
 #define MIN_X (-MAX_WIDTH * 0.5f)
 #define MIN_Z (-MAX_HEIGHT * 0.5f)
 #define MAX_PATH_LENGTH (GRID_X * GRID_Z)
+#define MAX_PATH_DIRECTION (8)  // 探索方向
 #define MAX_SEARCH_ITERATIONS (1000)  // 探索回数の上限
 #define MAX_PATH_DISTANCE (20)  // 最大探索距離（20グリッド以内）
 

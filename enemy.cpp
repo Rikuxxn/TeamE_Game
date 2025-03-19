@@ -72,7 +72,7 @@ D3DXVECTOR3 patrolPoints[] =
 	D3DXVECTOR3(185.0f, 0.0f, -700.0f),		// 52
 	D3DXVECTOR3(380.0f, 0.0f, -710.0f),		// 53
 	D3DXVECTOR3(480.0f, 0.0f, -700.0f),		// 54
-	D3DXVECTOR3(470.0f, 0.0f, -465.0f),		// 55
+	D3DXVECTOR3(470.0f, 0.0f, -485.0f),		// 55
 	D3DXVECTOR3(520.0f, 0.0f, -120.0f),		// 56
 	D3DXVECTOR3(690.0f, 0.0f, -120.0f),		// 57
 	D3DXVECTOR3(245.0f, 0.0f, -380.0f),		// 58
@@ -178,10 +178,10 @@ int map[GRID_X][GRID_Z] = // 0: 移動可能, 1: 障害物
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -241,8 +241,8 @@ Node path[MAX_PATH_LENGTH];				// A*で計算したルート
 int pathLength = 0;						// ルートの長さ
 
 // 近傍8方向の移動
-int dx[8] = { 1, -1,  0,  0,  1, -1,  1, -1 };
-int dz[8] = { 0,  0,  1, -1,  1, -1, -1,  1 };
+int dx[MAX_PATH_DIRECTION] = { 1, -1,  0,  0,  1, -1,  1, -1 };
+int dz[MAX_PATH_DIRECTION] = { 0,  0,  1, -1,  1, -1, -1,  1 };
 
 //=============================
 // 敵の初期化処理
@@ -941,95 +941,95 @@ void Patrol(void)
 //======================================================
 // 追跡処理
 //======================================================
-//void Chase(void)
-//{
-//	Player* pPlayer = GetPlayer();
-//
-//	g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_MOVE;
-//
-//	static int lostSightTimer = 0;				// 視界外タイマー
-//	float rotationSpeed		  = 0.1f;			// 回転速度
-//	float chaseSpeed		  = 1.15f;			// 追跡速度
-//
-//	float fAngleToTarget = atan2f(pPlayer->pos.x - g_aEnemy.pos.x, pPlayer->pos.z - g_aEnemy.pos.z);
-//	
-//	// 角度の差分を正規化
-//	float angleDiff = NormalizeAngle(fAngleToTarget - g_aEnemy.rot.y);
-//
-//	// 補間回転
-//	g_aEnemy.rot.y += angleDiff * rotationSpeed;
-//
-//	g_aEnemy.move.x += sinf(fAngleToTarget) * chaseSpeed;
-//	g_aEnemy.move.z += cosf(fAngleToTarget) * chaseSpeed;
-//
-//	// プレイヤーが視界外に出たら捜索状態に切り替える
-//	if (!isPlayerInSight())
-//	{
-//		g_aEnemy.state = ENEMYSTATE_SEARCHING; // 捜索状態へ
-//	}
-//
-//	if (!isPlayerInSight())
-//	{
-//		lostSightTimer++;
-//
-//		if (lostSightTimer > 180)
-//		{ // 180フレーム経過
-//			currentPatrolPoint = GetNearestPatrolPoint(g_aEnemy.pos);
-//
-//			g_aEnemy.state = ENEMYSTATE_PATROLLING;
-//
-//			lostSightTimer = 0; // タイマーをリセット
-//		}
-//	}
-//	else
-//	{
-//		lostSightTimer = 0; // 視界内に戻ったらタイマーをリセット
-//	}
-//}
 void Chase(void)
 {
 	Player* pPlayer = GetPlayer();
 
 	g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_MOVE;
 
-	// CHASE モードになったらタイマーを増やす
-	chaseTimer++;
+	static int lostSightTimer = 0;				// 視界外タイマー
+	float rotationSpeed		  = 0.1f;			// 回転速度
+	float chaseSpeed		  = 1.12f;			// 追跡速度
 
-	Node start = WorldToGrid(g_aEnemy.pos);
-	Node goal = WorldToGrid(pPlayer->pos);
+	float fAngleToTarget = atan2f(pPlayer->pos.x - g_aEnemy.pos.x, pPlayer->pos.z - g_aEnemy.pos.z);
+	
+	// 角度の差分を正規化
+	float angleDiff = NormalizeAngle(fAngleToTarget - g_aEnemy.rot.y);
 
-	if (FindPath(start, goal) && pathLength > 0)
+	// 補間回転
+	g_aEnemy.rot.y += angleDiff * rotationSpeed;
+
+	g_aEnemy.move.x += sinf(fAngleToTarget) * chaseSpeed;
+	g_aEnemy.move.z += cosf(fAngleToTarget) * chaseSpeed;
+
+	// プレイヤーが視界外に出たら捜索状態に切り替える
+	if (!isPlayerInSight())
 	{
-		Node next = path[pathLength - 1]; // 次の移動先
-
-		D3DXVECTOR3 nextPos = GridToWorld(next);
-
-		float rotationSpeed = 0.1f;
-		float chaseSpeed = 1.0f;
-
-		float fAngleToTarget = atan2f(nextPos.x - g_aEnemy.pos.x, nextPos.z - g_aEnemy.pos.z);
-
-		float angleDiff = NormalizeAngle(fAngleToTarget - g_aEnemy.rot.y);
-
-		g_aEnemy.rot.y += angleDiff * rotationSpeed;
-
-		g_aEnemy.move.x += sinf(fAngleToTarget) * chaseSpeed;
-		g_aEnemy.move.z += cosf(fAngleToTarget) * chaseSpeed;
+		g_aEnemy.state = ENEMYSTATE_SEARCHING; // 捜索状態へ
 	}
 
-	// 視界内ならタイマーをリセット
-	if (isPlayerInSight())
+	if (!isPlayerInSight())
 	{
-		chaseTimer = 0;
-	}
+		lostSightTimer++;
 
-	// 視界外
-	if (!isPlayerInSight() && chaseTimer >= 240)
+		if (lostSightTimer > 180)
+		{ // 180フレーム経過
+			currentPatrolPoint = GetNearestPatrolPoint(g_aEnemy.pos);
+
+			g_aEnemy.state = ENEMYSTATE_PATROLLING;
+
+			lostSightTimer = 0; // タイマーをリセット
+		}
+	}
+	else
 	{
-		chaseTimer = 0;  // タイマーリセット
-		g_aEnemy.state = ENEMYSTATE_SEARCHING;
+		lostSightTimer = 0; // 視界内に戻ったらタイマーをリセット
 	}
 }
+//void Chase(void)
+//{
+//	Player* pPlayer = GetPlayer();
+//
+//	g_aEnemy.enemymotion.EnemymotionType = ENEMYMOTIONTYPE_MOVE;
+//
+//	// CHASE モードになったらタイマーを増やす
+//	chaseTimer++;
+//
+//	Node start = WorldToGrid(g_aEnemy.pos);
+//	Node goal = WorldToGrid(pPlayer->pos);
+//
+//	if (FindPath(start, goal) && pathLength > 0)
+//	{
+//		Node next = path[pathLength - 1]; // 次の移動先
+//
+//		D3DXVECTOR3 nextPos = GridToWorld(next);
+//
+//		float rotationSpeed = 0.1f;
+//		float chaseSpeed = 1.1f;
+//
+//		float fAngleToTarget = atan2f(nextPos.x - g_aEnemy.pos.x, nextPos.z - g_aEnemy.pos.z);
+//
+//		float angleDiff = NormalizeAngle(fAngleToTarget - g_aEnemy.rot.y);
+//
+//		g_aEnemy.rot.y += angleDiff * rotationSpeed;
+//
+//		g_aEnemy.move.x += sinf(fAngleToTarget) * chaseSpeed;
+//		g_aEnemy.move.z += cosf(fAngleToTarget) * chaseSpeed;
+//	}
+//
+//	// 視界内ならタイマーをリセット
+//	if (isPlayerInSight())
+//	{
+//		chaseTimer = 0;
+//	}
+//
+//	// 視界外
+//	if (!isPlayerInSight() && chaseTimer >= 240)
+//	{
+//		chaseTimer = 0;  // タイマーリセット
+//		g_aEnemy.state = ENEMYSTATE_SEARCHING;
+//	}
+//}
 //======================================================
 // 探索処理
 //======================================================
@@ -1046,7 +1046,7 @@ void Search(void)
 		return;
 	}
 
-	// 一定時間探索したら `PATROL` に戻る
+	// 一定時間探索したら PATROL に戻る
 	searchTimer++;
 	if (searchTimer > 180)
 	{  // 180フレーム（3秒）探索後に巡回に戻る
@@ -1245,7 +1245,7 @@ bool FindPath(Node start, Node goal)
 		openCount--; // カウントを減らす
 
 		// 近傍のノードを探索
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < MAX_PATH_DIRECTION; i++)
 		{
 			int nx = current.x + dx[i];
 			int nz = current.z + dz[i];
@@ -1304,10 +1304,10 @@ bool FindPath(Node start, Node goal)
 //======================================================
 void SortDirectionsGoal(int goalX, int goalZ, int currentX, int currentZ) 
 {
-	float distances[8];
-	int order[8] = { 0,1,2,3,4,5,6,7 };
+	float distances[MAX_PATH_DIRECTION];
+	int order[MAX_PATH_DIRECTION] = { 0,1,2,3,4,5,6,7 };
 
-	for (int i = 0; i < 8; i++) 
+	for (int i = 0; i < MAX_PATH_DIRECTION; i++)
 	{
 		int nx = currentX + dx[i];
 		int nz = currentZ + dz[i];
@@ -1317,7 +1317,7 @@ void SortDirectionsGoal(int goalX, int goalZ, int currentX, int currentZ)
 	// 近い順に並べ替え（バブルソート）
 	for (int i = 0; i < 7; i++)
 	{
-		for (int j = i + 1; j < 8; j++)
+		for (int j = i + 1; j < MAX_PATH_DIRECTION; j++)
 		{
 			if (distances[i] > distances[j])
 			{
@@ -1333,9 +1333,9 @@ void SortDirectionsGoal(int goalX, int goalZ, int currentX, int currentZ)
 	}
 
 	// 並び替えた結果を dx, dz に適用
-	int newDx[8], newDz[8];
+	int newDx[MAX_PATH_DIRECTION], newDz[MAX_PATH_DIRECTION];
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < MAX_PATH_DIRECTION; i++)
 	{
 		newDx[i] = dx[order[i]];
 		newDz[i] = dz[order[i]];

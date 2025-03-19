@@ -563,7 +563,8 @@ void CollisionBlock(D3DXVECTOR3* pPos, D3DXVECTOR3* pPosOld, D3DXVECTOR3* pMove,
 		{
 			if (g_aBlock[nCntBlock].nType == BLOCKTYPE_BEAR || g_aBlock[nCntBlock].nType == BLOCKTYPE_BALL ||
 				g_aBlock[nCntBlock].nType == BLOCKTYPE_FUSE || g_aBlock[nCntBlock].nType == BLOCKTYPE_SLIDE_TOP || 
-				g_aBlock[nCntBlock].nType == BLOCKTYPE_CLOWN)
+				g_aBlock[nCntBlock].nType == BLOCKTYPE_CLOWN || g_aBlock[nCntBlock].nType == BLOCKTYPE_POSTER_01 ||
+				g_aBlock[nCntBlock].nType == BLOCKTYPE_POSTER_02)
 			{
 				continue;
 			}

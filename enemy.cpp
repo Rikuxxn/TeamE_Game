@@ -1039,7 +1039,7 @@ void Search(void)
 
 	static int searchTimer = 0;
 
-	// もしプレイヤーが視界に入ったら `CHASE` に戻る
+	// もしプレイヤーが視界に入ったら CHASE に戻る
 	if (isPlayerInSight()) 
 	{
 		g_aEnemy.state = ENEMYSTATE_CHASING;

@@ -557,6 +557,10 @@ void Draw(void)
 #ifdef _DEBUG
 			//操作方法の表示
 			DrawOption();
+
+			//パスワードの答え
+			DrawAPass(GetAnum(), GetAnum2(), GetAnum3(), GetAnum4());
+
 #endif
 
 			break;
@@ -596,8 +600,6 @@ void Draw(void)
 		//FPSの表示
 		DrawFPS();
 
-		//パスワードの答え
-		DrawAPass(GetAnum(), GetAnum2(), GetAnum3(), GetAnum4());
 #endif
 		//描画終了
 		g_pD3DDevice->EndScene();

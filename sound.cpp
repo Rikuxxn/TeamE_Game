@@ -456,7 +456,10 @@ void CalculateCustomPanning(SOUND_LABEL label, FLOAT32* matrix)
 //=============================================================================
 void UpdateSoundPosition(SOUND_LABEL label, float x, float y, float z)
 {
-	if (label < 0 || label >= SOUND_LABEL_MAX) return;
+	if (label < 0 || label >= SOUND_LABEL_MAX)
+	{
+		return;
+	}
 
 	// ìGÇÃåªç›à íuÇìKóp
 	g_Emitters[label].Position = { x, y, z };

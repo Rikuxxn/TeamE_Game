@@ -65,7 +65,7 @@ void InitTitle(void)
 	InitPlayer();
 
 	// エディット読み込み
-	LoadTitleData();
+	LoadParticular(PATH_TITLE);
 
 
 	AddLight(

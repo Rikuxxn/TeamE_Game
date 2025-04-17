@@ -36,6 +36,7 @@
 #include "crane_hint.h"
 #include "recommendation.h"
 #include "pause_tutorial.h"
+#include "insight.h"
 
 //グローバル変数
 GAMESTATE g_gameState = GAMESTATE_NONE;		// ゲームの状態
@@ -101,6 +102,12 @@ void InitGame(void)
 
 	//タイムの初期化処理
 	InitTime();
+
+
+	// 視界エフェクトの初期化
+	InitInsight();
+
+	SetInsight(D3DXVECTOR3(640.0f, 360.0f, 0.0f), D3DXCOLOR(1.0f,1.0f,1.0f,0.0f),640.0f, 360.0f);
 
 
 	//ゲージの初期化
@@ -231,10 +238,13 @@ void InitGame(void)
 	g_Game.bMap = false;
 
 	//エディット読み込み
-	LoadBlockData();
+	LoadParticular(PATH_BLOCK);
 
 	//エディット読み込み
-	LoadWallData();
+	LoadParticular(PATH_WALL);
+
+	////エディット読み込み
+	//LoadParticular(PATH_TEST);
 
 }
 //============================================
@@ -313,6 +323,10 @@ void UninitGame(void)
 
 	////パーティクルの終了処理
 	//UninitParticle();
+
+
+	// 視界エフェクトの終了処理
+	UninitInsight();
 
 
 	//ゲージの終了処理
@@ -669,10 +683,13 @@ void UpdateGame(void)
 		//	offWireFrame();
 		//}
 
-		//ゲージの更新処理
+		// 視界エフェクトの更新処理
+		UpdateInsight();
+
+		// ゲージの更新処理
 		UpdateGuage();
 
-		//UIの更新処理
+		// UIの更新処理
 		UpdateUI();
 
 		// タスクUIの更新処理
@@ -790,11 +807,13 @@ void DrawGame(void)
 	////パーティクルの描画処理
 	//DrawParticle();
 
+	// 視界エフェクトの描画処理
+	DrawInsight();
 
 	if (pPlayer->bDrawDush == true && g_Game.bMini == false &&
 		(g_Game.bBallHint || g_Game.bCraneHint) == false)
 	{
-		//ゲージの描画処理
+		// ゲージの描画処理
 		DrawGuage();
 	}
 

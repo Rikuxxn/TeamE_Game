@@ -5,7 +5,6 @@
 //
 //=============================================================================
 #include "ui.h"
-#include "main.h"
 #include "player.h"
 #include "block.h"
 #include "game.h"

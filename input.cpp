@@ -252,72 +252,43 @@ bool GetJoypadPress(JOYKEY Key)
 {
 	return (g_joyKeyState.Gamepad.wButtons & (0x01 << Key)) ? true : false;
 }
+//=====================================================
+// 何かしらのボタンが押されているか判定（プレス）
+//=====================================================
+bool GetAnyJoypadPress(void)
+{
+	return g_joyKeyState.Gamepad.wButtons != 0;
+}
+//=====================================================
+// ジョイパッドのトリガー
+//=====================================================
 bool JoyPadTrigger(JOYKEY Key)
 {
 	return (g_joyKeyStateTrigger.Gamepad.wButtons & (0x01 << Key)) ? true : false;
 }
+//=====================================================
+// 何かしらのボタンが押されているか判定（トリガー）
+//=====================================================
+bool GetAnyJoypadTrigger(void)
+{
+	return g_joyKeyStateTrigger.Gamepad.wButtons != 0;
+}
+//=====================================================
+// ジョイパッドのリリース
+//=====================================================
 bool JoyPadRelease(JOYKEY Key)
 {
 	bool released = (g_joyKeyStateRelease.Gamepad.wButtons & (0x01 << Key)) ? true : false;
 
 	return released;
 }
-////====================================================
-//// L2,R2の処理
-////====================================================
-//bool GetJoyTrigger(JOYKEY key)
-//{
-//	if (key == JOYKEY_LT)
-//	{
-//		return (g_joyKeyState.Gamepad.bLeftTrigger) ? true : false;
-//	}
-//	else if (key == JOYKEY_RT)
-//	{
-//		return (g_joyKeyState.Gamepad.bRightTrigger) ? true : false;
-//	}
-//}
-//bool GeyJoyTriggerTrigger(JOYKEY key)//押したとき
-//{
-//	bool JoyStick = false;
-//
-//	if (key == JOYKEY_LT)
-//	{
-//		if ((g_joyKeyState.Gamepad.bLeftTrigger > 0) && !(g_aOldJoyKeyState.Gamepad.bLeftTrigger > 0))
-//		{
-//			JoyStick = true;
-//		}
-//	}
-//	else if (key == JOYKEY_RT)
-//	{
-//		if ((g_joyKeyState.Gamepad.bRightTrigger > 0) && !(g_aOldJoyKeyState.Gamepad.bRightTrigger > 0))
-//		{
-//			JoyStick = true;
-//		}
-//
-//	}
-//	return JoyStick;
-//}
-//bool GetJoyTriggerRelease(JOYKEY key)
-//{
-//	bool JoyStick = false;
-//	if (key == JOYKEY_LT)
-//	{
-//		if ((g_aOldJoyKeyState.Gamepad.bLeftTrigger > 0) && !(g_joyKeyState.Gamepad.bLeftTrigger > 0))
-//		{
-//			JoyStick = true;
-//		}
-//	}
-//	else if (key == JOYKEY_RT)
-//	{
-//		if ((g_aOldJoyKeyState.Gamepad.bRightTrigger > 0) && !(g_joyKeyState.Gamepad.bRightTrigger > 0))
-//		{
-//			JoyStick = true;
-//		}
-//
-//	}
-//	return JoyStick;
-//
-//}
+//=====================================================
+// 何かしらのボタンが押されているか判定（リリース）
+//=====================================================
+bool GetAnyJoypadRelease(void)
+{
+	return g_joyKeyStateRelease.Gamepad.wButtons != 0;
+}
 //====================================================
 // スティック処理
 //====================================================

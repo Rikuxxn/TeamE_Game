@@ -52,10 +52,12 @@ HRESULT InitJoypad(void);
 void UninitJoypad(void);
 void UpdateJoypad(void);
 bool GetJoypadPress(JOYKEY Key);
-
+bool GetAnyJoypadPress(void);
 bool GetJoyStick(void);
 bool JoyPadTrigger(JOYKEY Key);
+bool GetAnyJoypadTrigger(void);
 bool JoyPadRelease(JOYKEY Key);
+bool GetAnyJoypadRelease(void);
 XINPUT_STATE* GetJoyStickAngle(void);
 
 bool KeyboardTrigger(int nKey);

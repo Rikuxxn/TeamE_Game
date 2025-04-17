@@ -22,14 +22,18 @@ BlockTex blockTex[BLOCKTYPE_MAX];
 
 int g_nCntEdit;
 
+int g_CurrentSavePathSet = 0;   // 保存用ファイルパスの選択
+int g_CurrentLoadPathSet = 0;   // 読み込み用ファイルパスの選択
+int g_selectedIndex = -1;
+
 //=============================
-//エディターの初期化処理
+// エディターの初期化処理
 //=============================
 void InitEdit(void)
 {
 
     // カーソルを非表示にする
-    SetCursorVisibility(false);
+    SetCursorVisibility(true);
 
 
     // ブロックの初期化処理
@@ -100,6 +104,7 @@ void InitEdit(void)
         g_Editinfo[nCntBlock].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f); //移動量
         g_Editinfo[nCntBlock].bUse = false;
         g_Editinfo[nCntBlock].nType = BLOCKTYPE_WALL;
+        g_Editinfo[nCntBlock].nPathType = PATH_BLOCK;
     }
 
     for (int nCnt = 0; nCnt < BLOCKTYPE_MAX; nCnt++)
@@ -144,7 +149,7 @@ void InitEdit(void)
 
 }
 //=============================
-//エディターの終了処理
+// エディターの終了処理
 //=============================
 void UninitEdit(void)
 {
@@ -217,14 +222,14 @@ void UninitEdit(void)
             }
         }
     }
-
-
 }
 //=============================
-//エディターの更新処理
+// エディターの更新処理
 //=============================
 void UpdateEdit(void)
 {
+    FADE g_fade = GetFade();// 現在の状態
+
     // ブロックの更新処理
     UpdateBlock();
 
@@ -240,202 +245,27 @@ void UpdateEdit(void)
     // カメラの更新処理
     UpdateCamera();
 
-    Block* pBlock = GetBlock();     // ブロック情報
-    FADE g_fade = GetFade();        // 現在の状態
-    Camera* pCamera = GetCamera();
+    // エディターブロック移動処理
+    MoveEditBlock();
 
+    // エディターブロック回転処理
+    TurnEditBlock();
 
-    // ブロックの位置を変更
-    if (KeyboardTrigger(DIK_UP) == true)
-    {
-        //g_Editinfo[g_nCntEdit].pos.x -= sinf(pCamera->rot.y) * MAX_SPEED;
-        //g_Editinfo[g_nCntEdit].pos.z -= cosf(pCamera->rot.y) * MAX_SPEED;
+    // エディターブロックの正規化処理
+    NormalizeEditBlock();
 
-        g_Editinfo[g_nCntEdit].pos.z += MAX_SPEED;
-
-    }
-    else if (KeyboardTrigger(DIK_DOWN) == true)
-    {
-        //g_Editinfo[g_nCntEdit].pos.x += sinf(pCamera->rot.y) * MAX_SPEED;
-        //g_Editinfo[g_nCntEdit].pos.z += cosf(pCamera->rot.y) * MAX_SPEED;
-
-        g_Editinfo[g_nCntEdit].pos.z -= MAX_SPEED;
-
-    }
-    else if (KeyboardTrigger(DIK_LEFT) == true)
-    {
-        ////移動量を更新(増加させる)
-        //g_Editinfo[g_nCntEdit].pos.z -= sinf(pCamera->rot.y) * MAX_SPEED;
-        //g_Editinfo[g_nCntEdit].pos.x += cosf(pCamera->rot.y) * MAX_SPEED;
-
-        g_Editinfo[g_nCntEdit].pos.x -=  MAX_SPEED;
-
-    }
-    else if (KeyboardTrigger(DIK_RIGHT) == true)
-    {
-        //g_Editinfo[g_nCntEdit].pos.z += sinf(pCamera->rot.y) * MAX_SPEED;
-        //g_Editinfo[g_nCntEdit].pos.x -= cosf(pCamera->rot.y) * MAX_SPEED;
-
-        g_Editinfo[g_nCntEdit].pos.x += MAX_SPEED;
-
-    }
-    else if (KeyboardTrigger(DIK_U) == true)
-    {
-        g_Editinfo[g_nCntEdit].pos.y += 10.0f;
-    }
-    else if (KeyboardTrigger(DIK_J) == true)
-    {
-        g_Editinfo[g_nCntEdit].pos.y -= 10.0f;
-    }
-
-
-    //ブロックをY軸回転する
-    if (KeyboardTrigger(DIK_Y) == true)
-    {
-        g_Editinfo[g_nCntEdit].rot.y += D3DXToRadian(45);
-    }
-    else if (KeyboardTrigger(DIK_H) == true)
-    {
-        g_Editinfo[g_nCntEdit].rot.y -= D3DXToRadian(45);
-    }
-
-    //ブロックをX軸回転する
-    if (KeyboardTrigger(DIK_T) == true)
-    {
-        g_Editinfo[g_nCntEdit].rot.x += 0.75f;
-    }
-    else if (KeyboardTrigger(DIK_G) == true)
-    {
-        g_Editinfo[g_nCntEdit].rot.x -= 0.75f;
-    }
-
-    // ブロックを設置
-    if (KeyboardTrigger(DIK_RETURN) == true)
-    {
-        g_Editinfo[g_nCntEdit + 1].pos = g_Editinfo[g_nCntEdit].pos;
-        //g_Editinfo[g_nCntEdit + 1].rot = g_Editinfo[g_nCntEdit].rot;
-        g_Editinfo[g_nCntEdit + 1].bUse = true; // 使用中に設定
-        g_Editinfo[g_nCntEdit + 1].blockTex[0] = blockTex[0];
-        
-        g_nCntEdit++; // 次のインデックスへ
-        g_Editinfo[g_nCntEdit].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f); // 回転をリセット
-    }
-    else if (GetMouseButtonTrigger(0))
-    {
-        g_Editinfo[g_nCntEdit + 1].pos = g_Editinfo[g_nCntEdit].pos;
-        //g_Editinfo[g_nCntEdit + 1].rot = g_Editinfo[g_nCntEdit].rot;
-        g_Editinfo[g_nCntEdit + 1].bUse = true; // 使用中に設定
-        g_Editinfo[g_nCntEdit + 1].blockTex[0] = blockTex[0];
-
-        g_nCntEdit++; // 次のインデックスへ
-        g_Editinfo[g_nCntEdit].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f); // 回転をリセット
-    }
-
-    int MouseWheel = GetMouseWheel();
-
-    //ブロックの種類変更
-    if (MouseWheel > 0 && g_Editinfo[g_nCntEdit].nType < BLOCKTYPE_MAX - 1)//上にスクロール
-    {
-        g_Editinfo[g_nCntEdit].nType++;
-
-        g_Editinfo[g_nCntEdit].blockTex[g_Editinfo[g_nCntEdit].nType] = blockTex[g_Editinfo[g_nCntEdit].nType];
-    }
-    else if (MouseWheel < 0 && g_Editinfo[g_nCntEdit].nType > 0)//下にスクロール
-    {
-        g_Editinfo[g_nCntEdit].nType--;
-
-        g_Editinfo[g_nCntEdit].blockTex[g_Editinfo[g_nCntEdit].nType] = blockTex[g_Editinfo[g_nCntEdit].nType];
-    }
-    if (KeyboardTrigger(DIK_O) == true && g_Editinfo[g_nCntEdit].nType < BLOCKTYPE_MAX - 1)
-    {
-        g_Editinfo[g_nCntEdit].nType++;
-
-        g_Editinfo[g_nCntEdit].blockTex[g_Editinfo[g_nCntEdit].nType] = blockTex[g_Editinfo[g_nCntEdit].nType];
-    }
-    else if (KeyboardTrigger(DIK_L) == true && g_Editinfo[g_nCntEdit].nType > 0)
-    {
-        g_Editinfo[g_nCntEdit].nType--;
-
-        g_Editinfo[g_nCntEdit].blockTex[g_Editinfo[g_nCntEdit].nType] = blockTex[g_Editinfo[g_nCntEdit].nType];
-    }
-
-
-    // 正規化処理
-    if (g_Editinfo[g_nCntEdit].rot.y > D3DX_PI) 
-    {
-        g_Editinfo[g_nCntEdit].rot.y -= D3DX_PI * 2.0f;
-    }
-    if (g_Editinfo[g_nCntEdit].rot.y < -D3DX_PI) 
-    {
-        g_Editinfo[g_nCntEdit].rot.y += D3DX_PI * 2.0f;
-    }
-
-    // 必要に応じて他の軸も正規化
-    if (g_Editinfo[g_nCntEdit].rot.x > D3DX_PI) 
-    {
-        g_Editinfo[g_nCntEdit].rot.x -= D3DX_PI * 2.0f;
-    }
-    if (g_Editinfo[g_nCntEdit].rot.x < -D3DX_PI) 
-    {
-        g_Editinfo[g_nCntEdit].rot.x += D3DX_PI * 2.0f;
-    }
-
-    if (g_Editinfo[g_nCntEdit].rot.z > D3DX_PI) 
-    {
-        g_Editinfo[g_nCntEdit].rot.z -= D3DX_PI * 2.0f;
-    }
-    if (g_Editinfo[g_nCntEdit].rot.z < -D3DX_PI) 
-    {
-        g_Editinfo[g_nCntEdit].rot.z += D3DX_PI * 2.0f;
-    }
-
-
-    //ブロックの削除
-    if (KeyboardTrigger(DIK_DELETE) == true && !g_nCntEdit == 0)
-    {
-        g_Editinfo[g_nCntEdit].bUse = false;
-        g_nCntEdit--;
-    }
-
+    // エディター操作処理
+    OperationEdit();
 
     if (KeyboardTrigger(DIK_F1) == true && g_fade == FADE_NONE)
     {
-        //タイトル画面に移行
+        // タイトル画面に移行
         SetFade(MODE_TITLE);
-    }
-
-    // ブロック設置の情報を保存
-    if (KeyboardTrigger(DIK_F7) == true)
-    {
-        SaveBlockData();
-    }
-    // 壁設置の情報を保存
-    else if (KeyboardTrigger(DIK_F2) == true)
-    {
-        SaveWallData();
-    }
-    // タイトル用の配置情報を保存
-    else if (KeyboardTrigger(DIK_F3) == true)
-    {
-        SaveTitleData();
-    }
-
-
-
-    // ブロック設置の情報を読み込む
-    if (KeyboardTrigger(DIK_F6) == true)
-    {
-        LoadBlockData();
-    }
-    // 壁設置の情報を読み込む
-    else if (KeyboardTrigger(DIK_F4) == true)
-    {
-        LoadWallData();
     }
 
 }
 //=============================
-//エディターの描画処理
+// エディターの描画処理
 //=============================
 void DrawEdit(void)
 {
@@ -454,10 +284,8 @@ void DrawEdit(void)
     // カメラの設定
     SetCamera();
 
-    LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
-
     //デバイスの取得
-    pDevice = GetDevice();
+    LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
     //計算用マトリックス
     D3DXMATRIX mtxRot, mtxTrans;
@@ -530,52 +358,16 @@ void DrawEdit(void)
 
 }
 //======================================
-//ブロック(オブジェクト)の書き出し処理
+// ブロック(オブジェクト)の書き出し処理
 //======================================
 void SaveBlockData(void)
 {
     D3DXVECTOR3 pos;
     int nType = 0;
+    FILE* pFile = NULL;
 
-    FILE* pFile = fopen(BLOCKPATH_1, "w");
-
-    if (pFile != NULL)
-    {
-        fwrite(&g_nCntEdit, sizeof(int), 0, pFile);
-
-        for (int nCnt1 = 0; nCnt1 < g_nCntEdit; nCnt1++)
-        {
-
-            if (g_Editinfo[nCnt1].bUse == true)
-            {
-                fprintf(pFile, "SETBLOCK\n");
-                fprintf(pFile, "POS %.1f %.1f %.1f\n", g_Editinfo[nCnt1].pos.x, g_Editinfo[nCnt1].pos.y, g_Editinfo[nCnt1].pos.z);
-                fprintf(pFile, "ROT %.2f %.2f %.2f\n", g_Editinfo[nCnt1].rot.x, g_Editinfo[nCnt1].rot.y, g_Editinfo[nCnt1].rot.z);
-                fprintf(pFile, "BLOCKTYPE %d\n", g_Editinfo[nCnt1].nType);
-                fprintf(pFile, "END_BLOCKSET\n");
-                fprintf(pFile, "================\n");
-            }
-
-        }
-        fprintf(pFile, "END_SCRIPT\n");
-
-        //ファイルを閉じる
-        fclose(pFile);
-    }
-    else
-    {
-        return;
-    }
-}
-//=============================
-//壁の書き出し処理
-//=============================
-void SaveWallData(void)
-{
-    D3DXVECTOR3 pos;
-    int nType = 0;
-
-    FILE* pFile = fopen(WALLPATH_1, "w");
+    // ファイルを開く
+    pFile = fopen(PATH[g_CurrentSavePathSet], "w");
 
     if (pFile != NULL)
     {
@@ -606,49 +398,11 @@ void SaveWallData(void)
     }
 }
 //=============================
-//タイトル用の書き出し処理
-//=============================
-void SaveTitleData(void)
-{
-    D3DXVECTOR3 pos;
-    int nType = 0;
-
-    FILE* pFile = fopen(TITLEPATH_1, "w");
-
-    if (pFile != NULL)
-    {
-        fwrite(&g_nCntEdit, sizeof(int), 0, pFile);
-
-        for (int nCnt1 = 0; nCnt1 < g_nCntEdit; nCnt1++)
-        {
-
-            if (g_Editinfo[nCnt1].bUse == true)
-            {
-                fprintf(pFile, "SETBLOCK\n");
-                fprintf(pFile, "POS %.1f %.1f %.1f\n", g_Editinfo[nCnt1].pos.x, g_Editinfo[nCnt1].pos.y, g_Editinfo[nCnt1].pos.z);
-                fprintf(pFile, "ROT %.2f %.2f %.2f\n", g_Editinfo[nCnt1].rot.x, g_Editinfo[nCnt1].rot.y, g_Editinfo[nCnt1].rot.z);
-                fprintf(pFile, "BLOCKTYPE %d\n", g_Editinfo[nCnt1].nType);
-                fprintf(pFile, "END_BLOCKSET\n");
-                fprintf(pFile, "================\n");
-            }
-
-        }
-
-        fprintf(pFile, "END_SCRIPT\n");
-
-        //ファイルを閉じる
-        fclose(pFile);
-    }
-    else
-    {
-        return;
-    }
-}
-//=============================
-//ブロックの読み込み処理
+// ブロックの読み込み処理
 //=============================
 void LoadBlockData(void)
 {
+    FILE* pFile = NULL;
 
     for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
     {
@@ -662,25 +416,11 @@ void LoadBlockData(void)
     g_nCntEdit = 0; // 編集中のブロック数をリセット
 
     // ファイルを開く
-    FILE* pFile = fopen(BLOCKPATH_1, "r");
+    pFile = fopen(PATH[g_CurrentLoadPathSet], "r");
 
     D3DXVECTOR3 pos;
     D3DXVECTOR3 rot;
     int nType = 0;
-
-    switch (g_nCntEdit)
-    {
-    case 0:
-        //ファイルを開く
-        pFile = fopen(BLOCKPATH_1, "r");
-
-        break;
-
-    default:
-        pFile = NULL;
-
-        break;
-    }
 
     if (pFile != NULL)
     {
@@ -716,7 +456,15 @@ void LoadBlockData(void)
                     }
                     else if (strcmp(aStr, "END_BLOCKSET") == 0)
                     {
+                        // ブロックを設置
                         SetBlock(pos, rot,nType);
+
+                        g_Editinfo[g_nCntEdit].pos = pos;
+                        g_Editinfo[g_nCntEdit].rot = rot;
+                        g_Editinfo[g_nCntEdit].nType = nType;
+                        g_Editinfo[g_nCntEdit].bUse = true;
+                        g_nCntEdit++; // 読み込んだブロック数を増やす
+
                         break;
                     }
                 }
@@ -746,11 +494,12 @@ void LoadBlockData(void)
     fclose(pFile);
 
 }
-//=============================
-//壁の読み込み処理
-//=============================
-void LoadWallData(void)
+//======================================
+// 特定のファイルの読み込み処理
+//======================================
+void LoadParticular(int nPathType)
 {
+    FILE* pFile = NULL;
 
     for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
     {
@@ -763,26 +512,12 @@ void LoadWallData(void)
 
     g_nCntEdit = 0; // 編集中のブロック数をリセット
 
-    // ファイルを開く
-    FILE* pFile = fopen(WALLPATH_1, "r");
+            // ファイルを開く
+    pFile = fopen(PATH[nPathType], "r");
 
     D3DXVECTOR3 pos;
     D3DXVECTOR3 rot;
     int nType = 0;
-
-    switch (g_nCntEdit)
-    {
-    case 0:
-        //ファイルを開く
-        pFile = fopen(WALLPATH_1, "r");
-
-        break;
-
-    default:
-        pFile = NULL;
-
-        break;
-    }
 
     if (pFile != NULL)
     {
@@ -818,107 +553,7 @@ void LoadWallData(void)
                     }
                     else if (strcmp(aStr, "END_BLOCKSET") == 0)
                     {
-                        SetBlock(pos, rot,nType);
-                        break;
-                    }
-                }
-            }
-
-            if (strcmp(aStr, "END_SCRIPT") == 0)
-            {
-                break;
-            }
-        }
-        //ファイルを閉じる
-        fclose(pFile);
-    }
-    else
-    {
-        return;
-    }
-
-    // 現在選択中のブロックを設定 (編集用ブロック)
-    g_Editinfo[g_nCntEdit].bUse = true; // 新しいブロックを使用状態にする
-    g_Editinfo[g_nCntEdit].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f); // 初期位置に配置
-    g_Editinfo[g_nCntEdit].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f); // 初期位置に配置
-    g_Editinfo[g_nCntEdit].nType = BLOCKTYPE_WALL; // デフォルトのブロックタイプ
-    g_Editinfo[g_nCntEdit].blockTex[0] = blockTex[BLOCKTYPE_WALL];
-
-    // ファイルを閉じる
-    fclose(pFile);
-}
-//=============================
-//タイトル用の読み込み処理
-//=============================
-void LoadTitleData(void)
-{
-
-    for (int nCntBlock = 0; nCntBlock < MAX_BLOCK; nCntBlock++)
-    {
-        g_Editinfo[nCntBlock].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);      // 初期位置
-        g_Editinfo[nCntBlock].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);      // 初期回転
-        g_Editinfo[nCntBlock].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);     // 移動量初期化
-        g_Editinfo[nCntBlock].bUse = false;                             // 未使用状態に設定
-        g_Editinfo[nCntBlock].nType = BLOCKTYPE_WALL;                   // デフォルトのブロックタイプ
-    }
-
-    g_nCntEdit = 0; // 編集中のブロック数をリセット
-
-    // ファイルを開く
-    FILE* pFile = fopen(TITLEPATH_1, "r");
-
-    D3DXVECTOR3 pos;
-    D3DXVECTOR3 rot;
-    int nType = 0;
-
-    switch (g_nCntEdit)
-    {
-    case 0:
-        //ファイルを開く
-        pFile = fopen(TITLEPATH_1, "r");
-
-        break;
-
-    default:
-        pFile = NULL;
-
-        break;
-    }
-
-    if (pFile != NULL)
-    {
-        while (1)
-        {
-
-            char aStr[MAX_EDITWORD];
-
-            fscanf(pFile, "%s", &aStr[0]);
-
-            //一致したら
-            if (strcmp(aStr, "SETBLOCK") == 0)
-            {
-                while (1)
-                {
-                    fscanf(pFile, "%s", &aStr[0]);
-
-                    if (strcmp(aStr, "POS") == 0)
-                    {
-                        fscanf(pFile, "%f", &pos.x);
-                        fscanf(pFile, "%f", &pos.y);
-                        fscanf(pFile, "%f", &pos.z);
-                    }
-                    else if (strcmp(aStr, "ROT") == 0)
-                    {
-                        fscanf(pFile, "%f", &rot.x);
-                        fscanf(pFile, "%f", &rot.y);
-                        fscanf(pFile, "%f", &rot.z);
-                    }
-                    else if (strcmp(aStr, "BLOCKTYPE") == 0)
-                    {
-                        fscanf(pFile, "%d", &nType);
-                    }
-                    else if (strcmp(aStr, "END_BLOCKSET") == 0)
-                    {
+                        // ブロックを設置
                         SetBlock(pos, rot, nType);
                         break;
                     }
@@ -929,7 +564,6 @@ void LoadTitleData(void)
             {
                 break;
             }
-
         }
         //ファイルを閉じる
         fclose(pFile);
@@ -949,4 +583,303 @@ void LoadTitleData(void)
     // ファイルを閉じる
     fclose(pFile);
 }
+//=============================
+// マウスブロック選択
+//=============================
+void SelectBlockByMouse(void)
+{
+    // マウスのスクリーン座標を取得
+    POINT pt;
+    GetCursorPos(&pt);
+    ScreenToClient(GetActiveWindow(), &pt);
 
+    // デバイス取得
+    LPDIRECT3DDEVICE9 pDevice = GetDevice();
+    D3DVIEWPORT9 viewport;
+    pDevice->GetViewport(&viewport);
+
+    // クリック位置のスクリーン座標を正規化 (-1.0 ~ 1.0)
+    D3DXVECTOR3 rayOrigin, rayDir;
+    D3DXMATRIX matProj;
+    pDevice->GetTransform(D3DTS_PROJECTION, &matProj);
+    float px = ((2.0f * pt.x) / viewport.Width - 1.0f) / matProj._11;
+    float py = ((-2.0f * pt.y) / viewport.Height + 1.0f) / matProj._22;
+
+    // カメラのビュー・逆行列取得
+    D3DXMATRIX matView, matInvView;
+    pDevice->GetTransform(D3DTS_VIEW, &matView);
+    D3DXMatrixInverse(&matInvView, NULL, &matView);
+
+    // レイの方向・原点計算
+    rayDir.x = px * matInvView._11 + py * matInvView._21 + matInvView._31;
+    rayDir.y = px * matInvView._12 + py * matInvView._22 + matInvView._32;
+    rayDir.z = px * matInvView._13 + py * matInvView._23 + matInvView._33;
+    D3DXVec3Normalize(&rayDir, &rayDir);
+
+    rayOrigin.x = matInvView._41;
+    rayOrigin.y = matInvView._42;
+    rayOrigin.z = matInvView._43;
+
+    // ブロックとの交差判定
+    float closestDist = FLT_MAX; // 一番近いブロックを選択するため
+
+    for (int i = 0; i < MAX_BLOCK; i++)
+    {
+        if (!g_Editinfo[i].bUse)
+        {
+            continue; // 使ってないブロックは無視
+        }
+
+        BOOL hit;
+        DWORD faceIndex; // ヒットした面のインデックス
+        FLOAT u, v, dist; // ヒット位置のUV座標と距離
+
+        // レイとメッシュの交差判定
+        D3DXIntersect(g_Editinfo[i].blockTex[g_Editinfo[i].nType].pMesh,
+            &rayOrigin, &rayDir, &hit, &faceIndex, &u, &v, &dist, NULL, NULL);
+
+        if (hit && dist < closestDist)
+        {
+            closestDist = dist;
+            g_selectedIndex = i;
+        }
+    }
+
+    if (g_selectedIndex != -1)
+    {
+        g_nCntEdit = g_selectedIndex; // 選択中のブロックを更新
+    }
+}
+//==================================================
+// ブロックの移動処理
+//==================================================
+void MoveEditBlock(void)
+{
+    Camera* pCamera = GetCamera();
+
+    // ブロックの位置を変更
+    if (KeyboardTrigger(DIK_W))    // 前進
+    {
+        if (fabsf(cosf(pCamera->rot.y)) > fabsf(sinf(pCamera->rot.y)))
+        {
+            // Z方向に移動
+            g_Editinfo[g_nCntEdit].pos.z -= (cosf(pCamera->rot.y) > 0 ? MAX_SPEED : -MAX_SPEED);
+        }
+        else
+        {
+            // X方向に移動
+            g_Editinfo[g_nCntEdit].pos.x -= (sinf(pCamera->rot.y) > 0 ? MAX_SPEED : -MAX_SPEED);
+        }
+    }
+
+    if (KeyboardTrigger(DIK_S))   // 後退
+    {
+        if (fabsf(cosf(pCamera->rot.y)) > fabsf(sinf(pCamera->rot.y)))
+        {
+            // Z方向に移動
+            g_Editinfo[g_nCntEdit].pos.z += (cosf(pCamera->rot.y) > 0 ? MAX_SPEED : -MAX_SPEED);
+        }
+        else
+        {
+            // X方向に移動
+            g_Editinfo[g_nCntEdit].pos.x += (sinf(pCamera->rot.y) > 0 ? MAX_SPEED : -MAX_SPEED);
+        }
+    }
+
+    if (KeyboardTrigger(DIK_A))   // 左移動
+    {
+        if (fabsf(cosf(pCamera->rot.y)) > fabsf(sinf(pCamera->rot.y)))
+        {
+            // X方向に移動
+            g_Editinfo[g_nCntEdit].pos.x += (cosf(pCamera->rot.y) > 0 ? MAX_SPEED : -MAX_SPEED);
+        }
+        else
+        {
+            // Z方向に移動
+            g_Editinfo[g_nCntEdit].pos.z -= (sinf(pCamera->rot.y) > 0 ? MAX_SPEED : -MAX_SPEED);
+        }
+    }
+
+    if (KeyboardTrigger(DIK_D))  // 右移動
+    {
+        if (fabsf(cosf(pCamera->rot.y)) > fabsf(sinf(pCamera->rot.y)))
+        {
+            // X方向に移動
+            g_Editinfo[g_nCntEdit].pos.x -= (cosf(pCamera->rot.y) > 0 ? MAX_SPEED : -MAX_SPEED);
+        }
+        else
+        {
+            // Z方向に移動
+            g_Editinfo[g_nCntEdit].pos.z += (sinf(pCamera->rot.y) > 0 ? MAX_SPEED : -MAX_SPEED);
+        }
+    }
+    else if (KeyboardTrigger(DIK_Z) == true)// 上移動
+    {
+        g_Editinfo[g_nCntEdit].pos.y += 10.0f;
+    }
+    else if (KeyboardTrigger(DIK_C) == true)// 下移動
+    {
+        g_Editinfo[g_nCntEdit].pos.y -= 10.0f;
+    }
+}
+//==================================================
+// ブロックの回転処理
+//==================================================
+void TurnEditBlock(void)
+{
+    // ブロックをX軸回転する
+    if (KeyboardTrigger(DIK_T) == true)
+    {
+        g_Editinfo[g_nCntEdit].rot.x += D3DXToRadian(45);
+    }
+    else if (KeyboardTrigger(DIK_G) == true)
+    {
+        g_Editinfo[g_nCntEdit].rot.x -= D3DXToRadian(45);
+    }
+
+    // ブロックをY軸回転する
+    if (KeyboardTrigger(DIK_Y) == true)
+    {
+        g_Editinfo[g_nCntEdit].rot.y += D3DXToRadian(45);
+    }
+    else if (KeyboardTrigger(DIK_H) == true)
+    {
+        g_Editinfo[g_nCntEdit].rot.y -= D3DXToRadian(45);
+    }
+
+    // ブロックをZ軸回転する
+    if (KeyboardTrigger(DIK_U) == true)
+    {
+        g_Editinfo[g_nCntEdit].rot.z += D3DXToRadian(45);
+    }
+    else if (KeyboardTrigger(DIK_J) == true)
+    {
+        g_Editinfo[g_nCntEdit].rot.z -= D3DXToRadian(45);
+    }
+}
+//==================================================
+// エディター操作処理
+//==================================================
+void OperationEdit(void)
+{
+    int MouseWheel = GetMouseWheel();
+
+    // ブロックを設置
+    if (KeyboardTrigger(DIK_F) == true)
+    {
+        g_Editinfo[g_nCntEdit + 1].pos = g_Editinfo[g_nCntEdit].pos;
+        g_Editinfo[g_nCntEdit + 1].bUse = true; // 使用中に設定
+        g_Editinfo[g_nCntEdit + 1].blockTex[0] = blockTex[0];
+
+        g_nCntEdit++; // 次のインデックスへ
+        g_Editinfo[g_nCntEdit].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f); // 回転をリセット
+    }
+
+    if (KeyboardTrigger(DIK_Q) == true && g_Editinfo[g_nCntEdit].nType > 0)
+    {
+        g_Editinfo[g_nCntEdit].nType--;
+
+        g_Editinfo[g_nCntEdit].blockTex[g_Editinfo[g_nCntEdit].nType] = blockTex[g_Editinfo[g_nCntEdit].nType];
+    }
+    else if (KeyboardTrigger(DIK_E) == true && g_Editinfo[g_nCntEdit].nType < BLOCKTYPE_MAX - 1)
+    {
+        g_Editinfo[g_nCntEdit].nType++;
+
+        g_Editinfo[g_nCntEdit].blockTex[g_Editinfo[g_nCntEdit].nType] = blockTex[g_Editinfo[g_nCntEdit].nType];
+    }
+
+    // ブロックの削除
+    if (KeyboardTrigger(DIK_DELETE) == true && g_nCntEdit > 0)
+    {
+        if (g_Editinfo[g_nCntEdit].bUse) // 使用中のブロックだけ削除
+        {
+            g_Editinfo[g_nCntEdit].bUse = false;
+            g_nCntEdit--;
+        }
+    }
+
+    //if (GetMouseButtonTrigger(0)) // 左クリック
+    //{
+    //    SelectBlockByMouse();
+    //}
+
+    // ブロック設置の情報を読み込む
+    if (KeyboardTrigger(DIK_F6) == true)
+    {
+        LoadBlockData();
+    }
+    // ブロック設置の情報を保存
+    else if (KeyboardTrigger(DIK_F7) == true)
+    {
+        SaveBlockData();
+    }
+
+    // 保存するファイルパスの変更
+    if (KeyboardTrigger(DIK_2) && g_CurrentSavePathSet < PATH_MAX - 1)
+    {// 2キーで次のファイルパスへ
+        g_CurrentSavePathSet++;
+    }
+    else if (KeyboardTrigger(DIK_1) && g_CurrentSavePathSet > 0)
+    {// 1キーで前のファイルパスへ
+        g_CurrentSavePathSet--;
+    }
+
+    // 読み込むファイルパスの変更
+    if (KeyboardTrigger(DIK_4) && g_CurrentLoadPathSet < PATH_MAX - 1)
+    {// 4キーで次のファイルパスへ
+        g_CurrentLoadPathSet++;
+    }
+    else if (KeyboardTrigger(DIK_3) && g_CurrentLoadPathSet > 0)
+    {// 3キーで前のファイルパスへ
+        g_CurrentLoadPathSet--;
+    }
+}
+//==================================================
+// エディットブロックの正規化
+//==================================================
+void NormalizeEditBlock(void)
+{
+    // X軸の正規化
+    if (g_Editinfo[g_nCntEdit].rot.x > D3DX_PI)
+    {
+        g_Editinfo[g_nCntEdit].rot.x -= D3DX_PI * 2.0f;
+    }
+    if (g_Editinfo[g_nCntEdit].rot.x < -D3DX_PI)
+    {
+        g_Editinfo[g_nCntEdit].rot.x += D3DX_PI * 2.0f;
+    }
+
+    // Y軸の正規化
+    if (g_Editinfo[g_nCntEdit].rot.y > D3DX_PI)
+    {
+        g_Editinfo[g_nCntEdit].rot.y -= D3DX_PI * 2.0f;
+    }
+    if (g_Editinfo[g_nCntEdit].rot.y < -D3DX_PI)
+    {
+        g_Editinfo[g_nCntEdit].rot.y += D3DX_PI * 2.0f;
+    }
+
+    // Z軸の正規化
+    if (g_Editinfo[g_nCntEdit].rot.z > D3DX_PI)
+    {
+        g_Editinfo[g_nCntEdit].rot.z -= D3DX_PI * 2.0f;
+    }
+    if (g_Editinfo[g_nCntEdit].rot.z < -D3DX_PI)
+    {
+        g_Editinfo[g_nCntEdit].rot.z += D3DX_PI * 2.0f;
+    }
+}
+//==================================================
+// 現在のセーブブロックファイルのパスを取得する
+//==================================================
+const char* GetCurrentSaveFilePath(void)
+{
+    return PATH[g_CurrentSavePathSet];  // ブロックデータのファイルパスを返す
+}
+//==================================================
+// 現在のロードブロックファイルのパスを取得する
+//==================================================
+const char* GetCurrentLoadFilePath(void)
+{
+    return PATH[g_CurrentLoadPathSet];  // ブロックデータのファイルパスを返す
+}

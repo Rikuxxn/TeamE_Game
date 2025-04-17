@@ -659,20 +659,20 @@ void DrawEditInfo(void)
 {
 	Camera* pCamera = GetCamera();
 
-	RECT rect = { 5, 20, SCREEN_WIDTH, SCREEN_HEIGHT };
-	RECT rect2 = { 5, 40, SCREEN_WIDTH, SCREEN_HEIGHT };
-	RECT rect3 = { 5, 60, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect = { 5, 40, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect2 = { 5, 60, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect3 = { 5, 80, SCREEN_WIDTH, SCREEN_HEIGHT };
 	RECT rect4 = { 5, 100, SCREEN_WIDTH, SCREEN_HEIGHT };
 	RECT rect5 = { 5, 120, SCREEN_WIDTH, SCREEN_HEIGHT };
 	RECT rect6 = { 5, 140, SCREEN_WIDTH, SCREEN_HEIGHT };
 	RECT rect7 = { 5, 160, SCREEN_WIDTH, SCREEN_HEIGHT };
 	RECT rect8 = { 5, 180, SCREEN_WIDTH, SCREEN_HEIGHT };
 	RECT rect9 = { 5, 200, SCREEN_WIDTH, SCREEN_HEIGHT };
-	RECT rect10 = { 5, 260, SCREEN_WIDTH, SCREEN_HEIGHT };
-	RECT rect11 = { 5, 280, SCREEN_WIDTH, SCREEN_HEIGHT };
-	RECT rect12 = { 5, 300, SCREEN_WIDTH, SCREEN_HEIGHT };
-	RECT rect13 = { 5, 320, SCREEN_WIDTH, SCREEN_HEIGHT };
-	RECT rect14 = { 5, 340, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect10 = { 5, 220, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect11 = { 5, 240, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect12 = { 5, 280, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect13 = { 5, 300, SCREEN_WIDTH, SCREEN_HEIGHT };
+	RECT rect14 = { 5, 320, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 	char aStr[128];
 	char aStr2[128];
@@ -690,29 +690,29 @@ void DrawEditInfo(void)
 	char aStr14[128];
 
 	wsprintf(&aStr[0], "タイトル画面 [F1]\n");
-	wsprintf(&aStr2[0], "ブロック配置情報の保存 [F7]\n");
-	wsprintf(&aStr3[0], "前回のブロック配置情報の読み込み [F6]\n");
-	wsprintf(&aStr4[0], "ブロックの平行移動 : [↑/↓/←/→]\n");
-	wsprintf(&aStr5[0], "ブロックの垂直移動 : [U/J]\n");
-	wsprintf(&aStr6[0], "ブロックの種類変更 : [マウスホイール][O/L]\n");
-	wsprintf(&aStr7[0], "ブロックの回転 : [Y/H]\n");
-	wsprintf(&aStr8[0], "ブロックの設置 : [ENTER][左クリック]\n");
-	wsprintf(&aStr9[0], "ブロックの破棄 : [DELETE]\n");
-	wsprintf(&aStr10[0], "===============================\n");
-	wsprintf(&aStr11[0], "  カメラ操作方法\n");
-	wsprintf(&aStr12[0], "===============================\n");
-	wsprintf(&aStr13[0], "  カメラ平行移動 : [W/A/S/D]\n");
-	wsprintf(&aStr14[0], "  カメラ垂直移動 : [Z/C]\n");
+	wsprintf(&aStr2[0], "保存するファイルパスの変更 [1 / 2] : %s\n", GetCurrentSaveFilePath());
+	wsprintf(&aStr3[0], "ブロック配置情報の保存 [F7]\n");
+	wsprintf(&aStr4[0], "読み込むファイルパスの変更 [3 / 4] : %s\n", GetCurrentLoadFilePath());
+	wsprintf(&aStr5[0], "ブロック配置情報の読み込み [F6]\n");
+	wsprintf(&aStr6[0], "ブロックの平行移動 : [W/A/S/D]\n");
+	wsprintf(&aStr7[0], "ブロックの垂直移動 : [U/J]\n");
+	wsprintf(&aStr8[0], "ブロックの種類変更 : [マウスホイール][O/L]\n");
+	wsprintf(&aStr9[0], "ブロックの回転 : [Y/H]\n");
+	wsprintf(&aStr10[0], "ブロックの設置 : [ENTER][左クリック]\n");
+	wsprintf(&aStr11[0], "ブロックの破棄 : [DELETE]\n");
+	wsprintf(&aStr12[0], "[カメラ]-----------------------------------------\n");
+	sprintf(&aStr13[0], "<視点>  ( %.2f : %.2f : %.2f )\n",pCamera->rot.x,pCamera->rot.y,pCamera->rot.z);
+	sprintf(&aStr14[0], "<注視点>  ( %.2f : %.2f : %.2f )\n", pCamera->rot.x, pCamera->rot.y, pCamera->rot.z);
 
-	g_pFont->DrawTextA(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(0, 0, 255, 255));
+	g_pFont->DrawTextA(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 	g_pFont->DrawTextA(NULL, &aStr2[0], -1, &rect2, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 	g_pFont->DrawTextA(NULL, &aStr3[0], -1, &rect3, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 	g_pFont->DrawTextA(NULL, &aStr4[0], -1, &rect4, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 	g_pFont->DrawTextA(NULL, &aStr5[0], -1, &rect5, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 	g_pFont->DrawTextA(NULL, &aStr6[0], -1, &rect6, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 	g_pFont->DrawTextA(NULL, &aStr7[0], -1, &rect7, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
-	g_pFont->DrawTextA(NULL, &aStr8[0], -1, &rect8, DT_LEFT, D3DCOLOR_RGBA(0, 255, 0, 255));
-	g_pFont->DrawTextA(NULL, &aStr9[0], -1, &rect9, DT_LEFT, D3DCOLOR_RGBA(255, 0, 0, 255));
+	g_pFont->DrawTextA(NULL, &aStr8[0], -1, &rect8, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+	g_pFont->DrawTextA(NULL, &aStr9[0], -1, &rect9, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 	g_pFont->DrawTextA(NULL, &aStr10[0], -1, &rect10, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 	g_pFont->DrawTextA(NULL, &aStr11[0], -1, &rect11, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
 	g_pFont->DrawTextA(NULL, &aStr12[0], -1, &rect12, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));

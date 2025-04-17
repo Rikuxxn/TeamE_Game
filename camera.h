@@ -42,9 +42,11 @@ void UninitCamera(void);
 void UpdateCamera(void);
 void SetCamera(void);
 void RotateCameraWithGamepad(float stickX, float stickY);
+void GameCamera(void);
+void TitleCamera(void);
+void EditCamera(void);
 Camera* GetCamera(void);
 CAMERAMODE* GetCameraMode(void);
-bool GetFirstPerson(void);
 
 #endif
 

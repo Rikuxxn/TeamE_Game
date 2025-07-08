@@ -696,9 +696,9 @@ void DrawEditInfo(void)
 	wsprintf(&aStr5[0], "ブロック配置情報の読み込み [F6]\n");
 	wsprintf(&aStr6[0], "ブロックの平行移動 : [W/A/S/D]\n");
 	wsprintf(&aStr7[0], "ブロックの垂直移動 : [U/J]\n");
-	wsprintf(&aStr8[0], "ブロックの種類変更 : [マウスホイール][O/L]\n");
+	wsprintf(&aStr8[0], "ブロックの種類変更 : [Q/E]\n");
 	wsprintf(&aStr9[0], "ブロックの回転 : [Y/H]\n");
-	wsprintf(&aStr10[0], "ブロックの設置 : [ENTER][左クリック]\n");
+	wsprintf(&aStr10[0], "ブロックの設置 : [F]\n");
 	wsprintf(&aStr11[0], "ブロックの破棄 : [DELETE]\n");
 	wsprintf(&aStr12[0], "[カメラ]-----------------------------------------\n");
 	sprintf(&aStr13[0], "<視点>  ( %.2f : %.2f : %.2f )\n",pCamera->rot.x,pCamera->rot.y,pCamera->rot.z);

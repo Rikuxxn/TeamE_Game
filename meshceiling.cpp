@@ -125,14 +125,12 @@ void InitMeshCeiling(void)
 
 	//インデックスバッファをアンロックする
 	g_pIdxBuffMeshCeiling->Unlock();
-
 }
 //==================================
 // メッシュシーリングの終了処理
 //==================================
 void UninitMeshCeiling(void)
 {
-
 	//インデックスバッファの解放
 	if (g_pIdxBuffMeshCeiling != NULL)
 	{
@@ -153,7 +151,6 @@ void UninitMeshCeiling(void)
 		g_pVtxBuffMeshCeiling->Release();
 		g_pVtxBuffMeshCeiling = NULL;
 	}
-
 }
 //==================================
 // メッシュシーリングの更新処理
@@ -169,7 +166,6 @@ void UpdateMeshCeiling(void)
 //==================================
 void DrawMeshCeiling(void)
 {
-
 	LPDIRECT3DDEVICE9 pDevice;//デバイスへのポインタ
 
 	//デバイスの取得
@@ -183,10 +179,6 @@ void DrawMeshCeiling(void)
 
 	//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&g_mtxWorldMeshCeiling);
-
-	////向きを反映
-	//D3DXMatrixRotationYawPitchRoll(&mtxRot, g_rotMeshCeiling.y, g_rotMeshCeiling.x, g_rotMeshCeiling.z);
-	//D3DXMatrixMultiply(&g_mtxWorldMeshCeiling, &g_mtxWorldMeshCeiling, &mtxRot);
 
 	//位置を反映
 	D3DXMatrixTranslation(&mtxTrans, g_posMeshCeiling.x, g_posMeshCeiling.y, g_posMeshCeiling.z);
@@ -212,5 +204,4 @@ void DrawMeshCeiling(void)
 
 	// カリング設定を有効化
 	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-
 }

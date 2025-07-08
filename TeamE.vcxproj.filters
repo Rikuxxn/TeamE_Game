@@ -11,71 +11,165 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="meshceiling.cpp" />
-    <ClCompile Include="meshcylinder.cpp" />
-    <ClCompile Include="meshfield.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="motion.cpp" />
     <ClCompile Include="pause.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="result.cpp" />
-    <ClCompile Include="shooting_background.cpp" />
-    <ClCompile Include="shooting_bullet.cpp" />
-    <ClCompile Include="shooting_clear.cpp" />
-    <ClCompile Include="shooting_effect.cpp" />
-    <ClCompile Include="shooting_enemy.cpp" />
-    <ClCompile Include="shooting_fade.cpp" />
-    <ClCompile Include="shooting_game.cpp" />
-    <ClCompile Include="shooting_particle.cpp" />
-    <ClCompile Include="shooting_player.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="ui.cpp" />
     <ClCompile Include="shadow.cpp" />
     <ClCompile Include="tutorial.cpp" />
-    <ClCompile Include="crane_background.cpp" />
-    <ClCompile Include="crane_block.cpp" />
-    <ClCompile Include="crane_clear.cpp" />
-    <ClCompile Include="crane_effect.cpp" />
-    <ClCompile Include="crane_fade.cpp" />
-    <ClCompile Include="crane_game.cpp" />
-    <ClCompile Include="crane_item.cpp" />
-    <ClCompile Include="crane_player.cpp" />
     <ClCompile Include="map.cpp" />
-    <ClCompile Include="ball_background.cpp" />
-    <ClCompile Include="ball_clear.cpp" />
-    <ClCompile Include="ball_effect.cpp" />
-    <ClCompile Include="ball_fade.cpp" />
-    <ClCompile Include="ball_game.cpp" />
-    <ClCompile Include="ball_item.cpp" />
-    <ClCompile Include="ball_particle.cpp" />
-    <ClCompile Include="ball_block.cpp" />
     <ClCompile Include="task.cpp" />
     <ClCompile Include="time.cpp" />
-    <ClCompile Include="password_background.cpp" />
-    <ClCompile Include="password_block.cpp" />
-    <ClCompile Include="password_clear.cpp" />
-    <ClCompile Include="password_effect.cpp" />
-    <ClCompile Include="password_fade.cpp" />
-    <ClCompile Include="password_game.cpp" />
-    <ClCompile Include="password_item.cpp" />
-    <ClCompile Include="password_particle.cpp" />
-    <ClCompile Include="password_score.cpp" />
     <ClCompile Include="sound.cpp" />
-    <ClCompile Include="crane_score.cpp" />
-    <ClCompile Include="shooting_score.cpp" />
-    <ClCompile Include="ball_hint_bg.cpp" />
-    <ClCompile Include="ball_score.cpp" />
-    <ClCompile Include="ball_hint.cpp" />
-    <ClCompile Include="crane_hint.cpp" />
-    <ClCompile Include="crane_hint_bg.cpp" />
-    <ClCompile Include="ball_tutorial.cpp" />
     <ClCompile Include="recommendation.cpp" />
     <ClCompile Include="tutorial2.cpp" />
     <ClCompile Include="pause_tutorial.cpp" />
-    <ClCompile Include="shooting_background2.cpp" />
-    <ClCompile Include="crane_background2.cpp" />
     <ClCompile Include="insight.cpp" />
     <ClCompile Include="easing.cpp" />
+    <ClCompile Include="ball_background.cpp">
+      <Filter>MiniGame_Ball</Filter>
+    </ClCompile>
+    <ClCompile Include="ball_block.cpp">
+      <Filter>MiniGame_Ball</Filter>
+    </ClCompile>
+    <ClCompile Include="ball_clear.cpp">
+      <Filter>MiniGame_Ball</Filter>
+    </ClCompile>
+    <ClCompile Include="ball_effect.cpp">
+      <Filter>MiniGame_Ball</Filter>
+    </ClCompile>
+    <ClCompile Include="ball_fade.cpp">
+      <Filter>MiniGame_Ball</Filter>
+    </ClCompile>
+    <ClCompile Include="ball_game.cpp">
+      <Filter>MiniGame_Ball</Filter>
+    </ClCompile>
+    <ClCompile Include="ball_hint.cpp">
+      <Filter>MiniGame_Ball</Filter>
+    </ClCompile>
+    <ClCompile Include="ball_hint_bg.cpp">
+      <Filter>MiniGame_Ball</Filter>
+    </ClCompile>
+    <ClCompile Include="ball_item.cpp">
+      <Filter>MiniGame_Ball</Filter>
+    </ClCompile>
+    <ClCompile Include="ball_particle.cpp">
+      <Filter>MiniGame_Ball</Filter>
+    </ClCompile>
+    <ClCompile Include="ball_score.cpp">
+      <Filter>MiniGame_Ball</Filter>
+    </ClCompile>
+    <ClCompile Include="ball_tutorial.cpp">
+      <Filter>MiniGame_Ball</Filter>
+    </ClCompile>
+    <ClCompile Include="crane_background.cpp">
+      <Filter>MiniGame_Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="crane_background2.cpp">
+      <Filter>MiniGame_Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="crane_block.cpp">
+      <Filter>MiniGame_Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="crane_clear.cpp">
+      <Filter>MiniGame_Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="crane_effect.cpp">
+      <Filter>MiniGame_Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="crane_fade.cpp">
+      <Filter>MiniGame_Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="crane_game.cpp">
+      <Filter>MiniGame_Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="crane_hint.cpp">
+      <Filter>MiniGame_Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="crane_hint_bg.cpp">
+      <Filter>MiniGame_Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="crane_item.cpp">
+      <Filter>MiniGame_Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="crane_player.cpp">
+      <Filter>MiniGame_Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="crane_score.cpp">
+      <Filter>MiniGame_Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="password_background.cpp">
+      <Filter>Password</Filter>
+    </ClCompile>
+    <ClCompile Include="password_block.cpp">
+      <Filter>Password</Filter>
+    </ClCompile>
+    <ClCompile Include="password_clear.cpp">
+      <Filter>Password</Filter>
+    </ClCompile>
+    <ClCompile Include="password_effect.cpp">
+      <Filter>Password</Filter>
+    </ClCompile>
+    <ClCompile Include="password_fade.cpp">
+      <Filter>Password</Filter>
+    </ClCompile>
+    <ClCompile Include="password_game.cpp">
+      <Filter>Password</Filter>
+    </ClCompile>
+    <ClCompile Include="password_item.cpp">
+      <Filter>Password</Filter>
+    </ClCompile>
+    <ClCompile Include="password_particle.cpp">
+      <Filter>Password</Filter>
+    </ClCompile>
+    <ClCompile Include="password_score.cpp">
+      <Filter>Password</Filter>
+    </ClCompile>
+    <ClCompile Include="shooting_background.cpp">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClCompile>
+    <ClCompile Include="shooting_background2.cpp">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClCompile>
+    <ClCompile Include="shooting_bullet.cpp">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClCompile>
+    <ClCompile Include="shooting_clear.cpp">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClCompile>
+    <ClCompile Include="shooting_effect.cpp">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClCompile>
+    <ClCompile Include="shooting_enemy.cpp">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClCompile>
+    <ClCompile Include="shooting_fade.cpp">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClCompile>
+    <ClCompile Include="shooting_game.cpp">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClCompile>
+    <ClCompile Include="shooting_particle.cpp">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClCompile>
+    <ClCompile Include="shooting_player.cpp">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClCompile>
+    <ClCompile Include="shooting_score.cpp">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClCompile>
+    <ClCompile Include="meshceiling.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="meshcylinder.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="meshfield.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
@@ -88,70 +182,181 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="meshceiling.h" />
-    <ClInclude Include="meshcylinder.h" />
-    <ClInclude Include="meshfield.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="motion.h" />
     <ClInclude Include="pause.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="result.h" />
-    <ClInclude Include="shooting_bullet.h" />
-    <ClInclude Include="shooting_clear.h" />
-    <ClInclude Include="shooting_effect.h" />
-    <ClInclude Include="shooting_enemy.h" />
-    <ClInclude Include="shooting_fade.h" />
-    <ClInclude Include="shooting_game.h" />
-    <ClInclude Include="shooting_particle.h" />
-    <ClInclude Include="shooting_player.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="ui.h" />
     <ClInclude Include="shadow.h" />
     <ClInclude Include="tutorial.h" />
-    <ClInclude Include="crane_background.h" />
-    <ClInclude Include="crane_block.h" />
-    <ClInclude Include="crane_clear.h" />
-    <ClInclude Include="crane_effect.h" />
-    <ClInclude Include="crane_fade.h" />
-    <ClInclude Include="crane_game.h" />
-    <ClInclude Include="crane_item.h" />
-    <ClInclude Include="crane_player.h" />
     <ClInclude Include="map.h" />
-    <ClInclude Include="ball_background.h" />
-    <ClInclude Include="ball_clear.h" />
-    <ClInclude Include="ball_effect.h" />
-    <ClInclude Include="ball_fade.h" />
-    <ClInclude Include="ball_game.h" />
-    <ClInclude Include="ball_item.h" />
-    <ClInclude Include="ball_particle.h" />
-    <ClInclude Include="ball_block.h" />
     <ClInclude Include="task.h" />
     <ClInclude Include="time.h" />
-    <ClInclude Include="password_background.h" />
-    <ClInclude Include="password_block.h" />
-    <ClInclude Include="password_clear.h" />
-    <ClInclude Include="password_effect.h" />
-    <ClInclude Include="password_fade.h" />
-    <ClInclude Include="password_game.h" />
-    <ClInclude Include="password_item.h" />
-    <ClInclude Include="password_particle.h" />
-    <ClInclude Include="password_score.h" />
     <ClInclude Include="sound.h" />
-    <ClInclude Include="crane_score.h" />
-    <ClInclude Include="shooting_score.h" />
-    <ClInclude Include="ball_hint_bg.h" />
-    <ClInclude Include="ball_score.h" />
-    <ClInclude Include="ball_hint.h" />
-    <ClInclude Include="crane_hint.h" />
-    <ClInclude Include="crane_hint_bg.h" />
-    <ClInclude Include="ball_tutorial.h" />
     <ClInclude Include="recommendation.h" />
     <ClInclude Include="tutorial2.h" />
-    <ClInclude Include="shooting_background.h" />
     <ClInclude Include="pause_tutorial.h" />
-    <ClInclude Include="shooting_background2.h" />
-    <ClInclude Include="crane_background2.h" />
     <ClInclude Include="insight.h" />
     <ClInclude Include="easing.h" />
+    <ClInclude Include="ball_background.h">
+      <Filter>MiniGame_Ball</Filter>
+    </ClInclude>
+    <ClInclude Include="ball_block.h">
+      <Filter>MiniGame_Ball</Filter>
+    </ClInclude>
+    <ClInclude Include="ball_clear.h">
+      <Filter>MiniGame_Ball</Filter>
+    </ClInclude>
+    <ClInclude Include="ball_effect.h">
+      <Filter>MiniGame_Ball</Filter>
+    </ClInclude>
+    <ClInclude Include="ball_fade.h">
+      <Filter>MiniGame_Ball</Filter>
+    </ClInclude>
+    <ClInclude Include="ball_game.h">
+      <Filter>MiniGame_Ball</Filter>
+    </ClInclude>
+    <ClInclude Include="ball_hint.h">
+      <Filter>MiniGame_Ball</Filter>
+    </ClInclude>
+    <ClInclude Include="ball_hint_bg.h">
+      <Filter>MiniGame_Ball</Filter>
+    </ClInclude>
+    <ClInclude Include="ball_item.h">
+      <Filter>MiniGame_Ball</Filter>
+    </ClInclude>
+    <ClInclude Include="ball_particle.h">
+      <Filter>MiniGame_Ball</Filter>
+    </ClInclude>
+    <ClInclude Include="ball_score.h">
+      <Filter>MiniGame_Ball</Filter>
+    </ClInclude>
+    <ClInclude Include="ball_tutorial.h">
+      <Filter>MiniGame_Ball</Filter>
+    </ClInclude>
+    <ClInclude Include="crane_background.h">
+      <Filter>MiniGame_Crane</Filter>
+    </ClInclude>
+    <ClInclude Include="crane_background2.h">
+      <Filter>MiniGame_Crane</Filter>
+    </ClInclude>
+    <ClInclude Include="crane_block.h">
+      <Filter>MiniGame_Crane</Filter>
+    </ClInclude>
+    <ClInclude Include="crane_clear.h">
+      <Filter>MiniGame_Crane</Filter>
+    </ClInclude>
+    <ClInclude Include="crane_effect.h">
+      <Filter>MiniGame_Crane</Filter>
+    </ClInclude>
+    <ClInclude Include="crane_fade.h">
+      <Filter>MiniGame_Crane</Filter>
+    </ClInclude>
+    <ClInclude Include="crane_game.h">
+      <Filter>MiniGame_Crane</Filter>
+    </ClInclude>
+    <ClInclude Include="crane_hint.h">
+      <Filter>MiniGame_Crane</Filter>
+    </ClInclude>
+    <ClInclude Include="crane_hint_bg.h">
+      <Filter>MiniGame_Crane</Filter>
+    </ClInclude>
+    <ClInclude Include="crane_item.h">
+      <Filter>MiniGame_Crane</Filter>
+    </ClInclude>
+    <ClInclude Include="crane_player.h">
+      <Filter>MiniGame_Crane</Filter>
+    </ClInclude>
+    <ClInclude Include="crane_score.h">
+      <Filter>MiniGame_Crane</Filter>
+    </ClInclude>
+    <ClInclude Include="password_background.h">
+      <Filter>Password</Filter>
+    </ClInclude>
+    <ClInclude Include="password_block.h">
+      <Filter>Password</Filter>
+    </ClInclude>
+    <ClInclude Include="password_clear.h">
+      <Filter>Password</Filter>
+    </ClInclude>
+    <ClInclude Include="password_effect.h">
+      <Filter>Password</Filter>
+    </ClInclude>
+    <ClInclude Include="password_fade.h">
+      <Filter>Password</Filter>
+    </ClInclude>
+    <ClInclude Include="password_game.h">
+      <Filter>Password</Filter>
+    </ClInclude>
+    <ClInclude Include="password_item.h">
+      <Filter>Password</Filter>
+    </ClInclude>
+    <ClInclude Include="password_particle.h">
+      <Filter>Password</Filter>
+    </ClInclude>
+    <ClInclude Include="password_score.h">
+      <Filter>Password</Filter>
+    </ClInclude>
+    <ClInclude Include="shooting_background.h">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClInclude>
+    <ClInclude Include="shooting_background2.h">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClInclude>
+    <ClInclude Include="shooting_bullet.h">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClInclude>
+    <ClInclude Include="shooting_clear.h">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClInclude>
+    <ClInclude Include="shooting_effect.h">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClInclude>
+    <ClInclude Include="shooting_enemy.h">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClInclude>
+    <ClInclude Include="shooting_fade.h">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClInclude>
+    <ClInclude Include="shooting_game.h">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClInclude>
+    <ClInclude Include="shooting_particle.h">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClInclude>
+    <ClInclude Include="shooting_player.h">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClInclude>
+    <ClInclude Include="shooting_score.h">
+      <Filter>MiniGame_Shooting</Filter>
+    </ClInclude>
+    <ClInclude Include="meshceiling.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="meshcylinder.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="meshfield.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="MiniGame_Ball">
+      <UniqueIdentifier>{8d54b396-ceda-4b92-8ff8-f81ab3af5b82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MiniGame_Crane">
+      <UniqueIdentifier>{845144a9-b5f5-4db4-acc6-fde1a5d1a2bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Password">
+      <UniqueIdentifier>{4b6d91e4-658a-42f5-9af3-9d0cb9041a7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MiniGame_Shooting">
+      <UniqueIdentifier>{0700bdb6-558a-43b5-a9cd-a55c8b5322ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh">
+      <UniqueIdentifier>{4b8264ff-0e54-4057-8166-fc85b061e566}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
